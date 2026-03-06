@@ -7,9 +7,6 @@ const colors = [
   { name: 'Accent Hover', var: '--acc2', desc: 'Hover state' },
   { name: 'Lime', var: '--lime', desc: 'Lime highlight' },
   { name: 'Lime Light', var: '--lime-light', desc: 'Light lime' },
-  { name: 'Blue', var: '--blue', desc: 'Info / analytics' },
-  { name: 'Purple', var: '--purple', desc: 'Branding accent' },
-  { name: 'Orange', var: '--orange', desc: 'Warning states' },
   { name: 'Red', var: '--red', desc: 'Error / danger' },
 ]
 
@@ -171,12 +168,9 @@ export function StyleGuide() {
               <span>Large (64px)</span>
             </div>
           </div>
-          <h3 className="sg-sub">Colors</h3>
+          <h3 className="sg-sub">Color</h3>
           <div className="sg-row">
-            <div className="sg-icon-demo"><IconBox name="globe" color="lime" /><span>Lime</span></div>
-            <div className="sg-icon-demo"><IconBox name="pulse" color="blue" /><span>Blue</span></div>
-            <div className="sg-icon-demo"><IconBox name="bolt" color="purple" /><span>Purple</span></div>
-            <div className="sg-icon-demo"><IconBox name="shield" color="orange" /><span>Orange</span></div>
+            <div className="sg-icon-demo"><IconBox name="globe" color="lime" /><span>Lime (default)</span></div>
           </div>
           <div className="sg-code">
             <code>{`<IconBox name="bolt" size="md" color="lime" />`}</code>

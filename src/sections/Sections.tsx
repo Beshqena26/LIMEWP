@@ -27,7 +27,7 @@ export function Audience({ Rev }: { Rev: RevType }) {
                 <IconBox name={a.icon} size="md" />
                 <h3>{a.title}</h3>
                 <p>{a.desc}</p>
-                <a href="#" className="audience-link">Learn more <Icon name="arrow" /></a>
+                <a href={`#${a.slug}`} className="audience-link">Learn more <Icon name="arrow" /></a>
               </div>
             ))}
           </div>
@@ -108,7 +108,7 @@ export function Comparison({ Rev }: { Rev: RevType }) {
                     ) : v === 'no' ? (
                       <Icon name="x-mark" width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                     ) : (
-                      <Icon name="minus" width={18} height={18} fill="none" stroke="var(--orange)" strokeWidth={2} strokeLinecap="round" />
+                      <Icon name="minus" width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" />
                     )}
                   </div>
                 ))}
