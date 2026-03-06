@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-/* ── SVG Icons ── */
+/* -- SVG Icons -- */
 const ArrowIcon = () => (
   <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
 )
 const CheckIcon = () => (
   <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
 )
-const PlusIcon = () => (
-  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+const ChevronDown = () => (
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>
 )
 const SunIcon = () => (
   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>
@@ -32,62 +32,84 @@ const GitHubIcon = () => (
     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21.5c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" fill="var(--c1)" />
   </svg>
 )
+const StarIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+)
 
-/* ── Data ── */
+/* -- Data -- */
 const marqueeItems = [
   'One-Click WordPress Install', 'Free SSL Certificates', 'Global CDN', 'Auto Daily Backups',
   'Staging Environments', 'WooCommerce Ready', 'SSH & WP-CLI Access', '99.9% Uptime SLA',
   '24/7 Expert Support', 'Free Site Migration', 'DDoS Protection', 'Object Caching',
 ]
 
-const trustRows = [
-  { num: '01', title: 'Performance', desc: 'Optimized infrastructure for fast page loads, responsive dashboards, and reliable behavior under any traffic.', metric: '<200ms', label: 'Avg. Response Time' },
-  { num: '02', title: 'Security', desc: 'Automatic SSL, hardened infrastructure, and continuous monitoring to protect your website and its visitors.', metric: '24/7', label: 'Threat Monitoring' },
-  { num: '03', title: 'Reliability', desc: 'High uptime, automatic backups, and stable environments keep your site running without interruptions.', metric: '99.9%', label: 'Uptime SLA' },
+const audiences = [
+  { icon: <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>, title: 'First-Time Creators', desc: 'Launch your blog, portfolio, or business site without touching code. We handle the tech so you can focus on what matters.' },
+  { icon: <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" /><circle cx="11" cy="11" r="2" /></svg>, title: 'Content Creators & Bloggers', desc: 'Blazing-fast load times, built-in SEO optimization, and monetization support to grow your audience.' },
+  { icon: <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>, title: 'Freelancers & Designers', desc: 'Staging environments, one-click cloning, and client-ready handoffs. Build faster, deliver with confidence.' },
+  { icon: <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>, title: 'E-Commerce & WooCommerce', desc: 'PCI-compliant hosting, checkout optimization, and infrastructure that handles traffic spikes without breaking.' },
+  { icon: <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>, title: 'Agencies & Studios', desc: 'Multi-site dashboard, bulk updates, white-label options, and team permissions. Manage all clients from one place.' },
+  { icon: <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>, title: 'Enterprise & Organizations', desc: 'SLAs, compliance certifications, dedicated support, and infrastructure designed for mission-critical sites.' },
 ]
 
-const personas = [
-  { emoji: '\u{1F331}', name: 'First-Time Creator', role: 'Launch without complexity', desc: 'Get online fast with one-click WordPress setup, guided onboarding, and automatic security.', tags: ['One-click install', 'Simple dashboard', 'Auto backups', 'Free SSL'], featured: true },
-  { emoji: '\u270D\uFE0F', name: 'Content Creator', role: 'Publish with confidence', desc: 'Fast page loads and traffic spike protection keep your audience engaged.', tags: ['Built-in CDN', 'Media optimization', 'Caching', 'Spike protection'] },
-  { emoji: '\u{1F3A8}', name: 'Freelancer / Designer', role: 'Build and deliver for clients', desc: 'Test safely in staging, migrate sites with zero hassle.', tags: ['Staging environments', 'Site migration', 'Client handoff'] },
-  { emoji: '\u{1F3E2}', name: 'Agency / Studio', role: 'Manage many sites at once', desc: 'Centralized dashboard for all client sites with team permissions.', tags: ['Multi-site management', 'Team roles', 'Bulk updates'] },
-  { emoji: '\u{1F6D2}', name: 'E-commerce Owner', role: 'Sell with stable performance', desc: 'Optimized databases and secure checkout keep your store fast.', tags: ['DB optimization', 'Object caching', 'Secure checkout', 'Rollback'] },
-  { emoji: '\u26A1', name: 'Developer', role: 'Full control and transparency', desc: 'SSH, WP-CLI, database access, and debug logs.', tags: ['SSH access', 'WP-CLI', 'DB access', 'Debug logs'] },
-  { emoji: '\u{1F3DB}\uFE0F', name: 'Enterprise', role: 'Mission-critical infrastructure', desc: 'High availability, audit trails, and SLA guarantees.', tags: ['High availability', 'Audit logs', 'Access control', 'SLA'] },
-]
-
-const capabilities = [
-  { icon: <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>, title: 'WordPress-Optimized Infrastructure', sub: 'Purpose-built servers with intelligent caching layers and global content delivery.', details: ['LiteSpeed Cache', 'Redis', 'Global CDN', 'PHP 8.3'] },
-  { icon: <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>, title: 'Safe Development Workflows', sub: 'Staging environments and automated backup systems protect your production sites.', details: ['1-Click Staging', 'Auto Backups', 'Rollback'] },
-  { icon: <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>, title: 'Flexible Development Tools', sub: 'Command-line tools, direct database access, and full configuration control.', details: ['SSH', 'WP-CLI', 'phpMyAdmin', 'Git Deploy'] },
-  { icon: <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" /><rect x="2" y="14" width="20" height="8" rx="2" /><line x1="6" y1="6" x2="6.01" y2="6" /><line x1="6" y1="18" x2="6.01" y2="18" /></svg>, title: 'Scalable Architecture', sub: 'Infrastructure that auto-scales alongside your traffic and ambitions.', details: ['Auto-Scaling', 'Load Balancing', '99.9% SLA'] },
-]
-
-const steps = [
-  { num: '01', title: 'Create Account', desc: 'Sign up and pick your plan in under a minute.' },
-  { num: '02', title: 'Install WordPress', desc: 'One click. Fully configured and ready to go.' },
-  { num: '03', title: 'Start Building', desc: 'Publish, develop, or launch your store immediately.' },
+const features = [
+  {
+    large: true,
+    icon: <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>,
+    title: 'Lightning-Fast Performance',
+    desc: 'Our globally distributed infrastructure ensures your site loads in under 200ms, anywhere in the world. Built on modern architecture with NVMe storage and smart caching.',
+    list: ['Global CDN with 200+ edge locations', 'Automatic image optimization', 'Object caching & Redis support'],
+  },
+  {
+    icon: <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>,
+    title: 'Enterprise-Grade Security',
+    desc: 'Sleep soundly with automatic malware scanning, firewalls, DDoS protection, and free SSL certificates.',
+    list: ['Web Application Firewall', 'Real-time malware scanning', 'Free Wildcard SSL'],
+  },
+  {
+    icon: <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>,
+    title: 'Automatic Daily Backups',
+    desc: 'Every change is automatically backed up. Restore your entire site with one click. 30-day retention included.',
+    list: ['One-click restore', 'Off-site redundant storage', 'Downloadable backups'],
+  },
+  {
+    icon: <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>,
+    title: 'Expert WordPress Support',
+    desc: 'Real humans who know WordPress inside and out. Available 24/7 via chat and email. Average response under 2 minutes.',
+    list: ['24/7 live chat support', 'WordPress experts, not scripts', 'Free migration assistance'],
+  },
+  {
+    icon: <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>,
+    title: 'Staging Environments',
+    desc: 'Test updates, designs, and plugins safely before going live. Clone your production site in seconds.',
+    list: ['One-click staging creation', 'Selective push to production', 'Shareable staging URLs'],
+  },
 ]
 
 const prices = { m: [9, 29, 79], y: [7, 23, 63] }
 
 const plans = [
-  { name: 'Starter', note: 'Perfect for personal sites and blogs', features: ['1 WordPress site', '10 GB SSD storage', 'Free SSL and CDN', 'Daily backups', 'Email support'] },
-  { name: 'Professional', note: 'For growing businesses and freelancers', features: ['10 WordPress sites', '50 GB SSD storage', 'Staging environments', 'SSH and WP-CLI access', 'Priority support', 'Free site migration'], popular: true },
-  { name: 'Enterprise', note: 'For agencies and mission-critical sites', features: ['Unlimited sites', '200 GB SSD storage', 'High availability', 'Team roles and audit logs', 'Dedicated support', '99.99% SLA guarantee'] },
+  { name: 'Starter', note: 'Perfect for personal sites and blogs', features: ['1 WordPress site', '10GB SSD storage', 'Free SSL certificate', 'Daily backups', 'Global CDN'] },
+  { name: 'Professional', note: 'For growing sites and small businesses', features: ['Up to 5 WordPress sites', '50GB SSD storage', 'Staging environments', 'Priority support', 'WooCommerce optimized'], popular: true },
+  { name: 'Agency', note: 'For teams managing multiple clients', features: ['Up to 25 WordPress sites', '200GB SSD storage', 'White-label dashboard', 'Unlimited team members', 'Bulk site management'] },
+]
+
+const testimonials = [
+  { initials: 'SK', name: 'Sarah K.', role: 'Travel Blogger', text: "I was terrified of launching my first website. LimeWP made it so simple\u2014I had my blog live in under an hour. Their support team answered every question patiently." },
+  { initials: 'MR', name: 'Marcus R.', role: 'E-commerce Owner', text: "After moving to LimeWP, our page load time dropped from 4 seconds to under 400ms. Our bounce rate is down 35% and conversions are up. Game changer for our store." },
+  { initials: 'JC', name: 'James C.', role: 'Agency Director', text: "We manage 47 client sites from one dashboard. Bulk updates take minutes, not hours. Haven't had a single downtime incident in 8 months." },
 ]
 
 const faqData = [
-  { q: 'Can I migrate my existing WordPress site?', a: 'Yes. We offer free migrations for all plans. Our team handles the entire process with zero downtime. Most migrations complete within 24 hours.' },
-  { q: 'Do you offer a money-back guarantee?', a: 'Every plan comes with a 30-day money-back guarantee. If you\'re not satisfied, we\'ll refund your payment \u2014 no questions asked.' },
-  { q: 'Is WooCommerce supported?', a: 'Yes. All plans support WooCommerce with optimized databases, object caching, and secure checkout.' },
-  { q: 'What kind of support do you offer?', a: 'All plans include email support. Professional adds live chat. Enterprise gets a dedicated engineer and phone support.' },
-  { q: 'Can I upgrade or downgrade my plan?', a: 'Yes. Change your plan anytime. Upgrades are instant, downgrades apply next billing cycle. We prorate automatically.' },
-  { q: 'Do you include staging environments?', a: 'Staging is included in Professional and Enterprise plans. Clone your site, test safely, push live when ready.' },
-  { q: 'What happens if I exceed my storage?', a: 'We notify you before hitting your limit. Add storage or upgrade anytime. We never shut down your site without notice.' },
+  { q: 'Can I migrate my existing WordPress site?', a: 'Absolutely! We offer free migrations on all plans. Our team handles everything\u2014DNS, database, files\u2014with zero downtime. Most migrations complete within 24-48 hours.' },
+  { q: 'What happens if I need help?', a: 'Our WordPress experts are available 24/7 via live chat and email. Average response time is under 2 minutes. No question is too basic\u2014we\'re here to help.' },
+  { q: 'Is there a free trial?', a: 'Yes! We offer a 14-day free trial on all plans. No credit card required. If it\'s not for you, simply don\'t continue\u2014no awkward cancellation process.' },
+  { q: 'Do you support WooCommerce?', a: 'LimeWP is fully optimized for WooCommerce. Our infrastructure handles traffic spikes, optimizes checkout performance, and meets PCI compliance requirements.' },
+  { q: 'What\'s your uptime guarantee?', a: 'We guarantee 99.99% uptime with our SLA. If we don\'t meet that commitment, you\'ll receive account credits automatically. Most customers see 100% uptime.' },
+  { q: 'Can I cancel anytime?', a: 'Yes, you can cancel anytime with no penalties. We don\'t believe in lock-in. You own your data and code\u2014we provide full exports and migration assistance.' },
 ]
 
-/* ── Hooks ── */
+/* -- Hooks -- */
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -118,7 +140,6 @@ function useParticles(theme: string) {
     const resize = () => {
       canvas.width = innerWidth
       canvas.height = innerHeight
-      // reinit particles
       const ps: typeof particlesRef.current = []
       const cols = Math.floor(innerWidth / 90)
       const rows = Math.floor(innerHeight / 90)
@@ -173,13 +194,12 @@ function useParticles(theme: string) {
   return { canvasRef, mouseRef }
 }
 
-/* ── Reveal wrapper ── */
 function Rev({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useReveal()
   return <div ref={ref} className={`reveal ${className}`}>{children}</div>
 }
 
-/* ── Main Component ── */
+/* -- Main Component -- */
 export function LandingPage() {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -197,19 +217,16 @@ export function LandingPage() {
 
   const { canvasRef, mouseRef } = useParticles(theme)
 
-  // Theme
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     localStorage.setItem('limewp-theme', theme)
   }, [theme])
 
-  // Body scroll lock for modal
   useEffect(() => {
     document.body.style.overflow = modal ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [modal])
 
-  // Mouse tracking for cursor glow
   useEffect(() => {
     const move = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY }
@@ -228,7 +245,6 @@ export function LandingPage() {
     return () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseleave', leave) }
   }, [mouseRef])
 
-  // Active nav section
   useEffect(() => {
     const onScroll = () => {
       const secs = document.querySelectorAll('section[id]')
@@ -240,34 +256,12 @@ export function LandingPage() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Escape key closes modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModal(null) }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [])
 
-  // Tilt cards
-  useEffect(() => {
-    const cards = document.querySelectorAll<HTMLElement>('.tilt-card')
-    const handlers: [HTMLElement, (e: MouseEvent) => void, () => void][] = []
-    cards.forEach(c => {
-      const move = (e: MouseEvent) => {
-        const r = c.getBoundingClientRect()
-        const x = (e.clientX - r.left) / r.width - .5
-        const y = (e.clientY - r.top) / r.height - .5
-        c.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-4px)`
-        c.style.boxShadow = `${-x * 12}px ${y * 12}px 32px rgba(0,0,0,.08)`
-      }
-      const leave = () => { c.style.transform = ''; c.style.boxShadow = '' }
-      c.addEventListener('mousemove', move as EventListener)
-      c.addEventListener('mouseleave', leave)
-      handlers.push([c, move, leave])
-    })
-    return () => handlers.forEach(([c, m, l]) => { c.removeEventListener('mousemove', m as EventListener); c.removeEventListener('mouseleave', l) })
-  }, [])
-
-  // Global reveal observer for elements with .reveal class not managed by Rev
   useEffect(() => {
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target) } }),
@@ -280,14 +274,11 @@ export function LandingPage() {
   const toggleTheme = useCallback(() => setTheme(t => t === 'light' ? 'dark' : 'light'), [])
 
   const navLinks = [
-    { href: '#trust', label: 'Platform' },
-    { href: '#personas', label: 'Solutions' },
+    { href: '#platform', label: 'Platform' },
+    { href: '#features', label: 'Features' },
     { href: '#pricing', label: 'Pricing' },
     { href: '#faq', label: 'FAQ' },
   ]
-
-  const chartVals = [65, 45, 78, 52, 88, 72, 95]
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
   const handleFormSubmit = () => { window.location.href = 'https://limewp.vercel.app/dashboard' }
 
@@ -310,8 +301,8 @@ export function LandingPage() {
           <button className="theme-btn" onClick={toggleTheme} aria-label="Toggle theme">
             {theme === 'light' ? <SunIcon /> : <MoonIcon />}
           </button>
-          <span className="nav-login" onClick={() => setModal('login')}>Log In</span>
-          <span className="nav-cta" onClick={() => setModal('signup')}>Sign Up</span>
+          <span className="nav-login" onClick={() => setModal('login')}>Sign In</span>
+          <span className="nav-cta" onClick={() => setModal('signup')}>Start Free Trial</span>
         </div>
       </nav>
 
@@ -320,50 +311,125 @@ export function LandingPage() {
         <div className="container">
           <div className="hero-grid">
             <div className="hero-left">
-              <div className="hero-badge"><span className="dot" /> Built for everyone on WordPress</div>
-              <h1>Hosting That <em>Works</em> for Everyone Who Builds</h1>
-              <p className="hero-sub">From your first blog to enterprise platforms — fast, secure, and reliable WordPress hosting that scales with you.</p>
+              <div className="hero-badge"><span className="dot" /> Trusted by 50,000+ WordPress sites</div>
+              <h1>WordPress hosting<br />that <em>just works</em></h1>
+              <p className="hero-sub">Lightning-fast speeds, bulletproof security, and expert support. Whether you're launching your first site or managing hundreds, LimeWP scales with you.</p>
               <div className="hero-actions">
-                <span className="btn btn-p" onClick={() => setModal('signup')}>Start Your Site <ArrowIcon /></span>
-                <a href="#capabilities" className="btn btn-s">Explore Platform</a>
+                <span className="btn btn-p" onClick={() => setModal('signup')}>Start Your Free Trial <ArrowIcon /></span>
+                <a href="#platform" className="btn btn-s">See How It Works</a>
               </div>
-              <div className="hero-trust">
-                <span>Trusted by teams at</span>
-                <span className="ht-name">Vercel</span>
-                <span className="ht-dot" />
-                <span className="ht-name">Stripe</span>
-                <span className="ht-dot" />
-                <span className="ht-name">Shopify</span>
-                <span className="ht-dot" />
-                <span className="ht-name">Basecamp</span>
+              <div className="hero-stats">
+                <div className="stat-item">
+                  <div className="stat-value">99.99%</div>
+                  <div className="stat-label">Uptime SLA</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-value">&lt;200ms</div>
+                  <div className="stat-label">Response Time</div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-value">24/7</div>
+                  <div className="stat-label">Expert Support</div>
+                </div>
               </div>
             </div>
+
+            {/* Hero Illustration */}
             <div className="hero-right">
+              {/* Floating Badges */}
               <div className="hero-float f1">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--acc)" strokeWidth="2" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                <div className="badge-icon green">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                </div>
                 SSL Active
               </div>
               <div className="hero-float f2">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--acc)" strokeWidth="2" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
-                CDN Enabled
+                <div className="badge-icon blue">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                </div>
+                10x Faster
               </div>
               <div className="hero-float f3">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--acc)" strokeWidth="2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-                Backed Up
-              </div>
-              <div className="hero-card">
-                <div className="hero-card-bar">
-                  <span className="hero-card-dot r" /><span className="hero-card-dot y" /><span className="hero-card-dot g" />
-                  <span className="hero-card-url">limewp.app/dashboard</span>
+                <div className="badge-icon purple">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
                 </div>
-                <div className="hero-card-body">
-                  <div className="hero-card-row">
-                    <div className="hero-card-stat"><div className="hcs-val">99.9%</div><div className="hcs-label">Uptime</div></div>
-                    <div className="hero-card-stat"><div className="hcs-val">142ms</div><div className="hcs-label">Response</div></div>
-                    <div className="hero-card-stat"><div className="hcs-val">2.4k</div><div className="hcs-label">Visitors</div></div>
+                Auto Backup
+              </div>
+
+              {/* Server Stack */}
+              <div className="server-stack">
+                <div className="server-unit">
+                  <div className="server-info">
+                    <div className="server-icon">
+                      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2" /><rect x="2" y="14" width="20" height="8" rx="2" ry="2" /><line x1="6" y1="6" x2="6.01" y2="6" /><line x1="6" y1="18" x2="6.01" y2="18" /></svg>
+                    </div>
+                    <div className="server-details">
+                      <h4>Production Server</h4>
+                      <span>US-East &bull; 4 vCPU &bull; 16GB RAM</span>
+                    </div>
                   </div>
-                  <HeroChart vals={chartVals} />
-                  <div className="hero-card-label">{days.map(d => <span key={d}>{d}</span>)}</div>
+                  <div className="server-status">
+                    <span className="status-dot" />
+                    <span className="status-text">Online</span>
+                  </div>
+                </div>
+                <div className="server-unit">
+                  <div className="server-info">
+                    <div className="server-icon">
+                      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>
+                    </div>
+                    <div className="server-details">
+                      <h4>Staging Environment</h4>
+                      <span>EU-West &bull; Synced 2m ago</span>
+                    </div>
+                  </div>
+                  <div className="server-status">
+                    <span className="status-dot delayed" />
+                    <span className="status-text">Active</span>
+                  </div>
+                </div>
+                <div className="server-unit">
+                  <div className="server-info">
+                    <div className="server-icon">
+                      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                    </div>
+                    <div className="server-details">
+                      <h4>CDN Edge Network</h4>
+                      <span>200+ Global Locations</span>
+                    </div>
+                  </div>
+                  <div className="server-status">
+                    <span className="status-dot delayed-2" />
+                    <span className="status-text">Healthy</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Dashboard Card */}
+              <div className="dashboard-card">
+                <div className="dashboard-header">
+                  <div className="dashboard-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                    Performance Monitor
+                  </div>
+                  <div className="dashboard-badge">Live</div>
+                </div>
+                <div className="performance-metrics">
+                  <div className="metric-item">
+                    <div className="metric-value">187ms</div>
+                    <div className="metric-label">Load Time</div>
+                    <div className="metric-bar"><div className="metric-bar-fill" style={{ '--progress-width': '95%' } as React.CSSProperties} /></div>
+                  </div>
+                  <div className="metric-item">
+                    <div className="metric-value">100%</div>
+                    <div className="metric-label">Uptime</div>
+                    <div className="metric-bar"><div className="metric-bar-fill" style={{ '--progress-width': '100%' } as React.CSSProperties} /></div>
+                  </div>
+                  <div className="metric-item">
+                    <div className="metric-value">A+</div>
+                    <div className="metric-label">Security</div>
+                    <div className="metric-bar"><div className="metric-bar-fill" style={{ '--progress-width': '98%' } as React.CSSProperties} /></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -380,112 +446,182 @@ export function LandingPage() {
         </div>
       </div>
 
-      {/* TRUST / FOUNDATION */}
-      <section className="trust" id="trust">
-        <div className="container">
-          <Rev className="">
-            <div className="trust-header">
-              <div><div className="sl">Foundation</div><div className="st">The Three Pillars Every<br />WordPress Site Needs</div></div>
-              <p className="sd">No matter who you are — performance, security, and reliability are non-negotiable.</p>
-            </div>
-          </Rev>
-          <div className="trust-list">
-            {trustRows.map(r => (
-              <Rev key={r.num}>
-                <div className="trust-row">
-                  <div className="trust-num">{r.num}</div>
-                  <div className="trust-body"><h3>{r.title}</h3><p>{r.desc}</p></div>
-                  <div className="trust-metric"><div className="trust-metric-val">{r.metric}</div><div className="trust-metric-label">{r.label}</div></div>
-                </div>
-              </Rev>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PERSONAS / SOLUTIONS */}
-      <section className="personas" id="personas">
+      {/* PLATFORM PREVIEW */}
+      <section className="platform-section" id="platform">
         <div className="container">
           <Rev className="sc">
-            <div className="sl">Solutions</div>
-            <div className="st">Designed Around Real<br />WordPress Users</div>
-            <p className="sd">Different workflows need different tools. Our platform adapts to each.</p>
+            <div className="sl">Platform Preview</div>
+            <div className="st">One dashboard to manage everything</div>
+            <p className="sd">Monitor performance, manage sites, and deploy updates&mdash;all from a single, intuitive interface.</p>
           </Rev>
-          <div className="pgrid">
-            {personas.map((p, i) => (
-              <div key={i} className="pcard tilt-card reveal">
-                {p.featured ? (
-                  <>
-                    <div className="pcard-ava">{p.emoji}</div>
-                    <div className="pcard-content">
-                      <div className="pcard-top">
-                        <div><h3>{p.name}</h3><div className="pcard-role">{p.role}</div></div>
-                      </div>
-                      <div className="pcard-desc">{p.desc}</div>
-                      <ul className="ptags">{p.tags.map(t => <li key={t}>{t}</li>)}</ul>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="pcard-top">
-                      <div className="pcard-ava">{p.emoji}</div>
-                    </div>
-                    <h3>{p.name}</h3>
-                    <div className="pcard-role">{p.role}</div>
-                    <div className="pcard-desc">{p.desc}</div>
-                    <ul className="ptags">{p.tags.map(t => <li key={t}>{t}</li>)}</ul>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CAPABILITIES */}
-      <section className="capabilities" id="capabilities">
-        <div className="container">
           <Rev>
-            <div className="cap-layout">
-              <div className="cap-side">
-                <div className="sl">Platform</div>
-                <div className="st">One Platform,<br />Every Workflow</div>
-                <p className="sd">Instead of limited hosting, a platform that adapts to your needs while staying reliable.</p>
-                <div className="cap-side-stats">
-                  <div className="cap-stat"><div className="cs-num">40+</div><div className="cs-label">Global Edge Nodes</div></div>
-                  <div className="cap-stat"><div className="cs-num">6</div><div className="cs-label">Data Regions</div></div>
+            <div className="platform-preview">
+              <div className="platform-browser-bar">
+                <div className="browser-dots">
+                  <span className="browser-dot red" />
+                  <span className="browser-dot yellow" />
+                  <span className="browser-dot green" />
+                </div>
+                <div className="browser-url">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                  app.limewp.com/dashboard
                 </div>
               </div>
-              <div className="cap-timeline">
-                {capabilities.map((c, i) => (
-                  <div key={i} className="cap-item">
-                    <div className="cap-dot">{c.icon}</div>
-                    <h3>{c.title}</h3>
-                    <div className="cap-sub">{c.sub}</div>
-                    <div className="cap-details">{c.details.map(d => <span key={d}>{d}</span>)}</div>
+
+              <div className="platform-content">
+                {/* Sidebar */}
+                <div className="platform-sidebar">
+                  <div className="sidebar-logo">
+                    <div className="sidebar-logo-icon">
+                      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                    </div>
+                    <span>LimeWP</span>
                   </div>
-                ))}
+                  <div className="sidebar-nav">
+                    <div className="sidebar-item active">
+                      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
+                      Dashboard
+                    </div>
+                    <div className="sidebar-item">
+                      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
+                      My Sites
+                    </div>
+                    <div className="sidebar-item">
+                      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                      Analytics
+                    </div>
+                    <div className="sidebar-item">
+                      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                      Security
+                    </div>
+                    <div className="sidebar-section-title">Tools</div>
+                    <div className="sidebar-item">
+                      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /></svg>
+                      Staging
+                    </div>
+                    <div className="sidebar-item">
+                      <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
+                      Backups
+                    </div>
+                    <div className="sidebar-item">
+                      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+                      Settings
+                    </div>
+                  </div>
+                </div>
+
+                {/* Main */}
+                <div className="platform-main">
+                  <div className="platform-main-header">
+                    <h3 className="platform-main-title">Dashboard Overview</h3>
+                    <div className="platform-main-actions">
+                      <button className="btn btn-s">
+                        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                        Export
+                      </button>
+                      <button className="btn btn-p" onClick={() => setModal('signup')}>
+                        <svg viewBox="0 0 24 24" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                        Add Site
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="platform-stats-grid">
+                    <div className="platform-stat-card">
+                      <div className="platform-stat-header">
+                        <div className="platform-stat-icon green">
+                          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
+                        </div>
+                        <span className="platform-stat-trend">
+                          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /></svg>
+                          +2
+                        </span>
+                      </div>
+                      <div className="platform-stat-value">12</div>
+                      <div className="platform-stat-label">Active Sites</div>
+                    </div>
+                    <div className="platform-stat-card">
+                      <div className="platform-stat-header">
+                        <div className="platform-stat-icon blue">
+                          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                        </div>
+                        <span className="platform-stat-trend">99.99%</span>
+                      </div>
+                      <div className="platform-stat-value">100%</div>
+                      <div className="platform-stat-label">Uptime (30d)</div>
+                    </div>
+                    <div className="platform-stat-card">
+                      <div className="platform-stat-header">
+                        <div className="platform-stat-icon purple">
+                          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                        </div>
+                        <span className="platform-stat-trend">-12ms</span>
+                      </div>
+                      <div className="platform-stat-value">187ms</div>
+                      <div className="platform-stat-label">Avg Load Time</div>
+                    </div>
+                    <div className="platform-stat-card">
+                      <div className="platform-stat-header">
+                        <div className="platform-stat-icon orange">
+                          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+                        </div>
+                        <span className="platform-stat-trend">A+</span>
+                      </div>
+                      <div className="platform-stat-value">0</div>
+                      <div className="platform-stat-label">Security Issues</div>
+                    </div>
+                  </div>
+
+                  <div className="platform-sites">
+                    <div className="platform-sites-header">
+                      <span className="platform-sites-title">Your Sites</span>
+                      <span className="platform-sites-filter">All Sites <ChevronDown /></span>
+                    </div>
+                    {[
+                      { name: 'TechStartup Blog', url: 'techstartup.com', status: 'Online', dot: '', time: '156ms', visits: '2.4k visits' },
+                      { name: 'Creative Portfolio', url: 'sarahdesigns.co', status: 'Online', dot: '', time: '142ms', visits: '1.8k visits' },
+                      { name: 'E-commerce Store', url: 'shopmodern.io', status: 'Update Available', dot: 'warning', time: '198ms', visits: '5.2k visits' },
+                    ].map((site, i) => (
+                      <div key={i} className="site-row">
+                        <div className="site-info">
+                          <div className="site-favicon wp">W</div>
+                          <div>
+                            <div className="site-name">{site.name}</div>
+                            <div className="site-url">{site.url}</div>
+                          </div>
+                        </div>
+                        <div className="site-status">
+                          <span className={`site-status-dot ${site.dot}`} />
+                          {site.status}
+                        </div>
+                        <div className="site-metric">{site.time}</div>
+                        <div className="site-metric">{site.visits}</div>
+                        <div className="site-actions">
+                          <button className="site-action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1" /><circle cx="12" cy="5" r="1" /><circle cx="12" cy="19" r="1" /></svg>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </Rev>
-        </div>
-      </section>
 
-      {/* STEPS */}
-      <section className="steps" id="steps">
-        <div className="container">
-          <Rev className="sc">
-            <div className="sl">Getting Started</div>
-            <div className="st">Live in Minutes</div>
-            <p className="sd">Three steps. No complexity. Your site is online before your coffee gets cold.</p>
-          </Rev>
           <Rev>
-            <div className="steps-row">
-              {steps.map(s => (
-                <div key={s.num} className="step">
-                  <div className="step-num">{s.num}</div>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
+            <div className="platform-features">
+              {[
+                { icon: <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>, title: 'Unified Dashboard', desc: 'Manage all your WordPress sites from a single, intuitive control panel.' },
+                { icon: <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>, title: 'Real-time Analytics', desc: 'Monitor traffic, performance, and uptime with live metrics and alerts.' },
+                { icon: <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>, title: 'One-Click Staging', desc: 'Test changes safely with instant staging environments for every site.' },
+                { icon: <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>, title: 'Auto Backups', desc: 'Daily automated backups with one-click restore and 30-day retention.' },
+              ].map((f, i) => (
+                <div key={i} className="platform-feature">
+                  <div className="platform-feature-icon">{f.icon}</div>
+                  <h4>{f.title}</h4>
+                  <p>{f.desc}</p>
                 </div>
               ))}
             </div>
@@ -493,41 +629,76 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* TRUSTPILOT */}
-      <section className="trustpilot" id="reviews">
+      {/* AUDIENCE / SOLUTIONS */}
+      <section className="audience-section" id="solutions">
         <div className="container">
           <Rev className="sc">
-            <div className="sl">Reviews</div>
-            <div className="st">Trusted by Thousands</div>
-            <p className="sd">See what our customers say about LimeWP hosting.</p>
-            <div className="tp-score">
-              <div className="tp-stars">
-                {[1, 2, 3, 4, 5].map(n => (
-                  <svg key={n} className={`tp-star${n <= 4 ? ' filled' : ' half'}`} viewBox="0 0 24 24">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
-                  </svg>
-                ))}
-              </div>
-              <div className="tp-rating">4.7 <span>out of 5</span></div>
-              <div className="tp-badge">
-                <svg viewBox="0 0 24 24" className="tp-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 11 14 15 10" /></svg>
-                Trustpilot Verified
-              </div>
+            <div className="sl">Built For Everyone</div>
+            <div className="st">Hosting that fits your needs</div>
+            <p className="sd">From first-time creators to enterprise teams, LimeWP adapts to how you work.</p>
+          </Rev>
+          <Rev>
+            <div className="audience-grid">
+              {audiences.map((a, i) => (
+                <div key={i} className="audience-card">
+                  <div className="audience-icon">{a.icon}</div>
+                  <h3>{a.title}</h3>
+                  <p>{a.desc}</p>
+                  <a href="#" className="audience-link">Learn more <ArrowIcon /></a>
+                </div>
+              ))}
             </div>
           </Rev>
         </div>
-        <ReviewCarousel />
+      </section>
+
+      {/* FEATURES */}
+      <section className="features-section" id="features">
         <div className="container">
           <Rev className="sc">
-            <div className="tp-summary" style={{ marginTop: '40px' }}>
-              <span>Based on <strong>2,847</strong> reviews</span>
-              <span className="tp-dot" />
-              <span>Excellent on Trustpilot</span>
+            <div className="sl">Features</div>
+            <div className="st">Everything you need, nothing you don't</div>
+            <p className="sd">Built from the ground up for WordPress performance and reliability.</p>
+          </Rev>
+          <Rev>
+            <div className="features-grid">
+              {features.map((f, i) => (
+                <div key={i} className={`feature-card${f.large ? ' large' : ''}`}>
+                  <div className="feature-content">
+                    <div className="feature-icon">{f.icon}</div>
+                    <h3>{f.title}</h3>
+                    <p>{f.desc}</p>
+                    <div className="feature-list">
+                      {f.list.map(item => (
+                        <div key={item} className="feature-list-item"><CheckIcon />{item}</div>
+                      ))}
+                    </div>
+                  </div>
+                  {f.large && (
+                    <div className="feature-visual">
+                      <div className="speed-demo">
+                        {[
+                          { label: 'LimeWP', time: '187ms', width: '95%', color: 'lime' },
+                          { label: 'Competitor A', time: '1.2s', width: '45%', color: 'muted' },
+                          { label: 'Competitor B', time: '2.1s', width: '25%', color: 'muted' },
+                          { label: 'Shared Hosting', time: '3.8s', width: '12%', color: 'muted' },
+                        ].map(s => (
+                          <div key={s.label} className="speed-item">
+                            <div className="speed-label">
+                              <span>{s.label}</span>
+                              <span style={s.color === 'lime' ? { color: 'var(--acc)' } : {}}>{s.time}</span>
+                            </div>
+                            <div className="speed-bar">
+                              <div className={`speed-bar-fill ${s.color}`} style={{ width: s.width }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-            <a href="https://www.trustpilot.com/review/limewp.com" target="_blank" rel="noopener noreferrer" className="btn tp-cta" style={{ marginTop: '24px' }}>
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-              Write a Review
-            </a>
           </Rev>
         </div>
       </section>
@@ -536,28 +707,32 @@ export function LandingPage() {
       <section className="pricing" id="pricing">
         <div className="container">
           <Rev className="sc">
-            <div className="sl">Pricing</div>
-            <div className="st">Simple, Transparent Pricing</div>
-            <p className="sd">No hidden fees. No surprises. Pick the plan that fits.</p>
+            <div className="sl">Simple Pricing</div>
+            <div className="st">Plans that grow with you</div>
+            <p className="sd">No hidden fees, no surprises. Just straightforward pricing.</p>
             <div className="billing-toggle">
               <span className={!yearly ? 'on' : ''}>Monthly</span>
               <div className={`tpill${yearly ? ' yr' : ''}`} onClick={() => setYearly(y => !y)} />
-              <span className={yearly ? 'on' : ''}>Yearly</span>
-              <span className="save">Save 20%</span>
+              <span className={yearly ? 'on' : ''}>Yearly <span className="save">Save 20%</span></span>
             </div>
           </Rev>
           <Rev>
             <div className="prgrid">
               {plans.map((plan, i) => (
                 <div key={plan.name} className={`prcard${plan.popular ? ' pop' : ''}`}>
-                  {plan.popular && <div className="pop-label">Recommended</div>}
+                  {plan.popular && <div className="pop-label">Most Popular</div>}
                   <div className="pn">{plan.name}</div>
-                  <div className="pr">
-                    $<span className="pv" style={{ transition: 'opacity .2s, transform .2s' }}>
-                      {yearly ? prices.y[i] : prices.m[i]}
-                    </span><sub>/mo</sub>
-                  </div>
                   <div className="prnote">{plan.note}</div>
+                  <div className="pr">
+                    <span className="pr-currency">$</span>
+                    <span className="pv" style={{ transition: 'opacity .2s, transform .2s' }}>
+                      {yearly ? prices.y[i] : prices.m[i]}
+                    </span>
+                    <sub>/month</sub>
+                  </div>
+                  <div className={`yearly-savings${yearly ? ' visible' : ''}`}>
+                    Save ${(prices.m[i] - prices.y[i]) * 12}/year
+                  </div>
                   <div className="pr-divider" />
                   <ul className="fl">
                     {plan.features.map(f => (
@@ -566,9 +741,41 @@ export function LandingPage() {
                   </ul>
                   {i === 2 ? (
                     <a href="#" className="prbtn">Contact Sales</a>
+                  ) : plan.popular ? (
+                    <span className="prbtn" onClick={() => setModal('signup')}>Start Free Trial</span>
                   ) : (
                     <span className="prbtn" onClick={() => setModal('signup')}>Get Started</span>
                   )}
+                </div>
+              ))}
+            </div>
+          </Rev>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="testimonials" id="testimonials">
+        <div className="container">
+          <Rev className="sc">
+            <div className="sl">Reviews</div>
+            <div className="st">Loved by 50,000+ WordPress users</div>
+            <p className="sd">From solo creators to enterprise teams, hear why they chose LimeWP.</p>
+          </Rev>
+          <Rev>
+            <div className="testimonials-grid">
+              {testimonials.map((t, i) => (
+                <div key={i} className="testimonial-card">
+                  <div className="testimonial-rating">
+                    {[1, 2, 3, 4, 5].map(n => <StarIcon key={n} />)}
+                  </div>
+                  <p className="testimonial-text">"{t.text}"</p>
+                  <div className="testimonial-author">
+                    <div className="author-avatar">{t.initials}</div>
+                    <div className="author-info">
+                      <strong>{t.name}</strong>
+                      <span>{t.role}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -583,8 +790,8 @@ export function LandingPage() {
             <div className="faqgrid">
               <div className="faqside">
                 <div className="sl">FAQ</div>
-                <div className="st">Questions?<br />We Have Answers</div>
-                <p className="sd">Everything you need to know before getting started.</p>
+                <div className="st">Frequently asked<br />questions</div>
+                <p className="sd">Everything you need to know about LimeWP.</p>
                 <div className="faqcontact">
                   <p>Can't find what you're looking for? Our team is happy to help.</p>
                   <a href="#" className="btn btn-sm btn-s">Contact Support <ArrowIcon /></a>
@@ -595,7 +802,7 @@ export function LandingPage() {
                   <div key={i} className={`faqitem${openFaq === i ? ' open' : ''}`}>
                     <div className="faqq" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>
                       {f.q}
-                      <span className="faqico"><PlusIcon /></span>
+                      <span className="faqico"><ChevronDown /></span>
                     </div>
                     <div className="faqa"><div className="faqai">{f.a}</div></div>
                   </div>
@@ -606,17 +813,31 @@ export function LandingPage() {
         </div>
       </section>
 
-
       {/* FINAL CTA */}
       <section className="final-cta" id="cta">
         <div className="container">
           <Rev>
             <div className="ctabox">
-              <h2>Built for the Way<br />You Work</h2>
-              <p>From first-time creators to enterprise teams — tools and reliability to build with confidence.</p>
+              <div className="sl">Ready to Launch?</div>
+              <h2>Start building something great</h2>
+              <p>Join 50,000+ WordPress sites that trust LimeWP for speed, security, and reliability. Start your free trial today&mdash;no credit card required.</p>
               <div className="cta-acts">
-                <span className="btn btn-coral" onClick={() => setModal('signup')}>Start Hosting Today <ArrowIcon /></span>
-                <a href="#pricing" className="btn btn-s">Explore Plans</a>
+                <span className="btn btn-p" onClick={() => setModal('signup')}>Start Your Free Trial <ArrowIcon /></span>
+                <a href="#pricing" className="btn btn-s">Talk to Sales</a>
+              </div>
+              <div className="trust-badges">
+                <div className="trust-badge">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                  14-day free trial
+                </div>
+                <div className="trust-badge">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                  No credit card required
+                </div>
+                <div className="trust-badge">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+                  Free migration included
+                </div>
               </div>
             </div>
           </Rev>
@@ -646,11 +867,42 @@ export function LandingPage() {
       {/* FOOTER */}
       <footer>
         <div className="container">
-          <div className="finner">
-            <div className="fcp">&copy; 2026 LimeWP. WordPress hosting built for everyone.</div>
-            <div className="flnks">
-              <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Status</a><a href="#">Contact</a>
+          <div className="footer-content">
+            <div className="footer-brand">
+              <a href="#" className="logo">
+                <div className="logo-icon">
+                  <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+                </div>
+                LimeWP
+              </a>
+              <p>WordPress hosting that just works. Fast, secure, and backed by humans who actually care.</p>
             </div>
+            <div className="footer-column">
+              <h4>Product</h4>
+              <a href="#features">Features</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#">WooCommerce</a>
+              <a href="#">Enterprise</a>
+              <a href="#">Migrations</a>
+            </div>
+            <div className="footer-column">
+              <h4>Support</h4>
+              <a href="#">Help Center</a>
+              <a href="#">Contact Us</a>
+              <a href="#">System Status</a>
+              <a href="#">Documentation</a>
+            </div>
+            <div className="footer-column">
+              <h4>Company</h4>
+              <a href="#">About Us</a>
+              <a href="#">Blog</a>
+              <a href="#">Careers</a>
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>&copy; 2026 LimeWP. Built with love for WordPress users everywhere.</p>
           </div>
         </div>
       </footer>
@@ -658,89 +910,7 @@ export function LandingPage() {
   )
 }
 
-/* ── Hero Chart ── */
-function HeroChart({ vals }: { vals: number[] }) {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (!ref.current) return
-    ref.current.innerHTML = ''
-    vals.forEach((v, i) => {
-      const bar = document.createElement('div')
-      bar.className = 'bar' + (i === vals.length - 1 ? ' active' : '')
-      bar.style.height = '0%'
-      ref.current!.appendChild(bar)
-      setTimeout(() => { bar.style.height = v + '%' }, 300 + i * 80)
-    })
-  }, [vals])
-  return <div ref={ref} className="hero-card-chart" />
-}
-
-/* ── Review Carousel ── */
-const reviews = [
-  { name: 'Sarah M.', role: 'Freelance Designer', rating: 5, text: 'Migrated 12 client sites in one weekend. Zero downtime, staging works flawlessly. Best hosting decision I\'ve made.' },
-  { name: 'James K.', role: 'E-commerce Owner', rating: 5, text: 'Our WooCommerce store loads in under 2 seconds now. Checkout conversions went up 23% after switching to LimeWP.' },
-  { name: 'Priya R.', role: 'Content Creator', rating: 5, text: 'Went viral and got 50k visitors in a day. Site didn\'t even flinch. The CDN and caching just handled everything.' },
-  { name: 'Marcus T.', role: 'Agency Director', rating: 4, text: 'Managing 40+ client sites from one dashboard saves us hours every week. Team permissions are exactly what we needed.' },
-  { name: 'Elena V.', role: 'Developer', rating: 5, text: 'SSH access, WP-CLI, Git deploy — finally a host that treats developers like adults. The staging workflow is chef\'s kiss.' },
-  { name: 'David L.', role: 'Startup Founder', rating: 5, text: 'Started on Starter plan, now on Enterprise. Scaling was seamless. Support team actually knows WordPress inside out.' },
-]
-
-function ReviewCarousel() {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const [paused, setPaused] = useState(false)
-
-  useEffect(() => {
-    const track = trackRef.current
-    if (!track) return
-    let raf: number
-    let pos = 0
-    const speed = 0.4
-
-    const animate = () => {
-      if (!paused) {
-        pos -= speed
-        const halfWidth = track.scrollWidth / 2
-        if (Math.abs(pos) >= halfWidth) pos = 0
-        track.style.transform = `translateX(${pos}px)`
-      }
-      raf = requestAnimationFrame(animate)
-    }
-    raf = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(raf)
-  }, [paused])
-
-  const doubled = [...reviews, ...reviews]
-
-  return (
-    <div className="tp-carousel" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <div className="tp-carousel-fade tp-fade-left" />
-      <div className="tp-carousel-fade tp-fade-right" />
-      <div className="tp-track" ref={trackRef}>
-        {doubled.map((review, i) => (
-          <div key={i} className="tp-card">
-            <div className="tp-card-stars">
-              {[1, 2, 3, 4, 5].map(n => (
-                <svg key={n} className={`tp-star-sm${n <= review.rating ? ' filled' : ''}`} viewBox="0 0 24 24">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
-                </svg>
-              ))}
-            </div>
-            <p className="tp-card-text">"{review.text}"</p>
-            <div className="tp-card-author">
-              <div className="tp-card-avatar">{review.name[0]}</div>
-              <div>
-                <div className="tp-card-name">{review.name}</div>
-                <div className="tp-card-role">{review.role}</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/* ── Login Form ── */
+/* -- Login Form -- */
 function LoginForm({ onSubmit, onSwitch }: { onSubmit: () => void; onSwitch: () => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -779,7 +949,7 @@ function LoginForm({ onSubmit, onSwitch }: { onSubmit: () => void; onSwitch: () 
   )
 }
 
-/* ── Signup Form ── */
+/* -- Signup Form -- */
 function SignupForm({ onSubmit, onSwitch }: { onSubmit: () => void; onSwitch: () => void }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
