@@ -1,5 +1,5 @@
 import { Icon, SectionHeader, Button, Toggle, IconBox } from '../components'
-import { audiences, features, prices, plans, testimonials, faqData, speedItems, marqueeItems } from '../data'
+import { audiences, features, prices, plans, testimonials, faqData, speedItems, marqueeItems, competitors, comparisonRows, comparisonBenefits } from '../data'
 
 type RevType = React.ComponentType<{ children: React.ReactNode; className?: string }>
 
@@ -71,6 +71,58 @@ export function Features({ Rev }: { Rev: RevType }) {
                     </div>
                   </div>
                 )}
+              </div>
+            ))}
+          </div>
+        </Rev>
+      </div>
+    </section>
+  )
+}
+
+export function Comparison({ Rev }: { Rev: RevType }) {
+  return (
+    <section className="comparison-section" id="compare">
+      <div className="container">
+        <Rev className="sc">
+          <SectionHeader label="Why LimeWP" title="See how we compare" desc="We built LimeWP specifically for freelancers and agencies. Here's how we stack up against the competition." center />
+        </Rev>
+        <Rev>
+          <div className="compare-table">
+            <div className="compare-header">
+              <div className="compare-feature-col">Feature</div>
+              {competitors.map(c => (
+                <div key={c} className={`compare-col${c === 'LimeWP' ? ' highlight' : ''}`}>{c}</div>
+              ))}
+            </div>
+            {comparisonRows.map((row, i) => (
+              <div key={i} className="compare-row">
+                <div className="compare-feature-col">
+                  <Icon name={row.icon} width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                  {row.feature}
+                </div>
+                {row.values.map((v, j) => (
+                  <div key={j} className={`compare-col${j === 0 ? ' highlight' : ''}`}>
+                    {v === 'yes' ? (
+                      <Icon name="check" width={20} height={20} fill="none" stroke="var(--acc)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+                    ) : v === 'no' ? (
+                      <Icon name="x-mark" width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                    ) : (
+                      <Icon name="minus" width={18} height={18} fill="none" stroke="var(--orange)" strokeWidth={2} strokeLinecap="round" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </Rev>
+        <Rev>
+          <div className="compare-benefits">
+            {comparisonBenefits.map((b, i) => (
+              <div key={i} className="compare-benefit">
+                <IconBox name={b.icon} size="md" />
+                <h4>{b.title}</h4>
+                <p>{b.desc}</p>
               </div>
             ))}
           </div>

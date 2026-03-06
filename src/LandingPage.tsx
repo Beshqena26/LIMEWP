@@ -4,7 +4,7 @@ import { Icon, AuthModals } from './components'
 import { navLinks } from './data'
 import { Hero } from './sections/Hero'
 import { Platform } from './sections/Platform'
-import { Marquee, Audience, Features, Pricing, Testimonials, FAQ, CTA, Footer } from './sections/Sections'
+import { Marquee, Audience, Features, Comparison, Pricing, Testimonials, FAQ, CTA, Footer } from './sections/Sections'
 
 function Rev({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useReveal()
@@ -98,6 +98,7 @@ export function LandingPage() {
       <Platform Rev={Rev} onSignup={onSignup} />
       <Audience Rev={Rev} />
       <Features Rev={Rev} />
+      <Comparison Rev={Rev} />
       <Pricing Rev={Rev} yearly={yearly} setYearly={setYearly} onSignup={onSignup} />
       <Testimonials Rev={Rev} />
       <FAQ Rev={Rev} openFaq={openFaq} setOpenFaq={setOpenFaq} />

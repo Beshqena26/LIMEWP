@@ -82,6 +82,24 @@ export const siteRows = [
   { name: 'E-commerce Store', url: 'shopmodern.io', status: 'Update Available', dot: 'warning', time: '198ms', visits: '5.2k visits' },
 ]
 
+export const competitors = ['LimeWP', 'WP Engine', 'Kinsta', 'SiteGround']
+
+export const comparisonRows = [
+  { icon: 'box', feature: 'Free Staging Environment', values: ['yes', 'yes', 'yes', 'no'] },
+  { icon: 'upload', feature: 'Free Site Migration', values: ['yes', 'no', 'yes', 'yes'] },
+  { icon: 'users', feature: 'Client Billing Transfer', values: ['yes', 'no', 'no', 'no'] },
+  { icon: 'layers', feature: 'Bulk Site Management', values: ['yes', 'yes', 'yes', 'no'] },
+  { icon: 'clock', feature: '24/7 Expert Support', values: ['yes', 'yes', 'yes', 'no'] },
+  { icon: 'dollar-sign', feature: 'Agency Pricing (Pay per site)', values: ['yes', 'no', 'no', 'no'] },
+  { icon: 'refresh-single', feature: '1-Click Rollback', values: ['yes', 'yes', 'yes', 'no'] },
+]
+
+export const comparisonBenefits = [
+  { icon: 'dollar-sign', title: 'Built for Agencies', desc: 'Pay only for what you use. No bloated plans or wasted resources\u2014just fair pricing that scales with your business.' },
+  { icon: 'users', title: 'Seamless Handoffs', desc: "Transfer ownership to clients without the headache. We're the only host that makes client handoffs truly painless." },
+  { icon: 'shield', title: 'Zero Stress Deployments', desc: 'Staging, backups, and rollbacks built-in. Sleep soundly knowing you can fix any issue in seconds.' },
+]
+
 export const speedItems = [
   { label: 'LimeWP', time: '187ms', width: '95%', color: 'lime' },
   { label: 'Competitor A', time: '1.2s', width: '45%', color: 'muted' },
