@@ -1,28 +1,19 @@
 {
-    "name": "localhost-server",
+    "name": "limewp",
     "version": "1.0.0",
-    "description": "Local development server",
-    "main": "server.js",
+    "private": true,
     "scripts": {
         "dev": "vite --host",
-        "share": "npx cloudflared tunnel --url http://localhost:5173",
         "build": "vite build",
-        "preview": "vite preview",
-        "server": "node server.js"
+        "preview": "vite preview"
     },
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^5.1.4",
-        "express": "^4.19.2",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
         "typescript": "^5.9.3",
         "vite": "^7.3.1"
-    },
-    "devDependencies": {
-        "nodemon": "^3.0.3"
     }
 }
