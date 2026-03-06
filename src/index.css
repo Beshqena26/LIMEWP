@@ -127,6 +127,35 @@ nav {
 }
 .nav-cta:hover { background: var(--acc2); transform: translateY(-1px); box-shadow: 0 4px 20px var(--lime-glow-strong); }
 
+/* CARD SYSTEM */
+.card {
+  background: var(--bg2); border: 1px solid var(--bdrs); border-radius: var(--r);
+  padding: 32px; transition: all .3s; position: relative; overflow: hidden;
+}
+.card-hover:hover { border-color: var(--bdr); transform: translateY(-4px); box-shadow: var(--shh); }
+
+/* ICON BOX */
+.icon-box {
+  display: flex; align-items: center; justify-content: center; border-radius: 14px; flex-shrink: 0;
+}
+.icon-box svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-box-sm { width: 32px; height: 32px; border-radius: var(--r-xs); }
+.icon-box-sm svg { width: 16px; height: 16px; }
+.icon-box-md { width: 56px; height: 56px; }
+.icon-box-md svg { width: 28px; height: 28px; }
+.icon-box-lg { width: 64px; height: 64px; border-radius: var(--r); }
+.icon-box-lg svg { width: 32px; height: 32px; }
+.icon-box-lime { background: var(--lime-glow); color: var(--acc); }
+.icon-box-green { background: var(--lime-glow); color: var(--acc); }
+.icon-box-blue { background: rgba(59,130,246,.15); color: var(--blue); }
+.icon-box-purple { background: rgba(139,92,246,.15); color: var(--purple); }
+.icon-box-orange { background: rgba(249,115,22,.15); color: var(--orange); }
+
+/* Context margins for icon-box */
+.audience-card .icon-box { margin-bottom: 20px; }
+.platform-feature .icon-box { margin: 0 auto 16px; }
+.feature-card .icon-box { margin-bottom: 24px; }
+
 /* BUTTONS */
 .btn {
   display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .95rem;
