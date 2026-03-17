@@ -37,12 +37,12 @@ export const faqData = [
 ]
 
 export const navLinks = [
-  { href: '#platform', label: 'Platform' },
-  { href: '#compare', label: 'Compare' },
-  { href: '#features', label: 'Features' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#testimonials', label: 'Reviews' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '#platform', label: 'Platform', icon: 'monitor' },
+  { href: '#compare', label: 'Compare', icon: 'layers' },
+  { href: '#features', label: 'Features', icon: 'grid' },
+  { href: '#pricing', label: 'Pricing', icon: 'cart' },
+  { href: '#testimonials', label: 'Reviews', icon: 'star' },
+  { href: '#faq', label: 'FAQ', icon: 'chat' },
 ]
 
 export const comparisonRows = [

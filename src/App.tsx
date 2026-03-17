@@ -36,6 +36,7 @@ export function App() {
     return 'light'
   })
   const [modal, setModal] = useState<'login' | 'signup' | null>(null)
+  const [mobileMenu, setMobileMenu] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const glowRef = useRef<HTMLDivElement>(null)
   const { canvasRef, mouseRef } = useParticles(theme)
@@ -47,7 +48,7 @@ export function App() {
   }, [])
 
   useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('limewp-theme', theme) }, [theme])
-  useEffect(() => { document.body.style.overflow = modal ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [modal])
+  useEffect(() => { document.body.style.overflow = (modal || mobileMenu) ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [modal, mobileMenu])
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModal(null) }
     document.addEventListener('keydown', onKey)
@@ -121,8 +122,29 @@ export function App() {
           </button>
           <button className="nav-login" onClick={() => setModal('login')}>Sign In</button>
           <button className="nav-cta" onClick={onSignup}>Start Free</button>
+          <button className={`burger${mobileMenu ? ' open' : ''}`} onClick={() => setMobileMenu(v => !v)} aria-label="Menu">
+            <span /><span /><span />
+          </button>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      <div className={`mobile-menu-overlay${mobileMenu ? ' open' : ''}`} onClick={() => setMobileMenu(false)} />
+      <div className={`mobile-menu${mobileMenu ? ' open' : ''}`}>
+        <div className="mobile-menu-links">
+          {navLinks.map(l => (
+            <a key={l.href} href={l.href} onClick={(e) => {
+              e.preventDefault()
+              setMobileMenu(false)
+              document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+            }}><Icon name={l.icon} width={18} height={18} />{l.label}</a>
+          ))}
+        </div>
+        <div className="mobile-menu-actions">
+          <button className="btn btn-s" onClick={() => { setMobileMenu(false); setModal('login') }}>Sign In</button>
+          <button className="btn btn-p" onClick={() => { setMobileMenu(false); onSignup() }}>Start Free</button>
+        </div>
+      </div>
 
       <LandingPage modal={modal} setModal={setModal} onSignup={onSignup} countdown={{ d, h, m, s }} />
     </>

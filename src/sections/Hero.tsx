@@ -32,7 +32,6 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
             <p className="hero-sub">Real hosting. Real WordPress. Install plugins, connect your domain, go live — all free for 6 months. No credit card. No catch.</p>
             <div className="hero-actions">
               <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
-              <Button variant="secondary" href="#platform">See How It Works</Button>
             </div>
             <div className="hero-trust">
               {['No credit card required', 'Full WordPress access', 'Cancel anytime'].map(text => (
