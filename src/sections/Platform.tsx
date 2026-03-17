@@ -48,10 +48,10 @@ const serverInfo = [
 ]
 
 const platformFeatures = [
-  { icon: 'grid', title: 'Unified Dashboard', desc: 'Manage all your WordPress sites from a single, intuitive control panel.' },
-  { icon: 'pulse', title: 'Real-time Analytics', desc: 'Monitor traffic, performance, and uptime with live metrics and alerts.' },
-  { icon: 'box', title: 'One-Click Staging', desc: 'Test changes safely with instant staging environments for every site.' },
-  { icon: 'refresh-single', title: 'Auto Backups', desc: 'Daily automated backups with one-click restore and 30-day retention.' },
+  { icon: 'code-slash', title: 'Install 60,000+ Plugins', desc: 'Any plugin or theme from the WordPress repository, without restriction.' },
+  { icon: 'globe', title: 'Custom Domain from Day One', desc: 'Connect your own domain immediately. Free DNS management included.' },
+  { icon: 'shield', title: 'Go Live with SSL', desc: 'Serve real visitors with automatic HTTPS encryption on every site.' },
+  { icon: 'lock', title: 'Full WP Admin Access', desc: 'Complete control over your WordPress installation, including FTP access.' },
 ]
 
 function Ring({ value, color, size = 60 }: { value: number; color: string; size?: number }) {
@@ -74,9 +74,9 @@ export function Platform({ Rev, onSignup }: { Rev: React.ComponentType<{ childre
     <section className="platform-header-section">
       <div className="container">
         <Rev className="sc">
-          <div className="sl">Platform Preview</div>
-          <div className="st">One dashboard to manage everything</div>
-          <p className="sd">Monitor performance, manage sites, and deploy updates&mdash;all from a single, intuitive interface.</p>
+          <div className="sl">Not a Demo</div>
+          <div className="st">This is a <em style={{fontStyle:'normal',color:'var(--acc)'}}>real website.</em> Yours to build and launch.</div>
+          <p className="sd">When you sign up, you get a full WordPress installation with zero restrictions. It's production hosting, not a sandbox.</p>
         </Rev>
       </div>
     </section>
@@ -140,7 +140,7 @@ export function Platform({ Rev, onSignup }: { Rev: React.ComponentType<{ childre
             {/* Meta strip */}
             <div className="site-meta-strip">
               <span><Icon name="server" /> Server: us-east-1</span>
-              <span><Icon name="globe" /> IP: 189.659.543.55</span>
+              <span><Icon name="globe" /> IP: 189.65.43.55</span>
               <span><Icon name="code-slash" /> PHP: 8.1</span>
               <span><Icon name="grid" /> WP: 6.6.2</span>
               <span><Icon name="lock" /> Next Payment: Mar 15, 2026</span>

@@ -4,6 +4,7 @@ const servers = [
   { icon: 'server', name: 'Production Server', info: 'US-East \u2022 4 vCPU \u2022 16GB RAM', status: 'Online', dotClass: '' },
   { icon: 'box', name: 'Staging Environment', info: 'EU-West \u2022 Synced 2m ago', status: 'Active', dotClass: 'delayed' },
   { icon: 'pulse', name: 'CDN Edge Network', info: '200+ Global Locations', status: 'Healthy', dotClass: 'delayed-2' },
+  { icon: 'layers', name: 'Redis Object Cache', info: 'Free • Always Enabled', status: 'Active', dotClass: 'delayed' },
 ]
 
 const metrics = [
@@ -13,23 +14,43 @@ const metrics = [
 ]
 
 const stats = [
-  { v: '99.99%', l: 'Uptime SLA' },
-  { v: '<200ms', l: 'Response Time' },
-  { v: '24/7', l: 'Expert Support' },
+  { v: '12,000+', l: 'Sites Launched' },
+  { v: '4.8/5', l: 'Avg. Rating' },
+  { v: '6 Mo', l: 'Free Hosting' },
+  { v: '$0', l: 'To Get Started' },
 ]
 
-export function Hero({ onSignup }: { onSignup: () => void }) {
+export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown: { d: number; h: number; m: number; s: number } }) {
+  const { d, h, m, s } = countdown
   return (
     <section className="hero">
       <div className="container">
         <div className="hero-grid">
           <div className="hero-left">
-            <div className="hero-badge"><span className="dot" /> Trusted by 50,000+ WordPress sites</div>
-            <h1>WordPress hosting<br />that <em>just works</em></h1>
-            <p className="hero-sub">Lightning-fast speeds, bulletproof security, and expert support. Whether you're launching your first site or managing hundreds, LimeWP scales with you.</p>
+            <div className="hero-badge"><span className="dot" /> Free for 6 months — limited spots remaining</div>
+            <h1>Build Your WordPress Site.<br /><em>Pay Nothing</em> for 6 Months.</h1>
+            <p className="hero-sub">Real hosting. Real WordPress. Install plugins, connect your domain, go live — all free for 6 months. No credit card. No catch.</p>
             <div className="hero-actions">
-              <Button variant="primary" icon="arrow" onClick={onSignup}>Start Your Free Trial</Button>
+              <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
               <Button variant="secondary" href="#platform">See How It Works</Button>
+            </div>
+            <div className="hero-trust">
+              {['No credit card required', 'Full WordPress access', 'Cancel anytime'].map(text => (
+                <span key={text} className="hero-trust-item">
+                  <Icon name="check-circle" width={15} height={15} />
+                  {text}
+                </span>
+              ))}
+            </div>
+            <div className="hero-countdown-bar">
+              <span className="hero-cd-label">Offer resets in</span>
+              <div className="hero-cd-timer">
+                <span className="hero-cd-digit">{String(h).padStart(2, '0')}<small>h</small></span>
+                <span className="hero-cd-sep">:</span>
+                <span className="hero-cd-digit">{String(m).padStart(2, '0')}<small>m</small></span>
+                <span className="hero-cd-sep">:</span>
+                <span className="hero-cd-digit">{String(s).padStart(2, '0')}<small>s</small></span>
+              </div>
             </div>
             <div className="hero-stats">
               {stats.map(s => (

@@ -19,5 +19,5 @@ export function Button({ variant = 'primary', size = 'default', icon, href, onCl
     return <a href={href} className={cls}>{children}{icon && <Icon name={icon} />}</a>
   }
 
-  return <span className={cls} onClick={onClick}>{children}{icon && <Icon name={icon} />}</span>
+  return <button className={cls} onClick={onClick}>{children}{icon && <Icon name={icon} />}</button>
 }

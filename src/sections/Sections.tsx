@@ -1,5 +1,5 @@
-import { Icon, SectionHeader, Button, Toggle, IconBox } from '../components'
-import { audiences, features, prices, plans, testimonials, faqData, speedItems, marqueeItems, competitors, comparisonRows, comparisonBenefits } from '../data'
+import { Icon, SectionHeader, Button, IconBox } from '../components'
+import { features, prices, plans, testimonials, faqData, marqueeItems, comparisonRows, freeFeatures, paidFeatures } from '../data'
 
 type RevType = React.ComponentType<{ children: React.ReactNode; className?: string }>
 
@@ -13,23 +13,32 @@ export function Marquee() {
   )
 }
 
-export function Audience({ Rev }: { Rev: RevType }) {
+export function BuildFirst({ Rev, onSignup }: { Rev: RevType; onSignup: () => void }) {
   return (
-    <section className="audience-section" id="solutions">
+    <section className="build-first" id="compare">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Built For Everyone" title="Hosting that fits your needs" desc="From first-time creators to enterprise teams, LimeWP adapts to how you work." center />
+          <SectionHeader label="Why Switch" title="Other hosts charge first. We let you build first." desc="Most hosting companies lock you into annual plans before you've written a single line. We flip that model." center />
         </Rev>
         <Rev>
-          <div className="audience-grid">
-            {audiences.map((a, i) => (
-              <div key={i} className="audience-card">
-                <IconBox name={a.icon} size="md" />
-                <h3>{a.title}</h3>
-                <p>{a.desc}</p>
-                <a href={`#${a.slug}`} className="audience-link">Learn more <Icon name="arrow" /></a>
+          <div className="bf-table">
+            <div className="bf-header">
+              <div className="bf-label-col">Feature</div>
+              <div className="bf-col bf-others">Typical Host</div>
+              <div className="bf-col bf-you">LimeWP</div>
+            </div>
+            {comparisonRows.map((row, i) => (
+              <div key={i} className="bf-row">
+                <div className="bf-label-col">{row.label}</div>
+                <div className="bf-col bf-others"><Icon name="x-mark" width={14} height={14} />{row.others}</div>
+                <div className="bf-col bf-you"><Icon name="check" width={14} height={14} />{row.you}</div>
               </div>
             ))}
+          </div>
+        </Rev>
+        <Rev>
+          <div className="bf-cta">
+            <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
           </div>
         </Rev>
       </div>
@@ -42,35 +51,17 @@ export function Features({ Rev }: { Rev: RevType }) {
     <section className="features-section" id="features">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Features" title="Everything you need, nothing you don't" desc="Built from the ground up for WordPress performance and reliability." center />
+          <SectionHeader label="Features" title="Everything you need. Nothing you don't." desc="All the tools to build, manage, and grow your WordPress site. Included with every account, free or paid." center />
         </Rev>
         <Rev>
-          <div className="features-grid">
+          <div className="features-grid features-grid-3">
             {features.map((f, i) => (
-              <div key={i} className={`feature-card${f.large ? ' large' : ''}`}>
+              <div key={i} className="feature-card">
                 <div className="feature-content">
-                  <IconBox name={f.icon} size="lg" />
+                  <IconBox name={f.icon} size="lg" color={f.color as any} />
                   <h3>{f.title}</h3>
                   <p>{f.desc}</p>
-                  <div className="feature-list">
-                    {f.list.map(item => <div key={item} className="feature-list-item"><Icon name="check" />{item}</div>)}
-                  </div>
                 </div>
-                {f.large && (
-                  <div className="feature-visual">
-                    <div className="speed-demo">
-                      {speedItems.map(s => (
-                        <div key={s.label} className="speed-item">
-                          <div className="speed-label">
-                            <span>{s.label}</span>
-                            <span style={s.color === 'lime' ? { color: 'var(--acc)' } : {}}>{s.time}</span>
-                          </div>
-                          <div className="speed-bar"><div className={`speed-bar-fill ${s.color}`} style={{ width: s.width }} /></div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -80,51 +71,59 @@ export function Features({ Rev }: { Rev: RevType }) {
   )
 }
 
-export function Comparison({ Rev }: { Rev: RevType }) {
+export function UpgradePath({ Rev, onSignup, countdown }: { Rev: RevType; onSignup: () => void; countdown: { h: number; m: number; s: number } }) {
+  const { h, m, s } = countdown
   return (
-    <section className="comparison-section" id="compare">
+    <section className="upgrade-path">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Why LimeWP" title="See how we compare" desc="We built LimeWP specifically for freelancers and agencies. Here's how we stack up against the competition." center />
+          <SectionHeader label="Growth Path" title="Start free. Upgrade when ready." desc="Your free account is powerful enough to launch. When you need more, upgrading unlocks everything." center />
         </Rev>
         <Rev>
-          <div className="compare-table">
-            <div className="compare-header">
-              <div className="compare-feature-col">Feature</div>
-              {competitors.map(c => (
-                <div key={c} className={`compare-col${c === 'LimeWP' ? ' highlight' : ''}`}>{c}</div>
-              ))}
-            </div>
-            {comparisonRows.map((row, i) => (
-              <div key={i} className="compare-row">
-                <div className="compare-feature-col">
-                  <Icon name={row.icon} width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                  {row.feature}
-                </div>
-                {row.values.map((v, j) => (
-                  <div key={j} className={`compare-col${j === 0 ? ' highlight' : ''}`}>
-                    {v === 'yes' ? (
-                      <Icon name="check" width={20} height={20} fill="none" stroke="var(--acc)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
-                    ) : v === 'no' ? (
-                      <Icon name="x-mark" width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                    ) : (
-                      <Icon name="minus" width={18} height={18} fill="none" stroke="var(--c3)" strokeWidth={2} strokeLinecap="round" />
-                    )}
-                  </div>
+          <div className="upgrade-flow">
+            <div className="upgrade-card-side">
+              <div className="upgrade-step">1</div>
+              <div className="upgrade-badge">Free Plan / 6 Months</div>
+              <h3>Everything to Launch</h3>
+              <ul className="upgrade-list">
+                {freeFeatures.map(f => (
+                  <li key={f}><Icon name="check" />{f}</li>
                 ))}
+              </ul>
+            </div>
+            <div className="upgrade-arrow-col">
+              <div className="upgrade-connector" />
+              <div className="upgrade-arrow-circle">
+                <Icon name="arrow" />
               </div>
-            ))}
+              <span className="upgrade-arrow-label">When ready</span>
+              <div className="upgrade-connector" />
+            </div>
+            <div className="upgrade-card-side upgrade-card-pro">
+              <div className="upgrade-step">2</div>
+              <div className="upgrade-badge">Paid Plans</div>
+              <h3>Scale Without Limits</h3>
+              <ul className="upgrade-list">
+                {paidFeatures.map(f => (
+                  <li key={f}><Icon name="plus" />{f}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </Rev>
         <Rev>
-          <div className="compare-benefits">
-            {comparisonBenefits.map((b, i) => (
-              <div key={i} className="compare-benefit">
-                <IconBox name={b.icon} size="md" />
-                <h4>{b.title}</h4>
-                <p>{b.desc}</p>
+          <div className="upgrade-bottom">
+            <div className="upgrade-countdown">
+              <span className="upgrade-countdown-label">Free offer ends in</span>
+              <div className="upgrade-cd-digits">
+                <div className="cd-box"><span className="cd-num">{String(h).padStart(2, '0')}</span><span className="cd-label">Hours</span></div>
+                <span className="cd-colon">:</span>
+                <div className="cd-box"><span className="cd-num">{String(m).padStart(2, '0')}</span><span className="cd-label">Minutes</span></div>
+                <span className="cd-colon">:</span>
+                <div className="cd-box"><span className="cd-num">{String(s).padStart(2, '0')}</span><span className="cd-label">Seconds</span></div>
               </div>
-            ))}
+            </div>
+            <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
           </div>
         </Rev>
       </div>
@@ -132,38 +131,94 @@ export function Comparison({ Rev }: { Rev: RevType }) {
   )
 }
 
-export function Pricing({ Rev, yearly, setYearly, onSignup }: { Rev: RevType; yearly: boolean; setYearly: (fn: (v: boolean) => boolean) => void; onSignup: () => void }) {
+const paidPlans = [
+  {
+    name: 'Pro Monthly',
+    price: '$9',
+    period: '/mo',
+    desc: 'All the power of Pro, billed monthly. Cancel anytime.',
+    features: ['Everything in Free', '10 GB storage', 'Premium SSL', 'Staging environment', 'Priority support', 'Daily backups', 'CDN included'],
+    cta: 'Get Pro Monthly',
+  },
+  {
+    name: 'Pro Yearly',
+    price: '$79',
+    period: '/yr',
+    save: 'Save 27%',
+    desc: 'Same Pro features, best price. Pay once, save big.',
+    features: ['Everything in Pro Monthly', '50 GB storage', 'Multisite support', 'White-label branding', 'Dedicated support', 'Real-time backups', 'Advanced analytics'],
+    cta: 'Get Pro Yearly',
+  },
+]
+
+export function PlansCard({ Rev, onSignup, countdown }: { Rev: RevType; onSignup: () => void; countdown: { h: number; m: number; s: number } }) {
   return (
-    <section className="pricing" id="pricing">
+    <section className="plans-card-section" id="pricing">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Simple Pricing" title="Plans that grow with you" desc="No hidden fees, no surprises. Just straightforward pricing." center />
-          <Toggle active={yearly} onToggle={() => setYearly(y => !y)} labelLeft="Monthly" labelRight="Yearly" badge="Save 20%" />
+          <SectionHeader label="Pricing" title="Start free. Scale when you're ready." desc="No hidden fees. No surprises. Pick the plan that fits your stage." center />
         </Rev>
+
         <Rev>
-          <div className="prgrid">
-            {plans.map((plan, i) => (
-              <div key={plan.name} className={`prcard${plan.popular ? ' pop' : ''}`}>
-                {plan.popular && <div className="pop-label">Most Popular</div>}
-                <div className="pn">{plan.name}</div>
-                <div className="prnote">{plan.note}</div>
-                <div className="pr">
-                  <span className="pr-currency">$</span>
-                  <span className="pv">{yearly ? prices.y[i] : prices.m[i]}</span>
-                  <sub>/month</sub>
+          <div className="plan-free">
+            <div className="plan-free-glow" />
+            <div className="plan-free-content">
+              <div className="plan-free-left">
+                <div className="plan-free-tag">
+                  <Icon name="bolt" width={14} height={14} />
+                  <span>Free for 6 months</span>
+                  <span className="plan-free-tag-sep" />
+                  <span className="plan-free-tag-cd">{String(countdown.h).padStart(2, '0')}h {String(countdown.m).padStart(2, '0')}m {String(countdown.s).padStart(2, '0')}s left</span>
                 </div>
-                <div className={`yearly-savings${yearly ? ' visible' : ''}`}>Save ${(prices.m[i] - prices.y[i]) * 12}/year</div>
-                <div className="pr-divider" />
-                <ul className="fl">{plan.features.map(f => <li key={f}><Icon name="check" />{f}</li>)}</ul>
-                {i === 2 ? (
-                  <a href="#" className="prbtn">Contact Sales</a>
-                ) : plan.popular ? (
-                  <span className="prbtn" onClick={onSignup}>Start Free Trial</span>
-                ) : (
-                  <span className="prbtn" onClick={onSignup}>Get Started</span>
-                )}
+                <h3>Launch without spending a dime</h3>
+                <p>Full WordPress. Real hosting. Custom domain, SSL, backups — everything included. No credit card, no catch.</p>
+                <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
+                <div className="plan-free-no-cc">
+                  <Icon name="check-circle" width={14} height={14} />
+                  No credit card required
+                </div>
+              </div>
+              <div className="plan-free-right">
+                <ul className="plan-free-features">
+                  {['Full WordPress install', '1 GB storage', 'Free SSL certificate', 'Custom domain', 'Email support', 'Auto backups'].map(f => (
+                    <li key={f}><Icon name="check" />{f}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Rev>
+
+        <Rev>
+          <p className="plans-when-ready">When you're ready, upgrade to Pro:</p>
+          <div className="plans-paid-grid">
+            {paidPlans.map((p, i) => (
+              <div key={i} className="plan-paid-card">
+                <div className="plan-paid-top">
+                  <div className="plan-paid-name">{p.name}</div>
+                  {'save' in p && p.save && <div className="plan-paid-save">{p.save}</div>}
+                </div>
+                <div className="plan-paid-price">
+                  <span className="plan-paid-amount">{p.price}</span>
+                  <span className="plan-paid-period">{p.period}</span>
+                </div>
+                <p className="plan-paid-desc">{p.desc}</p>
+                <ul className="plan-paid-features">
+                  {p.features.map(f => (
+                    <li key={f}><Icon name="check" />{f}</li>
+                  ))}
+                </ul>
+                <Button variant="secondary" icon="arrow" onClick={onSignup}>{p.cta}</Button>
+                <div className="plan-paid-cc-note">Credit card required</div>
               </div>
             ))}
+          </div>
+        </Rev>
+
+        <Rev>
+          <div className="plans-guarantee">
+            <Icon name="shield" width={18} height={18} />
+            <span>30-day money-back guarantee on all paid plans</span>
           </div>
         </Rev>
       </div>
@@ -176,14 +231,14 @@ export function Testimonials({ Rev }: { Rev: RevType }) {
     <section className="testimonials" id="testimonials">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Reviews" title="Loved by 50,000+ WordPress users" desc="From solo creators to enterprise teams, hear why they chose LimeWP." center />
+          <SectionHeader label="What Users Say" title="People are launching. For real." desc="Don't take our word for it. Here's what real users have to say about LimeWP." center />
         </Rev>
         <Rev>
           <div className="testimonials-grid">
             {testimonials.map((t, i) => (
-              <div key={i} className="testimonial-card">
-                <div className="testimonial-rating">{[1, 2, 3, 4, 5].map(n => <Icon key={n} name="star" fill="currentColor" />)}</div>
-                <p className="testimonial-text">"{t.text}"</p>
+              <div key={i} className={`testimonial-card${i === 1 ? ' featured' : ''}`}>
+                <div className="testimonial-rating">{[1, 2, 3, 4, 5].map(n => <Icon key={n} name="star" />)}</div>
+                <p className="testimonial-text">{t.text}</p>
                 <div className="testimonial-author">
                   <div className="author-avatar">{t.initials}</div>
                   <div className="author-info"><strong>{t.name}</strong><span>{t.role}</span></div>
@@ -204,7 +259,7 @@ export function FAQ({ Rev, openFaq, setOpenFaq }: { Rev: RevType; openFaq: numbe
         <Rev>
           <div className="faqgrid">
             <div className="faqside">
-              <SectionHeader label="FAQ" title="Frequently asked<br />questions" desc="Everything you need to know about LimeWP." />
+              <SectionHeader label="FAQ" title="Questions?<br />Answered." desc="Everything you need to know about LimeWP." />
               <div className="faqcontact">
                 <p>Can't find what you're looking for? Our team is happy to help.</p>
                 <Button variant="secondary" size="small" icon="arrow" href="#">Contact Support</Button>
@@ -234,20 +289,23 @@ export function CTA({ Rev, onSignup }: { Rev: RevType; onSignup: () => void }) {
       <div className="container">
         <Rev>
           <div className="ctabox">
-            <SectionHeader label="Ready to Launch?" title="Start building something great" center />
-            <p>Join 50,000+ WordPress sites that trust LimeWP for speed, security, and reliability. Start your free trial today&mdash;no credit card required.</p>
+            <div className="cta-icon-ring">
+              <Icon name="bolt" width={28} height={28} />
+            </div>
+            <h2>Stop paying to try.<br />Start building for free.</h2>
+            <p>6 months of full WordPress hosting. Zero cost. Your site could be live in minutes.</p>
             <div className="cta-acts">
-              <Button variant="primary" icon="arrow" onClick={onSignup}>Start Your Free Trial</Button>
-              <Button variant="secondary" href="#pricing">Talk to Sales</Button>
+              <Button variant="primary" icon="arrow" onClick={onSignup}>Create Your Free Site Now</Button>
             </div>
             <div className="trust-badges">
-              {['14-day free trial', 'No credit card required', 'Free migration included'].map(text => (
+              {['No credit card', 'Setup in 2 minutes', 'Cancel anytime'].map(text => (
                 <div key={text} className="trust-badge">
-                  <Icon name="check-circle" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+                  <Icon name="check-circle" width={15} height={15} />
                   {text}
                 </div>
               ))}
             </div>
+            <div className="urgency-line">Over 400 sites were created this week alone.</div>
           </div>
         </Rev>
       </div>
@@ -272,6 +330,11 @@ export function Footer() {
               LimeWP
             </a>
             <p>WordPress hosting that just works. Fast, secure, and backed by humans who actually care.</p>
+            <div className="footer-social">
+              <a href="#" className="footer-social-link" aria-label="GitHub"><Icon name="code-slash" width={16} height={16} /></a>
+              <a href="#" className="footer-social-link" aria-label="Chat"><Icon name="chat" width={16} height={16} /></a>
+              <a href="#" className="footer-social-link" aria-label="Globe"><Icon name="globe" width={16} height={16} /></a>
+            </div>
           </div>
           {footerCols.map(col => (
             <div key={col.title} className="footer-column">
@@ -281,7 +344,7 @@ export function Footer() {
           ))}
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2026 LimeWP. Built with love for WordPress users everywhere.</p>
+          <p>&copy; 2026 LimeWP. All rights reserved.</p>
         </div>
       </div>
     </footer>
