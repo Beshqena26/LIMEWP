@@ -87,7 +87,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <>
+    <div className="landing">
       <canvas ref={canvasRef} id="particleCanvas" />
       <div ref={glowRef} className="cursor-glow" />
 
@@ -164,6 +164,6 @@ export default function HomePage() {
       <div className="sticky-cta">
         <button className="btn btn-p" onClick={onSignup}>Try Premium Free</button>
       </div>
-    </>
+    </div>
   )
 }
