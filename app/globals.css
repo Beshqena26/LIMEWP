@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default theme (dark mode) */
+  --bg-main: #18181B;
+  --bg-card: #1E1E21;
+  --bg-sidebar: #18181B;
+  --bg-sidebar-hover: #27272A;
+  --bg-elevated: #27272A;
+  --bg-input: #27272A;
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-tertiary: #71717A;
+  --text-sidebar: #A1A1AA;
+  --text-sidebar-active: #ffffff;
+  --border: #3F3F46;
+  --border-light: #27272A;
+  --scrollbar-thumb: #52525B;
+  --scrollbar-thumb-hover: #71717A;
+
+  /* Default accent (emerald) */
+  --accent: #10b981;
+  --accent-light: #34d399;
+  --accent-dark: #059669;
+}
+
+/* Dark mode class (default) */
+.dark {
+  --bg-main: #18181B;
+  --bg-card: #1E1E21;
+  --bg-sidebar: #18181B;
+  --bg-sidebar-hover: #27272A;
+  --bg-elevated: #27272A;
+  --bg-input: #27272A;
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-tertiary: #71717A;
+  --text-sidebar: #A1A1AA;
+  --text-sidebar-active: #ffffff;
+  --border: #3F3F46;
+  --border-light: #27272A;
+  --scrollbar-thumb: #52525B;
+  --scrollbar-thumb-hover: #71717A;
+}
+
+/* Light mode class */
+.light {
+  --bg-main: #f4f4f5;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-sidebar-hover: #f4f4f5;
+  --bg-elevated: #ffffff;
+  --bg-input: #fafafa;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-tertiary: #71717a;
+  --text-sidebar: #52525b;
+  --text-sidebar-active: #18181b;
+  --border: #e4e4e7;
+  --border-light: #f4f4f5;
+  --scrollbar-thumb: #d4d4d8;
+  --scrollbar-thumb-hover: #a1a1aa;
+}
+
+html {
+  background: var(--bg-main);
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  line-height: 1.5;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hide Scrollbar globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Toast animation */
+.toast-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.toast-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+/* Theme-aware utility classes */
+@layer utilities {
+  .bg-theme-main {
+    background-color: var(--bg-main);
+  }
+  .bg-theme-card {
+    background-color: var(--bg-card);
+  }
+  .bg-theme-sidebar {
+    background-color: var(--bg-sidebar);
+  }
+  .bg-theme-elevated {
+    background-color: var(--bg-elevated);
+  }
+  .bg-theme-input {
+    background-color: var(--bg-input);
+  }
+  .text-theme-primary {
+    color: var(--text-primary);
+  }
+  .text-theme-secondary {
+    color: var(--text-secondary);
+  }
+  .text-theme-tertiary {
+    color: var(--text-tertiary);
+  }
+  .border-theme {
+    border-color: var(--border);
+  }
+  .border-theme-light {
+    border-color: var(--border-light);
+  }
+
+  /* Accent color utilities */
+  .text-accent {
+    color: var(--accent);
+  }
+  .bg-accent {
+    background-color: var(--accent);
+  }
+  .border-accent {
+    border-color: var(--accent);
+  }
+  .ring-accent {
+    --tw-ring-color: var(--accent);
+  }
+  .shadow-accent {
+    --tw-shadow-color: var(--accent);
+  }
+}
+
+/* Accent color-specific styles for buttons and interactive elements */
+[data-accent="emerald"] .accent-btn {
+  @apply bg-emerald-500 hover:bg-emerald-400;
+}
+[data-accent="sky"] .accent-btn {
+  @apply bg-sky-500 hover:bg-sky-400;
+}
+[data-accent="violet"] .accent-btn {
+  @apply bg-violet-500 hover:bg-violet-400;
+}
+[data-accent="amber"] .accent-btn {
+  @apply bg-amber-500 hover:bg-amber-400;
+}
+[data-accent="pink"] .accent-btn {
+  @apply bg-pink-500 hover:bg-pink-400;
+}
+
+/* Accent gradient for primary actions */
+[data-accent="emerald"] .accent-gradient {
+  @apply from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500;
+}
+[data-accent="sky"] .accent-gradient {
+  @apply from-sky-500 to-sky-600 hover:from-sky-400 hover:to-sky-500;
+}
+[data-accent="violet"] .accent-gradient {
+  @apply from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500;
+}
+[data-accent="amber"] .accent-gradient {
+  @apply from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500;
+}
+[data-accent="pink"] .accent-gradient {
+  @apply from-pink-500 to-pink-600 hover:from-pink-400 hover:to-pink-500;
+}
+
+/* Accent shadow for buttons */
+[data-accent="emerald"] .accent-shadow {
+  @apply shadow-emerald-500/25 hover:shadow-emerald-500/40;
+}
+[data-accent="sky"] .accent-shadow {
+  @apply shadow-sky-500/25 hover:shadow-sky-500/40;
+}
+[data-accent="violet"] .accent-shadow {
+  @apply shadow-violet-500/25 hover:shadow-violet-500/40;
+}
+[data-accent="amber"] .accent-shadow {
+  @apply shadow-amber-500/25 hover:shadow-amber-500/40;
+}
+[data-accent="pink"] .accent-shadow {
+  @apply shadow-pink-500/25 hover:shadow-pink-500/40;
+}
+
+/* Accent text for links and highlights */
+[data-accent="emerald"] .accent-text {
+  @apply text-emerald-400;
+}
+[data-accent="sky"] .accent-text {
+  @apply text-sky-400;
+}
+[data-accent="violet"] .accent-text {
+  @apply text-violet-400;
+}
+[data-accent="amber"] .accent-text {
+  @apply text-amber-400;
+}
+[data-accent="pink"] .accent-text {
+  @apply text-pink-400;
+}
+
+/* Accent background light for cards and badges */
+[data-accent="emerald"] .accent-bg-light {
+  @apply bg-emerald-500/10;
+}
+[data-accent="sky"] .accent-bg-light {
+  @apply bg-sky-500/10;
+}
+[data-accent="violet"] .accent-bg-light {
+  @apply bg-violet-500/10;
+}
+[data-accent="amber"] .accent-bg-light {
+  @apply bg-amber-500/10;
+}
+[data-accent="pink"] .accent-bg-light {
+  @apply bg-pink-500/10;
+}
+
+/* Accent ring for focus states */
+[data-accent="emerald"] .accent-ring {
+  @apply ring-emerald-500/20;
+}
+[data-accent="sky"] .accent-ring {
+  @apply ring-sky-500/20;
+}
+[data-accent="violet"] .accent-ring {
+  @apply ring-violet-500/20;
+}
+[data-accent="amber"] .accent-ring {
+  @apply ring-amber-500/20;
+}
+[data-accent="pink"] .accent-ring {
+  @apply ring-pink-500/20;
+}
+
+/* Light mode specific overrides */
+.light .card-gradient {
+  @apply from-white to-zinc-50;
+}
+
+.dark .card-gradient {
+  @apply from-[#1E1E21] to-[#1a1a1d];
+}
+
+
