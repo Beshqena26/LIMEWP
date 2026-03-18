@@ -16,18 +16,18 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
     <div className={cn(
       "mb-10 rounded-xl border p-6",
       isLight
-        ? "bg-zinc-50 border-zinc-200"
-        : "bg-zinc-900/50 border-zinc-800"
+        ? "bg-slate-50 border-slate-200"
+        : "bg-slate-900/50 border-slate-800"
     )}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
         <div className="flex items-start sm:items-center gap-4">
           {/* Icon */}
           <div className={cn(
             "w-11 h-11 rounded-lg flex items-center justify-center shrink-0",
-            isLight ? "bg-zinc-200" : "bg-zinc-800"
+            isLight ? "bg-slate-200" : "bg-slate-800"
           )}>
             <svg
-              className={cn("w-5 h-5", isLight ? "text-zinc-600" : "text-zinc-400")}
+              className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -46,22 +46,22 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
             <div className="flex items-center gap-2 mb-1">
               <h3 className={cn(
                 "text-sm font-semibold",
-                isLight ? "text-zinc-800" : "text-zinc-100"
+                isLight ? "text-slate-800" : "text-slate-100"
               )}>
                 Upgrade to Pro
               </h3>
               <span className={cn(
                 "text-[10px] font-semibold px-2 py-0.5 rounded-md",
                 isLight
-                  ? "bg-zinc-200 text-zinc-600"
-                  : "bg-zinc-700 text-zinc-300"
+                  ? "bg-slate-200 text-slate-600"
+                  : "bg-slate-700 text-slate-300"
               )}>
                 20% OFF
               </span>
             </div>
             <p className={cn(
               "text-xs",
-              isLight ? "text-zinc-500" : "text-zinc-400"
+              isLight ? "text-slate-500" : "text-slate-400"
             )}>
               Unlimited sites, priority support, and advanced analytics.
             </p>
@@ -75,8 +75,8 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
             className={cn(
               "text-xs font-medium px-3 py-2 rounded-lg transition-colors",
               isLight
-                ? "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100"
-                : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
             )}
           >
             Learn more
@@ -86,8 +86,8 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
             className={cn(
               "text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5",
               isLight
-                ? "bg-zinc-800 text-white hover:bg-zinc-700"
-                : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200"
+                ? "bg-slate-800 text-white hover:bg-slate-700"
+                : "bg-slate-100 text-slate-900 hover:bg-slate-200"
             )}
           >
             Upgrade

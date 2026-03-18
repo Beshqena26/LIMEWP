@@ -161,16 +161,16 @@ export default function NewSitePage() {
 
   const inputClassNames = useMemo(() => isLight
     ? {
-        inputWrapper: "bg-white border-zinc-200 hover:border-zinc-300 !rounded-xl shadow-sm group-data-[focus=true]:border-zinc-400",
-        input: "text-zinc-800 placeholder:text-zinc-400",
+        inputWrapper: "bg-white border-slate-200 hover:border-slate-300 !rounded-xl shadow-sm group-data-[focus=true]:border-slate-400",
+        input: "text-slate-800 placeholder:text-slate-400",
       }
     : INPUT_CLASS_NAMES, [isLight]);
 
   const selectClassNames = useMemo(() => isLight
     ? {
-        trigger: "bg-white border-zinc-200 hover:border-zinc-300 !rounded-xl text-zinc-800 shadow-sm data-[focus=true]:border-zinc-400",
-        value: "text-zinc-800",
-        popoverContent: "bg-white border border-zinc-200 rounded-xl shadow-lg",
+        trigger: "bg-white border-slate-200 hover:border-slate-300 !rounded-xl text-slate-800 shadow-sm data-[focus=true]:border-slate-400",
+        value: "text-slate-800",
+        popoverContent: "bg-white border border-slate-200 rounded-xl shadow-lg",
         listbox: "bg-white",
       }
     : SELECT_CLASS_NAMES, [isLight]);
@@ -239,15 +239,15 @@ export default function NewSitePage() {
                   "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500 ease-out",
                   currentStep > step.id
                     ? isLight
-                      ? "bg-zinc-800 text-white shadow-lg scale-100"
-                      : "bg-zinc-200 text-zinc-900 shadow-lg scale-100"
+                      ? "bg-slate-800 text-white shadow-lg scale-100"
+                      : "bg-slate-200 text-slate-900 shadow-lg scale-100"
                     : currentStep === step.id
                     ? isLight
-                      ? "bg-zinc-800 text-white shadow-xl ring-2 ring-zinc-300 scale-105"
-                      : "bg-zinc-200 text-zinc-900 shadow-xl ring-2 ring-zinc-600 scale-105"
+                      ? "bg-slate-800 text-white shadow-xl ring-2 ring-slate-300 scale-105"
+                      : "bg-slate-200 text-slate-900 shadow-xl ring-2 ring-slate-600 scale-105"
                     : isLight
-                    ? "bg-zinc-100 text-zinc-400 scale-100"
-                    : "bg-zinc-800 text-zinc-500 scale-100"
+                    ? "bg-slate-100 text-slate-400 scale-100"
+                    : "bg-slate-800 text-slate-500 scale-100"
                 )}
               >
                 {currentStep > step.id ? (
@@ -260,8 +260,8 @@ export default function NewSitePage() {
                 <p className={cn(
                   "text-xs font-semibold transition-colors",
                   currentStep >= step.id
-                    ? isLight ? "text-zinc-900" : "text-zinc-100"
-                    : isLight ? "text-zinc-400" : "text-zinc-600"
+                    ? isLight ? "text-slate-900" : "text-slate-100"
+                    : isLight ? "text-slate-400" : "text-slate-600"
                 )}>
                   {step.name}
                 </p>
@@ -270,12 +270,12 @@ export default function NewSitePage() {
             {index < STEPS.length - 1 && (
               <div className={cn(
                 "w-10 h-1 mt-[-24px] rounded-full overflow-hidden relative",
-                isLight ? "bg-zinc-200" : "bg-zinc-800"
+                isLight ? "bg-slate-200" : "bg-slate-800"
               )}>
                 <div
                   className={cn(
                     "absolute inset-y-0 left-0 rounded-full transition-all duration-700 ease-out",
-                    isLight ? "bg-zinc-800" : "bg-zinc-200",
+                    isLight ? "bg-slate-800" : "bg-slate-200",
                     currentStep > step.id ? "w-full" : "w-0"
                   )}
                 />
@@ -297,13 +297,13 @@ export default function NewSitePage() {
             <div className="text-center">
               <h2 className={cn(
                 "text-xl font-bold mb-1.5",
-                isLight ? "text-zinc-900" : "text-zinc-100"
+                isLight ? "text-slate-900" : "text-slate-100"
               )}>
                 Choose Your Package
               </h2>
               <p className={cn(
                 "text-sm",
-                isLight ? "text-zinc-500" : "text-zinc-400"
+                isLight ? "text-slate-500" : "text-slate-400"
               )}>
                 Select the plan that best fits your needs. You can upgrade anytime.
               </p>
@@ -317,17 +317,17 @@ export default function NewSitePage() {
                     "group relative rounded-2xl border-2 p-6 text-left flex flex-col items-start",
                     selectedPackage === pkg.id
                       ? isLight
-                        ? "border-zinc-400 bg-gradient-to-b from-zinc-100 to-white"
-                        : "border-zinc-500 bg-gradient-to-b from-zinc-700/30 to-transparent"
+                        ? "border-slate-400 bg-gradient-to-b from-slate-100 to-white"
+                        : "border-slate-500 bg-gradient-to-b from-slate-700/30 to-transparent"
                       : isLight
-                      ? "border-zinc-200 bg-white hover:border-zinc-300"
-                      : "border-zinc-800 bg-zinc-900/50 hover:border-zinc-700 hover:bg-zinc-900"
+                      ? "border-slate-200 bg-white hover:border-slate-300"
+                      : "border-slate-800 bg-slate-900/50 hover:border-slate-700 hover:bg-slate-900"
                   )}
                 >
                   {pkg.popular && (
                     <div className={cn(
                       "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[11px] font-bold shadow-lg",
-                      isLight ? "bg-zinc-800 text-white" : "bg-zinc-200 text-zinc-900"
+                      isLight ? "bg-slate-800 text-white" : "bg-slate-200 text-slate-900"
                     )}>
                       Most Popular
                     </div>
@@ -337,13 +337,13 @@ export default function NewSitePage() {
                   <div className="mb-5 w-full">
                     <h3 className={cn(
                       "text-lg font-bold leading-tight mb-0.5",
-                      isLight ? "text-zinc-900" : "text-zinc-100"
+                      isLight ? "text-slate-900" : "text-slate-100"
                     )}>
                       {pkg.name}
                     </h3>
                     <p className={cn(
                       "text-xs",
-                      isLight ? "text-zinc-500" : "text-zinc-500"
+                      isLight ? "text-slate-500" : "text-slate-500"
                     )}>
                       {pkg.description}
                     </p>
@@ -352,18 +352,18 @@ export default function NewSitePage() {
                   {/* Price Section */}
                   <div className={cn(
                     "mb-5 pb-5 w-full border-b",
-                    isLight ? "border-zinc-100" : "border-zinc-800"
+                    isLight ? "border-slate-100" : "border-slate-800"
                   )}>
                     <div className="flex items-baseline gap-1">
                       <span className={cn(
                         "text-3xl font-bold tracking-tight",
-                        isLight ? "text-zinc-900" : "text-zinc-100"
+                        isLight ? "text-slate-900" : "text-slate-100"
                       )}>
                         {pkg.price}
                       </span>
                       <span className={cn(
                         "text-sm font-medium",
-                        isLight ? "text-zinc-400" : "text-zinc-500"
+                        isLight ? "text-slate-400" : "text-slate-500"
                       )}>
                         {pkg.period}
                       </span>
@@ -377,19 +377,19 @@ export default function NewSitePage() {
                         <div className={cn(
                           "w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors",
                           selectedPackage === pkg.id
-                            ? isLight ? "bg-zinc-800" : "bg-zinc-200"
-                            : isLight ? "bg-zinc-200" : "bg-zinc-700"
+                            ? isLight ? "bg-slate-800" : "bg-slate-200"
+                            : isLight ? "bg-slate-200" : "bg-slate-700"
                         )}>
                           <StepIcon type="check" className={cn(
                             "w-3 h-3",
                             selectedPackage === pkg.id
-                              ? isLight ? "text-white" : "text-zinc-900"
-                              : isLight ? "text-zinc-500" : "text-zinc-400"
+                              ? isLight ? "text-white" : "text-slate-900"
+                              : isLight ? "text-slate-500" : "text-slate-400"
                           )} />
                         </div>
                         <span className={cn(
                           "font-medium",
-                          isLight ? "text-zinc-700" : "text-zinc-300"
+                          isLight ? "text-slate-700" : "text-slate-300"
                         )}>{feature}</span>
                       </li>
                     ))}
@@ -398,12 +398,12 @@ export default function NewSitePage() {
                   {/* Selection indicator */}
                   <div className={cn(
                     "absolute top-4 right-4 w-6 h-6 rounded-full flex items-center justify-center transition-opacity duration-150",
-                    isLight ? "bg-zinc-800" : "bg-zinc-200",
+                    isLight ? "bg-slate-800" : "bg-slate-200",
                     selectedPackage === pkg.id
                       ? "opacity-100"
                       : "opacity-0"
                   )}>
-                    <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-zinc-900")} />
+                    <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
                   </div>
                 </button>
               ))}
@@ -418,13 +418,13 @@ export default function NewSitePage() {
             <div className="text-center">
               <h2 className={cn(
                 "text-xl font-bold mb-1.5",
-                isLight ? "text-zinc-900" : "text-zinc-100"
+                isLight ? "text-slate-900" : "text-slate-100"
               )}>
                 Configure Your Domain
               </h2>
               <p className={cn(
                 "text-sm",
-                isLight ? "text-zinc-500" : "text-zinc-400"
+                isLight ? "text-slate-500" : "text-slate-400"
               )}>
                 Choose how you want to set up your website address.
               </p>
@@ -432,7 +432,7 @@ export default function NewSitePage() {
 
             {/* Domain Type Selection */}
             <div>
-              <h3 className={cn("font-semibold text-sm mb-3", isLight ? "text-zinc-900" : "text-zinc-100")}>
+              <h3 className={cn("font-semibold text-sm mb-3", isLight ? "text-slate-900" : "text-slate-100")}>
                 Domain Type
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -444,35 +444,35 @@ export default function NewSitePage() {
                       "group relative rounded-xl border-2 p-4 text-left transition-all duration-300",
                       domainType === type.id
                         ? isLight
-                          ? "border-zinc-400 bg-zinc-100/50 shadow-md"
-                          : "border-zinc-500 bg-zinc-700/20"
+                          ? "border-slate-400 bg-slate-100/50 shadow-md"
+                          : "border-slate-500 bg-slate-700/20"
                         : isLight
-                        ? "border-zinc-200 bg-white hover:border-zinc-300"
-                        : "border-zinc-800 bg-zinc-900/50 hover:border-zinc-700"
+                        ? "border-slate-200 bg-white hover:border-slate-300"
+                        : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
                     )}
                   >
                     <div className="flex items-center gap-3">
                       <div className={cn(
                         "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
                         domainType === type.id
-                          ? isLight ? "bg-zinc-800" : "bg-zinc-200"
-                          : isLight ? "bg-zinc-100" : "bg-zinc-800"
+                          ? isLight ? "bg-slate-800" : "bg-slate-200"
+                          : isLight ? "bg-slate-100" : "bg-slate-800"
                       )}>
                         <StepIcon
                           type={type.icon}
                           className={cn(
                             "w-5 h-5",
                             domainType === type.id
-                              ? isLight ? "text-white" : "text-zinc-900"
-                              : isLight ? "text-zinc-600" : "text-zinc-400"
+                              ? isLight ? "text-white" : "text-slate-900"
+                              : isLight ? "text-slate-600" : "text-slate-400"
                           )}
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className={cn("font-semibold text-sm leading-tight", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                        <h4 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>
                           {type.title}
                         </h4>
-                        <p className={cn("text-xs truncate", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                        <p className={cn("text-xs truncate", isLight ? "text-slate-500" : "text-slate-500")}>
                           {type.description}
                         </p>
                       </div>
@@ -480,9 +480,9 @@ export default function NewSitePage() {
                     {domainType === type.id && (
                       <div className={cn(
                         "absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center",
-                        isLight ? "bg-zinc-800" : "bg-zinc-200"
+                        isLight ? "bg-slate-800" : "bg-slate-200"
                       )}>
-                        <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-zinc-900")} />
+                        <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
                       </div>
                     )}
                   </button>
@@ -493,13 +493,13 @@ export default function NewSitePage() {
             {/* Domain Input Card */}
             <div className={cn(
               "rounded-xl border p-5",
-              isLight ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900/50 border-zinc-800"
+              isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
             )}>
               <div className="mb-3">
-                <h3 className={cn("font-semibold text-sm", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                <h3 className={cn("font-semibold text-sm", isLight ? "text-slate-900" : "text-slate-100")}>
                   {domainType === "existing" ? "Your Domain" : "Choose Subdomain"}
                 </h3>
-                <p className={cn("text-xs", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
                   {domainType === "subdomain" ? "Pick a unique name for your free subdomain" : "Enter your domain name"}
                 </p>
               </div>
@@ -512,12 +512,12 @@ export default function NewSitePage() {
                 size="md"
                 startContent={
                   domainType !== "subdomain" && (
-                    <span className="text-zinc-400 text-sm font-medium">https://</span>
+                    <span className="text-slate-400 text-sm font-medium">https://</span>
                   )
                 }
                 endContent={
                   domainType === "subdomain" && (
-                    <span className={cn("text-sm font-medium", isLight ? "text-zinc-600" : "text-zinc-400")}>.limewp.com</span>
+                    <span className={cn("text-sm font-medium", isLight ? "text-slate-600" : "text-slate-400")}>.limewp.com</span>
                   )
                 }
               />
@@ -527,22 +527,22 @@ export default function NewSitePage() {
             <div className={cn(
               "rounded-xl p-4 flex items-start gap-3",
               isLight
-                ? "bg-zinc-100 border border-zinc-200"
-                : "bg-zinc-800/50 border border-zinc-700"
+                ? "bg-slate-100 border border-slate-200"
+                : "bg-slate-800/50 border border-slate-700"
             )}>
               <div className={cn(
                 "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
-                isLight ? "bg-zinc-800" : "bg-zinc-200"
+                isLight ? "bg-slate-800" : "bg-slate-200"
               )}>
-                <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-zinc-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>
               </div>
               <div>
-                <p className={cn("font-semibold text-sm", isLight ? "text-zinc-800" : "text-zinc-200")}>
+                <p className={cn("font-semibold text-sm", isLight ? "text-slate-800" : "text-slate-200")}>
                   Domain Configuration
                 </p>
-                <p className={cn("text-xs leading-relaxed", isLight ? "text-zinc-600" : "text-zinc-400")}>
+                <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-slate-400")}>
                   Make sure your domain is registered and properly configured with DNS settings pointing to our nameservers. Your site will be accessible at this domain once the setup is complete.
                 </p>
               </div>
@@ -550,7 +550,7 @@ export default function NewSitePage() {
 
             {/* SSL Configuration */}
             <div>
-              <h3 className={cn("font-semibold text-sm mb-3", isLight ? "text-zinc-900" : "text-zinc-100")}>
+              <h3 className={cn("font-semibold text-sm mb-3", isLight ? "text-slate-900" : "text-slate-100")}>
                 SSL Certificate
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -560,37 +560,37 @@ export default function NewSitePage() {
                     "group relative rounded-xl border-2 p-4 text-left transition-all duration-300",
                     sslType === "letsencrypt"
                       ? isLight
-                        ? "border-zinc-400 bg-zinc-100/50 shadow-md"
-                        : "border-zinc-500 bg-zinc-700/20"
+                        ? "border-slate-400 bg-slate-100/50 shadow-md"
+                        : "border-slate-500 bg-slate-700/20"
                       : isLight
-                      ? "border-zinc-200 bg-white hover:border-zinc-300"
-                      : "border-zinc-800 bg-zinc-900/50 hover:border-zinc-700"
+                      ? "border-slate-200 bg-white hover:border-slate-300"
+                      : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
                   )}
                 >
                   <div className="flex items-start gap-3">
                     <div className={cn(
                       "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
                       sslType === "letsencrypt"
-                        ? isLight ? "bg-zinc-800" : "bg-zinc-200"
-                        : isLight ? "bg-zinc-100" : "bg-zinc-800"
+                        ? isLight ? "bg-slate-800" : "bg-slate-200"
+                        : isLight ? "bg-slate-100" : "bg-slate-800"
                     )}>
-                      <svg className={cn("w-5 h-5", sslType === "letsencrypt" ? isLight ? "text-white" : "text-zinc-900" : isLight ? "text-zinc-600" : "text-zinc-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <svg className={cn("w-5 h-5", sslType === "letsencrypt" ? isLight ? "text-white" : "text-slate-900" : isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 mb-0.5">
-                        <h4 className={cn("font-semibold text-sm", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                        <h4 className={cn("font-semibold text-sm", isLight ? "text-slate-900" : "text-slate-100")}>
                           Let&apos;s Encrypt
                         </h4>
                         <span className={cn(
                           "text-[10px] font-bold px-2 py-0.5 rounded-full",
-                          isLight ? "bg-zinc-800 text-white" : "bg-zinc-200 text-zinc-900"
+                          isLight ? "bg-slate-800 text-white" : "bg-slate-200 text-slate-900"
                         )}>
                           Auto
                         </span>
                       </div>
-                      <p className={cn("text-xs leading-tight", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                      <p className={cn("text-xs leading-tight", isLight ? "text-slate-500" : "text-slate-500")}>
                         Auto provision & renew SSL
                       </p>
                     </div>
@@ -598,9 +598,9 @@ export default function NewSitePage() {
                   {sslType === "letsencrypt" && (
                     <div className={cn(
                       "absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center",
-                      isLight ? "bg-zinc-800" : "bg-zinc-200"
+                      isLight ? "bg-slate-800" : "bg-slate-200"
                     )}>
-                      <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-zinc-900")} />
+                      <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
                     </div>
                   )}
                 </button>
@@ -611,29 +611,29 @@ export default function NewSitePage() {
                     "group relative rounded-xl border-2 p-4 text-left transition-all duration-300",
                     sslType === "cloudflare"
                       ? isLight
-                        ? "border-zinc-400 bg-zinc-100/50 shadow-md"
-                        : "border-zinc-500 bg-zinc-700/20"
+                        ? "border-slate-400 bg-slate-100/50 shadow-md"
+                        : "border-slate-500 bg-slate-700/20"
                       : isLight
-                      ? "border-zinc-200 bg-white hover:border-zinc-300"
-                      : "border-zinc-800 bg-zinc-900/50 hover:border-zinc-700"
+                      ? "border-slate-200 bg-white hover:border-slate-300"
+                      : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
                   )}
                 >
                   <div className="flex items-start gap-3">
                     <div className={cn(
                       "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
                       sslType === "cloudflare"
-                        ? isLight ? "bg-zinc-800" : "bg-zinc-200"
-                        : isLight ? "bg-zinc-100" : "bg-zinc-800"
+                        ? isLight ? "bg-slate-800" : "bg-slate-200"
+                        : isLight ? "bg-slate-100" : "bg-slate-800"
                     )}>
-                      <svg className={cn("w-5 h-5", sslType === "cloudflare" ? isLight ? "text-white" : "text-zinc-900" : isLight ? "text-zinc-600" : "text-zinc-400")} viewBox="0 0 24 24" fill="currentColor">
+                      <svg className={cn("w-5 h-5", sslType === "cloudflare" ? isLight ? "text-white" : "text-slate-900" : isLight ? "text-slate-600" : "text-slate-400")} viewBox="0 0 24 24" fill="currentColor">
                         <path d="M16.5088 16.8447C16.6235 16.4476 16.5765 16.0976 16.3694 15.8224C16.1835 15.5765 15.8688 15.4329 15.4894 15.4094L8.84354 15.3553C8.75531 15.3506 8.68 15.3059 8.63531 15.2365C8.59062 15.1671 8.58354 15.0824 8.61354 15.0035C8.66531 14.8694 8.79354 14.7765 8.94354 14.7624L15.5929 14.7082C16.4894 14.6541 17.4494 13.9671 17.8094 13.1412L18.3176 11.9647C18.3694 11.8447 18.3929 11.7153 18.3788 11.5859C17.9953 9.32 16.0188 7.58 13.6376 7.58C11.5847 7.58 9.82354 8.90118 9.15177 10.7271C8.75531 10.4612 8.27531 10.3035 7.75531 10.3035C6.49177 10.3035 5.46354 11.2894 5.39531 12.5365C5.39531 12.5929 5.39531 12.6494 5.39531 12.7059C4.20708 12.9341 3.29177 13.9624 3.29177 15.2035C3.29177 15.3118 3.30354 15.4176 3.31531 15.5212C3.33062 15.6671 3.45531 15.7765 3.60354 15.7765H16.0329C16.1788 15.7765 16.31 15.6859 16.3624 15.5541L16.5088 16.8447Z"/>
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className={cn("font-semibold text-sm mb-0.5", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                      <h4 className={cn("font-semibold text-sm mb-0.5", isLight ? "text-slate-900" : "text-slate-100")}>
                         Cloudflare Origin
                       </h4>
-                      <p className={cn("text-xs leading-tight", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                      <p className={cn("text-xs leading-tight", isLight ? "text-slate-500" : "text-slate-500")}>
                         Use your own certificate
                       </p>
                     </div>
@@ -641,9 +641,9 @@ export default function NewSitePage() {
                   {sslType === "cloudflare" && (
                     <div className={cn(
                       "absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center",
-                      isLight ? "bg-zinc-800" : "bg-zinc-200"
+                      isLight ? "bg-slate-800" : "bg-slate-200"
                     )}>
-                      <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-zinc-900")} />
+                      <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
                     </div>
                   )}
                 </button>
@@ -656,40 +656,40 @@ export default function NewSitePage() {
                 {/* DNS Configuration */}
                 <div className={cn(
                   "rounded-xl border p-5",
-                  isLight ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900/50 border-zinc-800"
+                  isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
                 )}>
                   <div className="mb-3">
-                    <h3 className={cn("font-semibold text-sm", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                    <h3 className={cn("font-semibold text-sm", isLight ? "text-slate-900" : "text-slate-100")}>
                       DNS Configuration
                     </h3>
-                    <p className={cn("text-xs", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                    <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
                       Add these A records in Cloudflare with Proxied enabled:
                     </p>
                   </div>
                   <div className="space-y-2">
                     <div className={cn(
                       "flex items-center gap-2 p-2 rounded-lg font-mono text-xs",
-                      isLight ? "bg-zinc-50" : "bg-zinc-800/50"
+                      isLight ? "bg-slate-50" : "bg-slate-800/50"
                     )}>
                       <span className={cn(
                         "px-1.5 py-0.5 rounded text-[10px] font-bold",
-                        isLight ? "bg-zinc-200 text-zinc-600" : "bg-zinc-700 text-zinc-400"
+                        isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-400"
                       )}>A</span>
-                      <span className={cn(isLight ? "text-zinc-600" : "text-zinc-400")}>@</span>
-                      <span className={cn(isLight ? "text-zinc-400" : "text-zinc-600")}>→</span>
-                      <span className={cn("font-semibold", isLight ? "text-zinc-900" : "text-zinc-100")}>46.4.212.172</span>
+                      <span className={cn(isLight ? "text-slate-600" : "text-slate-400")}>@</span>
+                      <span className={cn(isLight ? "text-slate-400" : "text-slate-600")}>→</span>
+                      <span className={cn("font-semibold", isLight ? "text-slate-900" : "text-slate-100")}>46.4.212.172</span>
                     </div>
                     <div className={cn(
                       "flex items-center gap-2 p-2 rounded-lg font-mono text-xs",
-                      isLight ? "bg-zinc-50" : "bg-zinc-800/50"
+                      isLight ? "bg-slate-50" : "bg-slate-800/50"
                     )}>
                       <span className={cn(
                         "px-1.5 py-0.5 rounded text-[10px] font-bold",
-                        isLight ? "bg-zinc-200 text-zinc-600" : "bg-zinc-700 text-zinc-400"
+                        isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-400"
                       )}>A</span>
-                      <span className={cn(isLight ? "text-zinc-600" : "text-zinc-400")}>www</span>
-                      <span className={cn(isLight ? "text-zinc-400" : "text-zinc-600")}>→</span>
-                      <span className={cn("font-semibold", isLight ? "text-zinc-900" : "text-zinc-100")}>46.4.212.172</span>
+                      <span className={cn(isLight ? "text-slate-600" : "text-slate-400")}>www</span>
+                      <span className={cn(isLight ? "text-slate-400" : "text-slate-600")}>→</span>
+                      <span className={cn("font-semibold", isLight ? "text-slate-900" : "text-slate-100")}>46.4.212.172</span>
                     </div>
                   </div>
                 </div>
@@ -698,22 +698,22 @@ export default function NewSitePage() {
                 <div className={cn(
                   "rounded-xl p-4 flex items-start gap-3",
                   isLight
-                    ? "bg-zinc-100 border border-zinc-200"
-                    : "bg-zinc-800/50 border border-zinc-700"
+                    ? "bg-slate-100 border border-slate-200"
+                    : "bg-slate-800/50 border border-slate-700"
                 )}>
                   <div className={cn(
                     "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
-                    isLight ? "bg-zinc-800" : "bg-zinc-200"
+                    isLight ? "bg-slate-800" : "bg-slate-200"
                   )}>
-                    <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-zinc-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
                   </div>
                   <div>
-                    <p className={cn("font-semibold text-sm", isLight ? "text-zinc-800" : "text-zinc-200")}>
+                    <p className={cn("font-semibold text-sm", isLight ? "text-slate-800" : "text-slate-200")}>
                       Generate an Origin Certificate
                     </p>
-                    <p className={cn("text-xs leading-relaxed", isLight ? "text-zinc-600" : "text-zinc-400")}>
+                    <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-slate-400")}>
                       Go to Cloudflare → <span className="font-semibold">SSL/TLS → Origin Server</span> and create a certificate.
                     </p>
                   </div>
@@ -722,13 +722,13 @@ export default function NewSitePage() {
                 {/* Certificate Inputs */}
                 <div className={cn(
                   "rounded-xl border p-5",
-                  isLight ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900/50 border-zinc-800"
+                  isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
                 )}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className={cn(
                         "block text-sm font-medium mb-2",
-                        isLight ? "text-zinc-700" : "text-zinc-300"
+                        isLight ? "text-slate-700" : "text-slate-300"
                       )}>
                         Origin Certificate
                       </label>
@@ -740,16 +740,16 @@ export default function NewSitePage() {
                         className={cn(
                           "w-full px-3 py-2.5 rounded-lg border text-sm font-mono resize-none transition-colors",
                           isLight
-                            ? "bg-white border-zinc-200 hover:border-zinc-300 focus:border-zinc-400 text-zinc-800 placeholder:text-zinc-400"
-                            : "bg-zinc-900 border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 text-zinc-100 placeholder:text-zinc-600",
-                          "focus:outline-none focus:ring-1 focus:ring-zinc-500/20"
+                            ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400"
+                            : "bg-slate-900 border-slate-800 hover:border-slate-700 focus:border-slate-500 text-slate-100 placeholder:text-slate-600",
+                          "focus:outline-none focus:ring-1 focus:ring-slate-500/20"
                         )}
                       />
                     </div>
                     <div>
                       <label className={cn(
                         "block text-sm font-medium mb-2",
-                        isLight ? "text-zinc-700" : "text-zinc-300"
+                        isLight ? "text-slate-700" : "text-slate-300"
                       )}>
                         Private Key
                       </label>
@@ -761,9 +761,9 @@ export default function NewSitePage() {
                         className={cn(
                           "w-full px-3 py-2.5 rounded-lg border text-sm font-mono resize-none transition-colors",
                           isLight
-                            ? "bg-white border-zinc-200 hover:border-zinc-300 focus:border-zinc-400 text-zinc-800 placeholder:text-zinc-400"
-                            : "bg-zinc-900 border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 text-zinc-100 placeholder:text-zinc-600",
-                          "focus:outline-none focus:ring-1 focus:ring-zinc-500/20"
+                            ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400"
+                            : "bg-slate-900 border-slate-800 hover:border-slate-700 focus:border-slate-500 text-slate-100 placeholder:text-slate-600",
+                          "focus:outline-none focus:ring-1 focus:ring-slate-500/20"
                         )}
                       />
                     </div>
@@ -781,13 +781,13 @@ export default function NewSitePage() {
             <div className="text-center">
               <h2 className={cn(
                 "text-xl font-bold mb-1.5",
-                isLight ? "text-zinc-900" : "text-zinc-100"
+                isLight ? "text-slate-900" : "text-slate-100"
               )}>
                 WordPress Settings
               </h2>
               <p className={cn(
                 "text-sm",
-                isLight ? "text-zinc-500" : "text-zinc-400"
+                isLight ? "text-slate-500" : "text-slate-400"
               )}>
                 Configure your WordPress installation preferences.
               </p>
@@ -796,20 +796,20 @@ export default function NewSitePage() {
             {/* Site Name Card */}
             <div className={cn(
               "rounded-xl border p-5",
-              isLight ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900/50 border-zinc-800"
+              isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
             )}>
               <div className="flex items-center gap-3 mb-3">
                 <div className={cn(
                   "w-9 h-9 rounded-lg flex items-center justify-center",
-                  isLight ? "bg-zinc-100" : "bg-zinc-800"
+                  isLight ? "bg-slate-100" : "bg-slate-800"
                 )}>
-                  <svg className={cn("w-5 h-5", isLight ? "text-zinc-600" : "text-zinc-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-zinc-900" : "text-zinc-100")}>Site Name</h3>
-                  <p className={cn("text-xs", isLight ? "text-zinc-500" : "text-zinc-500")}>Appears in your WordPress dashboard</p>
+                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>Site Name</h3>
+                  <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>Appears in your WordPress dashboard</p>
                 </div>
               </div>
               <Input
@@ -825,20 +825,20 @@ export default function NewSitePage() {
             {/* Admin Credentials Card */}
             <div className={cn(
               "rounded-xl border p-5",
-              isLight ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900/50 border-zinc-800"
+              isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
             )}>
               <div className="flex items-center gap-3 mb-4">
                 <div className={cn(
                   "w-9 h-9 rounded-lg flex items-center justify-center",
-                  isLight ? "bg-zinc-100" : "bg-zinc-800"
+                  isLight ? "bg-slate-100" : "bg-slate-800"
                 )}>
-                  <svg className={cn("w-5 h-5", isLight ? "text-zinc-600" : "text-zinc-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-zinc-900" : "text-zinc-100")}>Admin Credentials</h3>
-                  <p className={cn("text-xs", isLight ? "text-zinc-500" : "text-zinc-500")}>Login details sent to your email</p>
+                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>Admin Credentials</h3>
+                  <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>Login details sent to your email</p>
                 </div>
               </div>
 
@@ -846,7 +846,7 @@ export default function NewSitePage() {
                 <div>
                   <label className={cn(
                     "block text-xs font-medium mb-1.5",
-                    isLight ? "text-zinc-600" : "text-zinc-400"
+                    isLight ? "text-slate-600" : "text-slate-400"
                   )}>
                     Admin Username
                   </label>
@@ -862,9 +862,9 @@ export default function NewSitePage() {
                 <div>
                   <label className={cn(
                     "block text-xs font-medium mb-1.5",
-                    isLight ? "text-zinc-600" : "text-zinc-400"
+                    isLight ? "text-slate-600" : "text-slate-400"
                   )}>
-                    Admin Email <span className="text-zinc-400">*</span>
+                    Admin Email <span className="text-slate-400">*</span>
                   </label>
                   <Input
                     value={adminEmail}
@@ -879,9 +879,9 @@ export default function NewSitePage() {
                 <div>
                   <label className={cn(
                     "block text-xs font-medium mb-1.5",
-                    isLight ? "text-zinc-600" : "text-zinc-400"
+                    isLight ? "text-slate-600" : "text-slate-400"
                   )}>
-                    Admin Password <span className="text-zinc-400">*</span>
+                    Admin Password <span className="text-slate-400">*</span>
                   </label>
                   <Input
                     value={adminPassword}
@@ -896,9 +896,9 @@ export default function NewSitePage() {
                 <div>
                   <label className={cn(
                     "block text-xs font-medium mb-1.5",
-                    isLight ? "text-zinc-600" : "text-zinc-400"
+                    isLight ? "text-slate-600" : "text-slate-400"
                   )}>
-                    Confirm Password <span className="text-zinc-400">*</span>
+                    Confirm Password <span className="text-slate-400">*</span>
                   </label>
                   <Input
                     value={confirmPassword}
@@ -918,13 +918,13 @@ export default function NewSitePage() {
               <div className={cn(
                 "mt-4 rounded-lg p-3 flex items-start gap-2.5",
                 isLight
-                  ? "bg-zinc-100 border border-zinc-200"
-                  : "bg-zinc-800/50 border border-zinc-700"
+                  ? "bg-slate-100 border border-slate-200"
+                  : "bg-slate-800/50 border border-slate-700"
               )}>
-                <svg className={cn("w-4 h-4 flex-shrink-0 mt-0.5", isLight ? "text-zinc-600" : "text-zinc-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <svg className={cn("w-4 h-4 flex-shrink-0 mt-0.5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                 </svg>
-                <p className={cn("text-xs leading-relaxed", isLight ? "text-zinc-600" : "text-zinc-400")}>
+                <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-slate-400")}>
                   <span className="font-semibold">Save these credentials!</span> You&apos;ll need them to log into your WordPress dashboard.
                 </p>
               </div>
@@ -941,13 +941,13 @@ export default function NewSitePage() {
             <div className="text-center">
               <h2 className={cn(
                 "text-xl font-bold mb-1.5",
-                isLight ? "text-zinc-900" : "text-zinc-100"
+                isLight ? "text-slate-900" : "text-slate-100"
               )}>
                 Review & Create
               </h2>
               <p className={cn(
                 "text-sm",
-                isLight ? "text-zinc-500" : "text-zinc-400"
+                isLight ? "text-slate-500" : "text-slate-400"
               )}>
                 Double-check your configuration before launching.
               </p>
@@ -956,13 +956,13 @@ export default function NewSitePage() {
             {/* Summary Card */}
             <div className={cn(
               "rounded-xl border overflow-hidden",
-              isLight ? "bg-white border-zinc-200 shadow-sm" : "bg-zinc-900/50 border-zinc-800"
+              isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
             )}>
               <div className={cn(
                 "px-5 py-3 border-b",
-                isLight ? "bg-zinc-50 border-zinc-200" : "bg-zinc-800/50 border-zinc-800"
+                isLight ? "bg-slate-50 border-slate-200" : "bg-slate-800/50 border-slate-800"
               )}>
-                <h3 className={cn("font-semibold text-sm", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                <h3 className={cn("font-semibold text-sm", isLight ? "text-slate-900" : "text-slate-100")}>
                   Site Summary
                 </h3>
               </div>
@@ -978,19 +978,19 @@ export default function NewSitePage() {
                     key={item.label}
                     className={cn(
                       "flex items-center justify-between py-2.5",
-                      index < 4 && (isLight ? "border-b border-zinc-100" : "border-b border-zinc-800")
+                      index < 4 && (isLight ? "border-b border-slate-100" : "border-b border-slate-800")
                     )}
                   >
                     <div className="flex items-center gap-2.5">
                       <div className={cn(
                         "w-7 h-7 rounded-md flex items-center justify-center",
-                        isLight ? "bg-zinc-100" : "bg-zinc-800"
+                        isLight ? "bg-slate-100" : "bg-slate-800"
                       )}>
-                        <StepIcon type={item.icon} className={cn("w-4 h-4", isLight ? "text-zinc-500" : "text-zinc-400")} />
+                        <StepIcon type={item.icon} className={cn("w-4 h-4", isLight ? "text-slate-500" : "text-slate-400")} />
                       </div>
-                      <span className={cn("text-sm", isLight ? "text-zinc-600" : "text-zinc-400")}>{item.label}</span>
+                      <span className={cn("text-sm", isLight ? "text-slate-600" : "text-slate-400")}>{item.label}</span>
                     </div>
-                    <span className={cn("text-sm font-semibold", isLight ? "text-zinc-900" : "text-zinc-100")}>
+                    <span className={cn("text-sm font-semibold", isLight ? "text-slate-900" : "text-slate-100")}>
                       {item.value}
                     </span>
                   </div>
@@ -1001,19 +1001,19 @@ export default function NewSitePage() {
             {/* Success Box */}
             <div className={cn(
               "rounded-xl p-4 flex items-start gap-3 border",
-              isLight ? "bg-zinc-100 border-zinc-200" : "bg-zinc-800/50 border-zinc-700"
+              isLight ? "bg-slate-100 border-slate-200" : "bg-slate-800/50 border-slate-700"
             )}>
               <div className={cn(
                 "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
-                isLight ? "bg-zinc-800" : "bg-zinc-200"
+                isLight ? "bg-slate-800" : "bg-slate-200"
               )}>
-                <StepIcon type="rocket" className={cn("w-5 h-5", isLight ? "text-white" : "text-zinc-900")} />
+                <StepIcon type="rocket" className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} />
               </div>
               <div>
-                <p className={cn("font-semibold text-sm", isLight ? "text-zinc-800" : "text-zinc-200")}>
+                <p className={cn("font-semibold text-sm", isLight ? "text-slate-800" : "text-slate-200")}>
                   Ready for Launch!
                 </p>
-                <p className={cn("text-xs leading-relaxed", isLight ? "text-zinc-600" : "text-zinc-400")}>
+                <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-slate-400")}>
                   Your WordPress site will be deployed instantly with SSL, backups, and staging included.
                 </p>
               </div>
@@ -1036,8 +1036,8 @@ export default function NewSitePage() {
             className={cn(
               "flex items-center gap-2 text-sm transition-colors group",
               isLight
-                ? "text-zinc-500 hover:text-zinc-700"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "text-slate-500 hover:text-slate-700"
+                : "text-slate-400 hover:text-slate-200"
             )}
           >
             <svg
@@ -1060,12 +1060,12 @@ export default function NewSitePage() {
         {/* Wizard Container */}
         <div className={cn(
           "rounded-xl overflow-hidden",
-          isLight ? "bg-white shadow-sm" : "bg-zinc-900/50"
+          isLight ? "bg-white shadow-sm" : "bg-slate-900/50"
         )}>
           {/* Step Indicator */}
           <div className={cn(
             "px-5 pt-5",
-            isLight ? "bg-zinc-50/50" : "bg-zinc-900/30"
+            isLight ? "bg-slate-50/50" : "bg-slate-900/30"
           )}>
             <StepIndicator />
           </div>
@@ -1078,7 +1078,7 @@ export default function NewSitePage() {
           {/* Navigation */}
           <div className={cn(
             "flex items-center justify-between px-5 py-5",
-            isLight ? "bg-zinc-50/50" : "bg-zinc-900/30"
+            isLight ? "bg-slate-50/50" : "bg-slate-900/30"
           )}>
           <Button
             variant="flat"
@@ -1086,8 +1086,8 @@ export default function NewSitePage() {
             className={cn(
               "font-semibold text-sm rounded-lg h-10 px-5",
               isLight
-                ? "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800"
-                : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
+                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                : "bg-slate-800 text-slate-400 hover:text-slate-200"
             )}
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -1103,8 +1103,8 @@ export default function NewSitePage() {
               className={cn(
                 "font-semibold text-sm rounded-lg h-10 px-6 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]",
                 isLight
-                  ? "bg-zinc-800 text-white shadow-zinc-500/20 hover:bg-zinc-700 hover:shadow-zinc-500/30"
-                  : "bg-zinc-100 text-zinc-900 shadow-zinc-500/10 hover:bg-zinc-200 hover:shadow-zinc-500/20"
+                  ? "bg-slate-800 text-white shadow-slate-500/20 hover:bg-slate-700 hover:shadow-slate-500/30"
+                  : "bg-slate-100 text-slate-900 shadow-slate-500/10 hover:bg-slate-200 hover:shadow-slate-500/20"
               )}
             >
               Continue
@@ -1120,8 +1120,8 @@ export default function NewSitePage() {
               className={cn(
                 "font-semibold text-sm rounded-lg h-10 px-7 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]",
                 isLight
-                  ? "bg-zinc-800 text-white shadow-zinc-500/20 hover:bg-zinc-700 hover:shadow-zinc-500/30"
-                  : "bg-zinc-100 text-zinc-900 shadow-zinc-500/10 hover:bg-zinc-200 hover:shadow-zinc-500/20"
+                  ? "bg-slate-800 text-white shadow-slate-500/20 hover:bg-slate-700 hover:shadow-slate-500/30"
+                  : "bg-slate-100 text-slate-900 shadow-slate-500/10 hover:bg-slate-200 hover:shadow-slate-500/20"
               )}
             >
               {isCreating ? "Creating..." : (

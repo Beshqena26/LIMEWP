@@ -30,15 +30,15 @@ function PasswordCard() {
   const accent = ACCENT_STYLES[accentColor];
 
   const inputClassNames = isLight ? {
-    inputWrapper: `bg-zinc-50 border-zinc-200 hover:border-zinc-300 ${accent.focusBorder} !rounded-xl`,
-    input: "text-zinc-800 placeholder:text-zinc-400",
+    inputWrapper: `bg-slate-50 border-slate-200 hover:border-slate-300 ${accent.focusBorder} !rounded-xl`,
+    input: "text-slate-800 placeholder:text-slate-400",
   } : INPUT_CLASS_NAMES;
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -50,28 +50,28 @@ function PasswordCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Change Password</h3>
-            <p className="text-xs text-zinc-500">Update your password regularly for security</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Change Password</h3>
+            <p className="text-xs text-slate-500">Update your password regularly for security</p>
           </div>
         </div>
 
         <div className="space-y-4 max-w-md">
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Current Password</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Current Password</label>
             <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">New Password</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">New Password</label>
             <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
-            <p className="text-[11px] text-zinc-500 mt-1.5 flex items-center gap-1.5">
-              <svg className={`w-3.5 h-3.5 ${isLight ? "text-zinc-400" : "text-zinc-600"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1.5">
+              <svg className={`w-3.5 h-3.5 ${isLight ? "text-slate-400" : "text-slate-600"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
               </svg>
               12+ characters, mixed case, numbers, symbols
             </p>
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Confirm Password</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Confirm Password</label>
             <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <Button className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow} mt-2`}>
@@ -91,8 +91,8 @@ function TwoFactorCard() {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -104,8 +104,8 @@ function TwoFactorCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Two-Factor Authentication</h3>
-            <p className="text-xs text-zinc-500">Add an extra layer of security</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Two-Factor Authentication</h3>
+            <p className="text-xs text-slate-500">Add an extra layer of security</p>
           </div>
         </div>
 
@@ -113,20 +113,20 @@ function TwoFactorCard() {
           {TWO_FACTOR_OPTIONS.map((item) => (
             <div key={item.label} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
               isLight
-                ? "bg-zinc-50 hover:bg-zinc-100"
-                : "bg-[#27272A]/50 hover:bg-[#27272A]"
+                ? "bg-slate-50 hover:bg-slate-100"
+                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                  isLight ? "bg-zinc-200" : "bg-[#1E1E21]"
+                  isLight ? "bg-slate-200" : "bg-[#1e2130]"
                 }`}>
-                  <svg className={`w-4 h-4 ${isLight ? "text-zinc-500" : "text-zinc-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                  <svg className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d={item.icon} />
                   </svg>
                 </div>
                 <div>
-                  <p className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>{item.label}</p>
-                  <p className="text-[11px] text-zinc-500">{item.desc}</p>
+                  <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{item.label}</p>
+                  <p className="text-[11px] text-slate-500">{item.desc}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -134,8 +134,8 @@ function TwoFactorCard() {
                   <Chip
                     size="sm"
                     classNames={{
-                      base: item.enabled ? `${accent.bg} border-0` : "bg-zinc-700/50 border-0",
-                      content: item.enabled ? `${accent.text} font-semibold text-[10px]` : "text-zinc-500 font-medium text-[10px]"
+                      base: item.enabled ? `${accent.bg} border-0` : "bg-slate-700/50 border-0",
+                      content: item.enabled ? `${accent.text} font-semibold text-[10px]` : "text-slate-500 font-medium text-[10px]"
                     }}
                   >
                     {item.enabled ? "Enabled" : "Disabled"}
@@ -143,8 +143,8 @@ function TwoFactorCard() {
                 )}
                 <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
                   isLight
-                    ? "bg-zinc-200 text-zinc-700 hover:bg-zinc-300 hover:text-zinc-900"
-                    : "bg-[#3F3F46] text-zinc-300 hover:text-white"
+                    ? "bg-slate-200 text-slate-700 hover:bg-slate-300 hover:text-slate-900"
+                    : "bg-[#334155] text-slate-300 hover:text-white"
                 }`}>
                   {item.enabled === null ? "Generate" : item.enabled ? "Manage" : "Setup"}
                 </Button>
@@ -165,8 +165,8 @@ function SessionsCard() {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -178,29 +178,29 @@ function SessionsCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Active Sessions</h3>
-            <p className="text-xs text-zinc-500">Manage your logged-in devices</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Active Sessions</h3>
+            <p className="text-xs text-slate-500">Manage your logged-in devices</p>
           </div>
         </div>
 
         <div className="space-y-3">
           {ACTIVE_SESSIONS.map((session, i) => (
             <div key={i} className={`flex items-center justify-between p-4 rounded-xl ${
-              isLight ? "bg-zinc-50" : "bg-[#27272A]/50"
+              isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                   session.current
                     ? `${accent.bg}`
-                    : isLight ? 'bg-zinc-200' : 'bg-[#1E1E21]'
+                    : isLight ? 'bg-slate-200' : 'bg-[#1e2130]'
                 }`}>
-                  <svg className={`w-4 h-4 ${session.current ? accent.text : isLight ? 'text-zinc-500' : 'text-zinc-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                  <svg className={`w-4 h-4 ${session.current ? accent.text : isLight ? 'text-slate-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d={session.icon} />
                   </svg>
                 </div>
                 <div>
-                  <p className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>{session.device}</p>
-                  <p className="text-[11px] text-zinc-500">{session.location} · {session.time}</p>
+                  <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{session.device}</p>
+                  <p className="text-[11px] text-slate-500">{session.location} · {session.time}</p>
                 </div>
               </div>
               {session.current ? (
@@ -228,7 +228,7 @@ function DangerZone() {
     <div className={`relative rounded-2xl border border-rose-500/20 overflow-hidden ${
       isLight
         ? "bg-rose-50/50"
-        : "bg-gradient-to-br from-rose-500/5 to-[#1a1a1d]"
+        : "bg-gradient-to-br from-rose-500/5 to-[#181b28]"
     }`}>
       <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-rose-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
@@ -241,10 +241,10 @@ function DangerZone() {
           </div>
           <div>
             <h3 className="text-base font-semibold text-rose-400">Danger Zone</h3>
-            <p className="text-xs text-zinc-500">Irreversible actions</p>
+            <p className="text-xs text-slate-500">Irreversible actions</p>
           </div>
         </div>
-        <p className={`text-sm mb-4 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>Once you delete your account, there is no going back. All your data will be permanently removed.</p>
+        <p className={`text-sm mb-4 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Once you delete your account, there is no going back. All your data will be permanently removed.</p>
         <Button className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm rounded-xl h-10 px-5">
           Delete Account
         </Button>

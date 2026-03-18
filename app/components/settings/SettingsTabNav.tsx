@@ -29,8 +29,8 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
       <div className={cn(
         "relative rounded-2xl border overflow-hidden transition-colors",
         isLight
-          ? "bg-white border-zinc-200 shadow-sm"
-          : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+          ? "bg-white border-slate-200 shadow-sm"
+          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
       )}>
         {/* Glow effect */}
         <div className={cn(
@@ -41,7 +41,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
         {/* Header */}
         <div className={cn(
           "relative px-4 py-3 border-b",
-          isLight ? "border-zinc-100" : "border-[#27272A]"
+          isLight ? "border-slate-100" : "border-[#1a1d27]"
         )}>
           <div className="flex items-center gap-2">
             <div className={cn(
@@ -56,7 +56,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
             <div>
               <span className={cn(
                 "text-sm font-semibold",
-                isLight ? "text-zinc-800" : "text-zinc-100"
+                isLight ? "text-slate-800" : "text-slate-100"
               )}>Quick Navigation</span>
             </div>
           </div>
@@ -75,8 +75,8 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
                   isActive
                     ? cn(accent.activeBg, accent.text, "shadow-sm")
                     : isLight
-                      ? "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-                      : "text-zinc-400 hover:bg-[#27272A] hover:text-zinc-200"
+                      ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                      : "text-slate-400 hover:bg-[#1a1d27] hover:text-slate-200"
                 )}
               >
                 {/* Icon Container */}
@@ -85,8 +85,8 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
                   isActive
                     ? cn(accent.bg, "ring-1", accent.ring, "shadow-sm")
                     : isLight
-                      ? "bg-zinc-100 group-hover:bg-zinc-200"
-                      : "bg-[#27272A]/50 group-hover:bg-[#27272A]"
+                      ? "bg-slate-100 group-hover:bg-slate-200"
+                      : "bg-[#1a1d27]/50 group-hover:bg-[#1a1d27]"
                 )}>
                   <svg
                     className={cn(
@@ -120,7 +120,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
                   <svg
                     className={cn(
                       "w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-50 group-hover:translate-x-0 transition-all duration-200",
-                      isLight ? "text-zinc-400" : "text-zinc-500"
+                      isLight ? "text-slate-400" : "text-slate-500"
                     )}
                     fill="none"
                     stroke="currentColor"
@@ -138,13 +138,13 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
         {/* Footer hint */}
         <div className={cn(
           "px-4 py-3 border-t",
-          isLight ? "border-zinc-100 bg-zinc-50/50" : "border-[#27272A] bg-[#18181B]/50"
+          isLight ? "border-slate-100 bg-slate-50/50" : "border-[#1a1d27] bg-[#0f1117]/50"
         )}>
           <div className="flex items-center gap-2">
-            <svg className={cn("w-3.5 h-3.5", isLight ? "text-zinc-400" : "text-zinc-500")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+            <svg className={cn("w-3.5 h-3.5", isLight ? "text-slate-400" : "text-slate-500")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
             </svg>
-            <span className={cn("text-[11px]", isLight ? "text-zinc-500" : "text-zinc-500")}>
+            <span className={cn("text-[11px]", isLight ? "text-slate-500" : "text-slate-500")}>
               Changes save automatically
             </span>
           </div>

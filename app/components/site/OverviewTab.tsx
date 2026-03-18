@@ -95,7 +95,7 @@ function CircularProgress({
         r={radius}
         fill="none"
         strokeWidth={strokeWidth}
-        className={isLight ? "stroke-zinc-100" : "stroke-zinc-800"}
+        className={isLight ? "stroke-slate-100" : "stroke-slate-800"}
       />
       <circle
         cx={size / 2}
@@ -117,14 +117,14 @@ export function OverviewTab() {
   const isLight = resolvedTheme === "light";
 
   // Theme classes
-  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d]";
-  const cardBorder = isLight ? "border-zinc-200" : "border-[#2A2A2E]";
-  const dividerBorder = isLight ? "border-zinc-100" : "border-[#2A2A2E]";
-  const textPrimary = isLight ? "text-zinc-900" : "text-zinc-100";
-  const textSecondary = isLight ? "text-zinc-500" : "text-zinc-500";
-  const textTertiary = isLight ? "text-zinc-400" : "text-zinc-600";
-  const subtleBg = isLight ? "bg-zinc-50" : "bg-zinc-800/50";
-  const hoverBg = isLight ? "hover:bg-zinc-50" : "hover:bg-white/[0.02]";
+  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[#1e2130] to-[#181b28]";
+  const cardBorder = isLight ? "border-slate-200" : "border-[#282b3a]";
+  const dividerBorder = isLight ? "border-slate-100" : "border-[#282b3a]";
+  const textPrimary = isLight ? "text-slate-900" : "text-slate-100";
+  const textSecondary = isLight ? "text-slate-500" : "text-slate-500";
+  const textTertiary = isLight ? "text-slate-400" : "text-slate-600";
+  const subtleBg = isLight ? "bg-slate-50" : "bg-slate-800/50";
+  const hoverBg = isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]";
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${cardBg} ${cardBorder}`}>
@@ -194,7 +194,7 @@ export function OverviewTab() {
               <div
                 key={metric.label}
                 className={`relative group p-4 rounded-xl transition-all overflow-hidden ${
-                  isLight ? "bg-zinc-50 hover:bg-zinc-100" : "bg-zinc-800/30 hover:bg-zinc-800/50"
+                  isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-slate-800/30 hover:bg-slate-800/50"
                 }`}
               >
                 {/* Subtle glow */}
@@ -237,11 +237,11 @@ export function OverviewTab() {
             <div
               key={item.label}
               className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                isLight ? "bg-zinc-50 hover:bg-zinc-100" : "bg-zinc-800/30 hover:bg-zinc-800/50"
+                isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-slate-800/30 hover:bg-slate-800/50"
               }`}
             >
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                isLight ? "bg-zinc-200/50" : "bg-zinc-700/50"
+                isLight ? "bg-slate-200/50" : "bg-slate-700/50"
               }`}>
                 <svg className={`w-4 h-4 ${textTertiary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />

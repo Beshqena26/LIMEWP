@@ -52,21 +52,21 @@ export default function ContactPage() {
 
   const inputClassNames = isLight
     ? {
-        inputWrapper: "bg-zinc-50 border-zinc-200 hover:border-zinc-300 group-data-[focus=true]:border-zinc-400 !rounded-xl",
-        input: "text-zinc-800 placeholder:text-zinc-400",
-        label: "text-zinc-600",
+        inputWrapper: "bg-slate-50 border-slate-200 hover:border-slate-300 group-data-[focus=true]:border-slate-400 !rounded-xl",
+        input: "text-slate-800 placeholder:text-slate-400",
+        label: "text-slate-600",
       }
     : {
         inputWrapper: [
-          "bg-[#1E1E21]",
-          "border-[#2A2A2E]",
-          "hover:border-[#3F3F46]",
+          "bg-[#1e2130]",
+          "border-[#282b3a]",
+          "hover:border-[#334155]",
           "group-data-[focus=true]:border-[#52525B]",
           "rounded-xl",
           "transition-all",
         ],
-        input: ["text-zinc-100", "placeholder:text-zinc-500"],
-        label: ["text-zinc-400"],
+        input: ["text-slate-100", "placeholder:text-slate-500"],
+        label: ["text-slate-400"],
       };
 
   return (
@@ -97,11 +97,11 @@ export default function ContactPage() {
           </div>
           <h1 className={cn(
             "text-4xl font-bold mb-3",
-            isLight ? "text-zinc-800" : "text-zinc-100"
+            isLight ? "text-slate-800" : "text-slate-100"
           )}>Contact Us</h1>
           <p className={cn(
             "text-base max-w-lg mx-auto",
-            isLight ? "text-zinc-500" : "text-zinc-400"
+            isLight ? "text-slate-500" : "text-slate-400"
           )}>Have a question or need help? We'd love to hear from you. Our team is always ready to assist.</p>
         </div>
 
@@ -113,8 +113,8 @@ export default function ContactPage() {
               className={cn(
                 "group relative rounded-2xl border p-5 transition-all duration-300 hover:scale-[1.02]",
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-lg"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               )}
             >
               <div className={cn(
@@ -127,15 +127,15 @@ export default function ContactPage() {
               </div>
               <p className={cn(
                 "text-xs font-medium uppercase tracking-wider mb-1",
-                isLight ? "text-zinc-400" : "text-zinc-500"
+                isLight ? "text-slate-400" : "text-slate-500"
               )}>{item.label}</p>
               <p className={cn(
                 "text-sm font-semibold mb-1",
-                isLight ? "text-zinc-800" : "text-zinc-100"
+                isLight ? "text-slate-800" : "text-slate-100"
               )}>{item.value}</p>
               <p className={cn(
                 "text-xs",
-                isLight ? "text-zinc-500" : "text-zinc-500"
+                isLight ? "text-slate-500" : "text-slate-500"
               )}>{item.description}</p>
             </div>
           ))}
@@ -146,17 +146,17 @@ export default function ContactPage() {
           <div className={cn(
             "lg:col-span-3 rounded-2xl border p-8",
             isLight
-              ? "bg-white border-zinc-200 shadow-sm"
-              : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+              ? "bg-white border-slate-200 shadow-sm"
+              : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
           )}>
             <div className="mb-6">
               <h2 className={cn(
                 "text-xl font-semibold mb-1",
-                isLight ? "text-zinc-800" : "text-zinc-100"
+                isLight ? "text-slate-800" : "text-slate-100"
               )}>Send us a Message</h2>
               <p className={cn(
                 "text-sm",
-                isLight ? "text-zinc-500" : "text-zinc-400"
+                isLight ? "text-slate-500" : "text-slate-400"
               )}>Fill out the form below and we'll get back to you shortly.</p>
             </div>
 
@@ -176,18 +176,18 @@ export default function ContactPage() {
                 </div>
                 <h3 className={cn(
                   "text-2xl font-bold mb-2",
-                  isLight ? "text-zinc-800" : "text-zinc-100"
+                  isLight ? "text-slate-800" : "text-slate-100"
                 )}>Message Sent!</h3>
                 <p className={cn(
                   "text-sm mb-8 max-w-sm",
-                  isLight ? "text-zinc-500" : "text-zinc-400"
+                  isLight ? "text-slate-500" : "text-slate-400"
                 )}>Thank you for reaching out. Our team will review your message and get back to you within 24 hours.</p>
                 <Button
                   onPress={() => setSubmitted(false)}
                   variant="flat"
                   className={cn(
                     "font-medium rounded-xl px-6",
-                    isLight ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200" : "bg-[#27272A] text-zinc-300 hover:bg-[#323235]"
+                    isLight ? "bg-slate-100 text-slate-700 hover:bg-slate-200" : "bg-[#1a1d27] text-slate-300 hover:bg-[#323235]"
                   )}
                 >
                   Send Another Message
@@ -227,8 +227,8 @@ export default function ContactPage() {
                   classNames={{
                     ...inputClassNames,
                     inputWrapper: isLight
-                      ? "bg-zinc-50 border-zinc-200 hover:border-zinc-300 group-data-[focus=true]:border-zinc-400 !rounded-xl"
-                      : "bg-[#1E1E21] border-[#2A2A2E] hover:border-[#3F3F46] group-data-[focus=true]:border-[#52525B] rounded-xl transition-all",
+                      ? "bg-slate-50 border-slate-200 hover:border-slate-300 group-data-[focus=true]:border-slate-400 !rounded-xl"
+                      : "bg-[#1e2130] border-[#282b3a] hover:border-[#334155] group-data-[focus=true]:border-[#52525B] rounded-xl transition-all",
                   }}
                   isRequired
                 />
@@ -252,8 +252,8 @@ export default function ContactPage() {
             <div className={cn(
               "rounded-2xl border p-6",
               isLight
-                ? "bg-white border-zinc-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200 shadow-sm"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             )}>
               <div className="flex items-center gap-3 mb-5">
                 <div className={cn(
@@ -267,11 +267,11 @@ export default function ContactPage() {
                 <div>
                   <h3 className={cn(
                     "text-base font-semibold",
-                    isLight ? "text-zinc-800" : "text-zinc-100"
+                    isLight ? "text-slate-800" : "text-slate-100"
                   )}>Support Hours</h3>
                   <p className={cn(
                     "text-xs",
-                    isLight ? "text-zinc-500" : "text-zinc-500"
+                    isLight ? "text-slate-500" : "text-slate-500"
                   )}>When our team is available</p>
                 </div>
               </div>
@@ -279,23 +279,23 @@ export default function ContactPage() {
                 {SUPPORT_HOURS.map((item) => (
                   <div key={item.day} className={cn(
                     "flex items-center justify-between p-3 rounded-xl",
-                    isLight ? "bg-zinc-50" : "bg-[#27272A]/50"
+                    isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
                   )}>
                     <div className="flex items-center gap-2">
                       <span className={cn(
                         "w-2 h-2 rounded-full",
-                        item.available ? "bg-emerald-500" : "bg-zinc-400"
+                        item.available ? "bg-emerald-500" : "bg-slate-400"
                       )} />
                       <span className={cn(
                         "text-sm",
-                        isLight ? "text-zinc-600" : "text-zinc-400"
+                        isLight ? "text-slate-600" : "text-slate-400"
                       )}>{item.day}</span>
                     </div>
                     <span className={cn(
                       "text-sm font-medium",
                       item.available
-                        ? (isLight ? "text-zinc-800" : "text-zinc-200")
-                        : (isLight ? "text-zinc-400" : "text-zinc-500")
+                        ? (isLight ? "text-slate-800" : "text-slate-200")
+                        : (isLight ? "text-slate-400" : "text-slate-500")
                     )}>{item.hours}</span>
                   </div>
                 ))}
@@ -306,8 +306,8 @@ export default function ContactPage() {
             <div className={cn(
               "rounded-2xl border p-6 relative overflow-hidden",
               isLight
-                ? "bg-white border-zinc-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200 shadow-sm"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             )}>
               <div className={cn(
                 "absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-20",
@@ -326,17 +326,17 @@ export default function ContactPage() {
                   <div>
                     <h3 className={cn(
                       "text-base font-semibold",
-                      isLight ? "text-zinc-800" : "text-zinc-100"
+                      isLight ? "text-slate-800" : "text-slate-100"
                     )}>Need Quick Help?</h3>
                     <p className={cn(
                       "text-xs",
-                      isLight ? "text-zinc-500" : "text-zinc-500"
+                      isLight ? "text-slate-500" : "text-slate-500"
                     )}>Get instant answers</p>
                   </div>
                 </div>
                 <p className={cn(
                   "text-sm mb-5",
-                  isLight ? "text-zinc-500" : "text-zinc-400"
+                  isLight ? "text-slate-500" : "text-slate-400"
                 )}>Check out our documentation and FAQ for instant answers to common questions.</p>
                 <Button
                   variant="flat"
@@ -371,7 +371,7 @@ export default function ContactPage() {
               </div>
               <p className={cn(
                 "text-xs",
-                isLight ? "text-zinc-600" : "text-zinc-400"
+                isLight ? "text-slate-600" : "text-slate-400"
               )}>Average response time under 4 hours during business hours</p>
             </div>
           </div>

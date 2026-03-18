@@ -68,7 +68,7 @@ export function Callout({ variant = "info", title, children, className }: Callou
         </div>
         <div>
           <div className={cn("font-semibold mb-1", styles.titleColor)}>{title}</div>
-          <div className="text-sm text-zinc-400">{children}</div>
+          <div className="text-sm text-slate-400">{children}</div>
         </div>
       </div>
     </div>

@@ -76,11 +76,11 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
       classNames={{
         backdrop: "bg-black/70",
         base: isLight
-          ? "bg-white border border-zinc-200 shadow-2xl max-w-[600px] rounded-2xl"
-          : "bg-[#18181B] border border-[#27272A] shadow-2xl max-w-[600px] rounded-2xl",
-        header: isLight ? "border-b border-zinc-200" : "border-b border-[#27272A]",
+          ? "bg-white border border-slate-200 shadow-2xl max-w-[600px] rounded-2xl"
+          : "bg-[#0f1117] border border-[#1a1d27] shadow-2xl max-w-[600px] rounded-2xl",
+        header: isLight ? "border-b border-slate-200" : "border-b border-[#1a1d27]",
         body: "py-6",
-        footer: isLight ? "border-t border-zinc-200" : "border-t border-[#27272A]",
+        footer: isLight ? "border-t border-slate-200" : "border-t border-[#1a1d27]",
       }}
     >
       <ModalContent>
@@ -88,12 +88,12 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
           <div>
             <h2
               className={`text-lg font-semibold ${
-                isLight ? "text-zinc-800" : "text-zinc-100"
+                isLight ? "text-slate-800" : "text-slate-100"
               }`}
             >
               Upgrade Your Plan
             </h2>
-            <p className="text-xs text-zinc-500 font-normal">
+            <p className="text-xs text-slate-500 font-normal">
               Choose a plan that works best for you
             </p>
           </div>
@@ -101,8 +101,8 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             onClick={onClose}
             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
               isLight
-                ? "hover:bg-zinc-100 text-zinc-400 hover:text-zinc-600"
-                : "hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300"
+                ? "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                : "hover:bg-slate-800 text-slate-500 hover:text-slate-300"
             }`}
           >
             <svg
@@ -130,16 +130,16 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                   className={`relative p-4 rounded-xl border-2 transition-all text-left ${
                     selectedPlan === plan.id
                       ? isLight
-                        ? "border-zinc-400 bg-zinc-100/50"
-                        : "border-zinc-500 bg-zinc-800/50"
+                        ? "border-slate-400 bg-slate-100/50"
+                        : "border-slate-500 bg-slate-800/50"
                       : isLight
-                        ? "border-zinc-200 hover:border-zinc-300 bg-zinc-50"
-                        : "border-[#2A2A2E] hover:border-[#3F3F46] bg-[#1E1E21]"
+                        ? "border-slate-200 hover:border-slate-300 bg-slate-50"
+                        : "border-[#282b3a] hover:border-[#334155] bg-[#1e2130]"
                   }`}
                 >
                   {plan.popular && (
                     <span className={`absolute -top-2.5 left-4 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      isLight ? "bg-zinc-800 text-white" : "bg-zinc-200 text-zinc-900"
+                      isLight ? "bg-slate-800 text-white" : "bg-slate-200 text-slate-900"
                     }`}>
                       POPULAR
                     </span>
@@ -147,31 +147,31 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                   <div className="mb-3">
                     <h3
                       className={`font-semibold ${
-                        isLight ? "text-zinc-800" : "text-zinc-100"
+                        isLight ? "text-slate-800" : "text-slate-100"
                       }`}
                     >
                       {plan.name}
                     </h3>
-                    <p className="text-xs text-zinc-500">{plan.description}</p>
+                    <p className="text-xs text-slate-500">{plan.description}</p>
                   </div>
                   <div className="flex items-baseline gap-1 mb-3">
                     <span
                       className={`text-2xl font-bold ${
-                        isLight ? "text-zinc-800" : "text-zinc-100"
+                        isLight ? "text-slate-800" : "text-slate-100"
                       }`}
                     >
                       {plan.price}
                     </span>
-                    <span className="text-sm text-zinc-500">{plan.period}</span>
+                    <span className="text-sm text-slate-500">{plan.period}</span>
                   </div>
                   <ul className="space-y-1.5">
                     {plan.features.slice(0, 4).map((feature, idx) => (
                       <li
                         key={idx}
-                        className="flex items-center gap-2 text-xs text-zinc-500"
+                        className="flex items-center gap-2 text-xs text-slate-500"
                       >
                         <svg
-                          className={`w-3.5 h-3.5 flex-shrink-0 ${isLight ? "text-zinc-500" : "text-zinc-400"}`}
+                          className={`w-3.5 h-3.5 flex-shrink-0 ${isLight ? "text-slate-500" : "text-slate-400"}`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -195,27 +195,27 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             <div
               className={`rounded-xl p-4 ${
                 isLight
-                  ? "bg-zinc-50 border border-zinc-200"
-                  : "bg-[#1E1E21] border border-[#2A2A2E]"
+                  ? "bg-slate-50 border border-slate-200"
+                  : "bg-[#1e2130] border border-[#282b3a]"
               }`}
             >
               <h4
                 className={`text-sm font-medium mb-3 ${
-                  isLight ? "text-zinc-800" : "text-zinc-100"
+                  isLight ? "text-slate-800" : "text-slate-100"
                 }`}
               >
                 Order Summary
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">
+                  <span className="text-slate-500">
                     {PLANS.find((p) => p.id === selectedPlan)?.name} Plan
                   </span>
-                  <span className={isLight ? "text-zinc-800" : "text-zinc-100"}>
+                  <span className={isLight ? "text-slate-800" : "text-slate-100"}>
                     {PLANS.find((p) => p.id === selectedPlan)?.price}/mo
                   </span>
                 </div>
-                <div className={`flex justify-between ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
+                <div className={`flex justify-between ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                   <span>Annual discount (20%)</span>
                   <span>
                     -$
@@ -232,7 +232,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                 </div>
                 <div
                   className={`flex justify-between pt-2 border-t font-semibold ${
-                    isLight ? "border-zinc-200 text-zinc-800" : "border-[#2A2A2E] text-zinc-100"
+                    isLight ? "border-slate-200 text-slate-800" : "border-[#282b3a] text-slate-100"
                   }`}
                 >
                   <span>Total</span>
@@ -253,7 +253,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             </div>
 
             {/* Security Badge */}
-            <div className="flex items-center justify-center gap-2 text-xs text-zinc-500">
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-500">
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -278,8 +278,8 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             onPress={onClose}
             className={`font-medium text-sm rounded-xl h-10 px-5 ${
               isLight
-                ? "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800"
-                : "bg-[#27272A] text-zinc-400 hover:text-zinc-200"
+                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                : "bg-[#1a1d27] text-slate-400 hover:text-slate-200"
             }`}
           >
             Cancel
@@ -289,8 +289,8 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             isLoading={isProcessing}
             className={`font-semibold text-sm rounded-xl h-10 px-5 shadow-lg transition-all ${
               isLight
-                ? "bg-zinc-800 text-white hover:bg-zinc-700 shadow-zinc-500/20"
-                : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 shadow-zinc-500/10"
+                ? "bg-slate-800 text-white hover:bg-slate-700 shadow-slate-500/20"
+                : "bg-slate-100 text-slate-900 hover:bg-slate-200 shadow-slate-500/10"
             }`}
           >
             {isProcessing ? "Processing..." : "Upgrade Now"}

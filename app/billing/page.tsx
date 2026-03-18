@@ -43,15 +43,15 @@ export default function BillingPage() {
       {/* Page Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Billing</h1>
-          <p className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>Manage your subscription, payment methods, and invoices</p>
+          <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Billing</h1>
+          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>Manage your subscription, payment methods, and invoices</p>
         </div>
         <div className="flex items-center gap-3">
           <Button
             className={`font-semibold text-sm transition-all gap-2 rounded-xl ${
               isLight
-                ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-zinc-900"
-                : "bg-[#27272A] text-zinc-200 hover:bg-[#3F3F46] hover:text-white"
+                ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+                : "bg-[#1a1d27] text-slate-200 hover:bg-[#334155] hover:text-white"
             }`}
             startContent={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -77,30 +77,30 @@ export default function BillingPage() {
 
       {/* Current Subscription Card */}
       <div className={`mb-8 group relative overflow-hidden rounded-2xl border transition-all ${
-        isLight ? "bg-white border-zinc-200 hover:border-zinc-300" : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+        isLight ? "bg-white border-slate-200 hover:border-slate-300" : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
       }`}>
         <div className="relative p-6">
           <div className="flex items-start justify-between mb-6">
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <h2 className={`text-xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Business Plan</h2>
+                <h2 className={`text-xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Business Plan</h2>
                 <span className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ${
-                  isLight ? "bg-zinc-100 ring-zinc-200" : "bg-zinc-800 ring-zinc-700"
+                  isLight ? "bg-slate-100 ring-slate-200" : "bg-slate-800 ring-slate-700"
                 }`}>
                   <span className="relative flex h-2 w-2">
-                    <span className={`relative inline-flex rounded-full h-2 w-2 ${isLight ? "bg-zinc-500" : "bg-zinc-400"}`}></span>
+                    <span className={`relative inline-flex rounded-full h-2 w-2 ${isLight ? "bg-slate-500" : "bg-slate-400"}`}></span>
                   </span>
-                  <span className={`text-[11px] font-semibold ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>Active</span>
+                  <span className={`text-[11px] font-semibold ${isLight ? "text-slate-600" : "text-slate-400"}`}>Active</span>
                 </span>
               </div>
-              <p className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>Perfect for growing businesses with multiple sites</p>
+              <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>Perfect for growing businesses with multiple sites</p>
             </div>
             <div className="text-right">
               <div className="flex items-baseline gap-1 mb-1">
-                <span className={`text-3xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>$49</span>
-                <span className={`text-sm ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>/month</span>
+                <span className={`text-3xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>$49</span>
+                <span className={`text-sm ${isLight ? "text-slate-500" : "text-slate-500"}`}>/month</span>
               </div>
-              <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Billed monthly</p>
+              <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Billed monthly</p>
             </div>
           </div>
 
@@ -110,29 +110,29 @@ export default function BillingPage() {
               const percentage = (item.current / item.max) * 100;
               return (
                 <div key={item.label} className={`rounded-xl p-4 border ${
-                  isLight ? "bg-zinc-50 border-zinc-200" : "bg-[#18181B]/50 border-[#2A2A2E]"
+                  isLight ? "bg-slate-50 border-slate-200" : "bg-[#0f1117]/50 border-[#282b3a]"
                 }`}>
                   <div className="flex items-center gap-2 mb-3">
                     <div className={`w-8 h-8 rounded-lg ring-1 flex items-center justify-center ${
-                      isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-zinc-800 text-zinc-400 ring-zinc-700"
+                      isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-slate-800 text-slate-400 ring-slate-700"
                     }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                         <path d={item.icon} />
                       </svg>
                     </div>
-                    <span className={`text-xs font-medium ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>{item.label}</span>
+                    <span className={`text-xs font-medium ${isLight ? "text-slate-600" : "text-slate-400"}`}>{item.label}</span>
                   </div>
                   <div className="flex items-baseline gap-1 mb-2">
-                    <span className={`text-lg font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{item.current}</span>
-                    <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>/ {item.max} {item.unit || ""}</span>
+                    <span className={`text-lg font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{item.current}</span>
+                    <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>/ {item.max} {item.unit || ""}</span>
                   </div>
                   <Progress
                     size="sm"
                     value={percentage}
                     classNames={{
                       base: "h-1.5",
-                      track: isLight ? "bg-zinc-200" : "bg-[#27272A]",
-                      indicator: isLight ? "bg-zinc-400" : "bg-zinc-500",
+                      track: isLight ? "bg-slate-200" : "bg-[#1a1d27]",
+                      indicator: isLight ? "bg-slate-400" : "bg-slate-500",
                     }}
                   />
                 </div>
@@ -142,24 +142,24 @@ export default function BillingPage() {
 
           {/* Next Billing Info */}
           <div className={`mt-5 pt-5 border-t flex items-center justify-between ${
-            isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+            isLight ? "border-slate-200" : "border-[#282b3a]"
           }`}>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-xl ring-1 flex items-center justify-center ${
-                isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-zinc-800 text-zinc-400 ring-zinc-700"
+                isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-slate-800 text-slate-400 ring-slate-700"
               }`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                 </svg>
               </div>
               <div>
-                <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Next billing date</p>
-                <p className={`text-sm font-semibold ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>February 25, 2026</p>
+                <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Next billing date</p>
+                <p className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-200"}`}>February 25, 2026</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <button className={`text-sm font-medium transition-colors px-4 py-2 ${
-                isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-400 hover:text-zinc-200"
+                isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
               }`}>
                 Cancel Plan
               </button>
@@ -177,7 +177,7 @@ export default function BillingPage() {
       {/* Payment Methods */}
       <div className="mb-10">
         <div className="flex justify-between items-center mb-5">
-          <h2 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Payment Methods</h2>
+          <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Payment Methods</h2>
           <Button
             className={`font-semibold text-sm text-white transition-colors rounded-xl gap-2 ${accent.button} ${accent.buttonHover}`}
             startContent={
@@ -197,34 +197,34 @@ export default function BillingPage() {
             className={`group relative rounded-xl p-5 cursor-pointer transition-all overflow-hidden border-2 ${
               isLight
                 ? selectedPayment === "credit-card"
-                  ? "bg-white border-zinc-400 hover:border-zinc-500"
-                  : "bg-white border-zinc-200 hover:border-zinc-300"
+                  ? "bg-white border-slate-400 hover:border-slate-500"
+                  : "bg-white border-slate-200 hover:border-slate-300"
                 : selectedPayment === "credit-card"
-                  ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-zinc-500 hover:border-zinc-400"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-slate-500 hover:border-slate-400"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
             }`}
           >
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                    isLight ? "bg-zinc-200 text-zinc-600" : "bg-zinc-700 text-zinc-300"
+                    isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-300"
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
                     </svg>
                   </div>
                   <div>
-                    <span className={`font-semibold block ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Credit Card</span>
-                    <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Visa ending in 4242</span>
+                    <span className={`font-semibold block ${isLight ? "text-slate-800" : "text-slate-100"}`}>Credit Card</span>
+                    <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Visa ending in 4242</span>
                   </div>
                 </div>
                 {selectedPayment === "credit-card" && (
                   <Chip
                     size="sm"
                     classNames={{
-                      base: isLight ? "bg-zinc-100 border-0" : "bg-zinc-800 border-0",
-                      content: isLight ? "text-zinc-600 font-semibold text-[10px]" : "text-zinc-400 font-semibold text-[10px]"
+                      base: isLight ? "bg-slate-100 border-0" : "bg-slate-800 border-0",
+                      content: isLight ? "text-slate-600 font-semibold text-[10px]" : "text-slate-400 font-semibold text-[10px]"
                     }}
                   >
                     Default
@@ -232,8 +232,8 @@ export default function BillingPage() {
                 )}
               </div>
               <div className="flex items-center justify-between">
-                <p className={`text-sm font-mono ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4242</p>
-                <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Exp 12/27</span>
+                <p className={`text-sm font-mono ${isLight ? "text-slate-600" : "text-slate-400"}`}>&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4242</p>
+                <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Exp 12/27</span>
               </div>
             </div>
           </div>
@@ -244,34 +244,34 @@ export default function BillingPage() {
             className={`group relative rounded-xl p-5 cursor-pointer transition-all overflow-hidden border-2 ${
               isLight
                 ? selectedPayment === "balance"
-                  ? "bg-white border-zinc-400 hover:border-zinc-500"
-                  : "bg-white border-zinc-200 hover:border-zinc-300"
+                  ? "bg-white border-slate-400 hover:border-slate-500"
+                  : "bg-white border-slate-200 hover:border-slate-300"
                 : selectedPayment === "balance"
-                  ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-zinc-500 hover:border-zinc-400"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-slate-500 hover:border-slate-400"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
             }`}
           >
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                    isLight ? "bg-zinc-200 text-zinc-600" : "bg-zinc-700 text-zinc-300"
+                    isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-300"
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
                     </svg>
                   </div>
                   <div>
-                    <span className={`font-semibold block ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Account Balance</span>
-                    <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Prepaid credits</span>
+                    <span className={`font-semibold block ${isLight ? "text-slate-800" : "text-slate-100"}`}>Account Balance</span>
+                    <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Prepaid credits</span>
                   </div>
                 </div>
                 {selectedPayment === "balance" && (
                   <Chip
                     size="sm"
                     classNames={{
-                      base: isLight ? "bg-zinc-100 border-0" : "bg-zinc-800 border-0",
-                      content: isLight ? "text-zinc-600 font-semibold text-[10px]" : "text-zinc-400 font-semibold text-[10px]"
+                      base: isLight ? "bg-slate-100 border-0" : "bg-slate-800 border-0",
+                      content: isLight ? "text-slate-600 font-semibold text-[10px]" : "text-slate-400 font-semibold text-[10px]"
                     }}
                   >
                     Default
@@ -280,11 +280,11 @@ export default function BillingPage() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-baseline gap-1">
-                  <span className={`text-xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>$247.50</span>
-                  <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>available</span>
+                  <span className={`text-xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>$247.50</span>
+                  <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>available</span>
                 </div>
                 <button className={`text-xs font-semibold transition-colors flex items-center gap-1 ${
-                  isLight ? "text-zinc-600 hover:text-zinc-800" : "text-zinc-400 hover:text-zinc-200"
+                  isLight ? "text-slate-600 hover:text-slate-800" : "text-slate-400 hover:text-slate-200"
                 }`}>
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 4v16m8-8H4" />
@@ -301,34 +301,34 @@ export default function BillingPage() {
             className={`group relative rounded-xl p-5 cursor-pointer transition-all overflow-hidden border-2 ${
               isLight
                 ? selectedPayment === "crypto"
-                  ? "bg-white border-zinc-400 hover:border-zinc-500"
-                  : "bg-white border-zinc-200 hover:border-zinc-300"
+                  ? "bg-white border-slate-400 hover:border-slate-500"
+                  : "bg-white border-slate-200 hover:border-slate-300"
                 : selectedPayment === "crypto"
-                  ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-zinc-500 hover:border-zinc-400"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-slate-500 hover:border-slate-400"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
             }`}
           >
             <div className="relative">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${
-                    isLight ? "bg-zinc-200 text-zinc-600" : "bg-zinc-700 text-zinc-300"
+                    isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-300"
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                     </svg>
                   </div>
                   <div>
-                    <span className={`font-semibold block ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Cryptocurrency</span>
-                    <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>BTC, ETH, USDT</span>
+                    <span className={`font-semibold block ${isLight ? "text-slate-800" : "text-slate-100"}`}>Cryptocurrency</span>
+                    <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>BTC, ETH, USDT</span>
                   </div>
                 </div>
                 {selectedPayment === "crypto" && (
                   <Chip
                     size="sm"
                     classNames={{
-                      base: isLight ? "bg-zinc-100 border-0" : "bg-zinc-800 border-0",
-                      content: isLight ? "text-zinc-600 font-semibold text-[10px]" : "text-zinc-400 font-semibold text-[10px]"
+                      base: isLight ? "bg-slate-100 border-0" : "bg-slate-800 border-0",
+                      content: isLight ? "text-slate-600 font-semibold text-[10px]" : "text-slate-400 font-semibold text-[10px]"
                     }}
                   >
                     Default
@@ -337,16 +337,16 @@ export default function BillingPage() {
               </div>
               <div className="flex gap-2">
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-[#27272A] text-zinc-400 ring-[#3F3F46]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
                 }`}>BTC</span>
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-[#27272A] text-zinc-400 ring-[#3F3F46]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
                 }`}>ETH</span>
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-[#27272A] text-zinc-400 ring-[#3F3F46]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
                 }`}>USDT</span>
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-[#27272A] text-zinc-400 ring-[#3F3F46]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
                 }`}>+5</span>
               </div>
             </div>
@@ -357,9 +357,9 @@ export default function BillingPage() {
       {/* Recent Invoices */}
       <div className="mb-10">
         <div className="flex justify-between items-center mb-5">
-          <h2 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Recent Invoices</h2>
+          <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Recent Invoices</h2>
           <button className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
-            isLight ? "text-zinc-600 hover:text-zinc-800" : "text-zinc-400 hover:text-zinc-200"
+            isLight ? "text-slate-600 hover:text-slate-800" : "text-slate-400 hover:text-slate-200"
           }`}>
             View All
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -369,7 +369,7 @@ export default function BillingPage() {
         </div>
 
         <div className={`rounded-2xl border overflow-hidden ${
-          isLight ? "bg-white border-zinc-200" : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+          isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
         }`}>
           <Table
             aria-label="Invoices"
@@ -377,11 +377,11 @@ export default function BillingPage() {
             classNames={{
               table: "bg-transparent",
               th: `text-[11px] font-semibold uppercase tracking-wider py-4 px-6 first:rounded-tl-none last:rounded-tr-none border-b ${
-                isLight ? "bg-zinc-50 text-zinc-500 border-zinc-200" : "bg-[#18181B]/80 text-zinc-500 border-[#2A2A2E]"
+                isLight ? "bg-slate-50 text-slate-500 border-slate-200" : "bg-[#0f1117]/80 text-slate-500 border-[#282b3a]"
               }`,
               td: "text-sm py-4 px-6",
               tr: `border-b last:border-b-0 transition-colors ${
-                isLight ? "hover:bg-zinc-50 border-zinc-100" : "hover:bg-[#27272A]/30 border-[#2A2A2E]/50"
+                isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[#1a1d27]/30 border-[#282b3a]/50"
               }`,
             }}
           >
@@ -397,23 +397,23 @@ export default function BillingPage() {
               {invoices.map((inv) => (
                   <TableRow key={inv.id}>
                     <TableCell>
-                      <span className={`font-mono font-medium text-xs ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{inv.id}</span>
+                      <span className={`font-mono font-medium text-xs ${isLight ? "text-slate-700" : "text-slate-200"}`}>{inv.id}</span>
                     </TableCell>
-                    <TableCell className={isLight ? "text-zinc-600" : "text-zinc-400"}>{inv.description}</TableCell>
-                    <TableCell className={isLight ? "text-zinc-500" : "text-zinc-500"}>{inv.date}</TableCell>
-                    <TableCell className={`font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{inv.amount}</TableCell>
+                    <TableCell className={isLight ? "text-slate-600" : "text-slate-400"}>{inv.description}</TableCell>
+                    <TableCell className={isLight ? "text-slate-500" : "text-slate-500"}>{inv.date}</TableCell>
+                    <TableCell className={`font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{inv.amount}</TableCell>
                     <TableCell>
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-inset ${
-                        isLight ? "bg-zinc-100 ring-zinc-200" : "bg-zinc-800 ring-zinc-700"
+                        isLight ? "bg-slate-100 ring-slate-200" : "bg-slate-800 ring-slate-700"
                       }`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${isLight ? "bg-zinc-500" : "bg-zinc-400"}`} />
-                        <span className={`text-[11px] font-semibold ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>{inv.status}</span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${isLight ? "bg-slate-500" : "bg-slate-400"}`} />
+                        <span className={`text-[11px] font-semibold ${isLight ? "text-slate-600" : "text-slate-400"}`}>{inv.status}</span>
                       </span>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                          isLight ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-700" : "bg-[#27272A]/50 hover:bg-[#27272A] text-zinc-400 hover:text-zinc-200"
+                          isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200"
                         }`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -421,7 +421,7 @@ export default function BillingPage() {
                           </svg>
                         </button>
                         <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                          isLight ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-700" : "bg-[#27272A]/50 hover:bg-[#27272A] text-zinc-400 hover:text-zinc-200"
+                          isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200"
                         }`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -439,33 +439,33 @@ export default function BillingPage() {
       {/* Billing Support Banner */}
       <div className={`group relative overflow-hidden rounded-2xl border transition-all ${
         isLight
-          ? "bg-white border-zinc-200 hover:border-zinc-300"
-          : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+          ? "bg-white border-slate-200 hover:border-slate-300"
+          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
       }`}>
         <div className="relative px-6 py-5 flex items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className={`w-12 h-12 rounded-xl ring-1 flex items-center justify-center ${
-              isLight ? "bg-zinc-100 text-zinc-600 ring-zinc-200" : "bg-zinc-800 text-zinc-400 ring-zinc-700"
+              isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-slate-800 text-slate-400 ring-slate-700"
             }`}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
               </svg>
             </div>
             <div>
-              <h3 className={`text-sm font-semibold mb-0.5 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Need help with billing?</h3>
-              <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Our support team is available 24/7 to assist with any billing questions or issues.</p>
+              <h3 className={`text-sm font-semibold mb-0.5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Need help with billing?</h3>
+              <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Our support team is available 24/7 to assist with any billing questions or issues.</p>
             </div>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
             <button className={`text-sm font-medium transition-colors px-4 py-2 ${
-              isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-400 hover:text-zinc-200"
+              isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
             }`}>
               View FAQ
             </button>
             <button className={`h-10 px-5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
               isLight
-                ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-700 hover:text-zinc-900 border-zinc-200"
-                : "bg-[#27272A] hover:bg-[#3F3F46] text-zinc-200 hover:text-white border-[#3F3F46]"
+                ? "bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border-slate-200"
+                : "bg-[#1a1d27] hover:bg-[#334155] text-slate-200 hover:text-white border-[#334155]"
             }`}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />

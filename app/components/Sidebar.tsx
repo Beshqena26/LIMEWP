@@ -133,8 +133,8 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
             isActive
               ? `${accent.activeBg} ${accent.text} ring-1 ${accent.activeRing}`
               : isLight
-              ? `bg-zinc-200/50 text-zinc-500 ${accent.hoverBg} ${accent.hoverText}`
-              : `bg-[#27272A]/50 text-zinc-400 ${accent.hoverBg} ${accent.hoverText}`
+              ? `bg-slate-200/50 text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
+              : `bg-[#1a1d27]/50 text-slate-400 ${accent.hoverBg} ${accent.hoverText}`
           }`}
         >
           <svg
@@ -156,8 +156,8 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
             isActive
               ? accent.text
               : isLight
-              ? `text-zinc-600 ${accent.hoverText}`
-              : `text-zinc-400 ${accent.hoverText}`
+              ? `text-slate-600 ${accent.hoverText}`
+              : `text-slate-400 ${accent.hoverText}`
           }`}
         >
           {item.label}
@@ -170,8 +170,8 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
               isActive
                 ? `${accent.activeBg} ${accent.text}`
                 : isLight
-                ? `bg-zinc-200 text-zinc-500 ${accent.hoverBg} ${accent.hoverText}`
-                : `bg-[#27272A] text-zinc-500 ${accent.hoverBg} ${accent.hoverText}`
+                ? `bg-slate-200 text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
+                : `bg-[#1a1d27] text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
             }`}
           >
             {item.badge}
@@ -184,8 +184,8 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
             isActive
               ? `${accent.text} opacity-100`
               : isLight
-              ? `text-zinc-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 ${accent.hoverText}`
-              : `text-zinc-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 ${accent.hoverText}`
+              ? `text-slate-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 ${accent.hoverText}`
+              : `text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 ${accent.hoverText}`
           }`}
           fill="none"
           stroke="currentColor"
@@ -219,10 +219,10 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
               isActive
                 ? isLight
                   ? `bg-gradient-to-r ${accent.activeBgLight} ${accent.activeRing30} shadow-sm ${accent.activeShadowLight}`
-                  : `bg-gradient-to-r from-[#27272A] to-[#2A2A2E] ${accent.activeRing30}`
+                  : `bg-gradient-to-r from-[#1a1d27] to-[#282b3a] ${accent.activeRing30}`
                 : isLight
-                ? "bg-zinc-50/50 ring-zinc-200/60 hover:bg-zinc-100/80 hover:ring-zinc-300/60"
-                : "ring-transparent hover:bg-[#27272A]/70"
+                ? "bg-slate-50/50 ring-slate-200/60 hover:bg-slate-100/80 hover:ring-slate-300/60"
+                : "ring-transparent hover:bg-[#1a1d27]/70"
             }`}
           >
             {isActive && (
@@ -232,7 +232,7 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
               <div
                 className={`w-9 h-9 rounded-xl bg-gradient-to-br ${site.gradient} flex items-center justify-center transition-all ring-2 ${
                   isLight
-                    ? `shadow-md shadow-zinc-200/80 group-hover:shadow-lg group-hover:shadow-zinc-300/70 ${isActive ? `${accent.activeRing50} ${accent.activeShadowIconLight}` : "ring-black/[0.04] group-hover:scale-105"}`
+                    ? `shadow-md shadow-slate-200/80 group-hover:shadow-lg group-hover:shadow-slate-300/70 ${isActive ? `${accent.activeRing50} ${accent.activeShadowIconLight}` : "ring-black/[0.04] group-hover:scale-105"}`
                     : `shadow-lg shadow-black/30 group-hover:shadow-black/40 ${isActive ? accent.activeRing50 : "ring-transparent group-hover:scale-105"}`
                 }`}
               >
@@ -251,11 +251,11 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
               {/* Status dot with pulse */}
               <div className="absolute -bottom-0.5 -right-0.5">
                 {site.status === "online" && (
-                  <span className={`absolute inset-0 rounded-full animate-ping opacity-40 ${isLight ? "bg-zinc-500" : "bg-zinc-400"}`} />
+                  <span className={`absolute inset-0 rounded-full animate-ping opacity-40 ${isLight ? "bg-slate-500" : "bg-slate-400"}`} />
                 )}
                 <div
-                  className={`relative w-2.5 h-2.5 rounded-full border-2 ${isLight ? "border-white" : "border-[#18181B]"} ${
-                    site.status === "online" ? (isLight ? "bg-zinc-500" : "bg-zinc-400") : "bg-zinc-500"
+                  className={`relative w-2.5 h-2.5 rounded-full border-2 ${isLight ? "border-white" : "border-[#0f1117]"} ${
+                    site.status === "online" ? (isLight ? "bg-slate-500" : "bg-slate-400") : "bg-slate-500"
                   }`}
                 />
               </div>
@@ -264,28 +264,28 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
               <div
                 className={`text-[12px] font-semibold truncate transition-colors ${
                   isActive
-                    ? isLight ? "text-zinc-900" : "text-white"
+                    ? isLight ? "text-slate-900" : "text-white"
                     : isLight
-                    ? "text-zinc-700 group-hover:text-zinc-900"
-                    : "text-zinc-300 group-hover:text-white"
+                    ? "text-slate-700 group-hover:text-slate-900"
+                    : "text-slate-300 group-hover:text-white"
                 }`}
               >
                 {site.name}
               </div>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span
-                  className={`text-[10px] font-medium ${isActive ? accent.text : isLight ? "text-zinc-600" : "text-zinc-500"}`}
+                  className={`text-[10px] font-medium ${isActive ? accent.text : isLight ? "text-slate-600" : "text-slate-500"}`}
                 >
                   {site.visits} visits
                 </span>
-                <span className={isLight ? "text-zinc-300" : "text-zinc-700"}>·</span>
+                <span className={isLight ? "text-slate-300" : "text-slate-700"}>·</span>
                 <span
                   className={`text-[10px] font-medium capitalize flex items-center gap-1 ${
-                    isLight ? "text-zinc-500" : "text-zinc-500"
+                    isLight ? "text-slate-500" : "text-slate-500"
                   }`}
                 >
                   {site.status === "online" && (
-                    <span className={`w-1 h-1 rounded-full ${isLight ? "bg-zinc-500" : "bg-zinc-400"}`} />
+                    <span className={`w-1 h-1 rounded-full ${isLight ? "bg-slate-500" : "bg-slate-400"}`} />
                   )}
                   {site.status}
                 </span>
@@ -296,8 +296,8 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
                 isActive
                   ? `${accent.text} opacity-100 translate-x-0`
                   : isLight
-                  ? "text-zinc-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
-                  : "text-zinc-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
+                  ? "text-slate-400 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
+                  : "text-slate-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
               }`}
               fill="none"
               stroke="currentColor"
@@ -337,8 +337,8 @@ function NavGroupComponent({
         <div className="flex items-center">
           <span className={`text-[10px] uppercase tracking-widest font-semibold transition-colors ${
             isLight
-              ? "text-zinc-500 group-hover/header:text-zinc-600"
-              : "text-zinc-500 group-hover/header:text-zinc-400"
+              ? "text-slate-500 group-hover/header:text-slate-600"
+              : "text-slate-500 group-hover/header:text-slate-400"
           }`}>
             {group.label}
           </span>
@@ -346,8 +346,8 @@ function NavGroupComponent({
         <svg
           className={`w-4 h-4 transition-all duration-200 ${isOpen ? "rotate-0" : "-rotate-90"} ${
             isLight
-              ? "text-zinc-400 group-hover/header:text-zinc-600"
-              : "text-zinc-600 group-hover/header:text-zinc-400"
+              ? "text-slate-400 group-hover/header:text-slate-600"
+              : "text-slate-600 group-hover/header:text-slate-400"
           }`}
           fill="none"
           stroke="currentColor"
@@ -400,12 +400,12 @@ export default function Sidebar() {
   return (
     <aside className={`fixed top-0 left-0 w-[260px] h-full flex flex-col z-50 border-r transition-colors ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-[#18181B] border-white/[0.06]"
+        ? "bg-white border-slate-200"
+        : "bg-[#0f1117] border-white/[0.06]"
     }`}>
       {/* Logo Header */}
       <div className={`h-16 px-5 flex items-center border-b ${
-        isLight ? "border-zinc-200" : "border-white/[0.04]"
+        isLight ? "border-slate-200" : "border-white/[0.04]"
       }`}>
         <Link href={ROUTES.DASHBOARD} className="group">
           <Image
@@ -423,7 +423,7 @@ export default function Sidebar() {
       <div className="px-5 pt-5">
         <div className="pt-0 pb-2.5 flex items-center">
           <span className={`text-[10px] uppercase tracking-widest font-semibold ${
-            isLight ? "text-zinc-500" : "text-zinc-500"
+            isLight ? "text-slate-500" : "text-slate-500"
           }`}>
             Overview
           </span>
@@ -440,7 +440,7 @@ export default function Sidebar() {
         <div className="pt-3 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className={`text-[10px] uppercase tracking-widest font-semibold ${
-              isLight ? "text-zinc-500" : "text-zinc-500"
+              isLight ? "text-slate-500" : "text-slate-500"
             }`}>
               My Sites
             </span>
@@ -470,7 +470,7 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation Groups (excluding Overview) */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
         {NAV_GROUPS.slice(1).map((group) => (
           <NavGroupComponent
             key={group.label}
@@ -487,8 +487,8 @@ export default function Sidebar() {
       <div className="px-3 pb-3">
         <div className={`group relative overflow-hidden rounded-2xl border p-4 transition-all ${
           isLight
-            ? "bg-gradient-to-br from-white to-zinc-50 border-zinc-200 hover:border-zinc-300"
-            : `bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] ${accentStyle.border}`
+            ? "bg-gradient-to-br from-white to-slate-50 border-slate-200 hover:border-slate-300"
+            : `bg-gradient-to-br from-[#1e2130] to-[#181b28] ${accentStyle.border}`
         }`}>
           {/* Animated gradient background */}
           <div className={`absolute inset-0 bg-gradient-to-br ${accentStyle.glow} via-transparent to-transparent opacity-60`} />
@@ -518,10 +518,10 @@ export default function Sidebar() {
               </span>
             </div>
 
-            <p className={`text-[14px] font-semibold mb-1 ${isLight ? "text-zinc-900" : "text-white"}`}>
+            <p className={`text-[14px] font-semibold mb-1 ${isLight ? "text-slate-900" : "text-white"}`}>
               Unlock Premium
             </p>
-            <p className={`text-[11px] mb-4 leading-relaxed ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>
+            <p className={`text-[11px] mb-4 leading-relaxed ${isLight ? "text-slate-500" : "text-slate-400"}`}>
               Staging, auto-backups, and priority support.
             </p>
 
@@ -550,8 +550,8 @@ export default function Sidebar() {
       <div className="px-3 pb-4">
         <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors group ${
           isLight
-            ? "bg-zinc-50/50 border-zinc-200 hover:border-zinc-300"
-            : "bg-[#1E1E21]/50 border-[#27272A] hover:border-[#3F3F46]"
+            ? "bg-slate-50/50 border-slate-200 hover:border-slate-300"
+            : "bg-[#1e2130]/50 border-[#1a1d27] hover:border-[#334155]"
         }`}>
           <div className="w-8 h-8 rounded-lg bg-sky-500/10 ring-1 ring-sky-500/20 flex items-center justify-center flex-shrink-0">
             <svg
@@ -567,7 +567,7 @@ export default function Sidebar() {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <span className={`text-[12px] ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>Need help?</span>
+            <span className={`text-[12px] ${isLight ? "text-slate-500" : "text-slate-400"}`}>Need help?</span>
           </div>
           <Link
             href={ROUTES.SUPPORT}

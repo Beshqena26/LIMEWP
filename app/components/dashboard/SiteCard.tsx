@@ -61,9 +61,9 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
 
   const healthStatus = site.health >= 80 ? "good" : site.health >= 60 ? "warning" : "critical";
   const healthColors = {
-    good: isLight ? "text-zinc-700" : "text-zinc-300",
-    warning: isLight ? "text-zinc-600" : "text-zinc-400",
-    critical: isLight ? "text-zinc-500" : "text-zinc-500",
+    good: isLight ? "text-slate-700" : "text-slate-300",
+    warning: isLight ? "text-slate-600" : "text-slate-400",
+    critical: isLight ? "text-slate-500" : "text-slate-500",
   };
 
   return (
@@ -72,8 +72,8 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
       className={cn(
         "group relative rounded-xl transition-all duration-200 p-5 cursor-pointer h-full",
         isLight
-          ? "bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-md"
-          : "bg-[#1C1C1F] border border-[#2A2A2E] hover:border-[#3A3A3E]"
+          ? "bg-white border border-slate-200 hover:border-slate-300 hover:shadow-md"
+          : "bg-[#1a1d27] border border-[#282b3a] hover:border-[#475569]"
       )}
     >
       {/* Header */}
@@ -89,7 +89,7 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
           <div>
             <span className={cn(
                 "font-semibold text-sm",
-                isLight ? "text-zinc-900" : "text-zinc-100"
+                isLight ? "text-slate-900" : "text-slate-100"
               )}>{site.name}</span>
             <button
               onClick={(e) => { e.stopPropagation(); onVisit?.(); }}
@@ -97,11 +97,11 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
             >
               <span className={cn(
                 "text-xs transition-colors",
-                isLight ? "text-zinc-500 group-hover/link:text-zinc-700" : "text-zinc-500 group-hover/link:text-zinc-300"
+                isLight ? "text-slate-500 group-hover/link:text-slate-700" : "text-slate-500 group-hover/link:text-slate-300"
               )}>{site.wordpress}</span>
               <svg className={cn(
                 "w-3 h-3 transition-colors",
-                isLight ? "text-zinc-400 group-hover/link:text-zinc-600" : "text-zinc-600 group-hover/link:text-zinc-400"
+                isLight ? "text-slate-400 group-hover/link:text-slate-600" : "text-slate-600 group-hover/link:text-slate-400"
               )} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
               </svg>
@@ -112,7 +112,7 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
         {/* Online status badge */}
         <span className={cn(
           "text-[10px] font-medium px-2 py-0.5 rounded-md",
-          isLight ? "bg-zinc-100 text-zinc-500" : "bg-zinc-800 text-zinc-500"
+          isLight ? "bg-slate-100 text-slate-500" : "bg-slate-800 text-slate-500"
         )}>
           Online
         </span>
@@ -121,32 +121,32 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
       {/* Stats Grid */}
       <div className={cn(
         "grid grid-cols-3 gap-3 py-3 border-y",
-        isLight ? "border-zinc-100" : "border-zinc-800"
+        isLight ? "border-slate-100" : "border-slate-800"
       )}>
         <div>
           <div className={cn(
             "text-[11px] uppercase tracking-wide mb-1",
-            isLight ? "text-zinc-400" : "text-zinc-500"
+            isLight ? "text-slate-400" : "text-slate-500"
           )}>Visits</div>
           <div className={cn(
             "text-sm font-semibold tabular-nums",
-            isLight ? "text-zinc-800" : "text-zinc-200"
+            isLight ? "text-slate-800" : "text-slate-200"
           )}>{site.visits}</div>
         </div>
         <div>
           <div className={cn(
             "text-[11px] uppercase tracking-wide mb-1",
-            isLight ? "text-zinc-400" : "text-zinc-500"
+            isLight ? "text-slate-400" : "text-slate-500"
           )}>Storage</div>
           <div className={cn(
             "text-sm font-semibold tabular-nums",
-            isLight ? "text-zinc-800" : "text-zinc-200"
+            isLight ? "text-slate-800" : "text-slate-200"
           )}>{site.storage}</div>
         </div>
         <div>
           <div className={cn(
             "text-[11px] uppercase tracking-wide mb-1",
-            isLight ? "text-zinc-400" : "text-zinc-500"
+            isLight ? "text-slate-400" : "text-slate-500"
           )}>Health</div>
           <div className={cn(
             "text-sm font-semibold tabular-nums",
@@ -160,45 +160,45 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
         <div className="flex items-center gap-3">
           <span className={cn(
             "text-xs w-12 flex-shrink-0",
-            isLight ? "text-zinc-500" : "text-zinc-500"
+            isLight ? "text-slate-500" : "text-slate-500"
           )}>CPU</span>
           <div className={cn(
             "flex-1 h-1.5 rounded-full overflow-hidden",
-            isLight ? "bg-zinc-100" : "bg-zinc-800"
+            isLight ? "bg-slate-100" : "bg-slate-800"
           )}>
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-500 ease-out",
-                isLight ? "bg-zinc-400" : "bg-zinc-500"
+                isLight ? "bg-slate-400" : "bg-slate-500"
               )}
               style={{ width: `${displayCpu}%` }}
             />
           </div>
           <span className={cn(
             "text-xs tabular-nums w-8 text-right flex-shrink-0 transition-all",
-            isLight ? "text-zinc-600" : "text-zinc-400"
+            isLight ? "text-slate-600" : "text-slate-400"
           )}>{displayCpu}%</span>
         </div>
         <div className="flex items-center gap-3">
           <span className={cn(
             "text-xs w-12 flex-shrink-0",
-            isLight ? "text-zinc-500" : "text-zinc-500"
+            isLight ? "text-slate-500" : "text-slate-500"
           )}>Memory</span>
           <div className={cn(
             "flex-1 h-1.5 rounded-full overflow-hidden",
-            isLight ? "bg-zinc-100" : "bg-zinc-800"
+            isLight ? "bg-slate-100" : "bg-slate-800"
           )}>
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-700 ease-out",
-                isLight ? "bg-zinc-400" : "bg-zinc-500"
+                isLight ? "bg-slate-400" : "bg-slate-500"
               )}
               style={{ width: `${displayMemory}%` }}
             />
           </div>
           <span className={cn(
             "text-xs tabular-nums w-8 text-right flex-shrink-0 transition-all",
-            isLight ? "text-zinc-600" : "text-zinc-400"
+            isLight ? "text-slate-600" : "text-slate-400"
           )}>{displayMemory}%</span>
         </div>
       </div>

@@ -82,8 +82,8 @@ export default function Footer() {
       {/* Main Footer Content */}
       <div className={`relative border-t transition-colors ${
         isLight
-          ? "bg-white border-zinc-200"
-          : "bg-[#18181B] border-white/[0.06]"
+          ? "bg-white border-slate-200"
+          : "bg-[#0f1117] border-white/[0.06]"
       }`}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
@@ -99,7 +99,7 @@ export default function Footer() {
                 />
               </Link>
               <p className={`text-sm leading-relaxed mb-8 max-w-sm ${
-                isLight ? "text-zinc-600" : "text-zinc-400"
+                isLight ? "text-slate-600" : "text-slate-400"
               }`}>
                 Premium managed WordPress hosting engineered for exceptional performance,
                 enterprise-grade security, and delightful simplicity.
@@ -113,8 +113,8 @@ export default function Footer() {
                     href={social.href}
                     className={`group w-10 h-10 rounded-xl flex items-center justify-center transition-all ring-1 ${
                       isLight
-                        ? `bg-zinc-100 text-zinc-500 ring-zinc-200 ${social.hoverColor}`
-                        : `bg-[#27272A] text-zinc-400 ring-[#3F3F46] ${social.hoverColor}`
+                        ? `bg-slate-100 text-slate-500 ring-slate-200 ${social.hoverColor}`
+                        : `bg-[#1a1d27] text-slate-400 ring-[#334155] ${social.hoverColor}`
                     }`}
                     aria-label={social.label}
                   >
@@ -135,7 +135,7 @@ export default function Footer() {
               {FOOTER_LINKS.map((section) => (
                 <div key={section.title}>
                   <h3 className={`text-sm font-semibold mb-5 ${
-                    isLight ? "text-zinc-900" : "text-zinc-100"
+                    isLight ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {section.title}
                   </h3>
@@ -146,8 +146,8 @@ export default function Footer() {
                           href={link.href}
                           className={`group inline-flex items-center gap-2 text-sm transition-all ${
                             isLight
-                              ? "text-zinc-600 hover:text-emerald-600"
-                              : "text-zinc-400 hover:text-emerald-400"
+                              ? "text-slate-600 hover:text-emerald-600"
+                              : "text-slate-400 hover:text-emerald-400"
                           }`}
                         >
                           <span className="relative">
@@ -172,17 +172,17 @@ export default function Footer() {
 
           {/* Bottom Bar */}
           <div className={`py-8 border-t ${
-            isLight ? "border-zinc-200" : "border-white/[0.06]"
+            isLight ? "border-slate-200" : "border-white/[0.06]"
           }`}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-2 text-sm">
-                <span className={isLight ? "text-zinc-500" : "text-zinc-500"}>
+                <span className={isLight ? "text-slate-500" : "text-slate-500"}>
                   {currentYear} LimeWP. All rights reserved.
                 </span>
                 <Link
                   href={ROUTES.PRIVACY}
                   className={`transition-colors ${
-                    isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-500 hover:text-zinc-300"
+                    isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"
                   }`}
                 >
                   Privacy
@@ -190,7 +190,7 @@ export default function Footer() {
                 <Link
                   href={ROUTES.TERMS}
                   className={`transition-colors ${
-                    isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-500 hover:text-zinc-300"
+                    isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"
                   }`}
                 >
                   Terms
@@ -198,7 +198,7 @@ export default function Footer() {
                 <Link
                   href={ROUTES.COOKIES}
                   className={`transition-colors ${
-                    isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-500 hover:text-zinc-300"
+                    isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"
                   }`}
                 >
                   Cookies
@@ -209,7 +209,7 @@ export default function Footer() {
                 <Link
                   href="#"
                   className={`flex items-center gap-2 text-sm transition-colors ${
-                    isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-500 hover:text-zinc-300"
+                    isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"
                   }`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>

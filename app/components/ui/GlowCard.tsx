@@ -31,9 +31,9 @@ export function GlowCard({
 
   return (
     <div className={cn(
-      "relative bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] rounded-2xl border overflow-hidden",
-      borderColor || "border-[#2A2A2E]",
-      hoverBorder && "hover:border-[#3F3F46]",
+      "relative bg-gradient-to-br from-[#1e2130] to-[#181b28] rounded-2xl border overflow-hidden",
+      borderColor || "border-[#282b3a]",
+      hoverBorder && "hover:border-[#334155]",
       "transition-all",
       className
     )}>

@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 :root {
-  /* Default theme (dark mode) */
-  --bg-main: #18181B;
-  --bg-card: #1E1E21;
-  --bg-sidebar: #18181B;
-  --bg-sidebar-hover: #27272A;
-  --bg-elevated: #27272A;
-  --bg-input: #27272A;
-  --text-primary: #FAFAFA;
-  --text-secondary: #A1A1AA;
-  --text-tertiary: #71717A;
-  --text-sidebar: #A1A1AA;
+  /* Default theme (dark mode) — matches landing page */
+  --bg-main: #0f1117;
+  --bg-card: #1e2130;
+  --bg-sidebar: #161923;
+  --bg-sidebar-hover: #282b3a;
+  --bg-elevated: #1a1d27;
+  --bg-input: #1e2130;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-sidebar: #cbd5e1;
   --text-sidebar-active: #ffffff;
-  --border: #3F3F46;
-  --border-light: #27272A;
-  --scrollbar-thumb: #52525B;
-  --scrollbar-thumb-hover: #71717A;
+  --border: #334155;
+  --border-light: #1e293b;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
 
-  /* Default accent (emerald) */
+  /* Default accent (emerald — landing brand) */
   --accent: #10b981;
   --accent-light: #34d399;
   --accent-dark: #059669;
@@ -28,40 +28,40 @@
 
 /* Dark mode class (default) */
 .dark {
-  --bg-main: #18181B;
-  --bg-card: #1E1E21;
-  --bg-sidebar: #18181B;
-  --bg-sidebar-hover: #27272A;
-  --bg-elevated: #27272A;
-  --bg-input: #27272A;
-  --text-primary: #FAFAFA;
-  --text-secondary: #A1A1AA;
-  --text-tertiary: #71717A;
-  --text-sidebar: #A1A1AA;
+  --bg-main: #0f1117;
+  --bg-card: #1e2130;
+  --bg-sidebar: #161923;
+  --bg-sidebar-hover: #282b3a;
+  --bg-elevated: #1a1d27;
+  --bg-input: #1e2130;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-sidebar: #cbd5e1;
   --text-sidebar-active: #ffffff;
-  --border: #3F3F46;
-  --border-light: #27272A;
-  --scrollbar-thumb: #52525B;
-  --scrollbar-thumb-hover: #71717A;
+  --border: #334155;
+  --border-light: #1e293b;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
 }
 
 /* Light mode class */
 .light {
-  --bg-main: #f4f4f5;
-  --bg-card: #ffffff;
-  --bg-sidebar: #ffffff;
-  --bg-sidebar-hover: #f4f4f5;
+  --bg-main: #f0f2f5;
+  --bg-card: #f4f5f7;
+  --bg-sidebar: #ebedf1;
+  --bg-sidebar-hover: #e8eaef;
   --bg-elevated: #ffffff;
-  --bg-input: #fafafa;
-  --text-primary: #18181b;
-  --text-secondary: #52525b;
-  --text-tertiary: #71717a;
-  --text-sidebar: #52525b;
-  --text-sidebar-active: #18181b;
-  --border: #e4e4e7;
-  --border-light: #f4f4f5;
-  --scrollbar-thumb: #d4d4d8;
-  --scrollbar-thumb-hover: #a1a1aa;
+  --bg-input: #f4f5f7;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --text-sidebar: #475569;
+  --text-sidebar-active: #0f172a;
+  --border: #cbd5e1;
+  --border-light: #e2e8f0;
+  --scrollbar-thumb: #94a3b8;
+  --scrollbar-thumb-hover: #64748b;
 }
 
 html {
@@ -251,11 +251,112 @@ body {
 
 /* Light mode specific overrides */
 .light .card-gradient {
-  @apply from-white to-zinc-50;
+  @apply from-white to-slate-50;
 }
 
 .dark .card-gradient {
-  @apply from-[#1E1E21] to-[#1a1a1d];
+  @apply from-[#1e2130] to-[#181b28];
 }
 
+/* ===== Landing CSS variables available globally ===== */
+/* These bridge the landing's design tokens into the panel */
+.dark {
+  --bg0: #0f1117;
+  --bg1: #1a1d27;
+  --bg2: #1e2130;
+  --bg2h: #282b3a;
+  --bg3: #161923;
+  --bg4: #222537;
+  --acc: #10b981;
+  --acc2: #34d399;
+  --lime: #10b981;
+  --lime-light: #34d399;
+  --c1: #f1f5f9;
+  --c2: #cbd5e1;
+  --c3: #64748b;
+  --ci: #0f1117;
+  --bdr: #334155;
+  --bdrs: #1e293b;
+  --red: #ef4444;
+  --sh: 0 1px 3px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.4);
+  --shh: 0 10px 40px rgba(0,0,0,.4), 0 20px 56px rgba(0,0,0,.5);
+  --glow: 0 0 60px rgba(16,185,129,.1);
+  --lime-glow: rgba(16,185,129,.12);
+  --lime-glow-strong: rgba(16,185,129,.25);
+  --glass: rgba(15,17,23,.7);
+  --glass-border: rgba(255,255,255,.06);
+}
+.light {
+  --bg0: #f0f2f5;
+  --bg1: #e8eaef;
+  --bg2: #f4f5f7;
+  --bg2h: #ecedf0;
+  --bg3: #ebedf1;
+  --bg4: #e2e4e9;
+  --acc: #059669;
+  --acc2: #047857;
+  --lime: #059669;
+  --lime-light: #10b981;
+  --c1: #0f172a;
+  --c2: #475569;
+  --c3: #94a3b8;
+  --ci: #ffffff;
+  --bdr: #cbd5e1;
+  --bdrs: #e2e8f0;
+  --red: #ef4444;
+  --sh: 0 1px 3px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.06);
+  --shh: 0 8px 30px rgba(0,0,0,.08), 0 16px 48px rgba(0,0,0,.06);
+  --glow: 0 0 60px rgba(6,150,105,.12);
+  --lime-glow: rgba(5,150,105,.08);
+  --lime-glow-strong: rgba(5,150,105,.18);
+  --glass: rgba(255,255,255,.7);
+  --glass-border: rgba(255,255,255,.5);
+}
 
+/* ===== Panel beautification using landing design tokens ===== */
+/* Shadows, glows, and polish — no layout changes */
+
+/* Selection color */
+::selection {
+  background: var(--acc);
+  color: var(--ci);
+}
+
+/* Smooth card shadows */
+.dark [class*="rounded-2xl"][class*="border"] {
+  box-shadow: var(--sh);
+}
+.dark [class*="rounded-2xl"][class*="border"]:hover {
+  box-shadow: var(--shh);
+}
+.light [class*="rounded-2xl"][class*="border"] {
+  box-shadow: var(--sh);
+}
+.light [class*="rounded-2xl"][class*="border"]:hover {
+  box-shadow: var(--shh);
+}
+
+/* Accent-colored focus rings */
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 2px var(--lime-glow-strong);
+  border-color: var(--acc) !important;
+}
+
+/* Button glow on accent buttons */
+[class*="bg-emerald"] {
+  box-shadow: 0 2px 12px var(--lime-glow-strong);
+}
+[class*="bg-emerald"]:hover {
+  box-shadow: 0 8px 28px var(--lime-glow-strong);
+}
+
+/* Glass effect for modals and overlays */
+[class*="backdrop-blur"] {
+  background: var(--glass);
+  border-color: var(--glass-border);
+}
+
+/* Smooth transitions on all interactive elements */
+button, a, input, [role="button"] {
+  transition: all 0.3s ease;
+}

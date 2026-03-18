@@ -63,8 +63,8 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
       isSelected
         ? accent.switchOn
         : isLight
-          ? "bg-zinc-300"
-          : "bg-zinc-600"
+          ? "bg-slate-300"
+          : "bg-slate-600"
     }`,
     thumb: `bg-white shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
       isSelected ? "!ml-[calc(100%-20px)]" : "!ml-0"
@@ -75,8 +75,8 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -88,8 +88,8 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Email Notifications</h3>
-            <p className="text-xs text-zinc-500">Choose what emails you receive</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Email Notifications</h3>
+            <p className="text-xs text-slate-500">Choose what emails you receive</p>
           </div>
         </div>
 
@@ -99,8 +99,8 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
             return (
               <div key={item.key} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
                 isLight
-                  ? "bg-zinc-50 hover:bg-zinc-100"
-                  : "bg-[#27272A]/50 hover:bg-[#27272A]"
+                  ? "bg-slate-50 hover:bg-slate-100"
+                  : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
               }`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-lg ${colors.bg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center`}>
@@ -109,8 +109,8 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
                     </svg>
                   </div>
                   <div>
-                    <p className={`text-sm font-medium ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{item.label}</p>
-                    <p className="text-[11px] text-zinc-500">{item.desc}</p>
+                    <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{item.label}</p>
+                    <p className="text-[11px] text-slate-500">{item.desc}</p>
                   </div>
                 </div>
                 <Switch isSelected={toggles[item.key]} onValueChange={() => onToggle(item.key)} classNames={getSwitchClassNames(toggles[item.key])} />
@@ -133,8 +133,8 @@ function PushNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
       isSelected
         ? accent.switchOn
         : isLight
-          ? "bg-zinc-300"
-          : "bg-zinc-600"
+          ? "bg-slate-300"
+          : "bg-slate-600"
     }`,
     thumb: `bg-white shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
       isSelected ? "!ml-[calc(100%-20px)]" : "!ml-0"
@@ -145,8 +145,8 @@ function PushNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -158,8 +158,8 @@ function PushNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Push Notifications</h3>
-            <p className="text-xs text-zinc-500">Real-time alerts on your devices</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Push Notifications</h3>
+            <p className="text-xs text-slate-500">Real-time alerts on your devices</p>
           </div>
         </div>
 
@@ -167,12 +167,12 @@ function PushNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
           {PUSH_NOTIFICATION_ITEMS.map((item) => (
             <div key={item.key} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
               isLight
-                ? "bg-zinc-50 hover:bg-zinc-100"
-                : "bg-[#27272A]/50 hover:bg-[#27272A]"
+                ? "bg-slate-50 hover:bg-slate-100"
+                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
             }`}>
               <div>
-                <p className={`text-sm font-medium ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{item.label}</p>
-                <p className="text-[11px] text-zinc-500">{item.desc}</p>
+                <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{item.label}</p>
+                <p className="text-[11px] text-slate-500">{item.desc}</p>
               </div>
               <Switch isSelected={toggles[item.key]} onValueChange={() => onToggle(item.key)} classNames={getSwitchClassNames(toggles[item.key])} />
             </div>

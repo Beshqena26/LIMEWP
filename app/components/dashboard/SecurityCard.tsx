@@ -56,28 +56,28 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
     <div className={cn(
       "rounded-2xl border overflow-hidden h-full flex flex-col",
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     )}>
       {/* Header */}
       <div className={cn(
         "px-5 py-4 border-b flex items-center justify-between",
-        isLight ? "border-zinc-200" : "border-[#27272A]"
+        isLight ? "border-slate-200" : "border-[#1a1d27]"
       )}>
         <div className="flex items-center gap-3">
           <div className={cn(
             "w-9 h-9 rounded-xl flex items-center justify-center",
-            isLight ? "bg-zinc-100 text-zinc-600 ring-1 ring-zinc-200" : "bg-zinc-800 text-zinc-400 ring-1 ring-zinc-700"
+            isLight ? "bg-slate-100 text-slate-600 ring-1 ring-slate-200" : "bg-slate-800 text-slate-400 ring-1 ring-slate-700"
           )}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
             </svg>
           </div>
           <div>
-            <h3 className={cn("text-sm font-semibold", isLight ? "text-zinc-800" : "text-zinc-100")}>
+            <h3 className={cn("text-sm font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
               Security
             </h3>
-            <p className={cn("text-xs", isLight ? "text-zinc-500" : "text-zinc-500")}>
+            <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
               Protection status
             </p>
           </div>
@@ -87,8 +87,8 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
           className={cn(
             "text-xs font-medium px-3 py-1.5 rounded-lg transition-colors",
             isLight
-              ? "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-800"
-              : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+              ? "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
+              : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
           )}
         >
           View Details
@@ -99,7 +99,7 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
       <div className="p-5 flex-1 flex flex-col">
         <div className={cn(
           "rounded-xl p-4 mb-4 flex items-center gap-4",
-          isLight ? "bg-zinc-50" : "bg-zinc-800/30"
+          isLight ? "bg-slate-50" : "bg-slate-800/30"
         )}>
           <div className="relative">
             <svg className="w-16 h-16 -rotate-90">
@@ -108,7 +108,7 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
                 cy="32"
                 r="28"
                 fill="none"
-                className={isLight ? "stroke-zinc-200" : "stroke-zinc-700"}
+                className={isLight ? "stroke-slate-200" : "stroke-slate-700"}
                 strokeWidth="6"
               />
               <circle
@@ -116,40 +116,40 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
                 cy="32"
                 r="28"
                 fill="none"
-                className={isLight ? "stroke-zinc-600" : "stroke-zinc-400"}
+                className={isLight ? "stroke-slate-600" : "stroke-slate-400"}
                 strokeWidth="6"
                 strokeLinecap="round"
                 strokeDasharray={`${(threatStats.score / 100) * 176} 176`}
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className={cn("text-lg font-bold", isLight ? "text-zinc-800" : "text-zinc-100")}>
+              <span className={cn("text-lg font-bold", isLight ? "text-slate-800" : "text-slate-100")}>
                 {threatStats.score}
               </span>
             </div>
           </div>
           <div className="flex-1">
-            <div className={cn("text-sm font-semibold mb-1", isLight ? "text-zinc-800" : "text-zinc-100")}>
+            <div className={cn("text-sm font-semibold mb-1", isLight ? "text-slate-800" : "text-slate-100")}>
               Security Score
             </div>
-            <div className={cn("text-xs mb-2", isLight ? "text-zinc-500" : "text-zinc-500")}>
+            <div className={cn("text-xs mb-2", isLight ? "text-slate-500" : "text-slate-500")}>
               Your site is well protected
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5">
-                <span className={cn("text-xs font-semibold", isLight ? "text-zinc-700" : "text-zinc-300")}>
+                <span className={cn("text-xs font-semibold", isLight ? "text-slate-700" : "text-slate-300")}>
                   {threatStats.blocked}
                 </span>
-                <span className={cn("text-[11px]", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                <span className={cn("text-[11px]", isLight ? "text-slate-500" : "text-slate-500")}>
                   blocked
                 </span>
               </div>
-              <span className={isLight ? "text-zinc-300" : "text-zinc-700"}>|</span>
+              <span className={isLight ? "text-slate-300" : "text-slate-700"}>|</span>
               <div className="flex items-center gap-1.5">
-                <span className={cn("text-xs font-semibold", isLight ? "text-zinc-700" : "text-zinc-300")}>
+                <span className={cn("text-xs font-semibold", isLight ? "text-slate-700" : "text-slate-300")}>
                   {threatStats.scanned}
                 </span>
-                <span className={cn("text-[11px]", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                <span className={cn("text-[11px]", isLight ? "text-slate-500" : "text-slate-500")}>
                   scanned
                 </span>
               </div>
@@ -164,15 +164,15 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
               key={item.label}
               className={cn(
                 "flex items-center gap-3 p-3 rounded-xl transition-all",
-                isLight ? "hover:bg-zinc-50" : "hover:bg-zinc-800/30"
+                isLight ? "hover:bg-slate-50" : "hover:bg-slate-800/30"
               )}
             >
               <div className={cn(
                 "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
-                isLight ? "bg-zinc-100" : "bg-zinc-800"
+                isLight ? "bg-slate-100" : "bg-slate-800"
               )}>
                 <svg
-                  className={cn("w-4 h-4", isLight ? "text-zinc-600" : "text-zinc-400")}
+                  className={cn("w-4 h-4", isLight ? "text-slate-600" : "text-slate-400")}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -184,10 +184,10 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <div className={cn("text-sm font-medium", isLight ? "text-zinc-700" : "text-zinc-200")}>
+                <div className={cn("text-sm font-medium", isLight ? "text-slate-700" : "text-slate-200")}>
                   {item.label}
                 </div>
-                <div className={cn("text-xs truncate", isLight ? "text-zinc-500" : "text-zinc-500")}>
+                <div className={cn("text-xs truncate", isLight ? "text-slate-500" : "text-slate-500")}>
                   {item.detail}
                 </div>
               </div>
@@ -196,15 +196,15 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
                   "text-[10px] font-semibold uppercase px-2 py-0.5 rounded-md",
                   item.status === "active"
                     ? isLight
-                      ? "bg-zinc-200 text-zinc-600"
-                      : "bg-zinc-700 text-zinc-300"
+                      ? "bg-slate-200 text-slate-600"
+                      : "bg-slate-700 text-slate-300"
                     : item.status === "warning"
                     ? isLight
-                      ? "bg-zinc-300 text-zinc-700"
-                      : "bg-zinc-600 text-zinc-200"
+                      ? "bg-slate-300 text-slate-700"
+                      : "bg-slate-600 text-slate-200"
                     : isLight
-                    ? "bg-zinc-100 text-zinc-400"
-                    : "bg-zinc-800 text-zinc-500"
+                    ? "bg-slate-100 text-slate-400"
+                    : "bg-slate-800 text-slate-500"
                 )}>
                   {item.status === "active" ? "Active" : item.status === "warning" ? "Warning" : "Off"}
                 </span>
@@ -216,15 +216,15 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
         {/* Action Button */}
         <div className={cn(
           "mt-4 pt-4 border-t",
-          isLight ? "border-zinc-100" : "border-zinc-800"
+          isLight ? "border-slate-100" : "border-slate-800"
         )}>
           <button
             onClick={onRunScan}
             className={cn(
               "w-full h-10 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2",
               isLight
-                ? "bg-zinc-800 text-white hover:bg-zinc-700"
-                : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200"
+                ? "bg-slate-800 text-white hover:bg-slate-700"
+                : "bg-slate-100 text-slate-900 hover:bg-slate-200"
             )}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>

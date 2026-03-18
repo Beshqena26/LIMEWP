@@ -20,7 +20,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
 
   return (
     <div className={`mb-8 group relative overflow-hidden rounded-2xl border border-emerald-500/20 hover:border-emerald-500/30 transition-all ${
-      isLight ? "bg-white" : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d]"
+      isLight ? "bg-white" : "bg-gradient-to-br from-[#1e2130] to-[#181b28]"
     }`}>
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.08] via-transparent to-sky-500/[0.08]" />
@@ -31,7 +31,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
         <div className="flex items-start justify-between mb-6">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h2 className={`text-xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{planName}</h2>
+              <h2 className={`text-xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{planName}</h2>
               <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/20">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -40,14 +40,14 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
                 <span className="text-[11px] font-semibold text-emerald-400">Active</span>
               </span>
             </div>
-            <p className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>Perfect for growing businesses with multiple sites</p>
+            <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>Perfect for growing businesses with multiple sites</p>
           </div>
           <div className="text-right">
             <div className="flex items-baseline gap-1 mb-1">
-              <span className={`text-3xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>${price}</span>
-              <span className="text-sm text-zinc-500">/month</span>
+              <span className={`text-3xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>${price}</span>
+              <span className="text-sm text-slate-500">/month</span>
             </div>
-            <p className="text-xs text-zinc-500">Billed monthly</p>
+            <p className="text-xs text-slate-500">Billed monthly</p>
           </div>
         </div>
 
@@ -58,7 +58,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
             const percentage = (item.current / item.max) * 100;
             return (
               <div key={item.label} className={`rounded-xl p-4 border ${
-                isLight ? "bg-zinc-50 border-zinc-200" : "bg-[#18181B]/50 border-[#2A2A2E]"
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[#0f1117]/50 border-[#282b3a]"
               }`}>
                 <div className="flex items-center gap-2 mb-3">
                   <div className={`w-8 h-8 rounded-lg ${colors.bg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center`}>
@@ -66,18 +66,18 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
                       <path d={item.icon} />
                     </svg>
                   </div>
-                  <span className={`text-xs font-medium ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>{item.label}</span>
+                  <span className={`text-xs font-medium ${isLight ? "text-slate-600" : "text-slate-400"}`}>{item.label}</span>
                 </div>
                 <div className="flex items-baseline gap-1 mb-2">
-                  <span className={`text-lg font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{item.current}</span>
-                  <span className="text-xs text-zinc-500">/ {item.max} {item.unit || ""}</span>
+                  <span className={`text-lg font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{item.current}</span>
+                  <span className="text-xs text-slate-500">/ {item.max} {item.unit || ""}</span>
                 </div>
                 <Progress
                   size="sm"
                   value={percentage}
                   classNames={{
                     base: "h-1.5",
-                    track: isLight ? "bg-zinc-200" : "bg-[#27272A]",
+                    track: isLight ? "bg-slate-200" : "bg-[#1a1d27]",
                     indicator: `bg-gradient-to-r ${colors.gradient}`,
                   }}
                 />
@@ -88,7 +88,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
 
         {/* Next Billing Info */}
         <div className={`mt-5 pt-5 border-t flex items-center justify-between ${
-          isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+          isLight ? "border-slate-200" : "border-[#282b3a]"
         }`}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 ring-1 ring-violet-500/20 flex items-center justify-center">
@@ -97,13 +97,13 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
               </svg>
             </div>
             <div>
-              <p className="text-xs text-zinc-500">Next billing date</p>
-              <p className={`text-sm font-semibold ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{nextBillingDate}</p>
+              <p className="text-xs text-slate-500">Next billing date</p>
+              <p className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-200"}`}>{nextBillingDate}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={onCancel} className={`text-sm font-medium transition-colors px-4 py-2 ${
-              isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-400 hover:text-zinc-200"
+              isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
             }`}>
               Cancel Plan
             </button>

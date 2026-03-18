@@ -26,12 +26,12 @@ export function SiteTabNav({ activeTab, onTabChange }: SiteTabNavProps) {
               isActive
                 ? `${styles.activeBg} ${styles.activeText} ring-1 ${styles.ring}`
                 : isLight
-                  ? "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-                  : "text-zinc-400 hover:bg-[#27272A] hover:text-zinc-200"
+                  ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  : "text-slate-400 hover:bg-[#1a1d27] hover:text-slate-200"
             }`}
           >
             <svg
-              className={`w-4 h-4 transition-colors ${isActive ? styles.activeText : isLight ? "text-zinc-500 group-hover:text-zinc-600" : "text-zinc-500 group-hover:text-zinc-400"}`}
+              className={`w-4 h-4 transition-colors ${isActive ? styles.activeText : isLight ? "text-slate-500 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-400"}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

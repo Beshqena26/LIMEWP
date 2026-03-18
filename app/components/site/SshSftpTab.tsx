@@ -46,14 +46,14 @@ export function SshSftpTab() {
   };
 
   // Theme classes
-  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d]";
-  const cardBorder = isLight ? "border-zinc-200" : "border-[#2A2A2E]";
-  const dividerBorder = isLight ? "border-zinc-100" : "border-[#2A2A2E]";
-  const textPrimary = isLight ? "text-zinc-900" : "text-zinc-100";
-  const textSecondary = isLight ? "text-zinc-500" : "text-zinc-500";
-  const textTertiary = isLight ? "text-zinc-400" : "text-zinc-600";
-  const subtleBg = isLight ? "bg-zinc-100" : "bg-zinc-800";
-  const hoverBg = isLight ? "hover:bg-zinc-50" : "hover:bg-white/[0.02]";
+  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[#1e2130] to-[#181b28]";
+  const cardBorder = isLight ? "border-slate-200" : "border-[#282b3a]";
+  const dividerBorder = isLight ? "border-slate-100" : "border-[#282b3a]";
+  const textPrimary = isLight ? "text-slate-900" : "text-slate-100";
+  const textSecondary = isLight ? "text-slate-500" : "text-slate-500";
+  const textTertiary = isLight ? "text-slate-400" : "text-slate-600";
+  const subtleBg = isLight ? "bg-slate-100" : "bg-slate-800";
+  const hoverBg = isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]";
 
   const credentials = [
     { label: "Host", value: CONNECTION_INFO.host, copyValue: CONNECTION_INFO.host },
@@ -88,7 +88,7 @@ export function SshSftpTab() {
                 }
               }}
               className={`group p-3 rounded-xl cursor-pointer transition-all ${
-                isLight ? "bg-zinc-50 hover:bg-zinc-100" : "bg-[#27272A]/30 hover:bg-[#27272A]/50"
+                isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-[#1a1d27]/30 hover:bg-[#1a1d27]/50"
               }`}
             >
               <div className={`text-[10px] uppercase tracking-wider ${textTertiary} mb-1.5`}>{cred.label}</div>
@@ -97,7 +97,7 @@ export function SshSftpTab() {
                 <span className={`text-[10px] transition-colors ${
                   copiedField === cred.label
                     ? "text-emerald-500"
-                    : `${textTertiary} group-hover:text-zinc-500`
+                    : `${textTertiary} group-hover:text-slate-500`
                 }`}>
                   {copiedField === cred.label ? "Copied!" : cred.isPassword ? (showPassword ? "Hide" : "Show") : "Copy"}
                 </span>
@@ -119,22 +119,22 @@ export function SshSftpTab() {
             <div
               key={cmd.label}
               className={`group flex items-center gap-3 p-3 rounded-xl transition-all ${
-                isLight ? "bg-zinc-900" : "bg-black/30"
+                isLight ? "bg-slate-900" : "bg-black/30"
               }`}
             >
               <span className="text-emerald-500 text-xs font-mono">$</span>
               <div className="flex-1 min-w-0">
-                <div className={`text-[10px] uppercase tracking-wider mb-1 ${isLight ? "text-zinc-500" : "text-zinc-600"}`}>
+                <div className={`text-[10px] uppercase tracking-wider mb-1 ${isLight ? "text-slate-500" : "text-slate-600"}`}>
                   {cmd.label}
                 </div>
-                <code className={`text-xs font-mono truncate block ${isLight ? "text-zinc-300" : "text-zinc-400"}`}>
+                <code className={`text-xs font-mono truncate block ${isLight ? "text-slate-300" : "text-slate-400"}`}>
                   {cmd.command}
                 </code>
               </div>
               <button
                 onClick={() => copyToClipboard(cmd.command, cmd.label)}
                 className={`flex-shrink-0 p-1.5 rounded-lg transition-colors ${
-                  isLight ? "hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300" : "hover:bg-zinc-800 text-zinc-600 hover:text-zinc-400"
+                  isLight ? "hover:bg-slate-800 text-slate-500 hover:text-slate-300" : "hover:bg-slate-800 text-slate-600 hover:text-slate-400"
                 }`}
               >
                 {copiedField === cmd.label ? (
@@ -173,7 +173,7 @@ export function SshSftpTab() {
               }`}
             >
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                isLight ? "bg-white" : "bg-[#27272A]"
+                isLight ? "bg-white" : "bg-[#1a1d27]"
               }`}>
                 <svg className={`w-4 h-4 ${textSecondary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />

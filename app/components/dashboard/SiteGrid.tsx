@@ -23,13 +23,13 @@ export function SiteGrid({ sites, onVisitSite, onManageSite }: SiteGridProps) {
         <div className="flex items-center gap-3">
           <h2 className={cn(
             "text-lg font-semibold",
-            isLight ? "text-zinc-900" : "text-zinc-100"
+            isLight ? "text-slate-900" : "text-slate-100"
           )}>
             Your Sites
           </h2>
           <span className={cn(
             "text-xs font-medium px-2 py-0.5 rounded-md",
-            isLight ? "bg-zinc-100 text-zinc-600" : "bg-zinc-800 text-zinc-400"
+            isLight ? "bg-slate-100 text-slate-600" : "bg-slate-800 text-slate-400"
           )}>
             {sites.length}
           </span>

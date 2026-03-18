@@ -19,9 +19,23 @@ module.exports = {
       },
       colors: {
         sidebar: {
-          DEFAULT: "#0f172a",
-          hover: "#1e293b",
+          DEFAULT: "#161923",
+          hover: "#282b3a",
           active: "#334155",
+        },
+        /* Override slate to match landing page colors exactly */
+        slate: {
+          50: "#f0f2f5",
+          100: "#e8eaef",
+          200: "#dcdfe6",
+          300: "#cbd5e1",
+          400: "#94a3b8",
+          500: "#64748b",
+          600: "#475569",
+          700: "#334155",
+          800: "#1e2130",
+          900: "#0f1117",
+          950: "#0a0c12",
         },
       },
     },

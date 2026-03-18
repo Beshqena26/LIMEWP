@@ -16,12 +16,12 @@ export function SiteHeader({ siteName, onVisitSite, onSettings }: SiteHeaderProp
   return (
     <div className="flex justify-between items-start mb-6">
       <div className="flex items-center gap-4">
-        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xl font-bold shadow-xl shadow-emerald-500/20 ring-4 ${isLight ? "ring-zinc-200" : "ring-white/5"}`}>
+        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white text-xl font-bold shadow-xl shadow-emerald-500/20 ring-4 ${isLight ? "ring-slate-200" : "ring-white/5"}`}>
           {siteName.charAt(0).toUpperCase()}
         </div>
         <div>
           <div className="flex items-center gap-3 mb-0.5">
-            <h1 className={`text-xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{siteName}</h1>
+            <h1 className={`text-xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{siteName}</h1>
             <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/20">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -30,7 +30,7 @@ export function SiteHeader({ siteName, onVisitSite, onSettings }: SiteHeaderProp
               <span className="text-[10px] font-semibold text-emerald-400">Active</span>
             </span>
           </div>
-          <p className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>WordPress 6.4.2 · PHP 8.2</p>
+          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>WordPress 6.4.2 · PHP 8.2</p>
         </div>
       </div>
       <div className="flex gap-2">
@@ -39,8 +39,8 @@ export function SiteHeader({ siteName, onVisitSite, onSettings }: SiteHeaderProp
           variant="flat"
           className={`font-medium text-sm gap-2 ${
             isLight
-              ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-zinc-900"
-              : "bg-[#27272A] text-zinc-300 hover:text-white"
+              ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+              : "bg-[#1a1d27] text-slate-300 hover:text-white"
           }`}
           radius="lg"
           startContent={

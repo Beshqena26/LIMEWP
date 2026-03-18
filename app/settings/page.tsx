@@ -96,8 +96,8 @@ export default function SettingsPage() {
                     isActive
                       ? cn(colors.bg, colors.text, "ring-1", colors.ring)
                       : isLight
-                        ? "bg-white border border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300"
-                        : "bg-[#1E1E21] border border-[#2A2A2E] text-zinc-400 hover:bg-[#27272A] hover:border-[#3F3F46]"
+                        ? "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
+                        : "bg-[#1e2130] border border-[#282b3a] text-slate-400 hover:bg-[#1a1d27] hover:border-[#334155]"
                   )}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">

@@ -119,28 +119,28 @@ function SitePageContent() {
     return (
       <div className={`rounded-2xl border overflow-hidden ${
         isLight
-          ? "bg-white border-zinc-200"
-          : "bg-[#1E1E21] border-[#2A2A2E]"
+          ? "bg-white border-slate-200"
+          : "bg-[#1e2130] border-[#282b3a]"
       }`}>
         {/* Header */}
-        <div className={`px-6 py-5 border-b ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+        <div className={`px-6 py-5 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${isLight ? "bg-zinc-100 text-zinc-500" : "bg-[#27272A] text-zinc-400"}`}>
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${isLight ? "bg-slate-100 text-slate-500" : "bg-[#1a1d27] text-slate-400"}`}>
                 <svg width={18} height={18} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852zM15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Site Tools</h3>
-                <p className="text-xs text-zinc-500">{tools.length} tools available</p>
+                <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Site Tools</h3>
+                <p className="text-xs text-slate-500">{tools.length} tools available</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Tools by Category */}
-        <div className={`divide-y ${isLight ? "divide-zinc-200" : "divide-[#2A2A2E]"}`}>
+        <div className={`divide-y ${isLight ? "divide-slate-200" : "divide-[#282b3a]"}`}>
           {categoryOrder.map((category) => {
             const categoryTools = groupedTools[category];
             if (!categoryTools || categoryTools.length === 0) return null;
@@ -150,13 +150,13 @@ function SitePageContent() {
               <div key={category} className="p-6">
                 {/* Category Header */}
                 <div className="flex items-center gap-2.5 mb-4">
-                  <div className={`w-6 h-6 rounded-md text-zinc-500 flex items-center justify-center ${isLight ? "bg-zinc-100" : "bg-[#27272A]"}`}>
+                  <div className={`w-6 h-6 rounded-md text-slate-500 flex items-center justify-center ${isLight ? "bg-slate-100" : "bg-[#1a1d27]"}`}>
                     <svg width={14} height={14} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d={config.icon} />
                     </svg>
                   </div>
-                  <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{category}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded ${isLight ? "text-zinc-500 bg-zinc-100" : "text-zinc-600 bg-[#27272A]"}`}>{categoryTools.length}</span>
+                  <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? "text-slate-500" : "text-slate-400"}`}>{category}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded ${isLight ? "text-slate-500 bg-slate-100" : "text-slate-600 bg-[#1a1d27]"}`}>{categoryTools.length}</span>
                 </div>
 
                 {/* Tools List */}
@@ -166,23 +166,23 @@ function SitePageContent() {
                       key={tool.title}
                       className={`group flex items-center justify-between gap-4 p-3 rounded-xl border border-transparent transition-all ${
                         isLight
-                          ? "bg-zinc-50 hover:bg-zinc-100 hover:border-zinc-200"
-                          : "bg-[#18181B] hover:bg-[#27272A]/50 hover:border-[#3F3F46]/50"
+                          ? "bg-slate-50 hover:bg-slate-100 hover:border-slate-200"
+                          : "bg-[#0f1117] hover:bg-[#1a1d27]/50 hover:border-[#334155]/50"
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
                           isLight
-                            ? "bg-zinc-100 text-zinc-500 group-hover:text-zinc-600"
-                            : "bg-[#27272A] text-zinc-500 group-hover:text-zinc-400"
+                            ? "bg-slate-100 text-slate-500 group-hover:text-slate-600"
+                            : "bg-[#1a1d27] text-slate-500 group-hover:text-slate-400"
                         }`}>
                           <svg width={18} height={18} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d={tool.icon} />
                           </svg>
                         </div>
                         <div className="min-w-0">
-                          <h4 className={`text-sm font-medium truncate ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{tool.title}</h4>
-                          <p className="text-xs text-zinc-500 truncate">{tool.desc}</p>
+                          <h4 className={`text-sm font-medium truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>{tool.title}</h4>
+                          <p className="text-xs text-slate-500 truncate">{tool.desc}</p>
                         </div>
                       </div>
 
@@ -193,9 +193,9 @@ function SitePageContent() {
                             aria-label="PHP Version"
                             defaultSelectedKeys={["8.1.1"]}
                             classNames={{
-                              trigger: `rounded-lg border-0 h-8 min-h-8 w-[110px] ${isLight ? "bg-zinc-100 text-zinc-700" : "bg-[#27272A] text-zinc-200"}`,
-                              value: `text-xs ${isLight ? "text-zinc-700" : "text-zinc-200"}`,
-                              popoverContent: `${isLight ? "bg-white text-zinc-700" : "bg-[#27272A] text-zinc-200"}`,
+                              trigger: `rounded-lg border-0 h-8 min-h-8 w-[110px] ${isLight ? "bg-slate-100 text-slate-700" : "bg-[#1a1d27] text-slate-200"}`,
+                              value: `text-xs ${isLight ? "text-slate-700" : "text-slate-200"}`,
+                              popoverContent: `${isLight ? "bg-white text-slate-700" : "bg-[#1a1d27] text-slate-200"}`,
                             }}
                             size="sm"
                           >
@@ -210,8 +210,8 @@ function SitePageContent() {
                         ) : (
                           <button className={`h-8 px-4 rounded-lg text-xs font-medium transition-colors ${
                             isLight
-                              ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-zinc-900"
-                              : "bg-[#27272A] text-zinc-300 hover:bg-[#3F3F46] hover:text-zinc-100"
+                              ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+                              : "bg-[#1a1d27] text-slate-300 hover:bg-[#334155] hover:text-slate-100"
                           }`}>
                             {tool.btn}
                           </button>
@@ -244,11 +244,11 @@ function SitePageContent() {
             className={`group relative rounded-2xl border overflow-hidden transition-all ${
               isLight
                 ? row.primary
-                  ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-lg hover:shadow-zinc-200/50"
-                  : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-200/50"
+                  ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-lg hover:shadow-slate-200/50"
+                  : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50"
                 : row.primary
-                  ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-lg hover:shadow-black/20"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46] hover:shadow-lg hover:shadow-black/20"
+                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-lg hover:shadow-black/20"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155] hover:shadow-lg hover:shadow-black/20"
             }`}
           >
             {/* Corner Glow */}
@@ -265,21 +265,21 @@ function SitePageContent() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{row.domain}</span>
+                      <span className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{row.domain}</span>
                       {row.primary && (
                         <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">
                           Primary
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-zinc-500">
+                    <div className="flex items-center gap-3 text-xs text-slate-500">
                       <span className="flex items-center gap-1">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7" />
                         </svg>
                         {row.dnsProvider}
                       </span>
-                      <span className="text-zinc-600">•</span>
+                      <span className="text-slate-600">•</span>
                       <span>SSL expires {row.sslExpiry}</span>
                     </div>
                   </div>
@@ -308,20 +308,20 @@ function SitePageContent() {
                   <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all">
                     <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                       isLight
-                        ? "bg-zinc-100 hover:bg-zinc-200"
-                        : "bg-[#27272A]/70 hover:bg-[#3F3F46]"
+                        ? "bg-slate-100 hover:bg-slate-200"
+                        : "bg-[#1a1d27]/70 hover:bg-[#334155]"
                     }`}>
-                        <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
                         </svg>
                       </button>
 
                     <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                       isLight
-                        ? "bg-zinc-100 hover:bg-zinc-200"
-                        : "bg-[#27272A]/70 hover:bg-[#3F3F46]"
+                        ? "bg-slate-100 hover:bg-slate-200"
+                        : "bg-[#1a1d27]/70 hover:bg-[#334155]"
                     }`}>
-                        <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
                         </svg>
                       </button>
@@ -344,8 +344,8 @@ function SitePageContent() {
         {/* Add Domain Button */}
         <button className={`w-full group relative rounded-2xl border border-dashed p-5 transition-all overflow-hidden ${
           isLight
-            ? "bg-zinc-50 border-zinc-300 hover:border-emerald-500/40"
-            : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#3F3F46] hover:border-emerald-500/40"
+            ? "bg-slate-50 border-slate-300 hover:border-emerald-500/40"
+            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#334155] hover:border-emerald-500/40"
         }`}>
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.02] to-sky-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
           <div className="relative flex items-center justify-center gap-3">
@@ -355,8 +355,8 @@ function SitePageContent() {
               </svg>
             </div>
             <div className="text-left">
-              <span className={`text-sm font-semibold group-hover:text-emerald-400 transition-colors ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Add New Domain</span>
-              <p className="text-xs text-zinc-500">Point a new domain to this site</p>
+              <span className={`text-sm font-semibold group-hover:text-emerald-400 transition-colors ${isLight ? "text-slate-700" : "text-slate-200"}`}>Add New Domain</span>
+              <p className="text-xs text-slate-500">Point a new domain to this site</p>
             </div>
           </div>
         </button>
@@ -414,11 +414,11 @@ function SitePageContent() {
               className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
                 isLight
                   ? theme.active
-                    ? "bg-white border-emerald-500/40 shadow-lg shadow-emerald-500/10 hover:shadow-zinc-200/50"
-                    : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-zinc-200/50"
+                    ? "bg-white border-emerald-500/40 shadow-lg shadow-emerald-500/10 hover:shadow-slate-200/50"
+                    : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
                   : theme.active
-                    ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-emerald-500/40 shadow-lg shadow-emerald-500/10 hover:shadow-black/20"
-                    : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46] hover:shadow-black/20"
+                    ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-emerald-500/40 shadow-lg shadow-emerald-500/10 hover:shadow-black/20"
+                    : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155] hover:shadow-black/20"
               }`}
             >
               {/* Theme Preview */}
@@ -469,22 +469,22 @@ function SitePageContent() {
               {/* Theme Info */}
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className={`font-semibold text-[15px] capitalize leading-tight ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{theme.name}</h3>
+                  <h3 className={`font-semibold text-[15px] capitalize leading-tight ${isLight ? "text-slate-800" : "text-slate-100"}`}>{theme.name}</h3>
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${colors.bg} ${colors.text} ring-1 ${colors.ring} flex-shrink-0`}>
                     v{theme.version}
                   </span>
                 </div>
 
-                <p className={`text-xs mb-3 line-clamp-2 ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>{theme.description}</p>
+                <p className={`text-xs mb-3 line-clamp-2 ${isLight ? "text-slate-600" : "text-slate-500"}`}>{theme.description}</p>
 
-                <div className={`flex items-center gap-3 mb-4 text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>
+                <div className={`flex items-center gap-3 mb-4 text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>
                   <div className="flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                     </svg>
                     {theme.author}
                   </div>
-                  <span className={isLight ? "text-zinc-400" : "text-zinc-600"}>•</span>
+                  <span className={isLight ? "text-slate-400" : "text-slate-600"}>•</span>
                   <div className="flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -505,8 +505,8 @@ function SitePageContent() {
                   <div className="flex gap-2">
                     <button className={`flex-1 h-9 rounded-xl text-sm font-medium transition-all ring-1 flex items-center justify-center gap-1.5 ${
                       isLight
-                        ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 ring-zinc-200"
-                        : "bg-[#27272A]/70 text-zinc-200 hover:bg-[#3F3F46] ring-[#3F3F46]"
+                        ? "bg-slate-100 text-slate-700 hover:bg-slate-200 ring-slate-200"
+                        : "bg-[#1a1d27]/70 text-slate-200 hover:bg-[#334155] ring-[#334155]"
                     }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                         <path d="M5 13l4 4L19 7" />
@@ -606,11 +606,11 @@ function SitePageContent() {
               className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
                 isLight
                   ? plugin.active
-                    ? "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-zinc-200/50"
-                    : "bg-white border-zinc-200/70 hover:border-zinc-300/50 hover:shadow-zinc-200/50"
+                    ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
+                    : "bg-white border-slate-200/70 hover:border-slate-300/50 hover:shadow-slate-200/50"
                   : plugin.active
-                    ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46] hover:shadow-black/20"
-                    : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]/70 hover:border-[#3F3F46]/50 hover:shadow-black/20"
+                    ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155] hover:shadow-black/20"
+                    : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]/70 hover:border-[#334155]/50 hover:shadow-black/20"
               }`}
             >
               {/* Corner Glow */}
@@ -631,7 +631,7 @@ function SitePageContent() {
                       }}
                     />
                     {plugin.active && (
-                      <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full ring-2 flex items-center justify-center ${isLight ? "ring-white" : "ring-[#1E1E21]"}`}>
+                      <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full ring-2 flex items-center justify-center ${isLight ? "ring-white" : "ring-[#1e2130]"}`}>
                         <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M5 13l4 4L19 7" />
                         </svg>
@@ -642,7 +642,7 @@ function SitePageContent() {
                   {/* Plugin Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className={`font-semibold text-[15px] truncate ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{plugin.name}</h3>
+                      <h3 className={`font-semibold text-[15px] truncate ${isLight ? "text-slate-800" : "text-slate-100"}`}>{plugin.name}</h3>
                       {plugin.featured && (
                         <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
                             <svg className="w-2.5 h-2.5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
@@ -665,7 +665,7 @@ function SitePageContent() {
                           Active
                         </span>
                       ) : (
-                        <span className="text-[10px] font-semibold text-zinc-500 bg-zinc-500/10 px-2 py-0.5 rounded-md ring-1 ring-zinc-500/20">
+                        <span className="text-[10px] font-semibold text-slate-500 bg-slate-500/10 px-2 py-0.5 rounded-md ring-1 ring-slate-500/20">
                           Inactive
                         </span>
                       )}
@@ -682,24 +682,24 @@ function SitePageContent() {
                 </div>
 
                 {/* Description */}
-                <p className={`text-xs mb-4 leading-relaxed line-clamp-2 ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>{plugin.description}</p>
+                <p className={`text-xs mb-4 leading-relaxed line-clamp-2 ${isLight ? "text-slate-600" : "text-slate-500"}`}>{plugin.description}</p>
 
                 {/* Meta Info */}
-                <div className={`flex items-center gap-4 mb-4 text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>
+                <div className={`flex items-center gap-4 mb-4 text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>
                   <div className="flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                     </svg>
                     <span>{plugin.author}</span>
                   </div>
-                  <span className={isLight ? "text-zinc-400" : "text-zinc-600"}>•</span>
+                  <span className={isLight ? "text-slate-400" : "text-slate-600"}>•</span>
                   <div className="flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
                     <span>{plugin.downloads}</span>
                   </div>
-                  <span className="text-zinc-600">•</span>
+                  <span className="text-slate-600">•</span>
                   <div className="flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -709,13 +709,13 @@ function SitePageContent() {
                 </div>
 
                 {/* Actions */}
-                <div className={`flex items-center gap-2 pt-4 border-t ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+                <div className={`flex items-center gap-2 pt-4 border-t ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
                   {plugin.active ? (
                     <>
                       <button className={`flex-1 h-9 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ring-1 ${
                         isLight
-                          ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 ring-zinc-200"
-                          : "bg-gradient-to-r from-zinc-700 to-zinc-800 text-zinc-200 hover:from-zinc-600 hover:to-zinc-700 ring-white/5"
+                          ? "bg-slate-100 text-slate-700 hover:bg-slate-200 ring-slate-200"
+                          : "bg-gradient-to-r from-slate-700 to-slate-800 text-slate-200 hover:from-slate-600 hover:to-slate-700 ring-white/5"
                       }`}>
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -842,8 +842,8 @@ function SitePageContent() {
             return (
               <div key={stat.label} className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               }`}>
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                 <div className="relative">
@@ -854,8 +854,8 @@ function SitePageContent() {
                       </svg>
                     </div>
                   </div>
-                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{stat.value}</div>
-                  <div className="text-xs text-zinc-500">{stat.label}</div>
+                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</div>
+                  <div className="text-xs text-slate-500">{stat.label}</div>
                   <div className={`text-[10px] ${colors.text} mt-1`}>{stat.subtext}</div>
                 </div>
               </div>
@@ -866,7 +866,7 @@ function SitePageContent() {
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>Backup History</h3>
+            <h3 className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-300"}`}>Backup History</h3>
             <Chip
               size="sm"
               classNames={{
@@ -881,7 +881,7 @@ function SitePageContent() {
             <Button
                 variant="bordered"
                 size="sm"
-                className={`font-medium ${isLight ? "text-zinc-700 border-zinc-300 hover:border-zinc-400" : "text-zinc-300 border-[#3F3F46] hover:border-zinc-500"}`}
+                className={`font-medium ${isLight ? "text-slate-700 border-slate-300 hover:border-slate-400" : "text-slate-300 border-[#334155] hover:border-slate-500"}`}
                 startContent={
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
@@ -916,11 +916,11 @@ function SitePageContent() {
                 className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg ${
                   isLight
                     ? isLatest
-                      ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-zinc-200/50"
-                      : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-zinc-200/50"
+                      ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-slate-200/50"
+                      : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
                     : isLatest
-                      ? "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-black/20"
-                      : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46] hover:shadow-black/20"
+                      ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-black/20"
+                      : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155] hover:shadow-black/20"
                 }`}
               >
                 {/* Corner Glow */}
@@ -944,7 +944,7 @@ function SitePageContent() {
                       {isLatest && (
                         <span className="absolute -top-1 -right-1 flex h-3 w-3">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span className={`relative inline-flex rounded-full h-3 w-3 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[#1E1E21]"}`}></span>
+                          <span className={`relative inline-flex rounded-full h-3 w-3 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[#1e2130]"}`}></span>
                         </span>
                       )}
                     </div>
@@ -952,7 +952,7 @@ function SitePageContent() {
                     {/* Backup Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5">
-                        <span className={`font-semibold text-[15px] ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{backup.name}</span>
+                        <span className={`font-semibold text-[15px] ${isLight ? "text-slate-800" : "text-slate-100"}`}>{backup.name}</span>
                         {isLatest && (
                           <Chip
                             size="sm"
@@ -978,19 +978,19 @@ function SitePageContent() {
 
                       {/* Meta Info */}
                       <div className="flex items-center gap-4 mb-3">
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                           </svg>
                           <span>{backup.date}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <span>{backup.time}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" />
                           </svg>
@@ -1000,15 +1000,15 @@ function SitePageContent() {
 
                       {/* Includes Tags */}
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] text-zinc-600">Includes:</span>
+                        <span className="text-[11px] text-slate-600">Includes:</span>
                         <div className="flex gap-1.5">
                           {backup.includes.map((item) => (
                             <span
                               key={item}
                               className={`text-[10px] font-medium px-2 py-0.5 rounded-md ring-1 ${
                                 isLight
-                                  ? "text-zinc-500 bg-zinc-100 ring-zinc-200"
-                                  : "text-zinc-400 bg-[#27272A] ring-[#3F3F46]"
+                                  ? "text-slate-500 bg-slate-100 ring-slate-200"
+                                  : "text-slate-400 bg-[#1a1d27] ring-[#334155]"
                               }`}
                             >
                               {item}
@@ -1029,20 +1029,20 @@ function SitePageContent() {
                       
                       <button className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
                         isLight
-                          ? "bg-zinc-100 hover:bg-zinc-200 ring-zinc-200"
-                          : "bg-[#27272A]/70 hover:bg-[#3F3F46] ring-[#3F3F46]"
+                          ? "bg-slate-100 hover:bg-slate-200 ring-slate-200"
+                          : "bg-[#1a1d27]/70 hover:bg-[#334155] ring-[#334155]"
                       }`}>
-                          <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                           </svg>
                         </button>
 
                       <button className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
                         isLight
-                          ? "bg-zinc-100 hover:bg-rose-500/10 ring-zinc-200 hover:ring-rose-500/30"
-                          : "bg-[#27272A]/70 hover:bg-rose-500/10 ring-[#3F3F46] hover:ring-rose-500/30"
+                          ? "bg-slate-100 hover:bg-rose-500/10 ring-slate-200 hover:ring-rose-500/30"
+                          : "bg-[#1a1d27]/70 hover:bg-rose-500/10 ring-[#334155] hover:ring-rose-500/30"
                       }`}>
-                          <svg className="w-4 h-4 text-zinc-400 hover:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-4 h-4 text-slate-400 hover:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                           </svg>
                         </button>
@@ -1108,8 +1108,8 @@ function SitePageContent() {
             return (
               <div key={stat.label} className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               }`}>
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                 <div className="relative">
@@ -1126,8 +1126,8 @@ function SitePageContent() {
                       {stat.change}
                     </span>
                   </div>
-                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{stat.value}</div>
-                  <div className="text-xs text-zinc-500">{stat.label}</div>
+                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</div>
+                  <div className="text-xs text-slate-500">{stat.label}</div>
                   <div className={`text-[10px] ${colors.text} mt-1`}>{stat.subtext}</div>
                 </div>
               </div>
@@ -1140,13 +1140,13 @@ function SitePageContent() {
           {/* Traffic Chart Placeholder */}
           <div className={`relative border rounded-2xl overflow-hidden ${
             isLight
-              ? "bg-white border-zinc-200"
-              : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+              ? "bg-white border-slate-200"
+              : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
           }`}>
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-emerald-500/[0.06] to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-sky-500/[0.04] to-transparent rounded-full translate-y-1/2 -translate-x-1/4" />
 
-            <div className={`relative p-5 border-b ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+            <div className={`relative p-5 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 text-emerald-400 ring-1 ring-emerald-500/20 flex items-center justify-center">
@@ -1155,21 +1155,21 @@ function SitePageContent() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Traffic Overview</h3>
-                    <p className="text-[11px] text-zinc-500">Last 30 days</p>
+                    <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Traffic Overview</h3>
+                    <p className="text-[11px] text-slate-500">Last 30 days</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button className={`text-[11px] font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
                     isLight
-                      ? "text-zinc-500 hover:text-zinc-700 bg-zinc-100 hover:bg-zinc-200"
-                      : "text-zinc-400 hover:text-zinc-200 bg-[#27272A] hover:bg-[#3F3F46]"
+                      ? "text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200"
+                      : "text-slate-400 hover:text-slate-200 bg-[#1a1d27] hover:bg-[#334155]"
                   }`}>7D</button>
                   <button className="text-[11px] font-medium text-emerald-400 px-2.5 py-1.5 rounded-lg bg-emerald-500/10 ring-1 ring-emerald-500/20">30D</button>
                   <button className={`text-[11px] font-medium px-2.5 py-1.5 rounded-lg transition-colors ${
                     isLight
-                      ? "text-zinc-500 hover:text-zinc-700 bg-zinc-100 hover:bg-zinc-200"
-                      : "text-zinc-400 hover:text-zinc-200 bg-[#27272A] hover:bg-[#3F3F46]"
+                      ? "text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200"
+                      : "text-slate-400 hover:text-slate-200 bg-[#1a1d27] hover:bg-[#334155]"
                   }`}>90D</button>
                 </div>
               </div>
@@ -1181,20 +1181,20 @@ function SitePageContent() {
                   <path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                 </svg>
               </div>
-              <span className={`text-sm font-medium ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>Chart coming soon</span>
-              <span className="text-xs text-zinc-500">Interactive traffic visualization</span>
+              <span className={`text-sm font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`}>Chart coming soon</span>
+              <span className="text-xs text-slate-500">Interactive traffic visualization</span>
             </div>
           </div>
 
           {/* Traffic Sources */}
           <div className={`relative border rounded-2xl overflow-hidden ${
             isLight
-              ? "bg-white border-zinc-200"
-              : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+              ? "bg-white border-slate-200"
+              : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
           }`}>
             <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-violet-500/[0.06] to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
-            <div className={`relative p-5 border-b ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+            <div className={`relative p-5 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500/20 to-violet-600/20 text-violet-400 ring-1 ring-violet-500/20 flex items-center justify-center">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -1202,8 +1202,8 @@ function SitePageContent() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Traffic Sources</h3>
-                  <p className="text-[11px] text-zinc-500">Where visitors come from</p>
+                  <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Traffic Sources</h3>
+                  <p className="text-[11px] text-slate-500">Where visitors come from</p>
                 </div>
               </div>
             </div>
@@ -1213,7 +1213,7 @@ function SitePageContent() {
                 const colors = analyticsColorMap[source.color];
                 return (
                   <div key={source.source} className={`group flex items-center gap-4 p-3 rounded-xl transition-colors ${
-                    isLight ? "hover:bg-zinc-50" : "hover:bg-white/[0.02]"
+                    isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]"
                   }`}>
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colors.iconBg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform`}>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -1222,11 +1222,11 @@ function SitePageContent() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className={`text-sm font-medium ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{source.source}</span>
-                        <span className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{source.visits}</span>
+                        <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{source.source}</span>
+                        <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{source.visits}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className={`flex-1 h-1.5 rounded-full overflow-hidden ${isLight ? "bg-zinc-200" : "bg-[#27272A]"}`}>
+                        <div className={`flex-1 h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[#1a1d27]"}`}>
                           <div className={`h-full ${colors.bg} rounded-full transition-all duration-500`} style={{ width: `${source.pct}%` }} />
                         </div>
                         <span className={`text-[11px] font-semibold ${colors.text}`}>{source.pct}%</span>
@@ -1242,12 +1242,12 @@ function SitePageContent() {
         {/* Top Pages */}
         <div className={`relative border rounded-2xl overflow-hidden ${
           isLight
-            ? "bg-white border-zinc-200"
-            : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+            ? "bg-white border-slate-200"
+            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
         }`}>
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-sky-500/[0.04] to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
-          <div className={`relative p-5 border-b ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+          <div className={`relative p-5 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500/20 to-sky-600/20 text-sky-400 ring-1 ring-sky-500/20 flex items-center justify-center">
@@ -1256,8 +1256,8 @@ function SitePageContent() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Top Pages</h3>
-                  <p className="text-[11px] text-zinc-500">Most visited pages</p>
+                  <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Top Pages</h3>
+                  <p className="text-[11px] text-slate-500">Most visited pages</p>
                 </div>
               </div>
               <button className="flex items-center gap-1.5 text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors">
@@ -1269,30 +1269,30 @@ function SitePageContent() {
             </div>
           </div>
 
-          <div className={`relative divide-y ${isLight ? "divide-zinc-200" : "divide-[#2A2A2E]"}`}>
+          <div className={`relative divide-y ${isLight ? "divide-slate-200" : "divide-[#282b3a]"}`}>
             {topPages.map((page, index) => (
               <div key={page.page} className={`group flex items-center gap-4 px-5 py-4 transition-colors ${
-                isLight ? "hover:bg-zinc-50" : "hover:bg-white/[0.02]"
+                isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]"
               }`}>
                 <div className={`w-8 h-8 rounded-lg ring-1 flex items-center justify-center flex-shrink-0 ${
-                  isLight ? "bg-zinc-100 ring-zinc-200" : "bg-[#27272A] ring-[#3F3F46]"
+                  isLight ? "bg-slate-100 ring-slate-200" : "bg-[#1a1d27] ring-[#334155]"
                 }`}>
-                  <span className={`text-xs font-bold ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>{index + 1}</span>
+                  <span className={`text-xs font-bold ${isLight ? "text-slate-500" : "text-slate-400"}`}>{index + 1}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-sm font-medium truncate ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{page.title}</span>
-                    <span className="text-xs text-zinc-500 font-mono">{page.page}</span>
+                    <span className={`text-sm font-medium truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>{page.title}</span>
+                    <span className="text-xs text-slate-500 font-mono">{page.page}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`flex-1 h-1 rounded-full overflow-hidden max-w-[200px] ${isLight ? "bg-zinc-200" : "bg-[#27272A]"}`}>
+                    <div className={`flex-1 h-1 rounded-full overflow-hidden max-w-[200px] ${isLight ? "bg-slate-200" : "bg-[#1a1d27]"}`}>
                       <div className="h-full bg-sky-500/30 rounded-full transition-all duration-500" style={{ width: `${page.pct}%` }} />
                     </div>
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <div className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{page.views}</div>
-                  <div className="text-[11px] text-zinc-500">{page.pct}% of total</div>
+                  <div className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{page.views}</div>
+                  <div className="text-[11px] text-slate-500">{page.pct}% of total</div>
                 </div>
               </div>
             ))}
@@ -1311,10 +1311,10 @@ function SitePageContent() {
     ];
 
     const cacheColorMap: Record<string, { bg: string; text: string; ring: string; glow: string; iconBg: string; border: string; activeBorder: string }> = {
-      emerald: { bg: "bg-emerald-500/10", text: "text-emerald-400", ring: "ring-emerald-500/20", glow: "from-emerald-500/10", iconBg: "from-emerald-500/20 to-emerald-600/20", border: "border-[#2A2A2E]", activeBorder: "border-emerald-500/40" },
-      sky: { bg: "bg-sky-500/10", text: "text-sky-400", ring: "ring-sky-500/20", glow: "from-sky-500/10", iconBg: "from-sky-500/20 to-sky-600/20", border: "border-[#2A2A2E]", activeBorder: "border-sky-500/40" },
-      violet: { bg: "bg-violet-500/10", text: "text-violet-400", ring: "ring-violet-500/20", glow: "from-violet-500/10", iconBg: "from-violet-500/20 to-violet-600/20", border: "border-[#2A2A2E]", activeBorder: "border-violet-500/40" },
-      amber: { bg: "bg-amber-500/10", text: "text-amber-400", ring: "ring-amber-500/20", glow: "from-amber-500/10", iconBg: "from-amber-500/20 to-amber-600/20", border: "border-[#2A2A2E]", activeBorder: "border-amber-500/40" },
+      emerald: { bg: "bg-emerald-500/10", text: "text-emerald-400", ring: "ring-emerald-500/20", glow: "from-emerald-500/10", iconBg: "from-emerald-500/20 to-emerald-600/20", border: "border-[#282b3a]", activeBorder: "border-emerald-500/40" },
+      sky: { bg: "bg-sky-500/10", text: "text-sky-400", ring: "ring-sky-500/20", glow: "from-sky-500/10", iconBg: "from-sky-500/20 to-sky-600/20", border: "border-[#282b3a]", activeBorder: "border-sky-500/40" },
+      violet: { bg: "bg-violet-500/10", text: "text-violet-400", ring: "ring-violet-500/20", glow: "from-violet-500/10", iconBg: "from-violet-500/20 to-violet-600/20", border: "border-[#282b3a]", activeBorder: "border-violet-500/40" },
+      amber: { bg: "bg-amber-500/10", text: "text-amber-400", ring: "ring-amber-500/20", glow: "from-amber-500/10", iconBg: "from-amber-500/20 to-amber-600/20", border: "border-[#282b3a]", activeBorder: "border-amber-500/40" },
     };
 
     const cachingOptions = [
@@ -1333,8 +1333,8 @@ function SitePageContent() {
             return (
               <div key={stat.label} className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               }`}>
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                 <div className="relative">
@@ -1345,8 +1345,8 @@ function SitePageContent() {
                       </svg>
                     </div>
                   </div>
-                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{stat.value}</div>
-                  <div className="text-xs text-zinc-500">{stat.label}</div>
+                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</div>
+                  <div className="text-xs text-slate-500">{stat.label}</div>
                   <div className={`text-[10px] ${colors.text} mt-1`}>{stat.subtext}</div>
                 </div>
               </div>
@@ -1357,7 +1357,7 @@ function SitePageContent() {
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>Cache Configuration</h3>
+            <h3 className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-300"}`}>Cache Configuration</h3>
             <Chip
               size="sm"
               classNames={{
@@ -1375,7 +1375,7 @@ function SitePageContent() {
             <Button
                 variant="bordered"
                 size="sm"
-                className={`font-medium ${isLight ? "text-zinc-700 border-zinc-300 hover:border-zinc-400" : "text-zinc-300 border-[#3F3F46] hover:border-zinc-500"}`}
+                className={`font-medium ${isLight ? "text-slate-700 border-slate-300 hover:border-slate-400" : "text-slate-300 border-[#334155] hover:border-slate-500"}`}
                 startContent={
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
@@ -1410,9 +1410,9 @@ function SitePageContent() {
                 className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 ${
                   isLight
                     ? isOn
-                      ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-lg hover:shadow-zinc-200/50"
-                      : "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-200/50"
-                    : `bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] ${isOn ? colors.activeBorder : colors.border} hover:border-[#3F3F46] hover:shadow-lg hover:shadow-black/20`
+                      ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-lg hover:shadow-slate-200/50"
+                      : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50"
+                    : `bg-gradient-to-br from-[#1e2130] to-[#181b28] ${isOn ? colors.activeBorder : colors.border} hover:border-[#334155] hover:shadow-lg hover:shadow-black/20`
                 }`}
               >
                 {/* Corner Glow */}
@@ -1431,58 +1431,58 @@ function SitePageContent() {
                         {isOn && (
                           <span className="absolute -top-1 -right-1 flex h-3 w-3">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className={`relative inline-flex rounded-full h-3 w-3 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[#1E1E21]"}`}></span>
+                            <span className={`relative inline-flex rounded-full h-3 w-3 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[#1e2130]"}`}></span>
                           </span>
                         )}
                       </div>
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className={`font-semibold text-[15px] ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{item.label}</h3>
+                          <h3 className={`font-semibold text-[15px] ${isLight ? "text-slate-800" : "text-slate-100"}`}>{item.label}</h3>
                           <Chip
                             size="sm"
                             classNames={{
-                              base: `${isOn ? "bg-emerald-500/10" : "bg-zinc-500/10"} border-0 h-5`,
-                              content: `${isOn ? "text-emerald-400" : "text-zinc-400"} font-semibold text-[10px] px-0`
+                              base: `${isOn ? "bg-emerald-500/10" : "bg-slate-500/10"} border-0 h-5`,
+                              content: `${isOn ? "text-emerald-400" : "text-slate-400"} font-semibold text-[10px] px-0`
                             }}
                           >
                             {isOn ? "Active" : "Inactive"}
                           </Chip>
                         </div>
-                        <p className={`text-sm leading-relaxed ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>{item.desc}</p>
+                        <p className={`text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-500"}`}>{item.desc}</p>
                       </div>
                     </div>
                     <Switch
                       isSelected={isOn}
                       onValueChange={() => toggleCaching(item.key)}
                       classNames={{
-                        wrapper: `${isOn ? "!bg-emerald-500" : isLight ? "bg-zinc-300" : "bg-zinc-600"}`,
+                        wrapper: `${isOn ? "!bg-emerald-500" : isLight ? "bg-slate-300" : "bg-slate-600"}`,
                       }}
                     />
                   </div>
 
                   {/* Stats Row */}
                   {isOn && (
-                    <div className={`flex items-center gap-4 pt-4 border-t ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+                    <div className={`flex items-center gap-4 pt-4 border-t ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
                       <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>Hit rate:</span>
+                        <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>Hit rate:</span>
                         <span className={`text-xs font-semibold ${colors.text}`}>{item.hitRate}</span>
                       </div>
-                      <div className={`w-px h-4 ${isLight ? "bg-zinc-300" : "bg-[#3F3F46]"}`} />
+                      <div className={`w-px h-4 ${isLight ? "bg-slate-300" : "bg-[#334155]"}`} />
                       <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" />
                         </svg>
-                        <span className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-400"}`}>Objects:</span>
-                        <span className={`text-xs font-semibold ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>{item.objects}</span>
+                        <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>Objects:</span>
+                        <span className={`text-xs font-semibold ${isLight ? "text-slate-700" : "text-slate-300"}`}>{item.objects}</span>
                       </div>
                       <div className="ml-auto">
                         <button className={`h-7 px-2.5 rounded-lg text-xs font-medium transition-all ring-1 flex items-center gap-1.5 ${
                           isLight
-                            ? "bg-zinc-100 hover:bg-rose-500/10 text-zinc-500 hover:text-rose-500 ring-zinc-200 hover:ring-rose-500/30"
-                            : "bg-[#27272A]/70 hover:bg-rose-500/10 text-zinc-400 hover:text-rose-400 ring-[#3F3F46] hover:ring-rose-500/30"
+                            ? "bg-slate-100 hover:bg-rose-500/10 text-slate-500 hover:text-rose-500 ring-slate-200 hover:ring-rose-500/30"
+                            : "bg-[#1a1d27]/70 hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 ring-[#334155] hover:ring-rose-500/30"
                         }`}>
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                               <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
@@ -1603,8 +1603,8 @@ function SitePageContent() {
             return (
               <div key={stat.label} className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               }`}>
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                 <div className="relative">
@@ -1615,8 +1615,8 @@ function SitePageContent() {
                       </svg>
                     </div>
                   </div>
-                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{stat.value}</div>
-                  <div className="text-xs text-zinc-500">{stat.label}</div>
+                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</div>
+                  <div className="text-xs text-slate-500">{stat.label}</div>
                   <div className={`text-[10px] ${colors.text} mt-1`}>{stat.subtext}</div>
                 </div>
               </div>
@@ -1627,7 +1627,7 @@ function SitePageContent() {
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>WordPress Users</h3>
+            <h3 className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-300"}`}>WordPress Users</h3>
             <Chip
               size="sm"
               classNames={{
@@ -1661,8 +1661,8 @@ function SitePageContent() {
                 key={user.id}
                 className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg ${
                   isLight
-                    ? "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-zinc-200/50"
-                    : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46] hover:shadow-black/20"
+                    ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
+                    : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155] hover:shadow-black/20"
                 }`}
               >
                 {/* Corner Glow */}
@@ -1684,7 +1684,7 @@ function SitePageContent() {
                       {user.isOnline && (
                         <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span className={`relative inline-flex rounded-full h-4 w-4 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[#1E1E21]"}`}></span>
+                          <span className={`relative inline-flex rounded-full h-4 w-4 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[#1e2130]"}`}></span>
                         </span>
                       )}
                     </div>
@@ -1692,7 +1692,7 @@ function SitePageContent() {
                     {/* User Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className={`font-semibold text-[15px] ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{user.displayName}</span>
+                        <span className={`font-semibold text-[15px] ${isLight ? "text-slate-800" : "text-slate-100"}`}>{user.displayName}</span>
                         {user.twoFactor && (
                           <span className="w-5 h-5 rounded-md bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center">
                               <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -1713,20 +1713,20 @@ function SitePageContent() {
                       </div>
 
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="text-xs text-zinc-500 font-mono">@{user.username}</span>
-                        <span className="text-zinc-600">•</span>
-                        <span className="text-xs text-zinc-500">{user.email}</span>
+                        <span className="text-xs text-slate-500 font-mono">@{user.username}</span>
+                        <span className="text-slate-600">•</span>
+                        <span className="text-xs text-slate-500">{user.email}</span>
                       </div>
 
                       {/* Meta Info */}
                       <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <span>Last login: {user.lastLogin}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                           </svg>
@@ -1741,15 +1741,15 @@ function SitePageContent() {
                             key={perm}
                             className={`text-[10px] font-medium px-2 py-0.5 rounded-md ring-1 ${
                               isLight
-                                ? "text-zinc-500 bg-zinc-100 ring-zinc-200"
-                                : "text-zinc-400 bg-[#27272A] ring-[#3F3F46]"
+                                ? "text-slate-500 bg-slate-100 ring-slate-200"
+                                : "text-slate-400 bg-[#1a1d27] ring-[#334155]"
                             }`}
                           >
                             {perm}
                           </span>
                         ))}
                         {permissions.length > 3 && (
-                          <span className="text-[10px] font-medium text-zinc-500">+{permissions.length - 3} more</span>
+                          <span className="text-[10px] font-medium text-slate-500">+{permissions.length - 3} more</span>
                         )}
                       </div>
                     </div>
@@ -1765,20 +1765,20 @@ function SitePageContent() {
 
                       <button className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
                         isLight
-                          ? "bg-zinc-100 hover:bg-amber-500/10 ring-zinc-200 hover:ring-amber-500/30"
-                          : "bg-[#27272A]/70 hover:bg-amber-500/10 ring-[#3F3F46] hover:ring-amber-500/30"
+                          ? "bg-slate-100 hover:bg-amber-500/10 ring-slate-200 hover:ring-amber-500/30"
+                          : "bg-[#1a1d27]/70 hover:bg-amber-500/10 ring-[#334155] hover:ring-amber-500/30"
                       }`}>
-                          <svg className="w-4 h-4 text-zinc-400 hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-4 h-4 text-slate-400 hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
                           </svg>
                         </button>
 
                       <button className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
                         isLight
-                          ? "bg-zinc-100 hover:bg-rose-500/10 ring-zinc-200 hover:ring-rose-500/30"
-                          : "bg-[#27272A]/70 hover:bg-rose-500/10 ring-[#3F3F46] hover:ring-rose-500/30"
+                          ? "bg-slate-100 hover:bg-rose-500/10 ring-slate-200 hover:ring-rose-500/30"
+                          : "bg-[#1a1d27]/70 hover:bg-rose-500/10 ring-[#334155] hover:ring-rose-500/30"
                       }`}>
-                          <svg className="w-4 h-4 text-zinc-400 hover:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-4 h-4 text-slate-400 hover:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                           </svg>
                         </button>
@@ -1898,8 +1898,8 @@ function SitePageContent() {
             return (
               <div key={stat.label} className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               }`}>
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                 <div className="relative">
@@ -1910,8 +1910,8 @@ function SitePageContent() {
                       </svg>
                     </div>
                   </div>
-                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{stat.value}</div>
-                  <div className="text-xs text-zinc-500">{stat.label}</div>
+                  <div className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</div>
+                  <div className="text-xs text-slate-500">{stat.label}</div>
                   <div className={`text-[10px] ${colors.text} mt-1`}>{stat.subtext}</div>
                 </div>
               </div>
@@ -1924,7 +1924,7 @@ function SitePageContent() {
           <div className="flex items-center gap-3">
             {/* Log Type Selector */}
             <div className={`flex items-center gap-1 p-1 rounded-xl border ${
-              isLight ? "bg-zinc-100 border-zinc-200" : "bg-[#1E1E21] border-[#2A2A2E]"
+              isLight ? "bg-slate-100 border-slate-200" : "bg-[#1e2130] border-[#282b3a]"
             }`}>
               {logTypeOptions.map((option) => (
                 <button
@@ -1934,8 +1934,8 @@ function SitePageContent() {
                     logType === option.key
                       ? "bg-gradient-to-r from-violet-500/20 to-violet-600/20 text-violet-400 ring-1 ring-violet-500/30"
                       : isLight
-                        ? "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-200"
-                        : "text-zinc-400 hover:text-zinc-200 hover:bg-[#27272A]"
+                        ? "text-slate-500 hover:text-slate-700 hover:bg-slate-200"
+                        : "text-slate-400 hover:text-slate-200 hover:bg-[#1a1d27]"
                   }`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -1951,7 +1951,7 @@ function SitePageContent() {
                 variant="bordered"
                 size="sm"
                 isIconOnly
-                className={`font-medium ${isLight ? "text-zinc-700 border-zinc-300 hover:border-zinc-400" : "text-zinc-300 border-[#3F3F46] hover:border-zinc-500"}`}
+                className={`font-medium ${isLight ? "text-slate-700 border-slate-300 hover:border-slate-400" : "text-slate-300 border-[#334155] hover:border-slate-500"}`}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
@@ -1961,7 +1961,7 @@ function SitePageContent() {
             <Button
                 variant="bordered"
                 size="sm"
-                className="font-medium text-zinc-300 border-[#3F3F46] hover:border-rose-500/50 hover:text-rose-400"
+                className="font-medium text-slate-300 border-[#334155] hover:border-rose-500/50 hover:text-rose-400"
                 startContent={
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
@@ -1974,7 +1974,7 @@ function SitePageContent() {
             <Button
               variant="bordered"
               size="sm"
-              className={`font-medium ${isLight ? "text-zinc-700 border-zinc-300 hover:border-zinc-400" : "text-zinc-300 border-[#3F3F46] hover:border-zinc-500"}`}
+              className={`font-medium ${isLight ? "text-slate-700 border-slate-300 hover:border-slate-400" : "text-slate-300 border-[#334155] hover:border-slate-500"}`}
               startContent={
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -1989,16 +1989,16 @@ function SitePageContent() {
         {/* Log Entries */}
         <div className={`relative border rounded-2xl overflow-hidden ${
           isLight
-            ? "bg-white border-zinc-200"
-            : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+            ? "bg-white border-slate-200"
+            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
         }`}>
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-violet-500/[0.04] to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
           {/* Header */}
           <div className={`relative px-5 py-4 border-b ${
             isLight
-              ? "border-zinc-200 bg-zinc-50"
-              : "border-[#2A2A2E] bg-gradient-to-r from-[#18181B] to-[#1f1f23]"
+              ? "border-slate-200 bg-slate-50"
+              : "border-[#282b3a] bg-gradient-to-r from-[#0f1117] to-[#1f1f23]"
           }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -2008,12 +2008,12 @@ function SitePageContent() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className={`text-sm font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Log Entries</h3>
-                  <p className="text-[11px] text-zinc-500">Showing {logEntries.length} most recent entries</p>
+                  <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Log Entries</h3>
+                  <p className="text-[11px] text-slate-500">Showing {logEntries.length} most recent entries</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-zinc-500">Auto-refresh: </span>
+                <span className="text-[10px] text-slate-500">Auto-refresh: </span>
                 <span className="flex items-center gap-1 text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md ring-1 ring-emerald-500/20">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   On
@@ -2023,14 +2023,14 @@ function SitePageContent() {
           </div>
 
           {/* Log List */}
-          <div className={`relative divide-y ${isLight ? "divide-zinc-200" : "divide-[#2A2A2E]"}`}>
+          <div className={`relative divide-y ${isLight ? "divide-slate-200" : "divide-[#282b3a]"}`}>
             {logEntries.map((log) => {
               const colors = logColorMap[log.color];
               return (
                 <div
                   key={log.id}
                   className={`group relative flex items-start gap-4 px-5 py-4 border-l-4 ${colors.border} transition-all cursor-pointer ${
-                    isLight ? "hover:bg-zinc-50" : "hover:bg-white/[0.02]"
+                    isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]"
                   }`}
                 >
                   {/* Level Badge */}
@@ -2048,17 +2048,17 @@ function SitePageContent() {
 
                   {/* Message */}
                   <div className="flex-1 min-w-0">
-                    <p className={`font-mono text-sm break-all leading-relaxed mb-2 ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>
+                    <p className={`font-mono text-sm break-all leading-relaxed mb-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
                       {log.message}
                     </p>
                     <div className="flex items-center gap-3 flex-wrap">
                       {log.file && (
-                        <div className="flex items-center gap-1.5 text-[11px] text-zinc-500">
+                        <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                           </svg>
                           <span className="font-mono truncate max-w-[200px]">{log.file}</span>
-                          {log.line && <span className="text-zinc-600">:{log.line}</span>}
+                          {log.line && <span className="text-slate-600">:{log.line}</span>}
                         </div>
                       )}
                     </div>
@@ -2066,28 +2066,28 @@ function SitePageContent() {
 
                   {/* Time */}
                   <div className="flex-shrink-0 text-right">
-                    <div className="text-xs text-zinc-500 font-mono">{log.time}</div>
-                    <div className="text-[10px] text-zinc-600 mt-0.5">{log.date}</div>
+                    <div className="text-xs text-slate-500 font-mono">{log.time}</div>
+                    <div className="text-[10px] text-slate-600 mt-0.5">{log.date}</div>
                   </div>
 
                   {/* Hover Actions */}
                   <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0">
                     <button className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all ring-1 ${
                       isLight
-                        ? "bg-white/90 hover:bg-zinc-100 ring-zinc-200"
-                        : "bg-[#27272A]/90 hover:bg-[#3F3F46] ring-[#3F3F46]"
+                        ? "bg-white/90 hover:bg-slate-100 ring-slate-200"
+                        : "bg-[#1a1d27]/90 hover:bg-[#334155] ring-[#334155]"
                     }`}>
-                        <svg className="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
                         </svg>
                       </button>
 
                     <button className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all ring-1 ${
                       isLight
-                        ? "bg-white/90 hover:bg-zinc-100 ring-zinc-200"
-                        : "bg-[#27272A]/90 hover:bg-[#3F3F46] ring-[#3F3F46]"
+                        ? "bg-white/90 hover:bg-slate-100 ring-slate-200"
+                        : "bg-[#1a1d27]/90 hover:bg-[#334155] ring-[#334155]"
                     }`}>
-                        <svg className="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                           <path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </button>
@@ -2099,7 +2099,7 @@ function SitePageContent() {
           </div>
 
           {/* Footer */}
-          <div className={`relative border-t bg-gradient-to-t from-violet-500/[0.02] to-transparent ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+          <div className={`relative border-t bg-gradient-to-t from-violet-500/[0.02] to-transparent ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
             <button className="w-full py-3.5 flex items-center justify-center gap-2 text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors group/btn">
               <span>Load more entries</span>
               <svg className="w-4 h-4 group-hover/btn:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -2135,8 +2135,8 @@ function SitePageContent() {
       {/* Site Header */}
       <div className={`relative rounded-2xl border overflow-hidden mb-6 ${
         isLight
-          ? "bg-white border-zinc-200"
-          : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+          ? "bg-white border-slate-200"
+          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
       }`}>
         {/* Background Glows */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-emerald-500/[0.08] to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
@@ -2155,7 +2155,7 @@ function SitePageContent() {
                 </svg>
               </div>
               {/* Online indicator */}
-              <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center ${isLight ? "bg-white" : "bg-[#1E1E21]"}`}>
+              <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center ${isLight ? "bg-white" : "bg-[#1e2130]"}`}>
                 <div className="relative flex h-3 w-3">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
@@ -2166,7 +2166,7 @@ function SitePageContent() {
             {/* Site Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
-                <h1 className={`text-2xl font-bold truncate ${isLight ? "text-zinc-800" : "text-white"}`}>{siteName}</h1>
+                <h1 className={`text-2xl font-bold truncate ${isLight ? "text-slate-800" : "text-white"}`}>{siteName}</h1>
                 <Chip size="sm" classNames={{ base: "bg-emerald-500/10 border-0", content: "text-emerald-400 font-semibold text-[11px] px-2" }}>
                   <span className="flex items-center gap-1.5">
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -2185,8 +2185,8 @@ function SitePageContent() {
                 </Chip>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>Pro Plan</span>
-                <span className={isLight ? "text-zinc-300" : "text-zinc-600"}>•</span>
+                <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>Pro Plan</span>
+                <span className={isLight ? "text-slate-300" : "text-slate-600"}>•</span>
                 <button onClick={() => setIsUpgradeOpen(true)} className="inline-flex items-center gap-1.5 text-sm font-medium text-amber-500 hover:text-amber-400 transition-colors">
                   Upgrade to Business
                   <svg className="w-4 h-4 -scale-x-100" fill="currentColor" viewBox="0 0 24 24">
@@ -2215,41 +2215,41 @@ function SitePageContent() {
                 <DropdownMenu
                   aria-label="Quick Actions"
                   classNames={{
-                    base: `p-1.5 rounded-2xl min-w-[180px] ${isLight ? "bg-white border border-zinc-200 shadow-xl" : "bg-[#1E1E21] border border-[#2A2A2E] shadow-xl shadow-black/20"}`,
+                    base: `p-1.5 rounded-2xl min-w-[180px] ${isLight ? "bg-white border border-slate-200 shadow-xl" : "bg-[#1e2130] border border-[#282b3a] shadow-xl shadow-black/20"}`,
                     list: "gap-0.5",
                   }}
                 >
                   <DropdownItem
                     key="backup"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>}
                     textValue="Backup Now"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Backup Now</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Backup Now</span>
                   </DropdownItem>
                   <DropdownItem
                     key="clear-cache"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>}
                     textValue="Clear Cache"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Clear Cache</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Clear Cache</span>
                   </DropdownItem>
                   <DropdownItem
                     key="ssl-check"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>}
                     textValue="SSL Check"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>SSL Check</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>SSL Check</span>
                   </DropdownItem>
                   <DropdownItem
                     key="staging"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>}
                     textValue="Staging"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Staging</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Staging</span>
                   </DropdownItem>
                   <DropdownItem
                     key="divider"
@@ -2257,39 +2257,39 @@ function SitePageContent() {
                     className="p-0 my-1 cursor-default data-[hover=true]:bg-transparent"
                     textValue="divider"
                   >
-                    <div className={`h-px mx-2 ${isLight ? "bg-zinc-100" : "bg-[#2A2A2E]"}`} />
+                    <div className={`h-px mx-2 ${isLight ? "bg-slate-100" : "bg-[#282b3a]"}`} />
                   </DropdownItem>
                   <DropdownItem
                     key="restart-php"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>}
                     textValue="Restart PHP"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Restart PHP</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Restart PHP</span>
                   </DropdownItem>
                   <DropdownItem
                     key="restart-server"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>}
                     textValue="Restart Server"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Restart Server</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Restart Server</span>
                   </DropdownItem>
                   <DropdownItem
                     key="server-logs"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>}
                     textValue="Server Logs"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Server Logs</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Server Logs</span>
                   </DropdownItem>
                   <DropdownItem
                     key="security-scan"
-                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-zinc-100" : "data-[hover=true]:bg-[#27272A]"}`}
-                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>}
+                    className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[#1a1d27]"}`}
+                    startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>}
                     textValue="Security Scan"
                   >
-                    <span className={`text-sm ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Security Scan</span>
+                    <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Security Scan</span>
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -2300,44 +2300,44 @@ function SitePageContent() {
         {/* Footer Stats Bar */}
         <div className={`relative border-t px-6 py-3 flex items-center justify-between ${
           isLight
-            ? "border-zinc-200 bg-zinc-50/50"
-            : "border-white/[0.04] bg-[#18181B]/50"
+            ? "border-slate-200 bg-slate-50/50"
+            : "border-white/[0.04] bg-[#0f1117]/50"
         }`}>
           <div className="flex items-center gap-6 text-xs">
-            <span className="flex items-center gap-1.5 text-zinc-500">
+            <span className="flex items-center gap-1.5 text-slate-500">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
               </svg>
-              Server: <span className={isLight ? "text-zinc-700" : "text-zinc-300"}>us-east-1</span>
+              Server: <span className={isLight ? "text-slate-700" : "text-slate-300"}>us-east-1</span>
             </span>
-            <span className={isLight ? "text-zinc-300" : "text-zinc-700"}>•</span>
-            <button className={`group flex items-center gap-1.5 text-zinc-500 transition-colors ${isLight ? "hover:text-zinc-700" : "hover:text-zinc-300"}`}>
+            <span className={isLight ? "text-slate-300" : "text-slate-700"}>•</span>
+            <button className={`group flex items-center gap-1.5 text-slate-500 transition-colors ${isLight ? "hover:text-slate-700" : "hover:text-slate-300"}`}>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
                 </svg>
-                IP: <span className={`font-mono ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>189.659.543.55</span>
+                IP: <span className={`font-mono ${isLight ? "text-slate-700" : "text-slate-300"}`}>189.659.543.55</span>
               </button>
             
-            <span className={isLight ? "text-zinc-300" : "text-zinc-700"}>•</span>
-            <span className="flex items-center gap-1.5 text-zinc-500">
+            <span className={isLight ? "text-slate-300" : "text-slate-700"}>•</span>
+            <span className="flex items-center gap-1.5 text-slate-500">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
               </svg>
-              PHP: <span className={isLight ? "text-zinc-700" : "text-zinc-300"}>8.1</span>
+              PHP: <span className={isLight ? "text-slate-700" : "text-slate-300"}>8.1</span>
             </span>
-            <span className={isLight ? "text-zinc-300" : "text-zinc-700"}>•</span>
-            <span className="flex items-center gap-1.5 text-zinc-500">
+            <span className={isLight ? "text-slate-300" : "text-slate-700"}>•</span>
+            <span className="flex items-center gap-1.5 text-slate-500">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
               </svg>
-              WP: <span className={isLight ? "text-zinc-700" : "text-zinc-300"}>6.6.2</span>
+              WP: <span className={isLight ? "text-slate-700" : "text-slate-300"}>6.6.2</span>
             </span>
-            <span className={isLight ? "text-zinc-300" : "text-zinc-700"}>•</span>
-            <span className="flex items-center gap-1.5 text-zinc-500">
+            <span className={isLight ? "text-slate-300" : "text-slate-700"}>•</span>
+            <span className="flex items-center gap-1.5 text-slate-500">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
               </svg>
-              Next Payment: <span className={isLight ? "text-zinc-700" : "text-zinc-300"}>Mar 15, 2026</span>
+              Next Payment: <span className={isLight ? "text-slate-700" : "text-slate-300"}>Mar 15, 2026</span>
             </span>
           </div>
           <button className="flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 font-semibold transition-colors">
@@ -2354,8 +2354,8 @@ function SitePageContent() {
         {/* Sidebar Navigation */}
         <div className={`relative rounded-2xl border overflow-hidden min-w-[240px] self-start shadow-xl ${
           isLight
-            ? "bg-white border-zinc-200 shadow-zinc-200/50"
-            : "bg-gradient-to-br from-[#1E1E21] via-[#1a1a1d] to-[#18181B] border-[#2A2A2E]/80 shadow-black/20"
+            ? "bg-white border-slate-200 shadow-slate-200/50"
+            : "bg-gradient-to-br from-[#1e2130] via-[#181b28] to-[#0f1117] border-[#282b3a]/80 shadow-black/20"
         }`}>
           {/* Ambient Glow Effects */}
           <div className="absolute top-0 left-0 w-48 h-48 bg-gradient-to-br from-emerald-500/[0.06] via-emerald-500/[0.02] to-transparent rounded-full -translate-y-1/2 -translate-x-1/2 blur-2xl" />
@@ -2364,12 +2364,12 @@ function SitePageContent() {
 
           {/* Menu Header */}
           <div className="relative px-5 pt-5 pb-4">
-            <h3 className={`text-sm font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Site Management</h3>
-            <p className="text-[10px] text-zinc-500 mt-1">Configure your site</p>
+            <h3 className={`text-sm font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Site Management</h3>
+            <p className="text-[10px] text-slate-500 mt-1">Configure your site</p>
           </div>
 
           {/* Divider */}
-          <div className={`mx-4 h-px bg-gradient-to-r from-transparent to-transparent ${isLight ? "via-zinc-200" : "via-[#2A2A2E]"}`} />
+          <div className={`mx-4 h-px bg-gradient-to-r from-transparent to-transparent ${isLight ? "via-slate-200" : "via-[#282b3a]"}`} />
 
           {/* Custom Tab List */}
           <div className="relative flex flex-col gap-1 p-3">
@@ -2383,7 +2383,7 @@ function SitePageContent() {
                     isActive
                       ? `${activeAccent.bg} ring-1 ${activeAccent.ring} shadow-lg`
                       : isLight
-                        ? "hover:bg-zinc-100"
+                        ? "hover:bg-slate-100"
                         : "hover:bg-white/[0.04]"
                   }`}
                 >
@@ -2394,8 +2394,8 @@ function SitePageContent() {
                     isActive
                       ? `${activeAccent.bg} ${activeAccent.text} ring-1 ${activeAccent.ring} shadow-md`
                       : isLight
-                        ? "bg-zinc-100 text-zinc-500 group-hover:text-zinc-700 group-hover:bg-zinc-200"
-                        : "bg-[#27272A]/80 text-zinc-500 group-hover:text-zinc-300 group-hover:bg-[#2A2A2E]"
+                        ? "bg-slate-100 text-slate-500 group-hover:text-slate-700 group-hover:bg-slate-200"
+                        : "bg-[#1a1d27]/80 text-slate-500 group-hover:text-slate-300 group-hover:bg-[#282b3a]"
                   }`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d={tab.icon} />
@@ -2403,10 +2403,10 @@ function SitePageContent() {
                   </div>
                   <span className={`text-[13px] font-medium flex-1 transition-colors duration-200 ${
                     isActive
-                      ? isLight ? "text-zinc-900" : "text-white"
+                      ? isLight ? "text-slate-900" : "text-white"
                       : isLight
-                        ? "text-zinc-600 group-hover:text-zinc-900"
-                        : "text-zinc-400 group-hover:text-zinc-200"
+                        ? "text-slate-600 group-hover:text-slate-900"
+                        : "text-slate-400 group-hover:text-slate-200"
                   }`}>
                     {tab.name}
                   </span>

@@ -22,14 +22,14 @@ export function SectionHeader({ title, icon, iconColor = "emerald", count, actio
     <div className={cn("flex items-center justify-between mb-5", className)}>
       <div className="flex items-center gap-2">
         {icon && colors && (
-          <svg className={cn("w-5 h-5", isLight ? "text-zinc-500" : colors.text)} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+          <svg className={cn("w-5 h-5", isLight ? "text-slate-500" : colors.text)} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d={icon} />
           </svg>
         )}
-        <h2 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{title}</h2>
+        <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{title}</h2>
         {count !== undefined && (
           <span className={`text-xs px-2 py-0.5 rounded-md ${
-            isLight ? "text-zinc-500 bg-zinc-100" : "text-zinc-500 bg-[#27272A]"
+            isLight ? "text-slate-500 bg-slate-100" : "text-slate-500 bg-[#1a1d27]"
           }`}>{count}</span>
         )}
       </div>

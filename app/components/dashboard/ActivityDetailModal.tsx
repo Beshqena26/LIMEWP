@@ -97,11 +97,11 @@ export function ActivityDetailModal({
       classNames={{
         backdrop: "bg-black/70",
         base: isLight
-          ? "bg-white border border-zinc-200 shadow-2xl max-w-[500px] rounded-2xl"
-          : "bg-[#18181B] border border-[#27272A] shadow-2xl max-w-[500px] rounded-2xl",
-        header: isLight ? "border-b border-zinc-200" : "border-b border-[#27272A]",
+          ? "bg-white border border-slate-200 shadow-2xl max-w-[500px] rounded-2xl"
+          : "bg-[#0f1117] border border-[#1a1d27] shadow-2xl max-w-[500px] rounded-2xl",
+        header: isLight ? "border-b border-slate-200" : "border-b border-[#1a1d27]",
         body: "py-6",
-        footer: isLight ? "border-t border-zinc-200" : "border-t border-[#27272A]",
+        footer: isLight ? "border-t border-slate-200" : "border-t border-[#1a1d27]",
       }}
     >
       <ModalContent>
@@ -125,12 +125,12 @@ export function ActivityDetailModal({
             <div>
               <h2
                 className={`text-lg font-semibold ${
-                  isLight ? "text-zinc-800" : "text-zinc-100"
+                  isLight ? "text-slate-800" : "text-slate-100"
                 }`}
               >
                 {activity.action}
               </h2>
-              <p className="text-xs text-zinc-500 font-normal">
+              <p className="text-xs text-slate-500 font-normal">
                 {activity.time}
               </p>
             </div>
@@ -139,8 +139,8 @@ export function ActivityDetailModal({
             onClick={onClose}
             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
               isLight
-                ? "hover:bg-zinc-100 text-zinc-400 hover:text-zinc-600"
-                : "hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300"
+                ? "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                : "hover:bg-slate-800 text-slate-500 hover:text-slate-300"
             }`}
           >
             <svg
@@ -163,8 +163,8 @@ export function ActivityDetailModal({
             <div
               className={`rounded-xl p-4 flex items-center gap-3 ${
                 isLight
-                  ? "bg-zinc-50 border border-zinc-200"
-                  : "bg-[#1E1E21] border border-[#2A2A2E]"
+                  ? "bg-slate-50 border border-slate-200"
+                  : "bg-[#1e2130] border border-[#282b3a]"
               }`}
             >
               <Avatar
@@ -177,12 +177,12 @@ export function ActivityDetailModal({
               <div>
                 <p
                   className={`text-sm font-medium ${
-                    isLight ? "text-zinc-800" : "text-zinc-100"
+                    isLight ? "text-slate-800" : "text-slate-100"
                   }`}
                 >
                   {activity.site}
                 </p>
-                <p className="text-xs text-zinc-500">Affected site</p>
+                <p className="text-xs text-slate-500">Affected site</p>
               </div>
               <span
                 className={`ml-auto text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${colors.bg} ${colors.text}`}
@@ -193,12 +193,12 @@ export function ActivityDetailModal({
 
             {/* Description */}
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">
                 Description
               </label>
               <p
                 className={`text-sm leading-relaxed ${
-                  isLight ? "text-zinc-600" : "text-zinc-400"
+                  isLight ? "text-slate-600" : "text-slate-400"
                 }`}
               >
                 {getActivityDescription(activity)}
@@ -207,12 +207,12 @@ export function ActivityDetailModal({
 
             {/* Metadata */}
             <div>
-              <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">
+              <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">
                 Details
               </label>
               <div
                 className={`rounded-xl overflow-hidden border ${
-                  isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+                  isLight ? "border-slate-200" : "border-[#282b3a]"
                 }`}
               >
                 {getActivityMetadata(activity).map((item, index) => (
@@ -221,15 +221,15 @@ export function ActivityDetailModal({
                     className={`flex items-center justify-between px-4 py-3 ${
                       index !== getActivityMetadata(activity).length - 1
                         ? isLight
-                          ? "border-b border-zinc-100"
-                          : "border-b border-[#2A2A2E]"
+                          ? "border-b border-slate-100"
+                          : "border-b border-[#282b3a]"
                         : ""
-                    } ${isLight ? "bg-white" : "bg-[#1E1E21]"}`}
+                    } ${isLight ? "bg-white" : "bg-[#1e2130]"}`}
                   >
-                    <span className="text-sm text-zinc-500">{item.label}</span>
+                    <span className="text-sm text-slate-500">{item.label}</span>
                     <span
                       className={`text-sm font-medium ${
-                        isLight ? "text-zinc-800" : "text-zinc-100"
+                        isLight ? "text-slate-800" : "text-slate-100"
                       }`}
                     >
                       {item.value}
@@ -243,12 +243,12 @@ export function ActivityDetailModal({
             <div
               className={`rounded-xl p-4 flex items-center gap-3 ${
                 isLight
-                  ? "bg-zinc-100 border border-zinc-200"
-                  : "bg-zinc-800/50 border border-zinc-700"
+                  ? "bg-slate-100 border border-slate-200"
+                  : "bg-slate-800/50 border border-slate-700"
               }`}
             >
               <svg
-                className={`w-5 h-5 flex-shrink-0 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}
+                className={`w-5 h-5 flex-shrink-0 ${isLight ? "text-slate-600" : "text-slate-400"}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -263,14 +263,14 @@ export function ActivityDetailModal({
               <div>
                 <p
                   className={`text-sm font-medium ${
-                    isLight ? "text-zinc-800" : "text-zinc-200"
+                    isLight ? "text-slate-800" : "text-slate-200"
                   }`}
                 >
                   Completed Successfully
                 </p>
                 <p
                   className={`text-xs ${
-                    isLight ? "text-zinc-600" : "text-zinc-400"
+                    isLight ? "text-slate-600" : "text-slate-400"
                   }`}
                 >
                   No action required
@@ -286,8 +286,8 @@ export function ActivityDetailModal({
             onPress={onClose}
             className={`font-medium text-sm rounded-xl h-10 px-5 ${
               isLight
-                ? "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800"
-                : "bg-[#27272A] text-zinc-400 hover:text-zinc-200"
+                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                : "bg-[#1a1d27] text-slate-400 hover:text-slate-200"
             }`}
           >
             Close

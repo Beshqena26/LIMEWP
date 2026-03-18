@@ -53,8 +53,8 @@ function ProfilePhotoCard() {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -66,12 +66,12 @@ function ProfilePhotoCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Profile Photo</h3>
-            <p className="text-xs text-zinc-500">Update your profile picture</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Profile Photo</h3>
+            <p className="text-xs text-slate-500">Update your profile picture</p>
           </div>
         </div>
 
-        <div className={`flex items-center gap-6 pb-6 border-b ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+        <div className={`flex items-center gap-6 pb-6 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
           <div className="relative group">
             <div className={`absolute inset-0 bg-gradient-to-r ${accent.gradient} rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity`} />
             <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${accent.gradient} flex items-center justify-center text-white text-2xl font-bold ring-4 ring-white/10`}>
@@ -84,8 +84,8 @@ function ProfilePhotoCard() {
             </Button>
             <Button variant="flat" className={`font-medium text-sm rounded-xl h-10 px-4 ${
               isLight
-                ? "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800"
-                : "bg-[#27272A] text-zinc-400 hover:text-zinc-200"
+                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                : "bg-[#1a1d27] text-slate-400 hover:text-slate-200"
             }`}>
               Remove
             </Button>
@@ -102,15 +102,15 @@ function PersonalInfoCard() {
   const accent = ACCENT_STYLES[accentColor];
 
   const inputClassNames = isLight ? {
-    inputWrapper: `bg-zinc-50 border-zinc-200 hover:border-zinc-300 ${accent.focusBorder} !rounded-xl`,
-    input: "text-zinc-800 placeholder:text-zinc-400",
+    inputWrapper: `bg-slate-50 border-slate-200 hover:border-slate-300 ${accent.focusBorder} !rounded-xl`,
+    input: "text-slate-800 placeholder:text-slate-400",
   } : INPUT_CLASS_NAMES;
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -122,26 +122,26 @@ function PersonalInfoCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Personal Information</h3>
-            <p className="text-xs text-zinc-500">Manage your account details</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Personal Information</h3>
+            <p className="text-xs text-slate-500">Manage your account details</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Full Name</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Full Name</label>
             <Input defaultValue="Lime Admin" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Email Address</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Email Address</label>
             <Input defaultValue="admin@limewp.com" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Username</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Username</label>
             <Input defaultValue="limeadmin" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Phone Number</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Phone Number</label>
             <Input defaultValue="+1 (555) 123-4567" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
         </div>
@@ -156,17 +156,17 @@ function PreferencesCard() {
   const accent = ACCENT_STYLES[accentColor];
 
   const selectClassNames = isLight ? {
-    trigger: `bg-zinc-50 border-zinc-200 hover:border-zinc-300 ${accent.focusBorder} !rounded-xl text-zinc-800`,
-    value: "text-zinc-800",
-    popoverContent: "bg-white border border-zinc-200 rounded-xl",
+    trigger: `bg-slate-50 border-slate-200 hover:border-slate-300 ${accent.focusBorder} !rounded-xl text-slate-800`,
+    value: "text-slate-800",
+    popoverContent: "bg-white border border-slate-200 rounded-xl",
     listbox: "bg-white",
   } : SELECT_CLASS_NAMES;
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -178,14 +178,14 @@ function PreferencesCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Regional Preferences</h3>
-            <p className="text-xs text-zinc-500">Set your timezone and language</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Regional Preferences</h3>
+            <p className="text-xs text-slate-500">Set your timezone and language</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Timezone</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Timezone</label>
             <Select defaultSelectedKeys={["EST"]} classNames={selectClassNames} variant="bordered">
               <SelectItem key="UTC">UTC</SelectItem>
               <SelectItem key="EST">EST (Eastern)</SelectItem>
@@ -195,7 +195,7 @@ function PreferencesCard() {
             </Select>
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Language</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Language</label>
             <Select defaultSelectedKeys={["en-us"]} classNames={selectClassNames} variant="bordered">
               <SelectItem key="en-us">English (US)</SelectItem>
               <SelectItem key="en-uk">English (UK)</SelectItem>

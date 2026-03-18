@@ -42,8 +42,8 @@ function ApiKeysCard() {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -56,8 +56,8 @@ function ApiKeysCard() {
               </svg>
             </div>
             <div>
-              <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>API Keys</h3>
-              <p className="text-xs text-zinc-500">Manage your API access</p>
+              <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>API Keys</h3>
+              <p className="text-xs text-slate-500">Manage your API access</p>
             </div>
           </div>
           <Button className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-9 px-4 shadow-lg ${accent.shadow} gap-2`}>
@@ -71,7 +71,7 @@ function ApiKeysCard() {
         <div className="space-y-4">
           {API_KEYS.map((key) => (
             <div key={key.name} className={`p-4 rounded-xl ${
-              isLight ? "bg-zinc-50" : "bg-[#27272A]/50"
+              isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
             }`}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
@@ -81,8 +81,8 @@ function ApiKeysCard() {
                     </svg>
                   </div>
                   <div>
-                    <p className={`text-sm font-medium ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{key.name}</p>
-                    <p className="text-[11px] text-zinc-500">Created {key.created}</p>
+                    <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{key.name}</p>
+                    <p className="text-[11px] text-slate-500">Created {key.created}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -91,8 +91,8 @@ function ApiKeysCard() {
                   </Button>
                   <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
                     isLight
-                      ? "bg-zinc-200 text-zinc-600 hover:text-zinc-800"
-                      : "bg-[#3F3F46] text-zinc-400 hover:text-zinc-200"
+                      ? "bg-slate-200 text-slate-600 hover:text-slate-800"
+                      : "bg-[#334155] text-slate-400 hover:text-slate-200"
                   }`}>
                     Regenerate
                   </Button>
@@ -100,8 +100,8 @@ function ApiKeysCard() {
               </div>
               <div className={`font-mono text-sm px-4 py-2.5 rounded-lg border ${
                 isLight
-                  ? "bg-zinc-100 text-zinc-600 border-zinc-200"
-                  : "bg-[#1E1E21] text-zinc-400 border-[#2A2A2E]"
+                  ? "bg-slate-100 text-slate-600 border-slate-200"
+                  : "bg-[#1e2130] text-slate-400 border-[#282b3a]"
               }`}>
                 {key.prefix}••••••••••••••••{key.suffix}
               </div>
@@ -119,27 +119,27 @@ function WebhooksCard() {
   const accent = ACCENT_STYLES[accentColor];
 
   const inputClassNames = isLight ? {
-    inputWrapper: `bg-zinc-50 border-zinc-200 hover:border-zinc-300 ${accent.focusBorder} !rounded-xl`,
-    input: "text-zinc-800 placeholder:text-zinc-400",
+    inputWrapper: `bg-slate-50 border-slate-200 hover:border-slate-300 ${accent.focusBorder} !rounded-xl`,
+    input: "text-slate-800 placeholder:text-slate-400",
   } : {
     inputWrapper: [
-      "bg-[#1E1E21]",
-      "border-[#2A2A2E]",
-      "hover:border-[#3F3F46]",
+      "bg-[#1e2130]",
+      "border-[#282b3a]",
+      "hover:border-[#334155]",
       accent.focusBorder,
       "group-data-[focus=true]:ring-1",
       accent.ring,
       "rounded-xl",
       "transition-all",
     ],
-    input: ["text-zinc-100", "placeholder:text-zinc-500"],
+    input: ["text-slate-100", "placeholder:text-slate-500"],
   };
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -151,14 +151,14 @@ function WebhooksCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Webhooks</h3>
-            <p className="text-xs text-zinc-500">Receive event notifications</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Webhooks</h3>
+            <p className="text-xs text-slate-500">Receive event notifications</p>
           </div>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-[11px] uppercase tracking-wider text-zinc-500 font-medium mb-2">Endpoint URL</label>
+            <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Endpoint URL</label>
             <Input placeholder="https://your-domain.com/webhook" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <div className="flex gap-3">
@@ -167,8 +167,8 @@ function WebhooksCard() {
             </Button>
             <Button variant="flat" className={`font-medium text-sm rounded-xl h-10 px-5 ${
               isLight
-                ? "bg-zinc-100 text-zinc-700 hover:text-zinc-900"
-                : "bg-[#27272A] text-zinc-300 hover:text-white"
+                ? "bg-slate-100 text-slate-700 hover:text-slate-900"
+                : "bg-[#1a1d27] text-slate-300 hover:text-white"
             }`}>
               Generate Secret
             </Button>

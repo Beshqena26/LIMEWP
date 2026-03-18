@@ -55,8 +55,8 @@ export default function TopHeader() {
   return (
     <header className={`h-16 px-6 flex items-center justify-between fixed top-0 right-0 left-[260px] z-50 border-b transition-colors ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-r from-[#18181B] to-[#1a1a1d] border-white/[0.06]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-r from-[#0f1117] to-[#181b28] border-white/[0.06]"
     }`}>
       {/* Left Side - Search */}
       <div className="flex items-center gap-4">
@@ -73,15 +73,15 @@ export default function TopHeader() {
             radius="lg"
             size="sm"
             startContent={
-              <svg className={`w-4 h-4 flex-shrink-0 ${isLight ? "text-zinc-400" : "text-zinc-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <svg className={`w-4 h-4 flex-shrink-0 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             }
             endContent={
               <kbd className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
                 isLight
-                  ? "text-zinc-400 bg-zinc-100 border-zinc-200"
-                  : "text-zinc-500 bg-[#18181B] border-[#3F3F46]"
+                  ? "text-slate-400 bg-slate-100 border-slate-200"
+                  : "text-slate-500 bg-[#0f1117] border-[#334155]"
               }`}>
                 <span className="text-[11px]">⌘</span>K
               </kbd>
@@ -90,9 +90,9 @@ export default function TopHeader() {
               base: "w-[320px]",
               inputWrapper: [
                 "!rounded-xl",
-                isLight ? "bg-zinc-50" : "bg-[#1E1E21]",
-                isLight ? "border-zinc-200" : "border-[#2A2A2E]",
-                isLight ? "hover:border-zinc-300" : "hover:border-[#3F3F46]",
+                isLight ? "bg-slate-50" : "bg-[#1e2130]",
+                isLight ? "border-slate-200" : "border-[#282b3a]",
+                isLight ? "hover:border-slate-300" : "hover:border-[#334155]",
                 accentFocusClasses[accentColor],
                 "group-data-[focus=true]:!ring-1",
                 "!outline-none",
@@ -102,8 +102,8 @@ export default function TopHeader() {
               ],
               input: [
                 "text-sm",
-                isLight ? "text-zinc-800" : "text-zinc-100",
-                isLight ? "placeholder:text-zinc-400" : "placeholder:text-zinc-500",
+                isLight ? "text-slate-800" : "text-slate-100",
+                isLight ? "placeholder:text-slate-400" : "placeholder:text-slate-500",
                 "!px-2",
                 "!outline-none",
                 "!ring-0",
@@ -122,23 +122,23 @@ export default function TopHeader() {
           classNames={{
             content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[380px] ${
               isLight
-                ? "bg-white border border-zinc-200"
-                : "bg-[#1E1E21] border border-[#2A2A2E]"
+                ? "bg-white border border-slate-200"
+                : "bg-[#1e2130] border border-[#282b3a]"
             }`
           }}
         >
           <DropdownTrigger>
             <button className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
               isLight
-                ? "bg-zinc-100/50 hover:bg-zinc-100 text-zinc-500 hover:text-zinc-700 border-transparent hover:border-zinc-200"
-                : "bg-[#27272A]/50 hover:bg-[#27272A] text-zinc-400 hover:text-zinc-200 border-transparent hover:border-[#3F3F46]"
+                ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
+                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200 border-transparent hover:border-[#334155]"
             }`}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
               {unreadCount > 0 && (
                 <span className={`absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full ring-2 ${
-                  isLight ? "ring-white" : "ring-[#18181B]"
+                  isLight ? "ring-white" : "ring-[#0f1117]"
                 }`}>
                   {unreadCount}
                 </span>
@@ -163,8 +163,8 @@ export default function TopHeader() {
                   <DropdownItem key={item.key} isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="Notifications header">
                     <div className={`flex items-center justify-between px-5 py-4 border-b ${
                       isLight
-                        ? "border-zinc-200 bg-zinc-50"
-                        : "border-[#2A2A2E] bg-gradient-to-r from-[#1E1E21] to-[#1a1a1d]"
+                        ? "border-slate-200 bg-slate-50"
+                        : "border-[#282b3a] bg-gradient-to-r from-[#1e2130] to-[#181b28]"
                     }`}>
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center">
@@ -173,8 +173,8 @@ export default function TopHeader() {
                           </svg>
                         </div>
                         <div>
-                          <span className={`text-sm font-semibold ${isLight ? "text-zinc-900" : "text-zinc-100"}`}>Notifications</span>
-                          <p className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Stay updated with your sites</p>
+                          <span className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Notifications</span>
+                          <p className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Stay updated with your sites</p>
                         </div>
                       </div>
                       {unreadCount > 0 && (
@@ -205,7 +205,7 @@ export default function TopHeader() {
                 <DropdownItem
                   key={notification.key}
                   className={`px-4 py-3 rounded-none border-b ${
-                    isLight ? "border-zinc-100" : "border-[#2A2A2E]/50"
+                    isLight ? "border-slate-100" : "border-[#282b3a]/50"
                   } ${notification.unread ? (isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]') : ''}`}
                   textValue={notification.title}
                 >
@@ -215,11 +215,11 @@ export default function TopHeader() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className={`text-sm font-medium ${notification.unread ? (isLight ? 'text-zinc-900' : 'text-zinc-100') : (isLight ? 'text-zinc-500' : 'text-zinc-400')}`}>{notification.title}</span>
+                        <span className={`text-sm font-medium ${notification.unread ? (isLight ? 'text-slate-900' : 'text-slate-100') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>{notification.title}</span>
                         {notification.unread && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
                       </div>
-                      <p className={`text-xs truncate mt-0.5 ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>{notification.desc}</p>
-                      <span className={`text-[10px] mt-1 block ${isLight ? "text-zinc-400" : "text-zinc-600"}`}>{notification.time}</span>
+                      <p className={`text-xs truncate mt-0.5 ${isLight ? "text-slate-500" : "text-slate-500"}`}>{notification.desc}</p>
+                      <span className={`text-[10px] mt-1 block ${isLight ? "text-slate-400" : "text-slate-600"}`}>{notification.time}</span>
                     </div>
                   </div>
                 </DropdownItem>
@@ -233,8 +233,8 @@ export default function TopHeader() {
           onClick={toggleTheme}
           className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
             isLight
-              ? "bg-zinc-100/50 hover:bg-zinc-100 text-zinc-500 hover:text-zinc-700 border-transparent hover:border-zinc-200"
-              : "bg-[#27272A]/50 hover:bg-[#27272A] text-zinc-400 hover:text-zinc-200 border-transparent hover:border-[#3F3F46]"
+              ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
+              : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200 border-transparent hover:border-[#334155]"
           }`}
           title={isLight ? "Switch to dark mode" : "Switch to light mode"}
         >
@@ -250,7 +250,7 @@ export default function TopHeader() {
         </button>
 
         {/* Divider */}
-        <div className={`w-px h-6 mx-1 ${isLight ? "bg-zinc-200" : "bg-[#2A2A2E]"}`} />
+        <div className={`w-px h-6 mx-1 ${isLight ? "bg-slate-200" : "bg-[#282b3a]"}`} />
 
         {/* User Menu */}
         <Dropdown
@@ -258,16 +258,16 @@ export default function TopHeader() {
           classNames={{
             content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[260px] ${
               isLight
-                ? "bg-white border border-zinc-200"
-                : "bg-[#1E1E21] border border-[#2A2A2E]"
+                ? "bg-white border border-slate-200"
+                : "bg-[#1e2130] border border-[#282b3a]"
             }`
           }}
         >
           <DropdownTrigger>
             <button className={`flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
               isLight
-                ? "bg-zinc-100/30 hover:bg-zinc-100 border-transparent hover:border-zinc-200"
-                : "bg-[#27272A]/30 hover:bg-[#27272A] border-transparent hover:border-[#3F3F46]"
+                ? "bg-slate-100/30 hover:bg-slate-100 border-transparent hover:border-slate-200"
+                : "bg-[#1a1d27]/30 hover:bg-[#1a1d27] border-transparent hover:border-[#334155]"
             }`}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
@@ -279,16 +279,16 @@ export default function TopHeader() {
                     name: "text-white text-[11px] font-bold",
                   }}
                 />
-                <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[#18181B]"}`} />
+                <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[#0f1117]"}`} />
               </div>
               <div className="text-left hidden sm:block">
-                <div className={`text-sm font-semibold transition-colors ${isLight ? "text-zinc-800 group-hover:text-zinc-900" : "text-zinc-200 group-hover:text-white"}`}>Lime</div>
-                <div className={`text-[10px] flex items-center gap-1 ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>
+                <div className={`text-sm font-semibold transition-colors ${isLight ? "text-slate-800 group-hover:text-slate-900" : "text-slate-200 group-hover:text-white"}`}>Lime</div>
+                <div className={`text-[10px] flex items-center gap-1 ${isLight ? "text-slate-500" : "text-slate-500"}`}>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                   Business Plan
                 </div>
               </div>
-              <svg className={`w-4 h-4 transition-colors ml-1 ${isLight ? "text-zinc-400 group-hover:text-zinc-600" : "text-zinc-500 group-hover:text-zinc-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <svg className={`w-4 h-4 transition-colors ml-1 ${isLight ? "text-slate-400 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
             </button>
@@ -303,7 +303,7 @@ export default function TopHeader() {
             <DropdownItem key="user-info" isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="User info">
               <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-sky-500/10" />
-                <div className={`relative flex items-center gap-4 px-5 py-5 border-b ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
+                <div className={`relative flex items-center gap-4 px-5 py-5 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-xl blur-lg opacity-40" />
                     <Avatar
@@ -316,8 +316,8 @@ export default function TopHeader() {
                     />
                   </div>
                   <div className="flex-1">
-                    <div className={`text-base font-semibold ${isLight ? "text-zinc-900" : "text-zinc-100"}`}>Lime Starter</div>
-                    <div className={`text-xs mt-0.5 ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>lime@example.com</div>
+                    <div className={`text-base font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Lime Starter</div>
+                    <div className={`text-xs mt-0.5 ${isLight ? "text-slate-500" : "text-slate-500"}`}>lime@example.com</div>
                     <div className="flex items-center gap-1.5 mt-2">
                       <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-md ring-1 ring-emerald-500/20">
                         Business Plan
@@ -329,7 +329,7 @@ export default function TopHeader() {
             </DropdownItem>
             <DropdownItem
               key="profile"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-zinc-100/50" : "data-[hover=true]:bg-[#27272A]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
               textValue="My Profile"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-sky-500/10 ring-1 ring-sky-500/20 flex items-center justify-center flex-shrink-0">
@@ -340,13 +340,13 @@ export default function TopHeader() {
               }
             >
               <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>My Profile</span>
-                <span className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Manage your account details</span>
+                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>My Profile</span>
+                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Manage your account details</span>
               </div>
             </DropdownItem>
             <DropdownItem
               key="settings"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-zinc-100/50" : "data-[hover=true]:bg-[#27272A]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
               textValue="Account Settings"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center flex-shrink-0">
@@ -357,13 +357,13 @@ export default function TopHeader() {
               }
             >
               <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>Settings</span>
-                <span className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Preferences & security</span>
+                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>Settings</span>
+                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Preferences & security</span>
               </div>
             </DropdownItem>
             <DropdownItem
               key="billing"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-zinc-100/50" : "data-[hover=true]:bg-[#27272A]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
               textValue="Billing & Plans"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center flex-shrink-0">
@@ -374,13 +374,13 @@ export default function TopHeader() {
               }
             >
               <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>Billing & Plans</span>
-                <span className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Manage subscription</span>
+                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>Billing & Plans</span>
+                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Manage subscription</span>
               </div>
             </DropdownItem>
             <DropdownItem
               key="help"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-zinc-100/50" : "data-[hover=true]:bg-[#27272A]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
               textValue="Help & Support"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center flex-shrink-0">
@@ -391,13 +391,13 @@ export default function TopHeader() {
               }
             >
               <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>Help & Support</span>
-                <span className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Get assistance</span>
+                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>Help & Support</span>
+                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Get assistance</span>
               </div>
             </DropdownItem>
             <DropdownItem
               key="signout"
-              className={`px-4 py-3.5 rounded-none border-t mt-1 ${isLight ? "border-zinc-200 data-[hover=true]:bg-red-500/5" : "border-[#2A2A2E] data-[hover=true]:bg-red-500/5"}`}
+              className={`px-4 py-3.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[#282b3a] data-[hover=true]:bg-red-500/5"}`}
               textValue="Sign Out"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-red-500/10 ring-1 ring-red-500/20 flex items-center justify-center flex-shrink-0">
@@ -409,7 +409,7 @@ export default function TopHeader() {
             >
               <div className="flex flex-col">
                 <span className="text-sm font-semibold text-red-400">Sign Out</span>
-                <span className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>End your session</span>
+                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>End your session</span>
               </div>
             </DropdownItem>
           </DropdownMenu>

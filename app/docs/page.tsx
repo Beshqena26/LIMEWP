@@ -65,10 +65,10 @@ const sections: DocSection[] = [
 ];
 
 const colorClasses: Record<string, { bg: string; text: string; textLight: string; ring: string; gradient: string }> = {
-  emerald: { bg: "bg-zinc-500/10", text: "text-zinc-400", textLight: "text-zinc-600", ring: "ring-zinc-500/20", gradient: "from-zinc-400 to-zinc-600" },
-  sky: { bg: "bg-zinc-500/10", text: "text-zinc-400", textLight: "text-zinc-600", ring: "ring-zinc-500/20", gradient: "from-zinc-400 to-zinc-600" },
-  violet: { bg: "bg-zinc-500/10", text: "text-zinc-400", textLight: "text-zinc-600", ring: "ring-zinc-500/20", gradient: "from-zinc-400 to-zinc-600" },
-  amber: { bg: "bg-zinc-500/10", text: "text-zinc-400", textLight: "text-zinc-600", ring: "ring-zinc-500/20", gradient: "from-zinc-400 to-zinc-600" },
+  emerald: { bg: "bg-slate-500/10", text: "text-slate-400", textLight: "text-slate-600", ring: "ring-slate-500/20", gradient: "from-slate-400 to-slate-600" },
+  sky: { bg: "bg-slate-500/10", text: "text-slate-400", textLight: "text-slate-600", ring: "ring-slate-500/20", gradient: "from-slate-400 to-slate-600" },
+  violet: { bg: "bg-slate-500/10", text: "text-slate-400", textLight: "text-slate-600", ring: "ring-slate-500/20", gradient: "from-slate-400 to-slate-600" },
+  amber: { bg: "bg-slate-500/10", text: "text-slate-400", textLight: "text-slate-600", ring: "ring-slate-500/20", gradient: "from-slate-400 to-slate-600" },
 };
 
 const tableOfContents = [
@@ -122,15 +122,15 @@ export default function DocsPage() {
       {/* Page Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
-          <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Documentation</h1>
-          <p className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>Learn how to get the most out of LimeWP hosting</p>
+          <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Documentation</h1>
+          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>Learn how to get the most out of LimeWP hosting</p>
         </div>
         <div className="flex items-center gap-3">
           <Button
               className={`font-semibold text-sm transition-all gap-2 rounded-xl ${
                 isLight
-                  ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-zinc-900"
-                  : "bg-[#27272A] text-zinc-200 hover:bg-[#3F3F46] hover:text-white"
+                  ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+                  : "bg-[#1a1d27] text-slate-200 hover:bg-[#334155] hover:text-white"
               }`}
               startContent={
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -144,8 +144,8 @@ export default function DocsPage() {
           <Button
               className={`font-semibold text-sm transition-all gap-2 rounded-xl ${
                 isLight
-                  ? "bg-zinc-800 text-white hover:bg-zinc-700"
-                  : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200"
+                  ? "bg-slate-800 text-white hover:bg-slate-700"
+                  : "bg-slate-100 text-slate-900 hover:bg-slate-200"
               }`}
               startContent={
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -171,8 +171,8 @@ export default function DocsPage() {
           return (
             <div key={stat.label} className={`relative group rounded-xl p-4 border transition-all overflow-hidden ${
                 isLight
-                  ? "bg-white border-zinc-200 hover:border-zinc-300"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+                  ? "bg-white border-slate-200 hover:border-slate-300"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
               }`}>
               <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${colors.bg} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
               <div className="relative flex items-center gap-3">
@@ -182,8 +182,8 @@ export default function DocsPage() {
                   </svg>
                 </div>
                 <div>
-                  <div className={`text-xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{stat.value}</div>
-                  <div className="text-xs text-zinc-500">{stat.label}</div>
+                  <div className={`text-xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</div>
+                  <div className="text-xs text-slate-500">{stat.label}</div>
                 </div>
               </div>
             </div>
@@ -197,11 +197,11 @@ export default function DocsPage() {
           <div className="sticky top-24">
             <div className={`relative rounded-2xl border overflow-hidden ${
                 isLight
-                  ? "bg-white border-zinc-200"
-                  : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                  ? "bg-white border-slate-200"
+                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
               }`}>
               {/* Corner Glow */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-zinc-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
 
               <div className="relative p-4">
                 {/* Search */}
@@ -212,17 +212,17 @@ export default function DocsPage() {
                     value={search}
                     onValueChange={setSearch}
                     startContent={
-                      <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                       </svg>
                     }
                     classNames={{
                       inputWrapper: isLight
-                        ? ["bg-zinc-100", "border-zinc-200", "hover:bg-zinc-100", "group-data-[focus=true]:bg-zinc-100", "!rounded-xl"]
-                        : ["bg-[#27272A]", "border-[#3F3F46]", "hover:bg-[#27272A]", "group-data-[focus=true]:bg-[#27272A]", "!rounded-xl"],
+                        ? ["bg-slate-100", "border-slate-200", "hover:bg-slate-100", "group-data-[focus=true]:bg-slate-100", "!rounded-xl"]
+                        : ["bg-[#1a1d27]", "border-[#334155]", "hover:bg-[#1a1d27]", "group-data-[focus=true]:bg-[#1a1d27]", "!rounded-xl"],
                       input: isLight
-                        ? ["text-zinc-800", "text-sm", "placeholder:text-zinc-500"]
-                        : ["text-zinc-100", "text-sm", "placeholder:text-zinc-500"],
+                        ? ["text-slate-800", "text-sm", "placeholder:text-slate-500"]
+                        : ["text-slate-100", "text-sm", "placeholder:text-slate-500"],
                     }}
                   />
                 </div>
@@ -230,16 +230,16 @@ export default function DocsPage() {
                 {/* Keyboard Shortcut Hint */}
                 <div className={`flex items-center justify-center gap-2 mb-4 py-2 px-3 rounded-lg border ${
                   isLight
-                    ? "bg-zinc-100/50 border-zinc-200/50"
-                    : "bg-[#27272A]/50 border-[#3F3F46]/50"
+                    ? "bg-slate-100/50 border-slate-200/50"
+                    : "bg-[#1a1d27]/50 border-[#334155]/50"
                 }`}>
-                  <span className="text-xs text-zinc-500">Quick search</span>
+                  <span className="text-xs text-slate-500">Quick search</span>
                   <div className="flex items-center gap-1">
                     <kbd className={`px-1.5 py-0.5 text-[10px] font-mono rounded ${
-                      isLight ? "bg-zinc-200 text-zinc-600" : "bg-[#3F3F46] text-zinc-400"
+                      isLight ? "bg-slate-200 text-slate-600" : "bg-[#334155] text-slate-400"
                     }`}>⌘</kbd>
                     <kbd className={`px-1.5 py-0.5 text-[10px] font-mono rounded ${
-                      isLight ? "bg-zinc-200 text-zinc-600" : "bg-[#3F3F46] text-zinc-400"
+                      isLight ? "bg-slate-200 text-slate-600" : "bg-[#334155] text-slate-400"
                     }`}>K</kbd>
                   </div>
                 </div>
@@ -254,7 +254,7 @@ export default function DocsPage() {
                         <button
                           onClick={() => toggleSection(section.label)}
                           className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl transition-colors group ${
-                            isLight ? "hover:bg-zinc-100" : "hover:bg-[#27272A]"
+                            isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
                           }`}
                         >
                           <div className="flex items-center gap-2.5">
@@ -265,20 +265,20 @@ export default function DocsPage() {
                             </div>
                             <span className={`text-sm font-medium transition-colors ${
                               isLight
-                                ? "text-zinc-700 group-hover:text-zinc-900"
-                                : "text-zinc-300 group-hover:text-zinc-100"
+                                ? "text-slate-700 group-hover:text-slate-900"
+                                : "text-slate-300 group-hover:text-slate-100"
                             }`}>
                               {section.label}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
-                              isLight ? "text-zinc-500 bg-zinc-100" : "text-zinc-600 bg-[#27272A]"
+                              isLight ? "text-slate-500 bg-slate-100" : "text-slate-600 bg-[#1a1d27]"
                             }`}>
                               {section.items.length}
                             </span>
                             <svg
-                              className={`w-4 h-4 text-zinc-500 transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
+                              className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isExpanded ? 'rotate-0' : '-rotate-90'}`}
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -290,7 +290,7 @@ export default function DocsPage() {
                         </button>
                         <div className={`overflow-hidden transition-all duration-200 ${isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                           <div className={`ml-4 pl-5 border-l space-y-0.5 py-1 ${
-                            isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+                            isLight ? "border-slate-200" : "border-[#282b3a]"
                           }`}>
                             {section.items.map((item) => (
                               <button
@@ -300,22 +300,22 @@ export default function DocsPage() {
                                   activeDoc === item.title
                                     ? `${colors.bg} ${colors.text} ring-1 ${colors.ring}`
                                     : isLight
-                                      ? "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
-                                      : "text-zinc-400 hover:bg-[#27272A] hover:text-zinc-100"
+                                      ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                                      : "text-slate-400 hover:bg-[#1a1d27] hover:text-slate-100"
                                 }`}
                               >
                                 <span className="truncate">{item.title}</span>
                                 {item.isNew && (
                                   <span className={`flex-shrink-0 text-[9px] font-bold px-1.5 py-0.5 rounded ${
                                     isLight
-                                      ? "bg-zinc-200 text-zinc-600 ring-1 ring-zinc-300"
-                                      : "bg-zinc-700 text-zinc-300 ring-1 ring-zinc-600"
+                                      ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300"
+                                      : "bg-slate-700 text-slate-300 ring-1 ring-slate-600"
                                   }`}>
                                     NEW
                                   </span>
                                 )}
                                 {item.isPopular && (
-                                  <svg className="w-3.5 h-3.5 text-zinc-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                  <svg className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
                                   </svg>
                                 )}
@@ -333,30 +333,30 @@ export default function DocsPage() {
             {/* Popular Articles */}
             <div className={`mt-4 relative rounded-2xl border p-4 overflow-hidden ${
               isLight
-                ? "bg-white border-zinc-200"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             }`}>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-zinc-500/10 to-transparent rounded-full translate-y-1/2 -translate-x-1/3" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-slate-500/10 to-transparent rounded-full translate-y-1/2 -translate-x-1/3" />
 
               <div className="relative">
                 <div className="flex items-center gap-2 mb-3">
-                  <svg className="w-4 h-4 text-zinc-400" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
                     <path d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
                   </svg>
-                  <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Popular</span>
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Popular</span>
                 </div>
                 <div className="space-y-2">
                   {popularArticles.map((article, i) => (
                     <button key={i} className={`w-full text-left p-2 rounded-lg transition-colors group ${
-                      isLight ? "hover:bg-zinc-100" : "hover:bg-[#27272A]"
+                      isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
                     }`}>
                       <div className={`text-sm truncate ${
                         isLight
-                          ? "text-zinc-700 group-hover:text-zinc-900"
-                          : "text-zinc-300 group-hover:text-zinc-100"
+                          ? "text-slate-700 group-hover:text-slate-900"
+                          : "text-slate-300 group-hover:text-slate-100"
                       }`}>{article.title}</div>
-                      <div className="text-[11px] text-zinc-500">{article.category} • {article.readTime}</div>
+                      <div className="text-[11px] text-slate-500">{article.category} • {article.readTime}</div>
                     </button>
                   ))}
                 </div>
@@ -369,40 +369,40 @@ export default function DocsPage() {
         <div className="flex-1 min-w-0">
           <div className={`relative rounded-2xl border overflow-hidden ${
             isLight
-              ? "bg-white border-zinc-200"
-              : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+              ? "bg-white border-slate-200"
+              : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
           }`}>
             {/* Corner Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-zinc-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
 
             <div className="relative p-8">
               {/* Breadcrumb */}
               <div className="flex items-center gap-2 text-sm mb-6">
                 <span className={`cursor-pointer transition-colors ${
-                  isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-500 hover:text-zinc-300"
+                  isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"
                 }`}>Docs</span>
-                <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
                 <span className={`cursor-pointer transition-colors ${
-                  isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-500 hover:text-zinc-300"
+                  isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"
                 }`}>{currentSection?.label}</span>
-                <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
-                <span className={`font-medium ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{activeDoc}</span>
+                <span className={`font-medium ${isLight ? "text-slate-800" : "text-slate-100"}`}>{activeDoc}</span>
               </div>
 
               {/* Title & Meta */}
               <div className="flex items-start justify-between mb-6">
                 <div>
-                  <h1 className={`text-3xl font-bold mb-3 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{activeDoc}</h1>
+                  <h1 className={`text-3xl font-bold mb-3 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{activeDoc}</h1>
                   <div className="flex items-center gap-4">
                     <Chip
                       size="sm"
                       classNames={{
-                        base: "bg-zinc-500/10 ring-1 ring-zinc-500/20",
-                        content: "text-zinc-400 text-xs font-medium",
+                        base: "bg-slate-500/10 ring-1 ring-slate-500/20",
+                        content: "text-slate-400 text-xs font-medium",
                       }}
                       startContent={
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -412,7 +412,7 @@ export default function DocsPage() {
                     >
                       {currentDoc?.readTime || "5 min"} read
                     </Chip>
-                    <span className="flex items-center gap-1.5 text-sm text-zinc-500">
+                    <span className="flex items-center gap-1.5 text-sm text-slate-500">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                       </svg>
@@ -423,8 +423,8 @@ export default function DocsPage() {
                 <div className="flex items-center gap-2">
                   <button className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
                     isLight
-                      ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-700"
-                      : "bg-[#27272A] hover:bg-[#3F3F46] text-zinc-400 hover:text-zinc-200"
+                      ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700"
+                      : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-200"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -433,8 +433,8 @@ export default function DocsPage() {
 
                   <button className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
                     isLight
-                      ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-700"
-                      : "bg-[#27272A] hover:bg-[#3F3F46] text-zinc-400 hover:text-zinc-200"
+                      ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700"
+                      : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-200"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
@@ -443,8 +443,8 @@ export default function DocsPage() {
 
                   <button className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
                     isLight
-                      ? "bg-zinc-100 hover:bg-zinc-200 text-zinc-500 hover:text-zinc-700"
-                      : "bg-[#27272A] hover:bg-[#3F3F46] text-zinc-400 hover:text-zinc-200"
+                      ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700"
+                      : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-200"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
@@ -456,7 +456,7 @@ export default function DocsPage() {
 
               {/* Progress Bar */}
               <div className="mb-8">
-                <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
+                <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
                   <span>Reading progress</span>
                   <span>0%</span>
                 </div>
@@ -465,37 +465,37 @@ export default function DocsPage() {
                   size="sm"
                   classNames={{
                     base: "h-1",
-                    track: isLight ? "bg-zinc-200" : "bg-[#27272A]",
-                    indicator: isLight ? "bg-zinc-700" : "bg-zinc-300",
+                    track: isLight ? "bg-slate-200" : "bg-[#1a1d27]",
+                    indicator: isLight ? "bg-slate-700" : "bg-slate-300",
                   }}
                 />
               </div>
 
               {/* Intro */}
-              <p className={`mb-8 leading-relaxed text-lg ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
+              <p className={`mb-8 leading-relaxed text-lg ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                 This guide will help you get started with LimeWP, the modern WordPress hosting platform. Follow the steps below to create, configure, and launch your first WordPress site in minutes.
               </p>
 
               {/* Info Callout */}
               <div className={`relative rounded-xl p-4 mb-8 overflow-hidden border ${
                 isLight
-                  ? "bg-zinc-100 border-zinc-200"
-                  : "bg-zinc-800/50 border-zinc-700"
+                  ? "bg-slate-100 border-slate-200"
+                  : "bg-slate-800/50 border-slate-700"
               }`}>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-zinc-500/20 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-500/20 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
                 <div className="relative flex gap-4">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     isLight
-                      ? "bg-zinc-200 ring-1 ring-zinc-300"
-                      : "bg-zinc-700 ring-1 ring-zinc-600"
+                      ? "bg-slate-200 ring-1 ring-slate-300"
+                      : "bg-slate-700 ring-1 ring-slate-600"
                   }`}>
-                    <svg className={`w-5 h-5 ${isLight ? "text-zinc-600" : "text-zinc-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <svg className={`w-5 h-5 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
                   </div>
                   <div>
-                    <div className={`font-semibold mb-1 ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Before you begin</div>
-                    <p className="text-sm text-zinc-400">
+                    <div className={`font-semibold mb-1 ${isLight ? "text-slate-700" : "text-slate-200"}`}>Before you begin</div>
+                    <p className="text-sm text-slate-400">
                       Make sure you have a LimeWP account and have verified your email address. If you haven&apos;t signed up yet, visit our registration page to create an account.
                     </p>
                   </div>
@@ -507,14 +507,14 @@ export default function DocsPage() {
                 <div className="flex items-center gap-3 mb-4 mt-10">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                     isLight
-                      ? "bg-zinc-800 text-white"
-                      : "bg-zinc-200 text-zinc-900"
+                      ? "bg-slate-800 text-white"
+                      : "bg-slate-200 text-slate-900"
                   }`}>
                     1
                   </div>
-                  <h2 className={`text-xl font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Create a New Site</h2>
+                  <h2 className={`text-xl font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Create a New Site</h2>
                 </div>
-                <p className={`mb-4 leading-relaxed pl-11 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
+                <p className={`mb-4 leading-relaxed pl-11 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                   Creating a new WordPress site on LimeWP is straightforward. Navigate to your dashboard and click the &quot;Create Site&quot; button. You&apos;ll need to complete the following steps:
                 </p>
                 <ul className="space-y-3 mb-6 pl-11">
@@ -524,13 +524,13 @@ export default function DocsPage() {
                     "Set up your admin credentials",
                     "Configure basic settings",
                   ].map((item) => (
-                    <li key={item} className={`flex items-center gap-3 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
+                    <li key={item} className={`flex items-center gap-3 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                       <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
                         isLight
-                          ? "bg-zinc-200 ring-1 ring-zinc-300"
-                          : "bg-zinc-700 ring-1 ring-zinc-600"
+                          ? "bg-slate-200 ring-1 ring-slate-300"
+                          : "bg-slate-700 ring-1 ring-slate-600"
                       }`}>
-                        <svg className={`w-3 h-3 ${isLight ? "text-zinc-600" : "text-zinc-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <svg className={`w-3 h-3 ${isLight ? "text-slate-600" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
                       </div>
@@ -542,10 +542,10 @@ export default function DocsPage() {
 
               {/* Code Block */}
               <div className={`relative rounded-xl overflow-hidden mb-8 ml-11 ${
-                isLight ? "bg-zinc-900" : "bg-[#09090B]"
+                isLight ? "bg-slate-900" : "bg-[#09090B]"
               }`}>
                 <div className={`flex items-center justify-between px-4 py-3 border-b ${
-                  isLight ? "border-zinc-800" : "border-[#1E1E21]"
+                  isLight ? "border-slate-800" : "border-[#1e2130]"
                 }`}>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1.5">
@@ -553,10 +553,10 @@ export default function DocsPage() {
                       <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
                       <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
                     </div>
-                    <span className="text-zinc-500 text-xs font-mono ml-2">Terminal</span>
+                    <span className="text-slate-500 text-xs font-mono ml-2">Terminal</span>
                   </div>
-                  <button className={`text-zinc-500 hover:text-zinc-300 transition-colors p-1 rounded ${
-                    isLight ? "hover:bg-zinc-800" : "hover:bg-[#1E1E21]"
+                  <button className={`text-slate-500 hover:text-slate-300 transition-colors p-1 rounded ${
+                    isLight ? "hover:bg-slate-800" : "hover:bg-[#1e2130]"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
@@ -567,8 +567,8 @@ export default function DocsPage() {
                 <div className="p-5 overflow-x-auto">
                   <pre className="font-mono text-sm">
                     <code>
-                      <span className="text-zinc-500">$</span> <span className="text-zinc-300">limewp</span> <span className="text-zinc-400">site:create</span> <span className="text-zinc-500">--name</span>=<span className="text-zinc-300">&quot;my-site&quot;</span>{"\n"}
-                      <span className="text-zinc-500">$</span> <span className="text-zinc-300">limewp</span> <span className="text-zinc-400">site:install-wp</span> <span className="text-zinc-500">--admin-email</span>=<span className="text-zinc-300">&quot;admin@example.com&quot;</span>
+                      <span className="text-slate-500">$</span> <span className="text-slate-300">limewp</span> <span className="text-slate-400">site:create</span> <span className="text-slate-500">--name</span>=<span className="text-slate-300">&quot;my-site&quot;</span>{"\n"}
+                      <span className="text-slate-500">$</span> <span className="text-slate-300">limewp</span> <span className="text-slate-400">site:install-wp</span> <span className="text-slate-500">--admin-email</span>=<span className="text-slate-300">&quot;admin@example.com&quot;</span>
                     </code>
                   </pre>
                 </div>
@@ -577,23 +577,23 @@ export default function DocsPage() {
               {/* Warning Callout */}
               <div className={`relative rounded-xl p-4 mb-8 ml-11 overflow-hidden border ${
                 isLight
-                  ? "bg-zinc-100 border-zinc-200"
-                  : "bg-zinc-800/50 border-zinc-700"
+                  ? "bg-slate-100 border-slate-200"
+                  : "bg-slate-800/50 border-slate-700"
               }`}>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-zinc-500/20 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-500/20 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
                 <div className="relative flex gap-4">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     isLight
-                      ? "bg-zinc-200 ring-1 ring-zinc-300"
-                      : "bg-zinc-700 ring-1 ring-zinc-600"
+                      ? "bg-slate-200 ring-1 ring-slate-300"
+                      : "bg-slate-700 ring-1 ring-slate-600"
                   }`}>
-                    <svg className={`w-5 h-5 ${isLight ? "text-zinc-600" : "text-zinc-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <svg className={`w-5 h-5 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
                   </div>
                   <div>
-                    <div className={`font-semibold mb-1 ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Important</div>
-                    <p className="text-sm text-zinc-400">
+                    <div className={`font-semibold mb-1 ${isLight ? "text-slate-700" : "text-slate-200"}`}>Important</div>
+                    <p className="text-sm text-slate-400">
                       Make sure to save your credentials in a secure location. You won&apos;t be able to retrieve your password after the initial setup is complete.
                     </p>
                   </div>
@@ -605,14 +605,14 @@ export default function DocsPage() {
                 <div className="flex items-center gap-3 mb-4 mt-10">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                     isLight
-                      ? "bg-zinc-800 text-white"
-                      : "bg-zinc-200 text-zinc-900"
+                      ? "bg-slate-800 text-white"
+                      : "bg-slate-200 text-slate-900"
                   }`}>
                     2
                   </div>
-                  <h2 className={`text-xl font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Configure Your Site</h2>
+                  <h2 className={`text-xl font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Configure Your Site</h2>
                 </div>
-                <p className={`mb-6 leading-relaxed pl-11 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
+                <p className={`mb-6 leading-relaxed pl-11 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                   Once your site is created, you can configure various settings including permalink structure, timezone, language, and more. Access your site&apos;s configuration panel from the dashboard to customize these options to match your requirements.
                 </p>
               </div>
@@ -622,12 +622,12 @@ export default function DocsPage() {
                 <div className="flex items-center gap-3 mb-4 mt-10">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                     isLight
-                      ? "bg-zinc-800 text-white"
-                      : "bg-zinc-200 text-zinc-900"
+                      ? "bg-slate-800 text-white"
+                      : "bg-slate-200 text-slate-900"
                   }`}>
                     3
                   </div>
-                  <h2 className={`text-xl font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Install Essential Plugins</h2>
+                  <h2 className={`text-xl font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Install Essential Plugins</h2>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mb-8 pl-11">
                   {[
@@ -640,8 +640,8 @@ export default function DocsPage() {
                     return (
                       <div key={plugin.name} className={`group relative p-4 rounded-xl border transition-all overflow-hidden ${
                         isLight
-                          ? "bg-zinc-50 border-zinc-200 hover:border-zinc-300"
-                          : "bg-[#27272A]/50 border-[#3F3F46]/50 hover:border-[#3F3F46]"
+                          ? "bg-slate-50 border-slate-200 hover:border-slate-300"
+                          : "bg-[#1a1d27]/50 border-[#334155]/50 hover:border-[#334155]"
                       }`}>
                         <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl ${colors.bg} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                         <div className="relative flex items-center gap-3">
@@ -651,8 +651,8 @@ export default function DocsPage() {
                             </svg>
                           </div>
                           <div>
-                            <div className={`font-medium ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{plugin.name}</div>
-                            <div className="text-xs text-zinc-500">{plugin.desc}</div>
+                            <div className={`font-medium ${isLight ? "text-slate-800" : "text-slate-100"}`}>{plugin.name}</div>
+                            <div className="text-xs text-slate-500">{plugin.desc}</div>
                           </div>
                         </div>
                       </div>
@@ -664,23 +664,23 @@ export default function DocsPage() {
               {/* Success Callout */}
               <div id="next-steps" className={`scroll-mt-24 relative rounded-xl p-4 mb-8 overflow-hidden border ${
                 isLight
-                  ? "bg-zinc-100 border-zinc-200"
-                  : "bg-zinc-800/50 border-zinc-700"
+                  ? "bg-slate-100 border-slate-200"
+                  : "bg-slate-800/50 border-slate-700"
               }`}>
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-zinc-500/20 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-500/20 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
                 <div className="relative flex gap-4">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                     isLight
-                      ? "bg-zinc-200 ring-1 ring-zinc-300"
-                      : "bg-zinc-700 ring-1 ring-zinc-600"
+                      ? "bg-slate-200 ring-1 ring-slate-300"
+                      : "bg-slate-700 ring-1 ring-slate-600"
                   }`}>
-                    <svg className={`w-5 h-5 ${isLight ? "text-zinc-600" : "text-zinc-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <svg className={`w-5 h-5 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div>
-                    <div className={`font-semibold mb-1 ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>Congratulations!</div>
-                    <p className="text-sm text-zinc-400">
+                    <div className={`font-semibold mb-1 ${isLight ? "text-slate-700" : "text-slate-200"}`}>Congratulations!</div>
+                    <p className="text-sm text-slate-400">
                       Your WordPress site is now set up and ready to go. You can start creating content, customizing your theme, and growing your online presence.
                     </p>
                   </div>
@@ -689,21 +689,21 @@ export default function DocsPage() {
 
               {/* Was this helpful? */}
               <div className={`relative rounded-xl p-6 mb-8 overflow-hidden ${
-                isLight ? "bg-zinc-100/50" : "bg-[#27272A]/50"
+                isLight ? "bg-slate-100/50" : "bg-[#1a1d27]/50"
               }`}>
                 <div className="text-center">
-                  <p className={`text-sm mb-4 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>Was this article helpful?</p>
+                  <p className={`text-sm mb-4 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Was this article helpful?</p>
                   <div className="flex items-center justify-center gap-3">
                     <button
                       onClick={() => setHelpfulFeedback(true)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
                         helpfulFeedback === true
                           ? isLight
-                            ? "bg-zinc-200 text-zinc-700 ring-1 ring-zinc-300"
-                            : "bg-zinc-700 text-zinc-200 ring-1 ring-zinc-600"
+                            ? "bg-slate-200 text-slate-700 ring-1 ring-slate-300"
+                            : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
                           : isLight
-                            ? "bg-zinc-200/50 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800"
-                            : "bg-[#3F3F46]/50 text-zinc-400 hover:bg-[#3F3F46] hover:text-zinc-200"
+                            ? "bg-slate-200/50 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                            : "bg-[#334155]/50 text-slate-400 hover:bg-[#334155] hover:text-slate-200"
                       }`}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -716,11 +716,11 @@ export default function DocsPage() {
                       className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${
                         helpfulFeedback === false
                           ? isLight
-                            ? "bg-zinc-200 text-zinc-700 ring-1 ring-zinc-300"
-                            : "bg-zinc-700 text-zinc-200 ring-1 ring-zinc-600"
+                            ? "bg-slate-200 text-slate-700 ring-1 ring-slate-300"
+                            : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
                           : isLight
-                            ? "bg-zinc-200/50 text-zinc-600 hover:bg-zinc-200 hover:text-zinc-800"
-                            : "bg-[#3F3F46]/50 text-zinc-400 hover:bg-[#3F3F46] hover:text-zinc-200"
+                            ? "bg-slate-200/50 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                            : "bg-[#334155]/50 text-slate-400 hover:bg-[#334155] hover:text-slate-200"
                       }`}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -730,45 +730,45 @@ export default function DocsPage() {
                     </button>
                   </div>
                   {helpfulFeedback !== null && (
-                    <p className="text-xs text-zinc-500 mt-3">Thanks for your feedback!</p>
+                    <p className="text-xs text-slate-500 mt-3">Thanks for your feedback!</p>
                   )}
                 </div>
               </div>
 
               {/* Bottom Navigation */}
               <div className={`flex justify-between items-center pt-6 border-t ${
-                isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+                isLight ? "border-slate-200" : "border-[#282b3a]"
               }`}>
                 <button className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  isLight ? "hover:bg-zinc-100" : "hover:bg-[#27272A]"
+                  isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
                 }`}>
                   <svg className={`w-5 h-5 transition-colors ${
-                    isLight ? "text-zinc-400 group-hover:text-zinc-600" : "text-zinc-500 group-hover:text-zinc-300"
+                    isLight ? "text-slate-400 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-300"
                   }`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                   </svg>
                   <div className="text-left">
-                    <div className="text-xs text-zinc-500">Previous</div>
+                    <div className="text-xs text-slate-500">Previous</div>
                     <div className={`text-sm font-medium transition-colors ${
-                      isLight ? "text-zinc-700 group-hover:text-zinc-900" : "text-zinc-300 group-hover:text-zinc-100"
+                      isLight ? "text-slate-700 group-hover:text-slate-900" : "text-slate-300 group-hover:text-slate-100"
                     }`}>Introduction</div>
                   </div>
                 </button>
                 <button className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  isLight ? "hover:bg-zinc-100" : "hover:bg-[#27272A]"
+                  isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
                 }`}>
                   <div className="text-right">
-                    <div className="text-xs text-zinc-500">Next</div>
+                    <div className="text-xs text-slate-500">Next</div>
                     <div className={`text-sm font-medium transition-colors ${
                       isLight
-                        ? "text-zinc-700 group-hover:text-zinc-900"
-                        : "text-zinc-300 group-hover:text-zinc-100"
+                        ? "text-slate-700 group-hover:text-slate-900"
+                        : "text-slate-300 group-hover:text-slate-100"
                     }`}>Creating Your First Site</div>
                   </div>
                   <svg className={`w-5 h-5 transition-colors ${
                     isLight
-                      ? "text-zinc-600 group-hover:text-zinc-800"
-                      : "text-zinc-400 group-hover:text-zinc-200"
+                      ? "text-slate-600 group-hover:text-slate-800"
+                      : "text-slate-400 group-hover:text-slate-200"
                   }`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
@@ -783,17 +783,17 @@ export default function DocsPage() {
           <div className="sticky top-24">
             <div className={`relative rounded-2xl border p-4 overflow-hidden ${
               isLight
-                ? "bg-white border-zinc-200"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             }`}>
-              <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-zinc-500/10 to-transparent rounded-full translate-y-1/3 translate-x-1/3" />
+              <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-slate-500/10 to-transparent rounded-full translate-y-1/3 translate-x-1/3" />
 
               <div className="relative">
                 <div className="flex items-center gap-2 mb-4">
-                  <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                   </svg>
-                  <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">On this page</span>
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">On this page</span>
                 </div>
                 <nav className="space-y-1">
                   {tableOfContents.map((item) => (
@@ -803,11 +803,11 @@ export default function DocsPage() {
                       className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                         activeSection === item.id
                           ? isLight
-                            ? "bg-zinc-200 text-zinc-700 ring-1 ring-zinc-300"
-                            : "bg-zinc-700 text-zinc-200 ring-1 ring-zinc-600"
+                            ? "bg-slate-200 text-slate-700 ring-1 ring-slate-300"
+                            : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
                           : isLight
-                            ? "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100"
-                            : "text-zinc-500 hover:text-zinc-300 hover:bg-[#27272A]"
+                            ? "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
+                            : "text-slate-500 hover:text-slate-300 hover:bg-[#1a1d27]"
                       }`}
                     >
                       {item.label}
@@ -820,26 +820,26 @@ export default function DocsPage() {
             {/* Help Card */}
             <div className={`mt-4 relative rounded-2xl border p-4 overflow-hidden ${
               isLight
-                ? "bg-white border-zinc-200"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             }`}>
-              <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-zinc-500/10 to-transparent rounded-full -translate-y-1/3 -translate-x-1/3" />
+              <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-slate-500/10 to-transparent rounded-full -translate-y-1/3 -translate-x-1/3" />
 
               <div className="relative text-center">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 ${
                   isLight
-                    ? "bg-zinc-200 ring-1 ring-zinc-300"
-                    : "bg-zinc-700 ring-1 ring-zinc-600"
+                    ? "bg-slate-200 ring-1 ring-slate-300"
+                    : "bg-slate-700 ring-1 ring-slate-600"
                 }`}>
-                  <svg className={`w-6 h-6 ${isLight ? "text-zinc-600" : "text-zinc-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                   </svg>
                 </div>
-                <p className={`text-sm mb-3 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>Need help? Our support team is available 24/7</p>
+                <p className={`text-sm mb-3 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Need help? Our support team is available 24/7</p>
                 <button className={`w-full h-9 rounded-xl text-sm font-semibold transition-all ${
                   isLight
-                    ? "bg-zinc-800 text-white hover:bg-zinc-700"
-                    : "bg-zinc-100 text-zinc-900 hover:bg-zinc-200"
+                    ? "bg-slate-800 text-white hover:bg-slate-700"
+                    : "bg-slate-100 text-slate-900 hover:bg-slate-200"
                 }`}>
                   Contact Support
                 </button>

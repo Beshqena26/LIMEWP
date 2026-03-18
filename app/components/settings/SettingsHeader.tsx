@@ -11,11 +11,11 @@ export function SettingsHeader() {
     <div className="mb-8">
       <h1 className={cn(
         "text-2xl font-bold mb-1",
-        isLight ? "text-zinc-800" : "text-zinc-100"
+        isLight ? "text-slate-800" : "text-slate-100"
       )}>Settings</h1>
       <p className={cn(
         "text-sm",
-        isLight ? "text-zinc-600" : "text-zinc-500"
+        isLight ? "text-slate-600" : "text-slate-500"
       )}>Manage your account preferences and configurations</p>
     </div>
   );

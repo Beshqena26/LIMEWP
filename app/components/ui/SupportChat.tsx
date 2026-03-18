@@ -90,8 +90,8 @@ export function SupportChat() {
           "fixed bottom-24 right-6 z-50 w-80 sm:w-96 rounded-2xl shadow-2xl transition-all duration-300 transform origin-bottom-right",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none",
           isLight
-            ? "bg-white border border-zinc-200"
-            : "bg-[#1E1E21] border border-[#2A2A2E]"
+            ? "bg-white border border-slate-200"
+            : "bg-[#1e2130] border border-[#282b3a]"
         )}
       >
         {/* Header */}
@@ -143,7 +143,7 @@ export function SupportChat() {
         <div
           className={cn(
             "h-80 overflow-y-auto p-4 space-y-4",
-            isLight ? "bg-zinc-50" : "bg-[#18181B]"
+            isLight ? "bg-slate-50" : "bg-[#0f1117]"
           )}
         >
           {messages.map((message) => (
@@ -160,8 +160,8 @@ export function SupportChat() {
                   message.sender === "user"
                     ? cn(colors.gradient, "bg-gradient-to-r text-white")
                     : isLight
-                    ? "bg-white border border-zinc-200 text-zinc-800"
-                    : "bg-[#27272A] border border-[#3F3F46] text-zinc-100"
+                    ? "bg-white border border-slate-200 text-slate-800"
+                    : "bg-[#1a1d27] border border-[#334155] text-slate-100"
                 )}
               >
                 {message.content}
@@ -175,7 +175,7 @@ export function SupportChat() {
         <div
           className={cn(
             "p-4 rounded-b-2xl",
-            isLight ? "bg-white border-t border-zinc-200" : "bg-[#1E1E21] border-t border-[#2A2A2E]"
+            isLight ? "bg-white border-t border-slate-200" : "bg-[#1e2130] border-t border-[#282b3a]"
           )}
         >
           <div className="flex gap-2">
@@ -188,8 +188,8 @@ export function SupportChat() {
               className={cn(
                 "flex-1 px-4 py-2 rounded-xl text-sm outline-none transition-colors",
                 isLight
-                  ? "bg-zinc-100 text-zinc-800 placeholder-zinc-400 focus:ring-2"
-                  : "bg-[#27272A] text-zinc-100 placeholder-zinc-500 focus:ring-2",
+                  ? "bg-slate-100 text-slate-800 placeholder-slate-400 focus:ring-2"
+                  : "bg-[#1a1d27] text-slate-100 placeholder-slate-500 focus:ring-2",
                 `focus:ring-${accentColor}-500/50`
               )}
             />

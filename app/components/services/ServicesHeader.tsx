@@ -16,8 +16,8 @@ export function ServicesHeader({ onAddService }: ServicesHeaderProps) {
   return (
     <div className="flex justify-between items-start mb-8">
       <div>
-        <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Services</h1>
-        <p className={`text-sm ${isLight ? "text-zinc-600" : "text-zinc-500"}`}>Manage your active services and discover new solutions</p>
+        <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Services</h1>
+        <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>Manage your active services and discover new solutions</p>
       </div>
       <Button
         onClick={onAddService}

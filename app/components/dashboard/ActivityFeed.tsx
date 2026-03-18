@@ -23,10 +23,10 @@ export function ActivityFeed({ activities, onViewAll, onViewDetails, onGoToSite 
       />
       <div className={`relative rounded-2xl overflow-hidden ${
         isLight
-          ? "bg-white border border-zinc-200"
-          : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border border-[#2A2A2E]"
+          ? "bg-white border border-slate-200"
+          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a]"
       }`}>
-        <div className={`relative divide-y ${isLight ? "divide-zinc-100" : "divide-[#2A2A2E]"}`}>
+        <div className={`relative divide-y ${isLight ? "divide-slate-100" : "divide-[#282b3a]"}`}>
           {activities.map((activity, index) => (
             <ActivityItem
               key={index}
@@ -41,12 +41,12 @@ export function ActivityFeed({ activities, onViewAll, onViewDetails, onGoToSite 
 
         {/* Footer with View All */}
         <div className={`relative border-t ${
-          isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+          isLight ? "border-slate-200" : "border-[#282b3a]"
         }`}>
           <button
             onClick={onViewAll}
             className={`w-full py-3.5 flex items-center justify-center gap-2 text-sm font-medium transition-colors group/btn ${
-              isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-400 hover:text-zinc-200"
+              isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
             }`}
           >
             <span>View all activity</span>

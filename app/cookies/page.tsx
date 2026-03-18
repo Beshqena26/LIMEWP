@@ -66,11 +66,11 @@ export default function CookiesPage() {
         <div className="mb-6">
           <h1 className={cn(
             "text-2xl font-bold mb-1",
-            isLight ? "text-zinc-800" : "text-zinc-100"
+            isLight ? "text-slate-800" : "text-slate-100"
           )}>Cookie Policy</h1>
           <p className={cn(
             "text-sm",
-            isLight ? "text-zinc-500" : "text-zinc-400"
+            isLight ? "text-slate-500" : "text-slate-400"
           )}>Last updated: February 4, 2026</p>
         </div>
 
@@ -80,12 +80,12 @@ export default function CookiesPage() {
             <div className={cn(
               "sticky top-24 rounded-2xl border p-5",
               isLight
-                ? "bg-white border-zinc-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200 shadow-sm"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             )}>
               <h3 className={cn(
                 "text-sm font-semibold mb-4",
-                isLight ? "text-zinc-800" : "text-zinc-100"
+                isLight ? "text-slate-800" : "text-slate-100"
               )}>On this page</h3>
               <nav className="space-y-2">
                 {SECTIONS.map((section, index) => (
@@ -95,13 +95,13 @@ export default function CookiesPage() {
                     className={cn(
                       "flex items-center gap-2 text-sm py-1.5 px-2 rounded-lg transition-colors",
                       isLight
-                        ? "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100"
-                        : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                        ? "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
                     )}
                   >
                     <span className={cn(
                       "w-5 h-5 rounded-md flex items-center justify-center text-xs font-medium",
-                      isLight ? "bg-zinc-100 text-zinc-500" : "bg-zinc-800 text-zinc-400"
+                      isLight ? "bg-slate-100 text-slate-500" : "bg-slate-800 text-slate-400"
                     )}>{index + 1}</span>
                     <span className="truncate">{section.title}</span>
                   </a>
@@ -109,16 +109,16 @@ export default function CookiesPage() {
               </nav>
               <div className={cn(
                 "mt-5 pt-5 border-t",
-                isLight ? "border-zinc-200" : "border-zinc-800"
+                isLight ? "border-slate-200" : "border-slate-800"
               )}>
                 <p className={cn(
                   "text-xs mb-3",
-                  isLight ? "text-zinc-500" : "text-zinc-500"
+                  isLight ? "text-slate-500" : "text-slate-500"
                 )}>Related policies</p>
                 <div className="space-y-2">
                   <Link href={ROUTES.PRIVACY} className={cn(
                     "flex items-center gap-2 text-sm transition-colors",
-                    isLight ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-zinc-200"
+                    isLight ? "text-slate-600 hover:text-slate-900" : "text-slate-400 hover:text-slate-200"
                   )}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
@@ -127,7 +127,7 @@ export default function CookiesPage() {
                   </Link>
                   <Link href={ROUTES.TERMS} className={cn(
                     "flex items-center gap-2 text-sm transition-colors",
-                    isLight ? "text-zinc-600 hover:text-zinc-900" : "text-zinc-400 hover:text-zinc-200"
+                    isLight ? "text-slate-600 hover:text-slate-900" : "text-slate-400 hover:text-slate-200"
                   )}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -144,8 +144,8 @@ export default function CookiesPage() {
             <div className={cn(
               "rounded-2xl border p-8",
               isLight
-                ? "bg-white border-zinc-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+                ? "bg-white border-slate-200 shadow-sm"
+                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
             )}>
               <Section id="what" title="What Are Cookies" isLight={isLight}>
                 <p>Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to website owners.</p>
@@ -164,25 +164,25 @@ export default function CookiesPage() {
               <Section id="types" title="Types of Cookies We Use" isLight={isLight}>
                 <div className={cn(
                   "rounded-xl border overflow-hidden",
-                  isLight ? "border-zinc-200" : "border-zinc-800"
+                  isLight ? "border-slate-200" : "border-slate-800"
                 )}>
                   <table className="w-full text-sm">
-                    <thead className={isLight ? "bg-zinc-50" : "bg-zinc-800/50"}>
+                    <thead className={isLight ? "bg-slate-50" : "bg-slate-800/50"}>
                       <tr>
-                        <th className={cn("px-4 py-3 text-left font-medium", isLight ? "text-zinc-700" : "text-zinc-300")}>Cookie</th>
-                        <th className={cn("px-4 py-3 text-left font-medium", isLight ? "text-zinc-700" : "text-zinc-300")}>Purpose</th>
-                        <th className={cn("px-4 py-3 text-left font-medium hidden sm:table-cell", isLight ? "text-zinc-700" : "text-zinc-300")}>Duration</th>
-                        <th className={cn("px-4 py-3 text-left font-medium", isLight ? "text-zinc-700" : "text-zinc-300")}>Type</th>
+                        <th className={cn("px-4 py-3 text-left font-medium", isLight ? "text-slate-700" : "text-slate-300")}>Cookie</th>
+                        <th className={cn("px-4 py-3 text-left font-medium", isLight ? "text-slate-700" : "text-slate-300")}>Purpose</th>
+                        <th className={cn("px-4 py-3 text-left font-medium hidden sm:table-cell", isLight ? "text-slate-700" : "text-slate-300")}>Duration</th>
+                        <th className={cn("px-4 py-3 text-left font-medium", isLight ? "text-slate-700" : "text-slate-300")}>Type</th>
                       </tr>
                     </thead>
-                    <tbody className={cn("divide-y", isLight ? "divide-zinc-200" : "divide-zinc-800")}>
+                    <tbody className={cn("divide-y", isLight ? "divide-slate-200" : "divide-slate-800")}>
                       {COOKIES_DATA.map((cookie) => {
                         const typeColor = getTypeColor(cookie.type);
                         return (
                           <tr key={cookie.name}>
-                            <td className={cn("px-4 py-3 font-mono text-xs", isLight ? "text-zinc-800" : "text-zinc-200")}>{cookie.name}</td>
-                            <td className={cn("px-4 py-3", isLight ? "text-zinc-600" : "text-zinc-400")}>{cookie.purpose}</td>
-                            <td className={cn("px-4 py-3 hidden sm:table-cell", isLight ? "text-zinc-600" : "text-zinc-400")}>{cookie.duration}</td>
+                            <td className={cn("px-4 py-3 font-mono text-xs", isLight ? "text-slate-800" : "text-slate-200")}>{cookie.name}</td>
+                            <td className={cn("px-4 py-3", isLight ? "text-slate-600" : "text-slate-400")}>{cookie.purpose}</td>
+                            <td className={cn("px-4 py-3 hidden sm:table-cell", isLight ? "text-slate-600" : "text-slate-400")}>{cookie.duration}</td>
                             <td className="px-4 py-3">
                               <span className={cn(
                                 "px-2 py-0.5 rounded-md text-xs font-medium",
@@ -235,10 +235,10 @@ export default function CookiesPage() {
                 <p>If you have any questions about our use of cookies, please contact us at:</p>
                 <div className={cn(
                   "mt-4 p-4 rounded-xl",
-                  isLight ? "bg-zinc-50" : "bg-zinc-800/50"
+                  isLight ? "bg-slate-50" : "bg-slate-800/50"
                 )}>
-                  <p className={cn("text-sm font-medium", isLight ? "text-zinc-800" : "text-zinc-200")}>privacy@example.com</p>
-                  <p className={cn("text-xs mt-1", isLight ? "text-zinc-500" : "text-zinc-400")}>We typically respond within 2-3 business days.</p>
+                  <p className={cn("text-sm font-medium", isLight ? "text-slate-800" : "text-slate-200")}>privacy@example.com</p>
+                  <p className={cn("text-xs mt-1", isLight ? "text-slate-500" : "text-slate-400")}>We typically respond within 2-3 business days.</p>
                 </div>
               </Section>
             </div>
@@ -262,18 +262,18 @@ function Section({ id, title, children, isLight, isLast }: SectionProps) {
     <div id={id} className={cn(
       "scroll-mt-24",
       !isLast && "mb-8 pb-8 border-b",
-      !isLast && (isLight ? "border-zinc-200" : "border-zinc-800")
+      !isLast && (isLight ? "border-slate-200" : "border-slate-800")
     )}>
       <h2 className={cn(
         "text-lg font-semibold mb-4",
-        isLight ? "text-zinc-800" : "text-zinc-100"
+        isLight ? "text-slate-800" : "text-slate-100"
       )}>{title}</h2>
       <div className={cn(
         "space-y-3 text-sm leading-relaxed",
-        isLight ? "text-zinc-600" : "text-zinc-400",
+        isLight ? "text-slate-600" : "text-slate-400",
         "[&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_li]:pl-1",
         "[&_strong]:font-medium",
-        isLight ? "[&_strong]:text-zinc-700" : "[&_strong]:text-zinc-300"
+        isLight ? "[&_strong]:text-slate-700" : "[&_strong]:text-slate-300"
       )}>
         {children}
       </div>

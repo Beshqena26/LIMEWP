@@ -31,7 +31,7 @@ function CurrentPlanCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? `bg-white ${accent.borderLight}`
-        : `bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] ${accent.borderDark}`
+        : `bg-gradient-to-br from-[#1e2130] to-[#181b28] ${accent.borderDark}`
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -44,8 +44,8 @@ function CurrentPlanCard() {
               </svg>
             </div>
             <div>
-              <h3 className={`text-lg font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Business Plan</h3>
-              <p className="text-sm text-zinc-500">Your current subscription</p>
+              <h3 className={`text-lg font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Business Plan</h3>
+              <p className="text-sm text-slate-500">Your current subscription</p>
             </div>
           </div>
           <Chip size="sm" classNames={{ base: `${accent.bg} border-0 px-3`, content: `${accent.text} font-semibold text-xs` }}>
@@ -54,12 +54,12 @@ function CurrentPlanCard() {
         </div>
 
         <div className="flex items-baseline gap-1 mb-4">
-          <span className={`text-3xl font-bold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>$49</span>
-          <span className="text-sm text-zinc-500">/month</span>
+          <span className={`text-3xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>$49</span>
+          <span className="text-sm text-slate-500">/month</span>
         </div>
 
-        <div className={`flex items-center gap-2 text-sm mb-6 ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>
-          <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <div className={`flex items-center gap-2 text-sm mb-6 ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+          <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
           </svg>
           Renews Feb 20, 2026
@@ -71,8 +71,8 @@ function CurrentPlanCard() {
           </Button>
           <Button variant="flat" className={`font-medium text-sm rounded-xl h-10 px-5 ${
             isLight
-              ? "bg-zinc-100 text-zinc-700 hover:text-zinc-900"
-              : "bg-[#27272A] text-zinc-300 hover:text-white"
+              ? "bg-slate-100 text-slate-700 hover:text-slate-900"
+              : "bg-[#1a1d27] text-slate-300 hover:text-white"
           }`}>
             Manage
           </Button>
@@ -90,8 +90,8 @@ function PaymentMethodCard() {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -103,27 +103,27 @@ function PaymentMethodCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Payment Method</h3>
-            <p className="text-xs text-zinc-500">Manage your payment details</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Payment Method</h3>
+            <p className="text-xs text-slate-500">Manage your payment details</p>
           </div>
         </div>
 
         <div className={`flex items-center justify-between p-4 rounded-xl ${
-          isLight ? "bg-zinc-50" : "bg-[#27272A]/50"
+          isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
         }`}>
           <div className="flex items-center gap-3">
             <div className="w-12 h-8 rounded bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center">
               <span className="text-white text-[10px] font-bold">VISA</span>
             </div>
             <div>
-              <p className={`text-sm font-medium font-mono ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>**** **** **** 4242</p>
-              <p className="text-[11px] text-zinc-500">Expires 12/2027</p>
+              <p className={`text-sm font-medium font-mono ${isLight ? "text-slate-700" : "text-slate-200"}`}>**** **** **** 4242</p>
+              <p className="text-[11px] text-slate-500">Expires 12/2027</p>
             </div>
           </div>
           <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
             isLight
-              ? "bg-zinc-200 text-zinc-700 hover:text-zinc-900"
-              : "bg-[#3F3F46] text-zinc-300 hover:text-white"
+              ? "bg-slate-200 text-slate-700 hover:text-slate-900"
+              : "bg-[#334155] text-slate-300 hover:text-white"
           }`}>
             Update
           </Button>
@@ -141,8 +141,8 @@ function BillingAddressCard() {
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -155,22 +155,22 @@ function BillingAddressCard() {
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>Billing Address</h3>
-            <p className="text-xs text-zinc-500">Address for invoices</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Billing Address</h3>
+            <p className="text-xs text-slate-500">Address for invoices</p>
           </div>
         </div>
 
         <div className={`flex items-center justify-between p-4 rounded-xl ${
-          isLight ? "bg-zinc-50" : "bg-[#27272A]/50"
+          isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
         }`}>
           <div>
-            <p className={`text-sm font-medium ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>123 Main Street</p>
-            <p className="text-[11px] text-zinc-500">New York, NY 10001, United States</p>
+            <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>123 Main Street</p>
+            <p className="text-[11px] text-slate-500">New York, NY 10001, United States</p>
           </div>
           <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
             isLight
-              ? "bg-zinc-200 text-zinc-700 hover:text-zinc-900"
-              : "bg-[#3F3F46] text-zinc-300 hover:text-white"
+              ? "bg-slate-200 text-slate-700 hover:text-slate-900"
+              : "bg-[#334155] text-slate-300 hover:text-white"
           }`}>
             Edit
           </Button>

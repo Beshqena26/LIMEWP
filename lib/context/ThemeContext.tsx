@@ -68,41 +68,41 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (resolved === "light") {
       root.classList.remove("dark");
       root.classList.add("light");
-      // Light mode CSS variables
-      root.style.setProperty("--bg-main", "#f4f4f5");
-      root.style.setProperty("--bg-card", "#ffffff");
-      root.style.setProperty("--bg-sidebar", "#ffffff");
-      root.style.setProperty("--bg-sidebar-hover", "#f4f4f5");
+      // Light mode — landing page colors
+      root.style.setProperty("--bg-main", "#f0f2f5");
+      root.style.setProperty("--bg-card", "#f4f5f7");
+      root.style.setProperty("--bg-sidebar", "#ebedf1");
+      root.style.setProperty("--bg-sidebar-hover", "#e8eaef");
       root.style.setProperty("--bg-elevated", "#ffffff");
-      root.style.setProperty("--bg-input", "#fafafa");
-      root.style.setProperty("--text-primary", "#18181b");
-      root.style.setProperty("--text-secondary", "#52525b");
-      root.style.setProperty("--text-tertiary", "#71717a");
-      root.style.setProperty("--text-sidebar", "#52525b");
-      root.style.setProperty("--text-sidebar-active", "#18181b");
-      root.style.setProperty("--border", "#e4e4e7");
-      root.style.setProperty("--border-light", "#f4f4f5");
-      root.style.setProperty("--scrollbar-thumb", "#d4d4d8");
-      root.style.setProperty("--scrollbar-thumb-hover", "#a1a1aa");
+      root.style.setProperty("--bg-input", "#f4f5f7");
+      root.style.setProperty("--text-primary", "#0f172a");
+      root.style.setProperty("--text-secondary", "#475569");
+      root.style.setProperty("--text-tertiary", "#94a3b8");
+      root.style.setProperty("--text-sidebar", "#475569");
+      root.style.setProperty("--text-sidebar-active", "#0f172a");
+      root.style.setProperty("--border", "#cbd5e1");
+      root.style.setProperty("--border-light", "#e2e8f0");
+      root.style.setProperty("--scrollbar-thumb", "#94a3b8");
+      root.style.setProperty("--scrollbar-thumb-hover", "#64748b");
     } else {
       root.classList.remove("light");
       root.classList.add("dark");
-      // Dark mode CSS variables
-      root.style.setProperty("--bg-main", "#18181B");
-      root.style.setProperty("--bg-card", "#1E1E21");
-      root.style.setProperty("--bg-sidebar", "#18181B");
-      root.style.setProperty("--bg-sidebar-hover", "#27272A");
-      root.style.setProperty("--bg-elevated", "#27272A");
-      root.style.setProperty("--bg-input", "#27272A");
-      root.style.setProperty("--text-primary", "#FAFAFA");
-      root.style.setProperty("--text-secondary", "#A1A1AA");
-      root.style.setProperty("--text-tertiary", "#71717A");
-      root.style.setProperty("--text-sidebar", "#A1A1AA");
+      // Dark mode — landing page colors
+      root.style.setProperty("--bg-main", "#0f1117");
+      root.style.setProperty("--bg-card", "#1e2130");
+      root.style.setProperty("--bg-sidebar", "#161923");
+      root.style.setProperty("--bg-sidebar-hover", "#282b3a");
+      root.style.setProperty("--bg-elevated", "#1a1d27");
+      root.style.setProperty("--bg-input", "#1e2130");
+      root.style.setProperty("--text-primary", "#f1f5f9");
+      root.style.setProperty("--text-secondary", "#cbd5e1");
+      root.style.setProperty("--text-tertiary", "#64748b");
+      root.style.setProperty("--text-sidebar", "#cbd5e1");
       root.style.setProperty("--text-sidebar-active", "#ffffff");
-      root.style.setProperty("--border", "#3F3F46");
-      root.style.setProperty("--border-light", "#27272A");
-      root.style.setProperty("--scrollbar-thumb", "#52525B");
-      root.style.setProperty("--scrollbar-thumb-hover", "#71717A");
+      root.style.setProperty("--border", "#334155");
+      root.style.setProperty("--border-light", "#1e293b");
+      root.style.setProperty("--scrollbar-thumb", "#475569");
+      root.style.setProperty("--scrollbar-thumb-hover", "#64748b");
     }
   }, [getSystemTheme]);
 

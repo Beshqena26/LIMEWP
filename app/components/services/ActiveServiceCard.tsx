@@ -19,51 +19,51 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
   return (
     <div className={`group relative rounded-2xl border transition-all overflow-hidden ${
       isLight
-        ? "bg-white border-zinc-200 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-200/50"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E] hover:border-[#3F3F46]"
+        ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
     }`}>
       <div className="relative p-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-5">
           <div className="flex items-center gap-4">
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-              isLight ? "bg-zinc-200" : "bg-zinc-800"
+              isLight ? "bg-slate-200" : "bg-slate-800"
             }`}>
-              <svg className={`w-6 h-6 ${isLight ? "text-zinc-600" : "text-zinc-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d={service.icon} />
               </svg>
             </div>
             <div>
-              <div className={`font-semibold text-base ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{service.name}</div>
-              <div className={`text-xs flex items-center gap-2 mt-0.5 ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>
+              <div className={`font-semibold text-base ${isLight ? "text-slate-800" : "text-slate-100"}`}>{service.name}</div>
+              <div className={`text-xs flex items-center gap-2 mt-0.5 ${isLight ? "text-slate-500" : "text-slate-500"}`}>
                 <span>{service.plan} Plan</span>
-                <span className={isLight ? "text-zinc-400" : "text-zinc-600"}>•</span>
+                <span className={isLight ? "text-slate-400" : "text-slate-600"}>•</span>
                 <span>${service.price}/mo</span>
               </div>
             </div>
           </div>
           <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ${
-            isLight ? "bg-zinc-100 ring-1 ring-zinc-200" : "bg-zinc-800 ring-1 ring-zinc-700"
+            isLight ? "bg-slate-100 ring-1 ring-slate-200" : "bg-slate-800 ring-1 ring-slate-700"
           }`}>
             <span className="relative flex h-2 w-2">
-              <span className={`relative inline-flex rounded-full h-2 w-2 ${isLight ? "bg-zinc-500" : "bg-zinc-400"}`}></span>
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${isLight ? "bg-slate-500" : "bg-slate-400"}`}></span>
             </span>
-            <span className={`text-xs font-semibold ${isLight ? "text-zinc-600" : "text-zinc-400"}`}>Active</span>
+            <span className={`text-xs font-semibold ${isLight ? "text-slate-600" : "text-slate-400"}`}>Active</span>
           </div>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-4 mb-5">
           {service.stats.map((stat) => (
-            <div key={stat.label} className={`rounded-xl p-3 ${isLight ? "bg-zinc-50" : "bg-[#18181B]"}`}>
-              <div className="text-[10px] uppercase tracking-wider text-zinc-500 mb-1">{stat.label}</div>
-              <div className={`text-sm font-semibold mb-2 ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{stat.value}</div>
+            <div key={stat.label} className={`rounded-xl p-3 ${isLight ? "bg-slate-50" : "bg-[#0f1117]"}`}>
+              <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">{stat.label}</div>
+              <div className={`text-sm font-semibold mb-2 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{stat.value}</div>
               <Progress
                 value={stat.progress}
                 size="sm"
                 classNames={{
-                  track: `h-1 ${isLight ? "bg-zinc-200" : "bg-[#27272A]"}`,
-                  indicator: `${isLight ? "bg-zinc-500" : "bg-zinc-400"} rounded-full`
+                  track: `h-1 ${isLight ? "bg-slate-200" : "bg-[#1a1d27]"}`,
+                  indicator: `${isLight ? "bg-slate-500" : "bg-slate-400"} rounded-full`
                 }}
               />
             </div>
@@ -71,17 +71,17 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
         </div>
 
         {/* Footer */}
-        <div className={`flex items-center justify-between pt-4 border-t ${isLight ? "border-zinc-200" : "border-[#2A2A2E]"}`}>
-          <div className="text-xs text-zinc-500">
-            Next billing: <span className={`font-medium ${isLight ? "text-zinc-700" : "text-zinc-300"}`}>{service.nextBilling}</span>
+        <div className={`flex items-center justify-between pt-4 border-t ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
+          <div className="text-xs text-slate-500">
+            Next billing: <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>{service.nextBilling}</span>
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => onManage?.(service)}
               className={`h-9 px-4 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
                 isLight
-                  ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200 hover:text-zinc-900"
-                  : "bg-[#27272A] text-zinc-300 hover:bg-[#3F3F46] hover:text-white"
+                  ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+                  : "bg-[#1a1d27] text-slate-300 hover:bg-[#334155] hover:text-white"
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">

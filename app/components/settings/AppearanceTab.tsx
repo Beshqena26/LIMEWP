@@ -77,8 +77,8 @@ function ThemeCard({ theme, resolvedTheme, accentColor, onThemeChange }: ThemeCa
   return (
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -90,8 +90,8 @@ function ThemeCard({ theme, resolvedTheme, accentColor, onThemeChange }: ThemeCa
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-900" : "text-zinc-100"}`}>Color Theme</h3>
-            <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Choose your preferred theme</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Color Theme</h3>
+            <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Choose your preferred theme</p>
           </div>
         </div>
 
@@ -106,22 +106,22 @@ function ThemeCard({ theme, resolvedTheme, accentColor, onThemeChange }: ThemeCa
                   active
                     ? `${accent.bg} border-2 ${accent.border}`
                     : isLight
-                    ? "bg-zinc-100 border-2 border-transparent hover:border-zinc-300"
-                    : "bg-[#27272A]/50 border-2 border-transparent hover:border-[#3F3F46]"
+                    ? "bg-slate-100 border-2 border-transparent hover:border-slate-300"
+                    : "bg-[#1a1d27]/50 border-2 border-transparent hover:border-[#334155]"
                 }`}
               >
                 <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-colors ${
                   active
                     ? `${accent.iconBg} ${accent.text}`
                     : isLight
-                    ? "bg-zinc-200 text-zinc-500"
-                    : "bg-[#1E1E21] text-zinc-400"
+                    ? "bg-slate-200 text-slate-500"
+                    : "bg-[#1e2130] text-slate-400"
                 }`}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d={t.icon} />
                   </svg>
                 </div>
-                <span className={`text-sm font-medium ${active ? accent.text : isLight ? "text-zinc-700" : "text-zinc-300"}`}>{t.label}</span>
+                <span className={`text-sm font-medium ${active ? accent.text : isLight ? "text-slate-700" : "text-slate-300"}`}>{t.label}</span>
                 {active && (
                   <div className="absolute top-2 right-2">
                     <svg className={`w-4 h-4 ${accent.text}`} fill="currentColor" viewBox="0 0 20 20">
@@ -151,8 +151,8 @@ function AccentColorCard({ accentColor, resolvedTheme, onAccentColorChange }: Ac
   return (
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -164,8 +164,8 @@ function AccentColorCard({ accentColor, resolvedTheme, onAccentColorChange }: Ac
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-900" : "text-zinc-100"}`}>Accent Color</h3>
-            <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Customize your interface color</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Accent Color</h3>
+            <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Customize your interface color</p>
           </div>
         </div>
 
@@ -176,14 +176,14 @@ function AccentColorCard({ accentColor, resolvedTheme, onAccentColorChange }: Ac
                 onClick={() => onAccentColorChange(c.id)}
                 className={`w-12 h-12 rounded-xl cursor-pointer transition-all ${c.cls} ${
                   accentColor === c.id
-                    ? `ring-2 ${c.ring} ring-offset-2 ${isLight ? "ring-offset-white" : "ring-offset-[#1E1E21]"} scale-110`
+                    ? `ring-2 ${c.ring} ring-offset-2 ${isLight ? "ring-offset-white" : "ring-offset-[#1e2130]"} scale-110`
                     : "hover:scale-105 opacity-70 hover:opacity-100"
                 }`}
               />
               <span className={`text-[10px] font-medium ${
                 accentColor === c.id
-                  ? isLight ? "text-zinc-900" : "text-zinc-100"
-                  : isLight ? "text-zinc-500" : "text-zinc-500"
+                  ? isLight ? "text-slate-900" : "text-slate-100"
+                  : isLight ? "text-slate-500" : "text-slate-500"
               }`}>
                 {c.label}
               </span>
@@ -211,8 +211,8 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
       isSelected
         ? accent.switchOn
         : isLight
-          ? "bg-zinc-300"
-          : "bg-zinc-600"
+          ? "bg-slate-300"
+          : "bg-slate-600"
     }`,
     thumb: `bg-white shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
       isSelected ? "!ml-[calc(100%-20px)]" : "!ml-0"
@@ -223,8 +223,8 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
   return (
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
       isLight
-        ? "bg-white border-zinc-200"
-        : "bg-gradient-to-br from-[#1E1E21] to-[#1a1a1d] border-[#2A2A2E]"
+        ? "bg-white border-slate-200"
+        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -236,8 +236,8 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
             </svg>
           </div>
           <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-zinc-900" : "text-zinc-100"}`}>UI Preferences</h3>
-            <p className={`text-xs ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>Customize your interface experience</p>
+            <h3 className={`text-base font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>UI Preferences</h3>
+            <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>Customize your interface experience</p>
           </div>
         </div>
 
@@ -245,12 +245,12 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
           {UI_PREFERENCES.map((item) => (
             <div key={item.key} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
               isLight
-                ? "bg-zinc-100/50 hover:bg-zinc-100"
-                : "bg-[#27272A]/50 hover:bg-[#27272A]"
+                ? "bg-slate-100/50 hover:bg-slate-100"
+                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
             }`}>
               <div>
-                <p className={`text-sm font-medium ${isLight ? "text-zinc-800" : "text-zinc-200"}`}>{item.label}</p>
-                <p className={`text-[11px] ${isLight ? "text-zinc-500" : "text-zinc-500"}`}>{item.desc}</p>
+                <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{item.label}</p>
+                <p className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>{item.desc}</p>
               </div>
               <Switch isSelected={toggles[item.key]} onValueChange={() => onToggle(item.key)} classNames={getSwitchClassNames(toggles[item.key])} />
             </div>

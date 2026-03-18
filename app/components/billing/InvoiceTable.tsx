@@ -24,19 +24,19 @@ export function InvoiceTable({ invoices, onViewInvoice, onDownloadInvoice }: Inv
         iconColor="zinc"
       />
       <div className={`rounded-2xl border overflow-hidden ${
-        isLight ? "border-zinc-200" : "border-[#2A2A2E]"
+        isLight ? "border-slate-200" : "border-[#282b3a]"
       }`}>
         <Table
           aria-label="Invoice history"
           removeWrapper
           classNames={{
-            table: isLight ? "bg-white" : "bg-[#1E1E21]",
+            table: isLight ? "bg-white" : "bg-[#1e2130]",
             th: `text-xs font-semibold uppercase tracking-wider py-4 px-5 ${
-              isLight ? "bg-zinc-50 text-zinc-500" : "bg-[#18181B] text-zinc-500"
+              isLight ? "bg-slate-50 text-slate-500" : "bg-[#0f1117] text-slate-500"
             }`,
             td: "text-sm py-4 px-5",
             tr: `border-b last:border-b-0 transition-colors ${
-              isLight ? "hover:bg-zinc-50 border-zinc-100" : "hover:bg-[#27272A]/50 border-[#2A2A2E]"
+              isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[#1a1d27]/50 border-[#282b3a]"
             }`,
           }}
         >
@@ -54,16 +54,16 @@ export function InvoiceTable({ invoices, onViewInvoice, onDownloadInvoice }: Inv
               return (
                 <TableRow key={invoice.id}>
                   <TableCell>
-                    <span className={`font-mono font-medium ${isLight ? "text-zinc-700" : "text-zinc-200"}`}>{invoice.id}</span>
+                    <span className={`font-mono font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{invoice.id}</span>
                   </TableCell>
                   <TableCell>
-                    <span className={isLight ? "text-zinc-500" : "text-zinc-400"}>{invoice.date}</span>
+                    <span className={isLight ? "text-slate-500" : "text-slate-400"}>{invoice.date}</span>
                   </TableCell>
                   <TableCell>
-                    <span className={isLight ? "text-zinc-600" : "text-zinc-300"}>{invoice.description}</span>
+                    <span className={isLight ? "text-slate-600" : "text-slate-300"}>{invoice.description}</span>
                   </TableCell>
                   <TableCell>
-                    <span className={`font-semibold ${isLight ? "text-zinc-800" : "text-zinc-100"}`}>{invoice.amount}</span>
+                    <span className={`font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{invoice.amount}</span>
                   </TableCell>
                   <TableCell>
                     <Chip
@@ -82,12 +82,12 @@ export function InvoiceTable({ invoices, onViewInvoice, onDownloadInvoice }: Inv
                       <button
                         onClick={() => onViewInvoice?.(invoice)}
                         className={`text-xs font-medium transition-colors ${
-                          isLight ? "text-zinc-500 hover:text-zinc-700" : "text-zinc-400 hover:text-zinc-200"
+                          isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
                         }`}
                       >
                         View
                       </button>
-                      <span className={isLight ? "text-zinc-300" : "text-zinc-600"}>•</span>
+                      <span className={isLight ? "text-slate-300" : "text-slate-600"}>•</span>
                       <button
                         onClick={() => onDownloadInvoice?.(invoice)}
                         className="text-xs font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
