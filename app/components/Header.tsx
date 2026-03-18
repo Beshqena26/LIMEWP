@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Input,
   Avatar,
@@ -128,6 +128,7 @@ const SEARCH_SUGGESTIONS = [
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const { resolvedTheme, accentColor, setTheme } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = ACCENT_STYLES[accentColor];
@@ -763,6 +764,7 @@ export default function Header() {
               key="signout"
               className={`px-4 py-2.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[#282b3a] data-[hover=true]:bg-red-500/5"}`}
               textValue="Sign Out"
+              onPress={() => router.push("/")}
             >
               <div className="flex items-center gap-3">
                 <svg

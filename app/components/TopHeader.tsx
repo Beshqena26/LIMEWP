@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Input,
   Avatar,
@@ -35,6 +36,7 @@ function NotificationIcon({ type }: { type: string }) {
 }
 
 export default function TopHeader() {
+  const router = useRouter();
   const { resolvedTheme, accentColor, setTheme } = useTheme();
   const isLight = resolvedTheme === "light";
 
@@ -399,6 +401,7 @@ export default function TopHeader() {
               key="signout"
               className={`px-4 py-3.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[#282b3a] data-[hover=true]:bg-red-500/5"}`}
               textValue="Sign Out"
+              onPress={() => router.push("/")}
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-red-500/10 ring-1 ring-red-500/20 flex items-center justify-center flex-shrink-0">
                   <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
