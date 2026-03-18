@@ -313,50 +313,8 @@ body {
   --glass-border: rgba(255,255,255,.5);
 }
 
-/* ===== Panel beautification using landing design tokens ===== */
-/* Shadows, glows, and polish — no layout changes */
-
-/* Selection color */
+/* ===== Minimal panel polish ===== */
 ::selection {
   background: var(--acc);
   color: var(--ci);
-}
-
-/* Smooth card shadows */
-.dark [class*="rounded-2xl"][class*="border"] {
-  box-shadow: var(--sh);
-}
-.dark [class*="rounded-2xl"][class*="border"]:hover {
-  box-shadow: var(--shh);
-}
-.light [class*="rounded-2xl"][class*="border"] {
-  box-shadow: var(--sh);
-}
-.light [class*="rounded-2xl"][class*="border"]:hover {
-  box-shadow: var(--shh);
-}
-
-/* Accent-colored focus rings */
-input:focus, textarea:focus, select:focus {
-  box-shadow: 0 0 0 2px var(--lime-glow-strong);
-  border-color: var(--acc) !important;
-}
-
-/* Button glow on accent buttons */
-[class*="bg-emerald"] {
-  box-shadow: 0 2px 12px var(--lime-glow-strong);
-}
-[class*="bg-emerald"]:hover {
-  box-shadow: 0 8px 28px var(--lime-glow-strong);
-}
-
-/* Glass effect for modals and overlays */
-[class*="backdrop-blur"] {
-  background: var(--glass);
-  border-color: var(--glass-border);
-}
-
-/* Smooth transitions on all interactive elements */
-button, a, input, [role="button"] {
-  transition: all 0.3s ease;
 }
