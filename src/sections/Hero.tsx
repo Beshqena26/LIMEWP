@@ -1,23 +1,17 @@
 import { Icon, IconBox, Button } from '../components'
 
-const servers = [
-  { icon: 'server', name: 'Production Server', info: 'US-East \u2022 4 vCPU \u2022 16GB RAM', status: 'Online', dotClass: '' },
-  { icon: 'box', name: 'Staging Environment', info: 'EU-West \u2022 Synced 2m ago', status: 'Active', dotClass: 'delayed' },
-  { icon: 'pulse', name: 'CDN Edge Network', info: '200+ Global Locations', status: 'Healthy', dotClass: 'delayed-2' },
-  { icon: 'layers', name: 'Redis Object Cache', info: 'Free • Always Enabled', status: 'Active', dotClass: 'delayed' },
-]
-
-const metrics = [
-  { v: '187ms', l: 'Load Time', w: '95%' },
-  { v: '100%', l: 'Uptime', w: '100%' },
-  { v: 'A+', l: 'Security', w: '98%' },
-]
-
 const stats = [
   { v: '12,000+', l: 'Sites Launched' },
   { v: '4.8/5', l: 'Avg. Rating' },
   { v: '6 Mo', l: 'Free Hosting' },
   { v: '$0', l: 'To Get Started' },
+]
+
+const perks = [
+  { icon: 'globe', text: 'Custom Domain' },
+  { icon: 'lock', text: 'Free SSL' },
+  { icon: 'refresh-single', text: 'Auto Backups' },
+  { icon: 'code-slash', text: 'Full WP Access' },
 ]
 
 export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown: { d: number; h: number; m: number; s: number } }) {
@@ -28,7 +22,7 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
         <div className="hero-grid">
           <div className="hero-left">
             <div className="hero-badge"><span className="dot" /> Free for 6 months — limited spots remaining</div>
-            <h1>Build Your WordPress Site.<br /><em>Pay Nothing</em> for 6 Months.</h1>
+            <h1>Launch Your WordPress Site —<br /><em>Pay $0 for 6 Months</em></h1>
             <p className="hero-sub">Real hosting. Real WordPress. Install plugins, connect your domain, go live — all free for 6 months. No credit card. No catch.</p>
             <div className="hero-actions">
               <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
@@ -40,16 +34,6 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
                   {text}
                 </span>
               ))}
-            </div>
-            <div className="hero-countdown-bar">
-              <span className="hero-cd-label">Offer resets in</span>
-              <div className="hero-cd-timer">
-                <span className="hero-cd-digit">{String(h).padStart(2, '0')}<small>h</small></span>
-                <span className="hero-cd-sep">:</span>
-                <span className="hero-cd-digit">{String(m).padStart(2, '0')}<small>m</small></span>
-                <span className="hero-cd-sep">:</span>
-                <span className="hero-cd-digit">{String(s).padStart(2, '0')}<small>s</small></span>
-              </div>
             </div>
             <div className="hero-stats">
               {stats.map(s => (
@@ -67,36 +51,38 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
               10x Faster
             </div>
             <div className="hero-float f3">
-              <IconBox name="refresh-single" size="sm" color="purple" />
-              Auto Backup
+              <IconBox name="server" size="sm" color="purple" />
+              Free Redis Caching
             </div>
-            <div className="server-stack">
-              {servers.map(s => (
-                <div key={s.name} className="server-unit">
-                  <div className="server-info">
-                    <div className="server-icon"><Icon name={s.icon} /></div>
-                    <div className="server-details"><h4>{s.name}</h4><span>{s.info}</span></div>
+            <div className="hero-showcase">
+              <div className="hero-showcase-glow" />
+              <div className="hero-showcase-ring" />
+              <div className="hero-showcase-ring hero-showcase-ring-2" />
+              <div className="hero-showcase-center">
+                <div className="hero-showcase-big">
+                  <span className="hero-showcase-num">6</span>
+                  <div className="hero-showcase-label">
+                    <span className="hero-showcase-months">MONTHS</span>
+                    <span className="hero-showcase-free">FREE</span>
                   </div>
-                  <div className="server-status"><span className={`status-dot ${s.dotClass}`} /><span className="status-text">{s.status}</span></div>
                 </div>
-              ))}
-            </div>
-            <div className="dashboard-card">
-              <div className="dashboard-header">
-                <div className="dashboard-title">
-                  <Icon name="bolt" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-                  Performance Monitor
+                <div className="hero-showcase-divider" />
+                <div className="hero-showcase-tagline">
+                  <Icon name="bolt" width={16} height={16} />
+                  WordPress Hosting
                 </div>
-                <div className="dashboard-badge">Live</div>
-              </div>
-              <div className="performance-metrics">
-                {metrics.map(m => (
-                  <div key={m.l} className="metric-item">
-                    <div className="metric-value">{m.v}</div>
-                    <div className="metric-label">{m.l}</div>
-                    <div className="metric-bar"><div className="metric-bar-fill" style={{ '--progress-width': m.w } as React.CSSProperties} /></div>
-                  </div>
-                ))}
+                <div className="hero-showcase-perks">
+                  {perks.map(p => (
+                    <div key={p.text} className="hero-showcase-perk">
+                      <Icon name={p.icon} width={14} height={14} />
+                      <span>{p.text}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="hero-showcase-badge">
+                  <Icon name="check-circle" width={14} height={14} />
+                  No Credit Card Required
+                </div>
               </div>
             </div>
           </div>
