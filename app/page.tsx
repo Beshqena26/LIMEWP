@@ -95,7 +95,7 @@ export default function HomePage() {
         <div className="top-banner-shimmer" />
         <div className="top-banner-inner">
           <span className="top-banner-dot" />
-          <span className="top-banner-text">Free hosting for 6 months — limited spots</span>
+          <span className="top-banner-text">LimeWP — premium WordPress hosting, free for 6 months</span>
           <div className="top-banner-countdown">
             <div className="tb-block"><span className="tb-num">{String(h).padStart(2, '0')}</span><span className="tb-lbl">Hrs</span></div>
             <span className="tb-colon">:</span>
@@ -162,7 +162,7 @@ export default function HomePage() {
       <AuthModals modal={modal} setModal={setModal} onAuth={handleAuth} />
       <Footer />
       <div className="sticky-cta">
-        <button className="btn btn-p" onClick={onSignup}>Start Building for Free</button>
+        <button className="btn btn-p" onClick={onSignup}>Try Premium Free</button>
       </div>
     </>
   )

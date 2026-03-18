@@ -32,10 +32,10 @@ const usageRings = [
 ]
 
 const perfMetrics = [
-  { icon: 'check-circle', value: '99.98', unit: '%', label: 'UPTIME', color: 'var(--acc)' },
-  { icon: 'bolt', value: '45', unit: 'ms', label: 'RESPONSE', color: '#eab308' },
-  { icon: 'trend', value: '92', unit: '/100', label: 'SPEED', color: 'var(--acc)' },
-  { icon: 'shield', value: 'A', unit: '', label: 'SECURITY', color: 'var(--acc)' },
+  { icon: 'check-circle', value: '99.99', unit: '%', label: 'UPTIME', color: 'var(--acc)' },
+  { icon: 'bolt', value: '38', unit: 'ms', label: 'TTFB', color: '#eab308' },
+  { icon: 'trend', value: '96', unit: '/100', label: 'PAGESPEED', color: 'var(--acc)' },
+  { icon: 'shield', value: 'A+', unit: '', label: 'SECURITY', color: 'var(--acc)' },
 ]
 
 const serverInfo = [
@@ -48,10 +48,10 @@ const serverInfo = [
 ]
 
 const platformFeatures = [
-  { icon: 'code-slash', title: 'Install 60,000+ Plugins', desc: 'Any plugin or theme from the WordPress repository, without restriction.' },
-  { icon: 'globe', title: 'Custom Domain from Day One', desc: 'Connect your own domain immediately. Free DNS management included.' },
-  { icon: 'shield', title: 'Go Live with SSL', desc: 'Serve real visitors with automatic HTTPS encryption on every site.' },
-  { icon: 'lock', title: 'Full WP Admin Access', desc: 'Complete control over your WordPress installation, including FTP access.' },
+  { icon: 'bolt', title: 'Sub-200ms Response Time', desc: 'LiteSpeed + NVMe delivers blazing TTFB. Your visitors feel the difference instantly.' },
+  { icon: 'server', title: 'Isolated Cloud Containers', desc: 'Guaranteed CPU and RAM per site. No resource sharing, no noisy neighbors.' },
+  { icon: 'shield', title: 'Enterprise Security Suite', desc: 'WAF, DDoS protection, malware scanning, and automatic SSL on every site.' },
+  { icon: 'globe', title: 'Global Edge CDN', desc: '50+ edge locations. Static assets served from the nearest node worldwide.' },
 ]
 
 function Ring({ value, color, size = 60 }: { value: number; color: string; size?: number }) {
@@ -74,9 +74,9 @@ export function Platform({ Rev, onSignup }: { Rev: React.ComponentType<{ childre
     <section className="platform-header-section">
       <div className="container">
         <Rev className="sc">
-          <div className="sl">Not a Demo</div>
-          <div className="st">This is a <em style={{fontStyle:'normal',color:'var(--acc)'}}>real website.</em> Yours to build and launch.</div>
-          <p className="sd">When you sign up, you get a full WordPress installation with zero restrictions. It's production hosting, not a sandbox.</p>
+          <div className="sl">The LimeWP Platform</div>
+          <div className="st">Enterprise-grade hosting. <em style={{fontStyle:'normal',color:'var(--acc)'}}>Every site.</em></div>
+          <p className="sd">LiteSpeed servers, NVMe storage, Redis caching, and a global CDN — see what your LimeWP dashboard looks like.</p>
         </Rev>
       </div>
     </section>

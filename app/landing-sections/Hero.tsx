@@ -1,17 +1,17 @@
 import { Icon, IconBox, Button } from '../landing-components'
 
 const stats = [
-  { v: '12,000+', l: 'Sites Launched' },
-  { v: '4.8/5', l: 'Avg. Rating' },
-  { v: '6 Mo', l: 'Free Hosting' },
-  { v: '$0', l: 'To Get Started' },
+  { v: '<200ms', l: 'Avg. TTFB' },
+  { v: '99.99%', l: 'Uptime SLA' },
+  { v: '50+', l: 'Edge Locations' },
+  { v: '95+', l: 'PageSpeed Score' },
 ]
 
 const perks = [
-  { icon: 'globe', text: 'Custom Domain' },
-  { icon: 'lock', text: 'Free SSL' },
-  { icon: 'refresh-single', text: 'Auto Backups' },
-  { icon: 'code-slash', text: 'Full WP Access' },
+  { icon: 'bolt', text: 'LiteSpeed Server' },
+  { icon: 'server', text: 'NVMe SSD' },
+  { icon: 'lock', text: 'Redis Caching' },
+  { icon: 'shield', text: 'Enterprise WAF' },
 ]
 
 export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown: { d: number; h: number; m: number; s: number } }) {
@@ -21,14 +21,14 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
       <div className="container">
         <div className="hero-grid">
           <div className="hero-left">
-            <div className="hero-badge"><span className="dot" /> Free for 6 months — limited spots remaining</div>
-            <h1>Launch Your WordPress Site —<br /><em>Pay $0 for 6 Months</em></h1>
-            <p className="hero-sub">Real hosting. Real WordPress. Install plugins, connect your domain, go live — all free for 6 months. No credit card. No catch.</p>
+            <div className="hero-badge"><span className="dot" /> LimeWP — Premium WordPress Hosting</div>
+            <h1>WordPress Hosting<br /><em>That Performs.</em></h1>
+            <p className="hero-sub">LimeWP gives your site LiteSpeed servers, NVMe storage, Redis caching, and enterprise security — try it free for 6 months.</p>
             <div className="hero-actions">
-              <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
+              <Button variant="primary" icon="arrow" onClick={onSignup}>Start Free on LimeWP</Button>
             </div>
             <div className="hero-trust">
-              {['No credit card required', 'Full WordPress access', 'Cancel anytime'].map(text => (
+              {['LiteSpeed + NVMe stack', 'Isolated cloud containers', '6 months free trial'].map(text => (
                 <span key={text} className="hero-trust-item">
                   <Icon name="check-circle" width={15} height={15} />
                   {text}
@@ -43,16 +43,16 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
           </div>
           <div className="hero-right">
             <div className="hero-float f1">
-              <IconBox name="shield" size="sm" color="green" />
-              SSL Active
+              <IconBox name="bolt" size="sm" color="green" />
+              LiteSpeed Active
             </div>
             <div className="hero-float f2">
-              <IconBox name="bolt" size="sm" color="blue" />
-              10x Faster
+              <IconBox name="server" size="sm" color="blue" />
+              NVMe SSD
             </div>
             <div className="hero-float f3">
-              <IconBox name="server" size="sm" color="purple" />
-              Free Redis Caching
+              <IconBox name="shield" size="sm" color="purple" />
+              WAF Protected
             </div>
             <div className="hero-showcase">
               <div className="hero-showcase-glow" />
@@ -69,7 +69,7 @@ export function Hero({ onSignup, countdown }: { onSignup: () => void; countdown:
                 <div className="hero-showcase-divider" />
                 <div className="hero-showcase-tagline">
                   <Icon name="bolt" width={16} height={16} />
-                  WordPress Hosting
+                  LimeWP Premium
                 </div>
                 <div className="hero-showcase-perks">
                   {perks.map(p => (

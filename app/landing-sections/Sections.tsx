@@ -18,7 +18,7 @@ export function BuildFirst({ Rev, onSignup }: { Rev: RevType; onSignup: () => vo
     <section className="build-first" id="compare">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Why Switch" title="Other hosts charge first. We let you build first." desc="Most hosting companies lock you into annual plans before you've written a single line. We flip that model." center />
+          <SectionHeader label="Why LimeWP" title="Shared hosting can't compete with this." desc="Most hosts pack hundreds of sites on one server. LimeWP gives every site its own isolated container with enterprise-grade infrastructure." center />
         </Rev>
         <Rev>
           <div className="bf-table">
@@ -51,7 +51,7 @@ export function Features({ Rev }: { Rev: RevType }) {
     <section className="features-section" id="features">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Features" title="Everything you need. Nothing you don't." desc="All the tools to build, manage, and grow your WordPress site. Included with every account, free or paid." center />
+          <SectionHeader label="The LimeWP Stack" title="Enterprise infrastructure. Every plan." desc="LiteSpeed, NVMe, Redis, WAF — the technology that powers high-traffic sites, included on every LimeWP account." center />
         </Rev>
         <Rev>
           <div className="features-grid features-grid-3">
@@ -77,7 +77,7 @@ export function UpgradePath({ Rev, onSignup, countdown }: { Rev: RevType; onSign
     <section className="upgrade-path">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Growth Path" title="Start free. Upgrade when ready." desc="Your free account is powerful enough to launch. When you need more, upgrading unlocks everything." center />
+          <SectionHeader label="Grow with LimeWP" title="Premium from day one. Scale when ready." desc="Your free LimeWP account runs on the same premium infrastructure as paid plans. When you need more, upgrading unlocks everything." center />
         </Rev>
         <Rev>
           <div className="upgrade-flow">
@@ -136,8 +136,8 @@ const paidPlans = [
     name: 'Pro Monthly',
     price: '$9',
     period: '/mo',
-    desc: 'All the power of Pro, billed monthly. Cancel anytime.',
-    features: ['Everything in Free', '10 GB storage', 'Premium SSL', 'Staging environment', 'Priority support', 'Daily backups', 'CDN included'],
+    desc: 'Full premium stack with more resources. Cancel anytime.',
+    features: ['Everything in Free', '10 GB NVMe storage', 'Staging environment', 'Priority expert support', 'Real-time backups', 'Advanced analytics', 'SSH & WP-CLI access'],
     cta: 'Get Pro Monthly',
   },
   {
@@ -145,8 +145,8 @@ const paidPlans = [
     price: '$79',
     period: '/yr',
     save: 'Save 27%',
-    desc: 'Same Pro features, best price. Pay once, save big.',
-    features: ['Everything in Pro Monthly', '50 GB storage', 'Multisite support', 'White-label branding', 'Dedicated support', 'Real-time backups', 'Advanced analytics'],
+    desc: 'Best value. Same premium infrastructure, maximum savings.',
+    features: ['Everything in Pro Monthly', '50 GB NVMe storage', 'Multisite support', 'White-label branding', 'Dedicated resources', 'Git deployment', 'PHP version selector'],
     cta: 'Get Pro Yearly',
   },
 ]
@@ -156,7 +156,7 @@ export function PlansCard({ Rev, onSignup, countdown }: { Rev: RevType; onSignup
     <section className="plans-card-section" id="pricing">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="Pricing" title="Start free. Scale when you're ready." desc="No hidden fees. No surprises. Pick the plan that fits your stage." center />
+          <SectionHeader label="LimeWP Pricing" title="Premium hosting. Honest pricing." desc="Every LimeWP plan includes the full premium stack. No hidden fees, no upsells on essential features." center />
         </Rev>
 
         <Rev>
@@ -170,9 +170,9 @@ export function PlansCard({ Rev, onSignup, countdown }: { Rev: RevType; onSignup
                   <span className="plan-free-tag-sep" />
                   <span className="plan-free-tag-cd">{String(countdown.h).padStart(2, '0')}h {String(countdown.m).padStart(2, '0')}m {String(countdown.s).padStart(2, '0')}s left</span>
                 </div>
-                <h3>Launch without spending a dime</h3>
-                <p>Full WordPress. Real hosting. Custom domain, SSL, backups — everything included. No credit card, no catch.</p>
-                <Button variant="primary" icon="arrow" onClick={onSignup}>Start Building for Free</Button>
+                <h3>Experience LimeWP before you pay</h3>
+                <p>Full LimeWP stack — LiteSpeed, NVMe, Redis, CDN, WAF — for 6 months at zero cost. Same infrastructure as paid plans.</p>
+                <Button variant="primary" icon="arrow" onClick={onSignup}>Start Free on LimeWP</Button>
                 <div className="plan-free-no-cc">
                   <Icon name="check-circle" width={14} height={14} />
                   No credit card required
@@ -180,7 +180,7 @@ export function PlansCard({ Rev, onSignup, countdown }: { Rev: RevType; onSignup
               </div>
               <div className="plan-free-right">
                 <ul className="plan-free-features">
-                  {['Full WordPress install', '1 GB storage', 'Free SSL certificate', 'Custom domain', 'Email support', 'Auto backups'].map(f => (
+                  {['Full premium stack', '1 GB NVMe storage', 'LiteSpeed + Redis', 'Free SSL & CDN', 'WAF protection', 'Daily backups'].map(f => (
                     <li key={f}><Icon name="check" />{f}</li>
                   ))}
                 </ul>
@@ -231,7 +231,7 @@ export function Testimonials({ Rev }: { Rev: RevType }) {
     <section className="testimonials" id="testimonials">
       <div className="container">
         <Rev className="sc">
-          <SectionHeader label="What Users Say" title="People are launching. For real." desc="Don't take our word for it. Here's what real users have to say about LimeWP." center />
+          <SectionHeader label="What Users Say" title="The performance speaks for itself." desc="See why developers, agencies, and business owners chose LimeWP." center />
         </Rev>
         <Rev>
           <div className="testimonials-grid">
@@ -292,20 +292,20 @@ export function CTA({ Rev, onSignup }: { Rev: RevType; onSignup: () => void }) {
             <div className="cta-icon-ring">
               <Icon name="bolt" width={28} height={28} />
             </div>
-            <h2>Stop paying to try.<br />Start building for free.</h2>
-            <p>6 months of full WordPress hosting. Zero cost. Your site could be live in minutes.</p>
+            <h2>This is LimeWP.<br />Try it free for 6 months.</h2>
+            <p>LiteSpeed. NVMe. Redis. Enterprise security. Experience what premium WordPress hosting feels like — at zero cost.</p>
             <div className="cta-acts">
-              <Button variant="primary" icon="arrow" onClick={onSignup}>Create Your Free Site Now</Button>
+              <Button variant="primary" icon="arrow" onClick={onSignup}>Start Free on LimeWP</Button>
             </div>
             <div className="trust-badges">
-              {['No credit card', 'Setup in 2 minutes', 'Cancel anytime'].map(text => (
+              {['No credit card', 'Full premium stack', 'Cancel anytime'].map(text => (
                 <div key={text} className="trust-badge">
                   <Icon name="check-circle" width={15} height={15} />
                   {text}
                 </div>
               ))}
             </div>
-            <div className="urgency-line">Over 400 sites were created this week alone.</div>
+            <div className="urgency-line">Over 12,000 sites running on LimeWP.</div>
           </div>
         </Rev>
       </div>
@@ -329,7 +329,7 @@ export function Footer() {
               <div className="logo-icon"><Icon name="bolt" /></div>
               LimeWP
             </a>
-            <p>WordPress hosting that just works. Fast, secure, and backed by humans who actually care.</p>
+            <p>Premium WordPress hosting. LiteSpeed servers, NVMe storage, and enterprise security — backed by experts who care.</p>
             <div className="footer-social">
               <a href="#" className="footer-social-link" aria-label="GitHub"><Icon name="code-slash" width={16} height={16} /></a>
               <a href="#" className="footer-social-link" aria-label="Chat"><Icon name="chat" width={16} height={16} /></a>
