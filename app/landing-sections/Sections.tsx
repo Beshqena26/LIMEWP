@@ -325,9 +325,8 @@ export function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-brand">
-            <a href="#" className="logo">
-              <div className="logo-icon"><Icon name="bolt" /></div>
-              LimeWP
+            <a href="/" className="logo">
+              <img src="/limewp-logo.svg" alt="LimeWP" width="100" height="28" style={{ display: 'block' }} />
             </a>
             <p>Premium WordPress hosting. LiteSpeed servers, NVMe storage, and enterprise security — backed by experts who care.</p>
             <div className="footer-social">
