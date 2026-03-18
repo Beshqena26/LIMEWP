@@ -4,6 +4,7 @@ import { Icon } from './components'
 import { navLinks } from './data'
 import { LandingPage } from './LandingPage'
 import { StyleGuide } from './StyleGuide'
+import { Panel } from './Panel'
 
 const TWELVE_HOURS = 12 * 60 * 60 * 1000
 
@@ -20,8 +21,12 @@ function useCountdown() {
   return { d: 0, h, m, s }
 }
 
+const PANEL_ROUTES = ['dashboard', 'billing', 'settings', 'services', 'dns', 'support', 'new-site']
+
 function getPage(hash: string) {
   if (hash === '#styleguide') return 'styleguide'
+  const route = hash.replace('#', '')
+  if (PANEL_ROUTES.includes(route) || route.startsWith('site-')) return `panel-${route}`
   return 'landing'
 }
 
@@ -81,7 +86,22 @@ export function App() {
   const onSignup = useCallback(() => setModal('signup'), [])
   const { d, h, m, s } = useCountdown()
 
+  // Handle auth: after login/signup → go to dashboard
+  const handleAuth = useCallback(() => {
+    setModal(null)
+    window.location.hash = 'dashboard'
+  }, [])
+
+  const handleLogout = useCallback(() => {
+    window.location.hash = ''
+  }, [])
+
   if (page === 'styleguide') return <StyleGuide />
+
+  // Panel pages
+  if (page.startsWith('panel-')) {
+    return <Panel page={page} theme={theme} onThemeToggle={toggleTheme} onLogout={handleLogout} />
+  }
 
   return (
     <>
@@ -146,7 +166,7 @@ export function App() {
         </div>
       </div>
 
-      <LandingPage modal={modal} setModal={setModal} onSignup={onSignup} countdown={{ d, h, m, s }} />
+      <LandingPage modal={modal} setModal={setModal} onSignup={onSignup} onAuth={handleAuth} countdown={{ d, h, m, s }} />
     </>
   )
 }

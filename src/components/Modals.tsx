@@ -66,8 +66,8 @@ function SignupForm({ onSubmit, onSwitch }: { onSubmit: () => void; onSwitch: ()
   )
 }
 
-export function AuthModals({ modal, setModal }: { modal: 'login' | 'signup' | null; setModal: (v: 'login' | 'signup' | null) => void }) {
-  const handleSubmit = () => { window.location.href = 'https://limewp.vercel.app/dashboard' }
+export function AuthModals({ modal, setModal, onAuth }: { modal: 'login' | 'signup' | null; setModal: (v: 'login' | 'signup' | null) => void; onAuth?: () => void }) {
+  const handleSubmit = () => { if (onAuth) onAuth(); else window.location.hash = 'dashboard' }
 
   return (
     <>

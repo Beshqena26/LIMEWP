@@ -14,10 +14,11 @@ type LandingPageProps = {
   modal: 'login' | 'signup' | null
   setModal: Dispatch<SetStateAction<'login' | 'signup' | null>>
   onSignup: () => void
+  onAuth?: () => void
   countdown: { d: number; h: number; m: number; s: number }
 }
 
-export function LandingPage({ modal, setModal, onSignup, countdown }: LandingPageProps) {
+export function LandingPage({ modal, setModal, onSignup, onAuth, countdown }: LandingPageProps) {
   const [openFaq, setOpenFaq] = useState(0)
 
   return (
@@ -32,7 +33,7 @@ export function LandingPage({ modal, setModal, onSignup, countdown }: LandingPag
       <Testimonials Rev={Rev} />
       <FAQ Rev={Rev} openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <CTA Rev={Rev} onSignup={onSignup} />
-      <AuthModals modal={modal} setModal={setModal} />
+      <AuthModals modal={modal} setModal={setModal} onAuth={onAuth} />
       <Footer />
       <div className="sticky-cta">
         <button className="btn btn-p" onClick={onSignup}>Start Building for Free</button>
