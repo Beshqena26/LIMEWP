@@ -4,10 +4,11 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useParticles, useReveal } from './landing-hooks'
 import { Icon } from './landing-components'
 import { navLinks } from './landing-data'
-import { AuthModals } from './landing-components'
 import { Hero } from './landing-sections/Hero'
 import { Platform } from './landing-sections/Platform'
 import { Marquee, BuildFirst, Features, UpgradePath, PlansCard, Testimonials, FAQ, CTA, Footer } from './landing-sections/Sections'
+import { useTheme } from '@/lib/context/ThemeContext'
+import { ROUTES } from '@/config/routes'
 import './landing.css'
 
 const TWELVE_HOURS = 12 * 60 * 60 * 1000
@@ -31,28 +32,15 @@ function Rev({ children, className = '' }: { children: React.ReactNode; classNam
 }
 
 export default function HomePage() {
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('limewp-theme')
-      if (saved) return saved
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    }
-    return 'light'
-  })
-  const [modal, setModal] = useState<'login' | 'signup' | null>(null)
+  const { resolvedTheme, setTheme } = useTheme()
+  const theme = resolvedTheme
   const [mobileMenu, setMobileMenu] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const [openFaq, setOpenFaq] = useState(0)
   const glowRef = useRef<HTMLDivElement>(null)
   const { canvasRef, mouseRef } = useParticles(theme)
 
-  useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('limewp-theme', theme) }, [theme])
-  useEffect(() => { document.body.style.overflow = (modal || mobileMenu) ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [modal, mobileMenu])
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModal(null) }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [])
+  useEffect(() => { document.body.style.overflow = mobileMenu ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [mobileMenu])
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -76,15 +64,10 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const toggleTheme = useCallback(() => setTheme(t => t === 'light' ? 'dark' : 'light'), [])
-  const onSignup = useCallback(() => setModal('signup'), [])
+  const toggleTheme = useCallback(() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light'), [resolvedTheme, setTheme])
+  const onSignup = useCallback(() => { window.location.href = ROUTES.LOGIN }, [])
   const { h, m, s } = useCountdown()
   const countdown = { d: 0, h, m, s }
-
-  const handleAuth = useCallback(() => {
-    setModal(null)
-    window.location.href = '/dashboard'
-  }, [])
 
   return (
     <div className="landing">
@@ -123,7 +106,7 @@ export default function HomePage() {
           <button className="theme-btn" onClick={toggleTheme} aria-label="Toggle theme">
             <Icon name={theme === 'light' ? 'sun' : 'moon'} />
           </button>
-          <button className="nav-login" onClick={() => setModal('login')}>Sign In</button>
+          <button className="nav-login" onClick={() => { window.location.href = ROUTES.LOGIN }}>Sign In</button>
           <button className="nav-cta" onClick={onSignup}>Start Free</button>
           <button className={`burger${mobileMenu ? ' open' : ''}`} onClick={() => setMobileMenu(v => !v)} aria-label="Menu">
             <span /><span /><span />
@@ -144,7 +127,7 @@ export default function HomePage() {
           ))}
         </div>
         <div className="mobile-menu-actions">
-          <button className="btn btn-s" onClick={() => { setMobileMenu(false); setModal('login') }}>Sign In</button>
+          <button className="btn btn-s" onClick={() => { setMobileMenu(false); window.location.href = ROUTES.LOGIN }}>Sign In</button>
           <button className="btn btn-p" onClick={() => { setMobileMenu(false); onSignup() }}>Start Free</button>
         </div>
       </div>
@@ -159,7 +142,6 @@ export default function HomePage() {
       <Testimonials Rev={Rev} />
       <FAQ Rev={Rev} openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <CTA Rev={Rev} onSignup={onSignup} />
-      <AuthModals modal={modal} setModal={setModal} onAuth={handleAuth} />
       <Footer />
       <div className="sticky-cta">
         <button className="btn btn-p" onClick={onSignup}>Try Premium Free</button>

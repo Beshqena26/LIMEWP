@@ -24,19 +24,19 @@ export function InvoiceTable({ invoices, onViewInvoice, onDownloadInvoice }: Inv
         iconColor="zinc"
       />
       <div className={`rounded-2xl border overflow-hidden ${
-        isLight ? "border-slate-200" : "border-[#282b3a]"
+        isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
       }`}>
         <Table
           aria-label="Invoice history"
           removeWrapper
           classNames={{
-            table: isLight ? "bg-white" : "bg-[#1e2130]",
+            table: isLight ? "bg-white" : "bg-[var(--bg-secondary)]",
             th: `text-xs font-semibold uppercase tracking-wider py-4 px-5 ${
-              isLight ? "bg-slate-50 text-slate-500" : "bg-[#0f1117] text-slate-500"
+              isLight ? "bg-slate-50 text-slate-500" : "bg-[var(--bg-primary)] text-slate-500"
             }`,
             td: "text-sm py-4 px-5",
             tr: `border-b last:border-b-0 transition-colors ${
-              isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[#1a1d27]/50 border-[#282b3a]"
+              isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[var(--bg-elevated)]/50 border-[var(--border-tertiary)]"
             }`,
           }}
         >

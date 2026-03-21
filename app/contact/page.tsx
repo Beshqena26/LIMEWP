@@ -58,10 +58,10 @@ export default function ContactPage() {
       }
     : {
         inputWrapper: [
-          "bg-[#1e2130]",
-          "border-[#282b3a]",
-          "hover:border-[#334155]",
-          "group-data-[focus=true]:border-[#52525B]",
+          "bg-[var(--bg-secondary)]",
+          "border-[var(--border-tertiary)]",
+          "hover:border-[var(--border-primary)]",
+          "group-data-[focus=true]:border-[var(--border-focus)]",
           "rounded-xl",
           "transition-all",
         ],
@@ -114,7 +114,7 @@ export default function ContactPage() {
                 "group relative rounded-2xl border p-5 transition-all duration-300 hover:scale-[1.02]",
                 isLight
                   ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
               )}
             >
               <div className={cn(
@@ -147,7 +147,7 @@ export default function ContactPage() {
             "lg:col-span-3 rounded-2xl border p-8",
             isLight
               ? "bg-white border-slate-200 shadow-sm"
-              : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+              : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
           )}>
             <div className="mb-6">
               <h2 className={cn(
@@ -187,7 +187,7 @@ export default function ContactPage() {
                   variant="flat"
                   className={cn(
                     "font-medium rounded-xl px-6",
-                    isLight ? "bg-slate-100 text-slate-700 hover:bg-slate-200" : "bg-[#1a1d27] text-slate-300 hover:bg-[#323235]"
+                    isLight ? "bg-slate-100 text-slate-700 hover:bg-slate-200" : "bg-[var(--bg-elevated)] text-slate-300 hover:bg-[var(--bg-overlay)]"
                   )}
                 >
                   Send Another Message
@@ -228,7 +228,7 @@ export default function ContactPage() {
                     ...inputClassNames,
                     inputWrapper: isLight
                       ? "bg-slate-50 border-slate-200 hover:border-slate-300 group-data-[focus=true]:border-slate-400 !rounded-xl"
-                      : "bg-[#1e2130] border-[#282b3a] hover:border-[#334155] group-data-[focus=true]:border-[#52525B] rounded-xl transition-all",
+                      : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] group-data-[focus=true]:border-[var(--border-focus)] rounded-xl transition-all",
                   }}
                   isRequired
                 />
@@ -253,7 +253,7 @@ export default function ContactPage() {
               "rounded-2xl border p-6",
               isLight
                 ? "bg-white border-slate-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             )}>
               <div className="flex items-center gap-3 mb-5">
                 <div className={cn(
@@ -279,7 +279,7 @@ export default function ContactPage() {
                 {SUPPORT_HOURS.map((item) => (
                   <div key={item.day} className={cn(
                     "flex items-center justify-between p-3 rounded-xl",
-                    isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
+                    isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
                   )}>
                     <div className="flex items-center gap-2">
                       <span className={cn(
@@ -307,7 +307,7 @@ export default function ContactPage() {
               "rounded-2xl border p-6 relative overflow-hidden",
               isLight
                 ? "bg-white border-slate-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             )}>
               <div className={cn(
                 "absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl opacity-20",

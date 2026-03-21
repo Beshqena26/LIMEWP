@@ -4,3 +4,4 @@
  */
 
 export { useActiveRoute } from "./useActiveRoute";
+export { useSimulatedLoading } from "./useSimulatedLoading";

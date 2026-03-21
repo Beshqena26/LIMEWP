@@ -18,7 +18,7 @@ export function SuggestedServiceCard({ service, onAdd }: SuggestedServiceCardPro
     <div className={`group relative rounded-2xl border transition-all overflow-hidden cursor-pointer ${
       isLight
         ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
     }`}>
       <div className="relative p-5">
         {/* Header */}
@@ -47,7 +47,7 @@ export function SuggestedServiceCard({ service, onAdd }: SuggestedServiceCardPro
         <div className="flex flex-wrap gap-2 mb-4">
           {service.features.map((feature) => (
             <span key={feature} className={`text-[10px] font-medium px-2 py-1 rounded-md ${
-              isLight ? "text-slate-600 bg-slate-100" : "text-slate-400 bg-[#1a1d27]"
+              isLight ? "text-slate-600 bg-slate-100" : "text-slate-400 bg-[var(--bg-elevated)]"
             }`}>
               {feature}
             </span>
@@ -55,7 +55,7 @@ export function SuggestedServiceCard({ service, onAdd }: SuggestedServiceCardPro
         </div>
 
         {/* Footer */}
-        <div className={`flex justify-between items-center pt-4 border-t ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
+        <div className={`flex justify-between items-center pt-4 border-t ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
           <div className="flex items-baseline gap-1">
             <span className={`text-xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>${service.price}</span>
             <span className="text-xs text-slate-500">/month</span>

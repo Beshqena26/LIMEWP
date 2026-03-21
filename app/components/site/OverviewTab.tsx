@@ -117,9 +117,9 @@ export function OverviewTab() {
   const isLight = resolvedTheme === "light";
 
   // Theme classes
-  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[#1e2130] to-[#181b28]";
-  const cardBorder = isLight ? "border-slate-200" : "border-[#282b3a]";
-  const dividerBorder = isLight ? "border-slate-100" : "border-[#282b3a]";
+  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]";
+  const cardBorder = isLight ? "border-slate-200" : "border-[var(--border-tertiary)]";
+  const dividerBorder = isLight ? "border-slate-100" : "border-[var(--border-tertiary)]";
   const textPrimary = isLight ? "text-slate-900" : "text-slate-100";
   const textSecondary = isLight ? "text-slate-500" : "text-slate-500";
   const textTertiary = isLight ? "text-slate-400" : "text-slate-600";
@@ -147,7 +147,7 @@ export function OverviewTab() {
           </span>
         </div>
 
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
           {SUBSCRIPTION.metrics.map((metric) => {
             const percentage = Math.round((metric.used / metric.total) * 100);
             const formatNumber = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toString();

@@ -2,6 +2,8 @@
 
 import { Button, Input } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
+import { showToast } from "@/lib/toast";
+import { NoApiKeys } from "../empty-states";
 
 // Accent color styles
 const ACCENT_STYLES = {
@@ -43,7 +45,7 @@ function ApiKeysCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -60,7 +62,7 @@ function ApiKeysCard() {
               <p className="text-xs text-slate-500">Manage your API access</p>
             </div>
           </div>
-          <Button className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-9 px-4 shadow-lg ${accent.shadow} gap-2`}>
+          <Button onPress={() => showToast.success("New API key created")} className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-9 px-4 shadow-lg ${accent.shadow} gap-2`}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
             </svg>
@@ -68,10 +70,13 @@ function ApiKeysCard() {
           </Button>
         </div>
 
+        {API_KEYS.length === 0 ? (
+          <NoApiKeys />
+        ) : (
         <div className="space-y-4">
           {API_KEYS.map((key) => (
             <div key={key.name} className={`p-4 rounded-xl ${
-              isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
+              isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
             }`}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
@@ -86,13 +91,13 @@ function ApiKeysCard() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="flat" size="sm" className={`${accent.bg} ${accent.text} hover:opacity-80 font-medium text-xs rounded-lg h-8`}>
+                  <Button onPress={() => showToast.info("Key revealed")} variant="flat" size="sm" className={`${accent.bg} ${accent.text} hover:opacity-80 font-medium text-xs rounded-lg h-8`}>
                     Reveal
                   </Button>
-                  <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
+                  <Button onPress={() => showToast.warning("API key regenerated")} variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
                     isLight
                       ? "bg-slate-200 text-slate-600 hover:text-slate-800"
-                      : "bg-[#334155] text-slate-400 hover:text-slate-200"
+                      : "bg-[var(--border-primary)] text-slate-400 hover:text-slate-200"
                   }`}>
                     Regenerate
                   </Button>
@@ -101,13 +106,14 @@ function ApiKeysCard() {
               <div className={`font-mono text-sm px-4 py-2.5 rounded-lg border ${
                 isLight
                   ? "bg-slate-100 text-slate-600 border-slate-200"
-                  : "bg-[#1e2130] text-slate-400 border-[#282b3a]"
+                  : "bg-[var(--bg-secondary)] text-slate-400 border-[var(--border-tertiary)]"
               }`}>
                 {key.prefix}••••••••••••••••{key.suffix}
               </div>
             </div>
           ))}
         </div>
+        )}
       </div>
     </div>
   );
@@ -123,9 +129,9 @@ function WebhooksCard() {
     input: "text-slate-800 placeholder:text-slate-400",
   } : {
     inputWrapper: [
-      "bg-[#1e2130]",
-      "border-[#282b3a]",
-      "hover:border-[#334155]",
+      "bg-[var(--bg-secondary)]",
+      "border-[var(--border-tertiary)]",
+      "hover:border-[var(--border-primary)]",
       accent.focusBorder,
       "group-data-[focus=true]:ring-1",
       accent.ring,
@@ -139,7 +145,7 @@ function WebhooksCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -162,13 +168,13 @@ function WebhooksCard() {
             <Input placeholder="https://your-domain.com/webhook" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
           <div className="flex gap-3">
-            <Button className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow}`}>
+            <Button onPress={() => showToast.success("Webhook endpoint saved")} className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow}`}>
               Save Endpoint
             </Button>
-            <Button variant="flat" className={`font-medium text-sm rounded-xl h-10 px-5 ${
+            <Button onPress={() => showToast.success("Webhook secret generated")} variant="flat" className={`font-medium text-sm rounded-xl h-10 px-5 ${
               isLight
                 ? "bg-slate-100 text-slate-700 hover:text-slate-900"
-                : "bg-[#1a1d27] text-slate-300 hover:text-white"
+                : "bg-[var(--bg-elevated)] text-slate-300 hover:text-white"
             }`}>
               Generate Secret
             </Button>

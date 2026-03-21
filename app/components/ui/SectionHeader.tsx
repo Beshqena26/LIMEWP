@@ -29,7 +29,7 @@ export function SectionHeader({ title, icon, iconColor = "emerald", count, actio
         <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{title}</h2>
         {count !== undefined && (
           <span className={`text-xs px-2 py-0.5 rounded-md ${
-            isLight ? "text-slate-500 bg-slate-100" : "text-slate-500 bg-[#1a1d27]"
+            isLight ? "text-slate-500 bg-slate-100" : "text-slate-500 bg-[var(--bg-elevated)]"
           }`}>{count}</span>
         )}
       </div>

@@ -13,49 +13,63 @@ import {
   type CurrentService,
   type SuggestedService,
 } from "@/data/services";
+import { ServicesSkeleton } from "../components/skeletons";
+import { useSimulatedLoading } from "@/hooks";
+import { showToast } from "@/lib/toast";
 
 export default function ServicesPage() {
+  const { data, isLoading } = useSimulatedLoading(() => ({
+    current: CURRENT_SERVICES,
+    suggested: SUGGESTED_SERVICES,
+  }));
+
   const handleAddService = () => {
-    console.log("Adding new service...");
+    showToast.info("Opening service catalog...");
   };
 
   const handleManageService = (service: CurrentService) => {
-    console.log("Managing service:", service.name);
+    showToast.info(`Managing ${service.name}...`);
   };
 
   const handleUpgradeService = (service: CurrentService) => {
-    console.log("Upgrading service:", service.name);
+    showToast.info(`Upgrading ${service.name}...`);
   };
 
   const handleAddSuggestedService = (service: SuggestedService) => {
-    console.log("Adding service:", service.name);
+    showToast.success(`${service.name} added successfully`);
   };
 
   const handleViewAllServices = () => {
-    console.log("Viewing all services...");
+    showToast.info("Loading all services...");
   };
 
   const handleContactSales = () => {
-    console.log("Contacting sales...");
+    showToast.info("Opening sales contact form...");
   };
 
   return (
     <AppShell>
       <ServicesHeader onAddService={handleAddService} />
 
-      <ActiveServicesSection
-        services={CURRENT_SERVICES}
-        onManage={handleManageService}
-        onUpgrade={handleUpgradeService}
-      />
+      {isLoading ? (
+        <ServicesSkeleton />
+      ) : (
+        <>
+          <ActiveServicesSection
+            services={data!.current}
+            onManage={handleManageService}
+            onUpgrade={handleUpgradeService}
+          />
 
-      <SuggestedServicesSection
-        services={SUGGESTED_SERVICES}
-        onAdd={handleAddSuggestedService}
-        onViewAll={handleViewAllServices}
-      />
+          <SuggestedServicesSection
+            services={data!.suggested}
+            onAdd={handleAddSuggestedService}
+            onViewAll={handleViewAllServices}
+          />
 
-      <HelpBanner onContactSales={handleContactSales} />
+          <HelpBanner onContactSales={handleContactSales} />
+        </>
+      )}
     </AppShell>
   );
 }

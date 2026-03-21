@@ -68,7 +68,7 @@ export default function SupportPage() {
         <div className={`group relative rounded-2xl p-6 text-center overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
           isLight
             ? "bg-white border border-slate-200 hover:border-slate-400 hover:shadow-slate-200/50"
-            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-slate-600 hover:shadow-black/20"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-slate-600 hover:shadow-black/20"
         }`}>
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-50 group-hover:opacity-80 transition-opacity" />
           <div className="relative">
@@ -96,7 +96,7 @@ export default function SupportPage() {
         <div className={`group relative rounded-2xl p-6 text-center overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
           isLight
             ? "bg-white border border-slate-200 hover:border-slate-400 hover:shadow-slate-200/50"
-            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-slate-600 hover:shadow-black/20"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-slate-600 hover:shadow-black/20"
         }`}>
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-50 group-hover:opacity-80 transition-opacity" />
           <div className="relative">
@@ -118,7 +118,7 @@ export default function SupportPage() {
         <div className={`group relative rounded-2xl p-6 text-center overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ${
           isLight
             ? "bg-white border border-slate-200 hover:border-slate-400 hover:shadow-slate-200/50"
-            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-slate-600 hover:shadow-black/20"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-slate-600 hover:shadow-black/20"
         }`}>
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-50 group-hover:opacity-80 transition-opacity" />
           <div className="relative">
@@ -143,7 +143,7 @@ export default function SupportPage() {
       <div className={`relative rounded-2xl overflow-hidden ${
         isLight
           ? "bg-white border border-slate-200"
-          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a]"
+          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
       }`}>
         <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-slate-500/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
@@ -183,7 +183,7 @@ export default function SupportPage() {
                 inputWrapper: `!rounded-xl transition-colors ${
                   isLight
                     ? "bg-slate-100 border border-slate-200 hover:border-slate-300"
-                    : "bg-[#1a1d27]/50 border border-[#334155]/50 hover:border-[#52525B]"
+                    : "bg-[var(--bg-elevated)]/50 border border-[var(--border-primary)]/50 hover:border-[var(--border-focus)]"
                 }`,
                 input: `placeholder:text-slate-500 ${isLight ? "text-slate-700" : "text-slate-300"}`,
               }}
@@ -204,13 +204,13 @@ export default function SupportPage() {
               th: `text-xs font-semibold uppercase tracking-wider first:rounded-l-xl last:rounded-r-xl ${
                 isLight
                   ? "bg-slate-50 text-slate-500"
-                  : "bg-[#1a1d27]/50 text-slate-500"
+                  : "bg-[var(--bg-elevated)]/50 text-slate-500"
               }`,
               td: `py-4 ${isLight ? "text-slate-700" : "text-slate-300"}`,
               tr: `last:border-0 transition-colors ${
                 isLight
                   ? "border-b border-slate-100 hover:bg-slate-50"
-                  : "border-b border-[#1a1d27] hover:bg-white/[0.02]"
+                  : "border-b border-[var(--border-secondary)] hover:bg-white/[0.02]"
               }`,
             }}
             bottomContent={
@@ -224,7 +224,7 @@ export default function SupportPage() {
                       cursor: isLight ? "bg-slate-800 text-white" : "bg-slate-200 text-slate-900",
                       item: isLight
                         ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        : "bg-[#1a1d27]/50 text-slate-400 hover:bg-[#334155]/50",
+                        : "bg-[var(--bg-elevated)]/50 text-slate-400 hover:bg-[var(--border-primary)]/50",
                     }}
                   />
                 </div>
@@ -310,7 +310,7 @@ export default function SupportPage() {
         <div className={`group relative rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
           isLight
             ? "bg-white border border-slate-200 hover:border-slate-400"
-            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-slate-600"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-slate-600"
         }`}>
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-50" />
           <div className="relative flex items-center gap-4">
@@ -333,7 +333,7 @@ export default function SupportPage() {
         <div className={`group relative rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
           isLight
             ? "bg-white border border-slate-200 hover:border-slate-400"
-            : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-slate-600"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-slate-600"
         }`}>
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-50" />
           <div className="relative flex items-center gap-4">

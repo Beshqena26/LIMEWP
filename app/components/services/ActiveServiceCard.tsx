@@ -20,7 +20,7 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
     <div className={`group relative rounded-2xl border transition-all overflow-hidden ${
       isLight
         ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
     }`}>
       <div className="relative p-6">
         {/* Header */}
@@ -55,14 +55,14 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-4 mb-5">
           {service.stats.map((stat) => (
-            <div key={stat.label} className={`rounded-xl p-3 ${isLight ? "bg-slate-50" : "bg-[#0f1117]"}`}>
+            <div key={stat.label} className={`rounded-xl p-3 ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]"}`}>
               <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">{stat.label}</div>
               <div className={`text-sm font-semibold mb-2 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{stat.value}</div>
               <Progress
                 value={stat.progress}
                 size="sm"
                 classNames={{
-                  track: `h-1 ${isLight ? "bg-slate-200" : "bg-[#1a1d27]"}`,
+                  track: `h-1 ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`,
                   indicator: `${isLight ? "bg-slate-500" : "bg-slate-400"} rounded-full`
                 }}
               />
@@ -71,7 +71,7 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
         </div>
 
         {/* Footer */}
-        <div className={`flex items-center justify-between pt-4 border-t ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
+        <div className={`flex items-center justify-between pt-4 border-t ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
           <div className="text-xs text-slate-500">
             Next billing: <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>{service.nextBilling}</span>
           </div>
@@ -81,7 +81,7 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
               className={`h-9 px-4 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
                 isLight
                   ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-                  : "bg-[#1a1d27] text-slate-300 hover:bg-[#334155] hover:text-white"
+                  : "bg-[var(--bg-elevated)] text-slate-300 hover:bg-[var(--border-primary)] hover:text-white"
               }`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import { getColorClasses } from "@/lib/utils/colors";
+import { showToast } from "@/lib/toast";
 
 interface FileItem {
   name: string;
@@ -208,12 +209,12 @@ export function FileManagerTab() {
       "rounded-2xl border overflow-hidden",
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1a1d27] via-[#181b28] to-[#161618] border-[#282b3a]/80"
+        : "bg-gradient-to-br from-[var(--bg-elevated)] via-[var(--gradient-card-to)] to-[var(--bg-tertiary)] border-[var(--border-tertiary)]/80"
     )}>
       {/* Header */}
       <div className={cn(
         "px-5 py-4 border-b",
-        isLight ? "border-slate-200 bg-slate-50/50" : "border-[#282b3a]/50 bg-[#1e2130]/30"
+        isLight ? "border-slate-200 bg-slate-50/50" : "border-[var(--border-tertiary)]/50 bg-[var(--bg-secondary)]/30"
       )}>
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -234,18 +235,22 @@ export function FileManagerTab() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className={cn(
+            <button
+              onClick={() => showToast.success("File uploaded")}
+              className={cn(
               "h-9 px-4 rounded-xl text-xs font-medium transition-all ring-1 flex items-center gap-2",
               isLight
                 ? "bg-slate-100 text-slate-700 hover:bg-slate-200 ring-slate-200"
-                : "bg-[#1a1d27]/60 text-slate-300 hover:bg-[#1a1d27] ring-white/[0.06]"
+                : "bg-[var(--bg-elevated)]/60 text-slate-300 hover:bg-[var(--bg-elevated)] ring-white/[0.06]"
             )}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
               </svg>
               Upload
             </button>
-            <button className={cn(
+            <button
+              onClick={() => showToast.success("Folder created")}
+              className={cn(
               "h-9 px-4 rounded-xl text-xs font-semibold transition-all ring-1 flex items-center gap-2",
               colors.bg, colors.text, colors.ring
             )}>
@@ -264,11 +269,13 @@ export function FileManagerTab() {
           {/* Toolbar */}
           <div className={cn(
             "px-4 py-2 border-b flex items-center justify-between gap-4 flex-wrap",
-            isLight ? "border-slate-200 bg-white" : "border-[#282b3a]/30 bg-[#1e2130]/20"
+            isLight ? "border-slate-200 bg-white" : "border-[var(--border-tertiary)]/30 bg-[var(--bg-secondary)]/20"
           )}>
             {/* Left: Actions */}
             <div className="flex items-center gap-1">
-              <button className={cn(
+              <button
+                onClick={() => showToast.success("File created")}
+                className={cn(
                 "h-8 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 isLight
                   ? "hover:bg-slate-100 text-slate-500 hover:text-slate-700"
@@ -282,7 +289,9 @@ export function FileManagerTab() {
 
               <div className={cn("w-px h-5 mx-1", isLight ? "bg-slate-200" : "bg-slate-700/50")} />
 
-              <button className={cn(
+              <button
+                onClick={() => showToast.success("File downloaded")}
+                className={cn(
                 "h-8 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 isLight
                   ? "hover:bg-slate-100 text-slate-500 hover:text-slate-700"
@@ -294,7 +303,9 @@ export function FileManagerTab() {
                 <span className="hidden sm:inline">Download</span>
               </button>
 
-              <button className={cn(
+              <button
+                onClick={() => showToast.success("File copied")}
+                className={cn(
                 "h-8 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 isLight
                   ? "hover:bg-slate-100 text-slate-500 hover:text-slate-700"
@@ -306,7 +317,9 @@ export function FileManagerTab() {
                 <span className="hidden sm:inline">Copy</span>
               </button>
 
-              <button className={cn(
+              <button
+                onClick={() => showToast.success("File renamed")}
+                className={cn(
                 "h-8 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 isLight
                   ? "hover:bg-slate-100 text-slate-500 hover:text-slate-700"
@@ -320,7 +333,9 @@ export function FileManagerTab() {
 
               <div className={cn("w-px h-5 mx-1 hidden md:block", isLight ? "bg-slate-200" : "bg-slate-700/50")} />
 
-              <button className={cn(
+              <button
+                onClick={() => showToast.info("Compressing files...")}
+                className={cn(
                 "h-8 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 hidden md:flex",
                 isLight
                   ? "hover:bg-slate-100 text-slate-500 hover:text-slate-700"
@@ -332,7 +347,9 @@ export function FileManagerTab() {
                 <span className="hidden lg:inline">Compress</span>
               </button>
 
-              <button className={cn(
+              <button
+                onClick={() => showToast.warning("File deleted")}
+                className={cn(
                 "h-8 px-3 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 "hover:bg-rose-500/10",
                 isLight ? "text-slate-500 hover:text-rose-500" : "text-slate-400 hover:text-rose-400"
@@ -356,7 +373,7 @@ export function FileManagerTab() {
                     "h-8 w-36 lg:w-44 pl-8 pr-3 rounded-lg border text-xs focus:outline-none transition-all",
                     isLight
                       ? "bg-white border-slate-200 text-slate-700 placeholder:text-slate-400 focus:border-slate-300 focus:ring-1 focus:ring-slate-200"
-                      : "bg-[#1a1d27]/50 border-[#334155]/30 text-slate-300 placeholder:text-slate-500 focus:border-slate-600 focus:ring-1 focus:ring-slate-700"
+                      : "bg-[var(--bg-elevated)]/50 border-[var(--border-primary)]/30 text-slate-300 placeholder:text-slate-500 focus:border-slate-600 focus:ring-1 focus:ring-slate-700"
                   )}
                 />
                 <svg className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -366,14 +383,14 @@ export function FileManagerTab() {
 
               <div className={cn(
                 "flex items-center rounded-lg p-0.5",
-                isLight ? "bg-slate-100" : "bg-[#1a1d27]/50"
+                isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]/50"
               )}>
                 <button
                   onClick={() => setViewMode("list")}
                   className={cn(
                     "w-7 h-7 rounded-md flex items-center justify-center transition-all",
                     viewMode === "list"
-                      ? isLight ? "bg-white shadow-sm text-slate-700" : "bg-[#334155] text-slate-200"
+                      ? isLight ? "bg-white shadow-sm text-slate-700" : "bg-[var(--border-primary)] text-slate-200"
                       : isLight ? "text-slate-400 hover:text-slate-600" : "text-slate-500 hover:text-slate-300"
                   )}
                 >
@@ -386,7 +403,7 @@ export function FileManagerTab() {
                   className={cn(
                     "w-7 h-7 rounded-md flex items-center justify-center transition-all",
                     viewMode === "grid"
-                      ? isLight ? "bg-white shadow-sm text-slate-700" : "bg-[#334155] text-slate-200"
+                      ? isLight ? "bg-white shadow-sm text-slate-700" : "bg-[var(--border-primary)] text-slate-200"
                       : isLight ? "text-slate-400 hover:text-slate-600" : "text-slate-500 hover:text-slate-300"
                   )}
                 >
@@ -396,11 +413,13 @@ export function FileManagerTab() {
                 </button>
               </div>
 
-              <button className={cn(
+              <button
+                onClick={() => showToast.success("File list refreshed")}
+                className={cn(
                 "h-8 w-8 rounded-lg flex items-center justify-center transition-all",
                 isLight
                   ? "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700"
-                  : "bg-[#1a1d27]/50 text-slate-400 hover:bg-[#1a1d27] hover:text-slate-200"
+                  : "bg-[var(--bg-elevated)]/50 text-slate-400 hover:bg-[var(--bg-elevated)] hover:text-slate-200"
               )}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -412,7 +431,7 @@ export function FileManagerTab() {
           {/* Breadcrumb */}
           <div className={cn(
             "px-4 py-2.5 border-b",
-            isLight ? "border-slate-200 bg-slate-50/30" : "border-[#282b3a]/30 bg-[#181b28]/30"
+            isLight ? "border-slate-200 bg-slate-50/30" : "border-[var(--border-tertiary)]/30 bg-[var(--gradient-card-to)]/30"
           )}>
             <div className="flex items-center gap-1.5 text-sm">
               <button className={cn(
@@ -450,7 +469,7 @@ export function FileManagerTab() {
                 "grid grid-cols-12 gap-4 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider",
                 isLight
                   ? "bg-slate-100/60 text-slate-500 border-b border-slate-200"
-                  : "bg-[#1e2130]/60 text-slate-500 border-b border-[#282b3a]/30"
+                  : "bg-[var(--bg-secondary)]/60 text-slate-500 border-b border-[var(--border-tertiary)]/30"
               )}>
                 <div className="col-span-5 flex items-center gap-2">
                   <input
@@ -470,7 +489,7 @@ export function FileManagerTab() {
               </div>
 
               {/* Files */}
-              <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-[#282b3a]/20")}>
+              <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-[var(--border-tertiary)]/20")}>
                 {filteredFiles.map((file) => {
                   const icon = getFileIcon(file, isLight);
                   const isSelected = selectedFiles.includes(file.name);
@@ -481,7 +500,7 @@ export function FileManagerTab() {
                       className={cn(
                         "group grid grid-cols-12 gap-4 px-4 py-2.5 transition-colors items-center cursor-pointer",
                         isSelected
-                          ? isLight ? "bg-slate-100" : "bg-[#1a1d27]/30"
+                          ? isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]/30"
                           : isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]"
                       )}
                       onClick={() => toggleFileSelection(file.name)}
@@ -523,7 +542,7 @@ export function FileManagerTab() {
                         </span>
                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={(e) => { e.stopPropagation(); showToast.success("File renamed"); }}
                             className={cn(
                               "w-6 h-6 rounded-md flex items-center justify-center transition-all",
                               isLight
@@ -536,7 +555,7 @@ export function FileManagerTab() {
                             </svg>
                           </button>
                           <button
-                            onClick={(e) => e.stopPropagation()}
+                            onClick={(e) => { e.stopPropagation(); showToast.warning("File deleted"); }}
                             className={cn(
                               "w-6 h-6 rounded-md flex items-center justify-center transition-all",
                               isLight
@@ -573,7 +592,7 @@ export function FileManagerTab() {
                           ? cn(colors.bg, "border-transparent ring-1", colors.ring)
                           : isLight
                             ? "bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
-                            : "bg-[#1e2130] border-[#282b3a] hover:bg-[#1a1d27] hover:border-[#334155]"
+                            : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:bg-[var(--bg-elevated)] hover:border-[var(--border-primary)]"
                       )}
                     >
                       <div className={cn(
@@ -613,7 +632,7 @@ export function FileManagerTab() {
           {/* Footer */}
           <div className={cn(
             "px-4 py-3 border-t flex items-center justify-between gap-4",
-            isLight ? "border-slate-200 bg-slate-50/50" : "border-[#282b3a]/50 bg-[#181b28]/30"
+            isLight ? "border-slate-200 bg-slate-50/50" : "border-[var(--border-tertiary)]/50 bg-[var(--gradient-card-to)]/30"
           )}>
             <div className="flex items-center gap-3 text-xs text-slate-500">
               {selectedFiles.length > 0 ? (
@@ -637,7 +656,7 @@ export function FileManagerTab() {
               </div>
               <div className={cn(
                 "w-32 h-2 rounded-full overflow-hidden",
-                isLight ? "bg-slate-200" : "bg-[#334155]"
+                isLight ? "bg-slate-200" : "bg-[var(--border-primary)]"
               )}>
                 <div
                   className={cn("h-full rounded-full", colors.progress)}

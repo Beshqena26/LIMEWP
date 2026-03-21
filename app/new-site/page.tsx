@@ -8,6 +8,7 @@ import { useTheme } from "@/lib/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import { INPUT_CLASS_NAMES, SELECT_CLASS_NAMES } from "@/data/settings";
 import { ROUTES } from "@/config/routes";
+import { showToast } from "@/lib/toast";
 
 // Step definitions with icons
 const STEPS = [
@@ -208,16 +209,7 @@ export default function NewSitePage() {
     setIsCreating(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log("Creating site:", {
-      package: selectedPackage,
-      siteName,
-      domain,
-      domainType,
-      phpVersion: Array.from(phpVersion)[0],
-      wpVersion: Array.from(wpVersion)[0],
-      adminEmail,
-      adminUsername,
-    });
+    showToast.success(`Site "${siteName}" created successfully`);
 
     setIsCreating(false);
     router.push(ROUTES.DASHBOARD);

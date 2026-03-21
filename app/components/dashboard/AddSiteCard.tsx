@@ -16,7 +16,7 @@ export function AddSiteCard() {
         "group relative rounded-xl border-2 border-dashed transition-all duration-200 p-5 flex flex-col items-center justify-center text-center h-full",
         isLight
           ? "bg-slate-50/50 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-          : "bg-[#1a1d27]/50 border-[#282b3a] hover:border-[#475569] hover:bg-[#1a1d27]"
+          : "bg-[var(--bg-elevated)]/50 border-[var(--border-tertiary)] hover:border-[var(--border-focus)] hover:bg-[var(--bg-elevated)]"
       )}
     >
       <div className={cn(

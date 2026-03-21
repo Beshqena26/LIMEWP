@@ -27,7 +27,7 @@ export function SiteTabNav({ activeTab, onTabChange }: SiteTabNavProps) {
                 ? `${styles.activeBg} ${styles.activeText} ring-1 ${styles.ring}`
                 : isLight
                   ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                  : "text-slate-400 hover:bg-[#1a1d27] hover:text-slate-200"
+                  : "text-slate-400 hover:bg-[var(--bg-elevated)] hover:text-slate-200"
             }`}
           >
             <svg

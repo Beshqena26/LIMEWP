@@ -58,7 +58,7 @@ export default function TopHeader() {
     <header className={`h-16 px-6 flex items-center justify-between fixed top-0 right-0 left-[260px] z-50 border-b transition-colors ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-r from-[#0f1117] to-[#181b28] border-white/[0.06]"
+        : "bg-gradient-to-r from-[var(--bg-primary)] to-[var(--gradient-card-to)] border-white/[0.06]"
     }`}>
       {/* Left Side - Search */}
       <div className="flex items-center gap-4">
@@ -83,7 +83,7 @@ export default function TopHeader() {
               <kbd className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
                 isLight
                   ? "text-slate-400 bg-slate-100 border-slate-200"
-                  : "text-slate-500 bg-[#0f1117] border-[#334155]"
+                  : "text-slate-500 bg-[var(--bg-primary)] border-[var(--border-primary)]"
               }`}>
                 <span className="text-[11px]">⌘</span>K
               </kbd>
@@ -92,9 +92,9 @@ export default function TopHeader() {
               base: "w-[320px]",
               inputWrapper: [
                 "!rounded-xl",
-                isLight ? "bg-slate-50" : "bg-[#1e2130]",
-                isLight ? "border-slate-200" : "border-[#282b3a]",
-                isLight ? "hover:border-slate-300" : "hover:border-[#334155]",
+                isLight ? "bg-slate-50" : "bg-[var(--bg-secondary)]",
+                isLight ? "border-slate-200" : "border-[var(--border-tertiary)]",
+                isLight ? "hover:border-slate-300" : "hover:border-[var(--border-primary)]",
                 accentFocusClasses[accentColor],
                 "group-data-[focus=true]:!ring-1",
                 "!outline-none",
@@ -125,7 +125,7 @@ export default function TopHeader() {
             content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[380px] ${
               isLight
                 ? "bg-white border border-slate-200"
-                : "bg-[#1e2130] border border-[#282b3a]"
+                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
             }`
           }}
         >
@@ -133,14 +133,14 @@ export default function TopHeader() {
             <button className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
               isLight
                 ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
-                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200 border-transparent hover:border-[#334155]"
+                : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200 border-transparent hover:border-[var(--border-primary)]"
             }`}>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
               {unreadCount > 0 && (
                 <span className={`absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full ring-2 ${
-                  isLight ? "ring-white" : "ring-[#0f1117]"
+                  isLight ? "ring-white" : "ring-[var(--bg-primary)]"
                 }`}>
                   {unreadCount}
                 </span>
@@ -166,7 +166,7 @@ export default function TopHeader() {
                     <div className={`flex items-center justify-between px-5 py-4 border-b ${
                       isLight
                         ? "border-slate-200 bg-slate-50"
-                        : "border-[#282b3a] bg-gradient-to-r from-[#1e2130] to-[#181b28]"
+                        : "border-[var(--border-tertiary)] bg-gradient-to-r from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]"
                     }`}>
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center">
@@ -207,7 +207,7 @@ export default function TopHeader() {
                 <DropdownItem
                   key={notification.key}
                   className={`px-4 py-3 rounded-none border-b ${
-                    isLight ? "border-slate-100" : "border-[#282b3a]/50"
+                    isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"
                   } ${notification.unread ? (isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]') : ''}`}
                   textValue={notification.title}
                 >
@@ -236,7 +236,7 @@ export default function TopHeader() {
           className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
-              : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200 border-transparent hover:border-[#334155]"
+              : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200 border-transparent hover:border-[var(--border-primary)]"
           }`}
           title={isLight ? "Switch to dark mode" : "Switch to light mode"}
         >
@@ -252,7 +252,7 @@ export default function TopHeader() {
         </button>
 
         {/* Divider */}
-        <div className={`w-px h-6 mx-1 ${isLight ? "bg-slate-200" : "bg-[#282b3a]"}`} />
+        <div className={`w-px h-6 mx-1 ${isLight ? "bg-slate-200" : "bg-[var(--bg-overlay)]"}`} />
 
         {/* User Menu */}
         <Dropdown
@@ -261,7 +261,7 @@ export default function TopHeader() {
             content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[260px] ${
               isLight
                 ? "bg-white border border-slate-200"
-                : "bg-[#1e2130] border border-[#282b3a]"
+                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
             }`
           }}
         >
@@ -269,7 +269,7 @@ export default function TopHeader() {
             <button className={`flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
               isLight
                 ? "bg-slate-100/30 hover:bg-slate-100 border-transparent hover:border-slate-200"
-                : "bg-[#1a1d27]/30 hover:bg-[#1a1d27] border-transparent hover:border-[#334155]"
+                : "bg-[var(--bg-elevated)]/30 hover:bg-[var(--bg-elevated)] border-transparent hover:border-[var(--border-primary)]"
             }`}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
@@ -281,7 +281,7 @@ export default function TopHeader() {
                     name: "text-white text-[11px] font-bold",
                   }}
                 />
-                <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[#0f1117]"}`} />
+                <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"}`} />
               </div>
               <div className="text-left hidden sm:block">
                 <div className={`text-sm font-semibold transition-colors ${isLight ? "text-slate-800 group-hover:text-slate-900" : "text-slate-200 group-hover:text-white"}`}>Lime</div>
@@ -305,7 +305,7 @@ export default function TopHeader() {
             <DropdownItem key="user-info" isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="User info">
               <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-sky-500/10" />
-                <div className={`relative flex items-center gap-4 px-5 py-5 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
+                <div className={`relative flex items-center gap-4 px-5 py-5 border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-xl blur-lg opacity-40" />
                     <Avatar
@@ -331,7 +331,7 @@ export default function TopHeader() {
             </DropdownItem>
             <DropdownItem
               key="profile"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
               textValue="My Profile"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-sky-500/10 ring-1 ring-sky-500/20 flex items-center justify-center flex-shrink-0">
@@ -348,7 +348,7 @@ export default function TopHeader() {
             </DropdownItem>
             <DropdownItem
               key="settings"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
               textValue="Account Settings"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center flex-shrink-0">
@@ -365,7 +365,7 @@ export default function TopHeader() {
             </DropdownItem>
             <DropdownItem
               key="billing"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
               textValue="Billing & Plans"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center flex-shrink-0">
@@ -382,7 +382,7 @@ export default function TopHeader() {
             </DropdownItem>
             <DropdownItem
               key="help"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[#1a1d27]/50"}`}
+              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
               textValue="Help & Support"
               startContent={
                 <div className="w-9 h-9 rounded-xl bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center flex-shrink-0">
@@ -399,7 +399,7 @@ export default function TopHeader() {
             </DropdownItem>
             <DropdownItem
               key="signout"
-              className={`px-4 py-3.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[#282b3a] data-[hover=true]:bg-red-500/5"}`}
+              className={`px-4 py-3.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[var(--border-tertiary)] data-[hover=true]:bg-red-500/5"}`}
               textValue="Sign Out"
               onPress={() => router.push("/")}
               startContent={

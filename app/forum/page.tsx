@@ -211,7 +211,7 @@ export default function ForumPage() {
               className={`group relative rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 overflow-hidden ${
                 isLight
                   ? "bg-white border border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-[#334155] hover:shadow-black/20"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-[var(--border-primary)] hover:shadow-black/20"
               }`}
             >
               <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl ${colors.bg} rounded-full -translate-y-1/2 translate-x-1/3 opacity-50 group-hover:opacity-80 transition-opacity`} />
@@ -223,7 +223,7 @@ export default function ForumPage() {
                 </div>
                 <h3 className={`font-semibold transition-colors ${isLight ? "text-slate-800 group-hover:text-slate-900" : "text-slate-100 group-hover:text-white"}`}>{cat.title}</h3>
                 <p className="text-xs text-slate-500 mt-1 line-clamp-2">{cat.desc}</p>
-                <div className={`flex items-center gap-3 mt-4 pt-3 border-t ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+                <div className={`flex items-center gap-3 mt-4 pt-3 border-t ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
                   <span className="text-[11px] text-slate-500">
                     <span className={`font-semibold ${colors.text}`}>{cat.threads}</span> threads
                   </span>
@@ -242,9 +242,9 @@ export default function ForumPage() {
       <div className="flex gap-6">
         {/* Discussions Panel */}
         <div className="flex-1 min-w-0">
-          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[#0f1117] border border-[#1a1d27]"}`}>
+          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-secondary)]"}`}>
             {/* Tabs Header */}
-            <div className={`flex items-center justify-between px-5 py-4 border-b ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+            <div className={`flex items-center justify-between px-5 py-4 border-b ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <div className="flex items-center gap-1">
                 {tabs.map((tab) => (
                   <button
@@ -254,10 +254,10 @@ export default function ForumPage() {
                       activeTab === tab.id
                         ? isLight
                           ? "bg-slate-100 text-slate-900"
-                          : "bg-[#1a1d27] text-white"
+                          : "bg-[var(--bg-elevated)] text-white"
                         : isLight
                           ? "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
-                          : "text-slate-500 hover:text-slate-300 hover:bg-[#1a1d27]/50"
+                          : "text-slate-500 hover:text-slate-300 hover:bg-[var(--bg-elevated)]/50"
                     }`}
                   >
                     {tab.label}
@@ -273,11 +273,11 @@ export default function ForumPage() {
             </div>
 
             {/* Thread List */}
-            <div className={`divide-y ${isLight ? "divide-slate-200" : "divide-[#1a1d27]"}`}>
+            <div className={`divide-y ${isLight ? "divide-slate-200" : "divide-[var(--border-secondary)]"}`}>
               {threads.map((thread) => (
                 <div
                   key={thread.id}
-                  className={`group px-5 py-4 transition-colors cursor-pointer ${isLight ? "hover:bg-slate-50" : "hover:bg-[#1e2130]"}`}
+                  className={`group px-5 py-4 transition-colors cursor-pointer ${isLight ? "hover:bg-slate-50" : "hover:bg-[var(--bg-secondary)]"}`}
                 >
                   <div className="flex gap-4">
                     {/* Avatar */}
@@ -342,11 +342,11 @@ export default function ForumPage() {
             </div>
 
             {/* Load More */}
-            <div className={`px-5 py-4 border-t ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+            <div className={`px-5 py-4 border-t ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <button className={`w-full py-2.5 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                 isLight
                   ? "bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800"
-                  : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200"
+                  : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
               }`}>
                 Load More Discussions
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -360,7 +360,7 @@ export default function ForumPage() {
         {/* Right Sidebar */}
         <div className="w-72 flex-shrink-0 space-y-5">
           {/* Search & New Discussion */}
-          <div className={`rounded-2xl p-4 ${isLight ? "bg-white border border-slate-200" : "bg-[#0f1117] border border-[#1a1d27]"}`}>
+          <div className={`rounded-2xl p-4 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-secondary)]"}`}>
             <div className="relative">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -373,7 +373,7 @@ export default function ForumPage() {
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm placeholder:text-slate-500 focus:outline-none focus:border-slate-500/50 focus:ring-1 focus:ring-slate-500/20 transition-all ${
                   isLight
                     ? "bg-slate-100 border border-slate-200 text-slate-800"
-                    : "bg-[#1a1d27]/50 border border-[#334155]/50 text-slate-300"
+                    : "bg-[var(--bg-elevated)]/50 border border-[var(--border-primary)]/50 text-slate-300"
                 }`}
               />
             </div>
@@ -386,8 +386,8 @@ export default function ForumPage() {
           </div>
 
           {/* Forum Stats */}
-          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[#0f1117] border border-[#1a1d27]"}`}>
-            <div className={`px-4 py-3 border-b flex items-center gap-2 ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-secondary)]"}`}>
+            <div className={`px-4 py-3 border-b flex items-center gap-2 ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isLight ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300" : "bg-slate-700 text-slate-400 ring-1 ring-slate-600"}`}>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
@@ -404,7 +404,7 @@ export default function ForumPage() {
               ].map((stat) => {
                 const statColors = colorClasses[stat.color];
                 return (
-                  <div key={stat.label} className={`text-center p-3 rounded-xl ${isLight ? "bg-slate-100" : "bg-[#1a1d27]/30"}`}>
+                  <div key={stat.label} className={`text-center p-3 rounded-xl ${isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]/30"}`}>
                     <div className={`text-lg font-bold ${statColors.text}`}>{stat.value}</div>
                     <div className="text-[11px] text-slate-500 mt-0.5">{stat.label}</div>
                   </div>
@@ -414,8 +414,8 @@ export default function ForumPage() {
           </div>
 
           {/* Top Contributors */}
-          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[#0f1117] border border-[#1a1d27]"}`}>
-            <div className={`px-4 py-3 border-b flex items-center gap-2 ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-secondary)]"}`}>
+            <div className={`px-4 py-3 border-b flex items-center gap-2 ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isLight ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300" : "bg-slate-700 text-slate-400 ring-1 ring-slate-600"}`}>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
@@ -453,8 +453,8 @@ export default function ForumPage() {
           </div>
 
           {/* Trending Tags */}
-          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[#0f1117] border border-[#1a1d27]"}`}>
-            <div className={`px-4 py-3 border-b flex items-center gap-2 ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+          <div className={`rounded-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-secondary)]"}`}>
+            <div className={`px-4 py-3 border-b flex items-center gap-2 ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isLight ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300" : "bg-slate-700 text-slate-400 ring-1 ring-slate-600"}`}>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
@@ -469,7 +469,7 @@ export default function ForumPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs cursor-pointer transition-all border border-transparent ${
                     isLight
                       ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800 hover:border-slate-300"
-                      : "bg-[#1a1d27]/50 text-slate-400 hover:bg-slate-700 hover:text-slate-200 hover:border-slate-600"
+                      : "bg-[var(--bg-elevated)]/50 text-slate-400 hover:bg-slate-700 hover:text-slate-200 hover:border-slate-600"
                   }`}
                 >
                   #{tag}

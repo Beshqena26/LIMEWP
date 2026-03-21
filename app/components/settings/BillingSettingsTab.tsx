@@ -2,6 +2,7 @@
 
 import { Button, Chip } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
+import { showToast } from "@/lib/toast";
 
 // Accent color styles
 const ACCENT_STYLES = {
@@ -31,7 +32,7 @@ function CurrentPlanCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? `bg-white ${accent.borderLight}`
-        : `bg-gradient-to-br from-[#1e2130] to-[#181b28] ${accent.borderDark}`
+        : `bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] ${accent.borderDark}`
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -66,13 +67,13 @@ function CurrentPlanCard() {
         </div>
 
         <div className="flex gap-3">
-          <Button className={`bg-gradient-to-r ${accent.gradientBtn} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow}`}>
+          <Button onPress={() => showToast.info("Upgrade plan options loading")} className={`bg-gradient-to-r ${accent.gradientBtn} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow}`}>
             Upgrade Plan
           </Button>
-          <Button variant="flat" className={`font-medium text-sm rounded-xl h-10 px-5 ${
+          <Button onPress={() => showToast.info("Opening plan management")} variant="flat" className={`font-medium text-sm rounded-xl h-10 px-5 ${
             isLight
               ? "bg-slate-100 text-slate-700 hover:text-slate-900"
-              : "bg-[#1a1d27] text-slate-300 hover:text-white"
+              : "bg-[var(--bg-elevated)] text-slate-300 hover:text-white"
           }`}>
             Manage
           </Button>
@@ -91,7 +92,7 @@ function PaymentMethodCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -109,7 +110,7 @@ function PaymentMethodCard() {
         </div>
 
         <div className={`flex items-center justify-between p-4 rounded-xl ${
-          isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
+          isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
         }`}>
           <div className="flex items-center gap-3">
             <div className="w-12 h-8 rounded bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center">
@@ -120,10 +121,10 @@ function PaymentMethodCard() {
               <p className="text-[11px] text-slate-500">Expires 12/2027</p>
             </div>
           </div>
-          <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
+          <Button onPress={() => showToast.success("Payment method updated")} variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
             isLight
               ? "bg-slate-200 text-slate-700 hover:text-slate-900"
-              : "bg-[#334155] text-slate-300 hover:text-white"
+              : "bg-[var(--border-primary)] text-slate-300 hover:text-white"
           }`}>
             Update
           </Button>
@@ -142,7 +143,7 @@ function BillingAddressCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -161,16 +162,16 @@ function BillingAddressCard() {
         </div>
 
         <div className={`flex items-center justify-between p-4 rounded-xl ${
-          isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
+          isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
         }`}>
           <div>
             <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>123 Main Street</p>
             <p className="text-[11px] text-slate-500">New York, NY 10001, United States</p>
           </div>
-          <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
+          <Button onPress={() => showToast.info("Editing billing address")} variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
             isLight
               ? "bg-slate-200 text-slate-700 hover:text-slate-900"
-              : "bg-[#334155] text-slate-300 hover:text-white"
+              : "bg-[var(--border-primary)] text-slate-300 hover:text-white"
           }`}>
             Edit
           </Button>

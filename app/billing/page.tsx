@@ -15,6 +15,10 @@ import {
   Chip,
   Progress,
 } from "@heroui/react";
+import { BillingSkeleton } from "../components/skeletons";
+import { useSimulatedLoading } from "@/hooks";
+import { NoInvoices } from "../components/empty-states";
+import { showToast } from "@/lib/toast";
 
 const invoices = [
   { id: "INV-2026-001", date: "Jan 25, 2026", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
@@ -37,21 +41,22 @@ export default function BillingPage() {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = getColorClasses(accentColor);
+  const { isLoading } = useSimulatedLoading(() => true);
 
   return (
     <AppShell>
       {/* Page Header */}
-      <div className="flex justify-between items-start mb-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8">
         <div>
           <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Billing</h1>
           <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>Manage your subscription, payment methods, and invoices</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <Button
             className={`font-semibold text-sm transition-all gap-2 rounded-xl ${
               isLight
                 ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-                : "bg-[#1a1d27] text-slate-200 hover:bg-[#334155] hover:text-white"
+                : "bg-[var(--bg-elevated)] text-slate-200 hover:bg-[var(--border-primary)] hover:text-white"
             }`}
             startContent={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -63,6 +68,7 @@ export default function BillingPage() {
             Manage Plan
           </Button>
           <Button
+            onPress={() => showToast.success("Invoices downloaded")}
             className={`font-semibold text-sm text-white transition-all gap-2 rounded-xl shadow-lg ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}
             startContent={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -75,9 +81,13 @@ export default function BillingPage() {
         </div>
       </div>
 
+      {isLoading ? (
+        <BillingSkeleton />
+      ) : (
+      <>
       {/* Current Subscription Card */}
       <div className={`mb-8 group relative overflow-hidden rounded-2xl border transition-all ${
-        isLight ? "bg-white border-slate-200 hover:border-slate-300" : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+        isLight ? "bg-white border-slate-200 hover:border-slate-300" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
       }`}>
         <div className="relative p-6">
           <div className="flex items-start justify-between mb-6">
@@ -110,7 +120,7 @@ export default function BillingPage() {
               const percentage = (item.current / item.max) * 100;
               return (
                 <div key={item.label} className={`rounded-xl p-4 border ${
-                  isLight ? "bg-slate-50 border-slate-200" : "bg-[#0f1117]/50 border-[#282b3a]"
+                  isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)]/50 border-[var(--border-tertiary)]"
                 }`}>
                   <div className="flex items-center gap-2 mb-3">
                     <div className={`w-8 h-8 rounded-lg ring-1 flex items-center justify-center ${
@@ -131,7 +141,7 @@ export default function BillingPage() {
                     value={percentage}
                     classNames={{
                       base: "h-1.5",
-                      track: isLight ? "bg-slate-200" : "bg-[#1a1d27]",
+                      track: isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]",
                       indicator: isLight ? "bg-slate-400" : "bg-slate-500",
                     }}
                   />
@@ -141,8 +151,8 @@ export default function BillingPage() {
           </div>
 
           {/* Next Billing Info */}
-          <div className={`mt-5 pt-5 border-t flex items-center justify-between ${
-            isLight ? "border-slate-200" : "border-[#282b3a]"
+          <div className={`mt-5 pt-5 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+            isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
           }`}>
             <div className="flex items-center gap-3">
               <div className={`w-10 h-10 rounded-xl ring-1 flex items-center justify-center ${
@@ -158,12 +168,12 @@ export default function BillingPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className={`text-sm font-medium transition-colors px-4 py-2 ${
+              <button onClick={() => showToast.warning("Plan cancellation requested")} className={`text-sm font-medium transition-colors px-4 py-2 ${
                 isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
               }`}>
                 Cancel Plan
               </button>
-              <button className={`h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}>
+              <button onClick={() => showToast.info("Opening upgrade options...")} className={`h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                 </svg>
@@ -179,6 +189,7 @@ export default function BillingPage() {
         <div className="flex justify-between items-center mb-5">
           <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Payment Methods</h2>
           <Button
+            onPress={() => showToast.info("Opening payment method form...")}
             className={`font-semibold text-sm text-white transition-colors rounded-xl gap-2 ${accent.button} ${accent.buttonHover}`}
             startContent={
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -200,8 +211,8 @@ export default function BillingPage() {
                   ? "bg-white border-slate-400 hover:border-slate-500"
                   : "bg-white border-slate-200 hover:border-slate-300"
                 : selectedPayment === "credit-card"
-                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-slate-500 hover:border-slate-400"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+                  ? "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-slate-500 hover:border-slate-400"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
             }`}
           >
             <div className="relative">
@@ -247,8 +258,8 @@ export default function BillingPage() {
                   ? "bg-white border-slate-400 hover:border-slate-500"
                   : "bg-white border-slate-200 hover:border-slate-300"
                 : selectedPayment === "balance"
-                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-slate-500 hover:border-slate-400"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+                  ? "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-slate-500 hover:border-slate-400"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
             }`}
           >
             <div className="relative">
@@ -304,8 +315,8 @@ export default function BillingPage() {
                   ? "bg-white border-slate-400 hover:border-slate-500"
                   : "bg-white border-slate-200 hover:border-slate-300"
                 : selectedPayment === "crypto"
-                  ? "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-slate-500 hover:border-slate-400"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+                  ? "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-slate-500 hover:border-slate-400"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
             }`}
           >
             <div className="relative">
@@ -337,16 +348,16 @@ export default function BillingPage() {
               </div>
               <div className="flex gap-2">
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 ring-[var(--border-primary)]"
                 }`}>BTC</span>
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 ring-[var(--border-primary)]"
                 }`}>ETH</span>
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 ring-[var(--border-primary)]"
                 }`}>USDT</span>
                 <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ring-1 ${
-                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[#1a1d27] text-slate-400 ring-[#334155]"
+                  isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 ring-[var(--border-primary)]"
                 }`}>+5</span>
               </div>
             </div>
@@ -369,19 +380,23 @@ export default function BillingPage() {
         </div>
 
         <div className={`rounded-2xl border overflow-hidden ${
-          isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+          isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
         }`}>
+          {invoices.length === 0 ? (
+            <NoInvoices />
+          ) : (
+          <div className="overflow-x-auto">
           <Table
             aria-label="Invoices"
             removeWrapper
             classNames={{
               table: "bg-transparent",
               th: `text-[11px] font-semibold uppercase tracking-wider py-4 px-6 first:rounded-tl-none last:rounded-tr-none border-b ${
-                isLight ? "bg-slate-50 text-slate-500 border-slate-200" : "bg-[#0f1117]/80 text-slate-500 border-[#282b3a]"
+                isLight ? "bg-slate-50 text-slate-500 border-slate-200" : "bg-[var(--bg-primary)]/80 text-slate-500 border-[var(--border-tertiary)]"
               }`,
               td: "text-sm py-4 px-6",
               tr: `border-b last:border-b-0 transition-colors ${
-                isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[#1a1d27]/30 border-[#282b3a]/50"
+                isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[var(--bg-elevated)]/30 border-[var(--border-tertiary)]/50"
               }`,
             }}
           >
@@ -413,7 +428,7 @@ export default function BillingPage() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                          isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200"
+                          isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
                         }`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -421,7 +436,7 @@ export default function BillingPage() {
                           </svg>
                         </button>
                         <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                          isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] text-slate-400 hover:text-slate-200"
+                          isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
                         }`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -433,6 +448,8 @@ export default function BillingPage() {
                 ))}
             </TableBody>
           </Table>
+          </div>
+          )}
         </div>
       </div>
 
@@ -440,9 +457,9 @@ export default function BillingPage() {
       <div className={`group relative overflow-hidden rounded-2xl border transition-all ${
         isLight
           ? "bg-white border-slate-200 hover:border-slate-300"
-          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
       }`}>
-        <div className="relative px-6 py-5 flex items-center justify-between gap-6">
+        <div className="relative px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
           <div className="flex items-center gap-4">
             <div className={`w-12 h-12 rounded-xl ring-1 flex items-center justify-center ${
               isLight ? "bg-slate-100 text-slate-600 ring-slate-200" : "bg-slate-800 text-slate-400 ring-slate-700"
@@ -457,15 +474,15 @@ export default function BillingPage() {
             </div>
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
-            <button className={`text-sm font-medium transition-colors px-4 py-2 ${
+            <button onClick={() => showToast.info("Opening FAQ...")} className={`text-sm font-medium transition-colors px-4 py-2 ${
               isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
             }`}>
               View FAQ
             </button>
-            <button className={`h-10 px-5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
+            <button onClick={() => showToast.info("Opening support chat...")} className={`h-10 px-5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
               isLight
                 ? "bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border-slate-200"
-                : "bg-[#1a1d27] hover:bg-[#334155] text-slate-200 hover:text-white border-[#334155]"
+                : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-200 hover:text-white border-[var(--border-primary)]"
             }`}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
@@ -475,6 +492,8 @@ export default function BillingPage() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </AppShell>
   );
 }

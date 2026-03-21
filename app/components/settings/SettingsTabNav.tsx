@@ -30,7 +30,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
         "relative rounded-2xl border overflow-hidden transition-colors",
         isLight
           ? "bg-white border-slate-200 shadow-sm"
-          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
       )}>
         {/* Glow effect */}
         <div className={cn(
@@ -41,7 +41,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
         {/* Header */}
         <div className={cn(
           "relative px-4 py-3 border-b",
-          isLight ? "border-slate-100" : "border-[#1a1d27]"
+          isLight ? "border-slate-100" : "border-[var(--bg-elevated)]"
         )}>
           <div className="flex items-center gap-2">
             <div className={cn(
@@ -76,7 +76,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
                     ? cn(accent.activeBg, accent.text, "shadow-sm")
                     : isLight
                       ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                      : "text-slate-400 hover:bg-[#1a1d27] hover:text-slate-200"
+                      : "text-slate-400 hover:bg-[var(--bg-elevated)] hover:text-slate-200"
                 )}
               >
                 {/* Icon Container */}
@@ -86,7 +86,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
                     ? cn(accent.bg, "ring-1", accent.ring, "shadow-sm")
                     : isLight
                       ? "bg-slate-100 group-hover:bg-slate-200"
-                      : "bg-[#1a1d27]/50 group-hover:bg-[#1a1d27]"
+                      : "bg-[var(--bg-elevated)]/50 group-hover:bg-[var(--bg-elevated)]"
                 )}>
                   <svg
                     className={cn(
@@ -138,7 +138,7 @@ export function SettingsTabNav({ tabs, activeTab, onTabChange }: SettingsTabNavP
         {/* Footer hint */}
         <div className={cn(
           "px-4 py-3 border-t",
-          isLight ? "border-slate-100 bg-slate-50/50" : "border-[#1a1d27] bg-[#0f1117]/50"
+          isLight ? "border-slate-100 bg-slate-50/50" : "border-[var(--bg-elevated)] bg-[var(--bg-primary)]/50"
         )}>
           <div className="flex items-center gap-2">
             <svg className={cn("w-3.5 h-3.5", isLight ? "text-slate-400" : "text-slate-500")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>

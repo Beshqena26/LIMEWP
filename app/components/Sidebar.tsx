@@ -134,7 +134,7 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
               ? `${accent.activeBg} ${accent.text} ring-1 ${accent.activeRing}`
               : isLight
               ? `bg-slate-200/50 text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
-              : `bg-[#1a1d27]/50 text-slate-400 ${accent.hoverBg} ${accent.hoverText}`
+              : `bg-[var(--bg-elevated)]/50 text-slate-400 ${accent.hoverBg} ${accent.hoverText}`
           }`}
         >
           <svg
@@ -171,7 +171,7 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
                 ? `${accent.activeBg} ${accent.text}`
                 : isLight
                 ? `bg-slate-200 text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
-                : `bg-[#1a1d27] text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
+                : `bg-[var(--bg-elevated)] text-slate-500 ${accent.hoverBg} ${accent.hoverText}`
             }`}
           >
             {item.badge}
@@ -219,10 +219,10 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
               isActive
                 ? isLight
                   ? `bg-gradient-to-r ${accent.activeBgLight} ${accent.activeRing30} shadow-sm ${accent.activeShadowLight}`
-                  : `bg-gradient-to-r from-[#1a1d27] to-[#282b3a] ${accent.activeRing30}`
+                  : `bg-gradient-to-r from-[var(--bg-elevated)] to-[var(--bg-overlay)] ${accent.activeRing30}`
                 : isLight
                 ? "bg-slate-50/50 ring-slate-200/60 hover:bg-slate-100/80 hover:ring-slate-300/60"
-                : "ring-transparent hover:bg-[#1a1d27]/70"
+                : "ring-transparent hover:bg-[var(--bg-elevated)]/70"
             }`}
           >
             {isActive && (
@@ -254,7 +254,7 @@ function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: ke
                   <span className={`absolute inset-0 rounded-full animate-ping opacity-40 ${isLight ? "bg-slate-500" : "bg-slate-400"}`} />
                 )}
                 <div
-                  className={`relative w-2.5 h-2.5 rounded-full border-2 ${isLight ? "border-white" : "border-[#0f1117]"} ${
+                  className={`relative w-2.5 h-2.5 rounded-full border-2 ${isLight ? "border-white" : "border-[var(--bg-primary)]"} ${
                     site.status === "online" ? (isLight ? "bg-slate-500" : "bg-slate-400") : "bg-slate-500"
                   }`}
                 />
@@ -401,7 +401,7 @@ export default function Sidebar() {
     <aside className={`fixed top-0 left-0 w-[260px] h-full flex flex-col z-50 border-r transition-colors ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-[#0f1117] border-white/[0.06]"
+        : "bg-[var(--bg-primary)] border-white/[0.06]"
     }`}>
       {/* Logo Header */}
       <div className={`h-16 px-5 flex items-center border-b ${
@@ -488,7 +488,7 @@ export default function Sidebar() {
         <div className={`group relative overflow-hidden rounded-2xl border p-4 transition-all ${
           isLight
             ? "bg-gradient-to-br from-white to-slate-50 border-slate-200 hover:border-slate-300"
-            : `bg-gradient-to-br from-[#1e2130] to-[#181b28] ${accentStyle.border}`
+            : `bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] ${accentStyle.border}`
         }`}>
           {/* Animated gradient background */}
           <div className={`absolute inset-0 bg-gradient-to-br ${accentStyle.glow} via-transparent to-transparent opacity-60`} />
@@ -551,7 +551,7 @@ export default function Sidebar() {
         <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-colors group ${
           isLight
             ? "bg-slate-50/50 border-slate-200 hover:border-slate-300"
-            : "bg-[#1e2130]/50 border-[#1a1d27] hover:border-[#334155]"
+            : "bg-[var(--bg-secondary)]/50 border-[var(--bg-elevated)] hover:border-[var(--border-primary)]"
         }`}>
           <div className="w-8 h-8 rounded-lg bg-sky-500/10 ring-1 ring-sky-500/20 flex items-center justify-center flex-shrink-0">
             <svg

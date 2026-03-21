@@ -73,7 +73,7 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
         "group relative rounded-xl transition-all duration-200 p-5 cursor-pointer h-full",
         isLight
           ? "bg-white border border-slate-200 hover:border-slate-300 hover:shadow-md"
-          : "bg-[#1a1d27] border border-[#282b3a] hover:border-[#475569]"
+          : "bg-[var(--bg-elevated)] border border-[var(--border-tertiary)] hover:border-[var(--border-focus)]"
       )}
     >
       {/* Header */}

@@ -10,10 +10,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const isLight = resolvedTheme === "light";
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
       <main className={`pt-16 flex-1 transition-colors ${
-        isLight ? "bg-slate-100" : "bg-[#0f1117]"
+        isLight ? "bg-slate-100" : "bg-[var(--bg-primary)]"
       }`}>
         <div className="max-w-[1440px] mx-auto px-4 py-6 sm:p-6 lg:p-8">
           {children}

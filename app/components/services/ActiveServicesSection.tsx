@@ -3,6 +3,7 @@
 import { ActiveServiceCard } from "./ActiveServiceCard";
 import { useTheme } from "@/lib/context/ThemeContext";
 import type { CurrentService } from "@/data/services";
+import { NoServices } from "../empty-states";
 
 interface ActiveServicesSectionProps {
   services: CurrentService[];
@@ -22,20 +23,24 @@ export function ActiveServicesSection({ services, onManage, onUpgrade }: ActiveS
         </svg>
         <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Active Services</h2>
         <span className={`text-xs px-2 py-0.5 rounded-md ${
-          isLight ? "text-slate-500 bg-slate-100" : "text-slate-500 bg-[#1a1d27]"
+          isLight ? "text-slate-500 bg-slate-100" : "text-slate-500 bg-[var(--bg-elevated)]"
         }`}>{services.length}</span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {services.map((service) => (
-          <ActiveServiceCard
-            key={service.name}
-            service={service}
-            onManage={onManage}
-            onUpgrade={onUpgrade}
-          />
-        ))}
-      </div>
+      {services.length === 0 ? (
+        <NoServices />
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {services.map((service) => (
+            <ActiveServiceCard
+              key={service.name}
+              service={service}
+              onManage={onManage}
+              onUpgrade={onUpgrade}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -73,7 +73,7 @@ export function QuickActions({ onBackup, onClearCache, onRunScan, onViewAnalytic
             className={`group relative rounded-xl transition-all duration-300 p-4 text-left overflow-hidden ${
               isLight
                 ? "bg-white border border-slate-200 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/50"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a] hover:border-[#334155]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
             }`}
           >
             {/* Background Glow */}

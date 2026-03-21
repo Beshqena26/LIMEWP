@@ -14,8 +14,11 @@ import {
   SecurityCard,
 } from "../components/dashboard";
 import { SectionHeader } from "../components/ui/SectionHeader";
+import { DashboardSkeleton } from "../components/skeletons";
 import { DASHBOARD_SITES, DASHBOARD_ACTIVITIES, type DashboardSite, type DashboardActivity } from "@/data/dashboard";
 import { createRoute } from "@/config/routes";
+import { useSimulatedLoading } from "@/hooks";
+import { showToast } from "@/lib/toast";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -23,9 +26,12 @@ export default function DashboardPage() {
   const [selectedActivity, setSelectedActivity] = useState<DashboardActivity | null>(null);
   const [isActivityDetailOpen, setIsActivityDetailOpen] = useState(false);
 
+  const { data: sites, isLoading: sitesLoading } = useSimulatedLoading(() => DASHBOARD_SITES);
+  const { data: activities, isLoading: activitiesLoading } = useSimulatedLoading(() => DASHBOARD_ACTIVITIES);
+  const isLoading = sitesLoading || activitiesLoading;
+
   const handleRefresh = () => {
-    // TODO: Implement refresh logic
-    console.log("Refreshing data...");
+    showToast.success("Dashboard refreshed");
   };
 
   const handleVisitSite = (site: DashboardSite) => {
@@ -37,8 +43,7 @@ export default function DashboardPage() {
   };
 
   const handleViewAllActivity = () => {
-    // TODO: Navigate to activity page
-    console.log("Viewing all activity...");
+    showToast.info("Loading activity history...");
   };
 
   const handleViewActivityDetails = (activity: DashboardActivity) => {
@@ -59,25 +64,31 @@ export default function DashboardPage() {
 
       <PromoBanner onUpgrade={() => setIsUpgradeOpen(true)} />
 
-      <SiteGrid
-        sites={DASHBOARD_SITES}
-        onVisitSite={handleVisitSite}
-        onManageSite={handleManageSite}
-      />
+      {isLoading ? (
+        <DashboardSkeleton />
+      ) : (
+        <>
+          <SiteGrid
+            sites={sites!}
+            onVisitSite={handleVisitSite}
+            onManageSite={handleManageSite}
+          />
 
-      {/* Performance & Security 2-Column Layout */}
-      <SectionHeader title="Site Overview" />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-        <PerformanceCard />
-        <SecurityCard onRunScan={() => console.log("Running security scan...")} />
-      </div>
+          {/* Performance & Security 2-Column Layout */}
+          <SectionHeader title="Site Overview" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            <PerformanceCard />
+            <SecurityCard onRunScan={() => showToast.info("Security scan started")} />
+          </div>
 
-      <ActivityFeed
-        activities={DASHBOARD_ACTIVITIES}
-        onViewAll={handleViewAllActivity}
-        onViewDetails={handleViewActivityDetails}
-        onGoToSite={handleGoToActivitySite}
-      />
+          <ActivityFeed
+            activities={activities!}
+            onViewAll={handleViewAllActivity}
+            onViewDetails={handleViewActivityDetails}
+            onGoToSite={handleGoToActivitySite}
+          />
+        </>
+      )}
 
       <UpgradeModal
         isOpen={isUpgradeOpen}

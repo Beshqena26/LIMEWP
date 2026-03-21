@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -29,7 +30,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${jakarta.variable} ${jetbrains.variable} font-sans antialiased`} suppressHydrationWarning>
         <Providers>
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
         </Providers>
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { Button, Input, Chip } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
+import { showToast } from "@/lib/toast";
 import { INPUT_CLASS_NAMES, TWO_FACTOR_OPTIONS, ACTIVE_SESSIONS } from "@/data/settings";
 
 // Accent color styles
@@ -38,7 +39,7 @@ function PasswordCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -74,7 +75,7 @@ function PasswordCard() {
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Confirm Password</label>
             <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
           </div>
-          <Button className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow} mt-2`}>
+          <Button onPress={() => showToast.success("Password updated")} className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow} mt-2`}>
             Update Password
           </Button>
         </div>
@@ -92,7 +93,7 @@ function TwoFactorCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -114,11 +115,11 @@ function TwoFactorCard() {
             <div key={item.label} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
               isLight
                 ? "bg-slate-50 hover:bg-slate-100"
-                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
+                : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)]"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                  isLight ? "bg-slate-200" : "bg-[#1e2130]"
+                  isLight ? "bg-slate-200" : "bg-[var(--bg-secondary)]"
                 }`}>
                   <svg className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d={item.icon} />
@@ -141,10 +142,10 @@ function TwoFactorCard() {
                     {item.enabled ? "Enabled" : "Disabled"}
                   </Chip>
                 )}
-                <Button variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
+                <Button onPress={() => showToast.success("Two-factor authentication enabled")} variant="flat" size="sm" className={`font-medium text-xs rounded-lg h-8 ${
                   isLight
                     ? "bg-slate-200 text-slate-700 hover:bg-slate-300 hover:text-slate-900"
-                    : "bg-[#334155] text-slate-300 hover:text-white"
+                    : "bg-[var(--border-primary)] text-slate-300 hover:text-white"
                 }`}>
                   {item.enabled === null ? "Generate" : item.enabled ? "Manage" : "Setup"}
                 </Button>
@@ -166,7 +167,7 @@ function SessionsCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -186,13 +187,13 @@ function SessionsCard() {
         <div className="space-y-3">
           {ACTIVE_SESSIONS.map((session, i) => (
             <div key={i} className={`flex items-center justify-between p-4 rounded-xl ${
-              isLight ? "bg-slate-50" : "bg-[#1a1d27]/50"
+              isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
             }`}>
               <div className="flex items-center gap-3">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                   session.current
                     ? `${accent.bg}`
-                    : isLight ? 'bg-slate-200' : 'bg-[#1e2130]'
+                    : isLight ? 'bg-slate-200' : 'bg-[var(--bg-secondary)]'
                 }`}>
                   <svg className={`w-4 h-4 ${session.current ? accent.text : isLight ? 'text-slate-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d={session.icon} />
@@ -208,7 +209,7 @@ function SessionsCard() {
                   Current
                 </Chip>
               ) : (
-                <Button variant="flat" size="sm" className="bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 font-medium text-xs rounded-lg h-8">
+                <Button onPress={() => showToast.warning("Session revoked")} variant="flat" size="sm" className="bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 font-medium text-xs rounded-lg h-8">
                   Revoke
                 </Button>
               )}
@@ -228,7 +229,7 @@ function DangerZone() {
     <div className={`relative rounded-2xl border border-rose-500/20 overflow-hidden ${
       isLight
         ? "bg-rose-50/50"
-        : "bg-gradient-to-br from-rose-500/5 to-[#181b28]"
+        : "bg-gradient-to-br from-rose-500/5 to-[var(--gradient-card-to)]"
     }`}>
       <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-rose-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
@@ -245,7 +246,7 @@ function DangerZone() {
           </div>
         </div>
         <p className={`text-sm mb-4 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Once you delete your account, there is no going back. All your data will be permanently removed.</p>
-        <Button className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm rounded-xl h-10 px-5">
+        <Button onPress={() => showToast.error("Account deletion requested")} className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm rounded-xl h-10 px-5">
           Delete Account
         </Button>
       </div>

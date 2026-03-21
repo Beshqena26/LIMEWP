@@ -26,7 +26,7 @@ export function ActivityItem({ activity, isFirst, isLast, onViewDetails, onGoToS
       {/* Timeline Line - hidden on mobile */}
       {!isLast && (
         <div className={`hidden sm:block absolute left-[39px] top-[60px] w-px h-[calc(100%-24px)] bg-gradient-to-b to-transparent ${
-          isLight ? "from-slate-200 via-slate-200/50" : "from-[#334155] via-[#334155]/50"
+          isLight ? "from-slate-200 via-slate-200/50" : "from-[var(--border-primary)] via-[var(--border-primary)]/50"
         }`} />
       )}
 
@@ -42,7 +42,7 @@ export function ActivityItem({ activity, isFirst, isLast, onViewDetails, onGoToS
         {isFirst && (
           <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
-            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ring-2 ${isLight ? "bg-slate-500 ring-white" : "bg-slate-400 ring-[#1e2130]"}`}></span>
+            <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ring-2 ${isLight ? "bg-slate-500 ring-white" : "bg-slate-400 ring-[var(--bg-secondary)]"}`}></span>
           </span>
         )}
       </div>
@@ -91,14 +91,14 @@ export function ActivityItem({ activity, isFirst, isLast, onViewDetails, onGoToS
       {/* Action Buttons - visible on mobile, hover-reveal on desktop */}
       <div className="flex items-center gap-1.5 pt-1 flex-shrink-0 md:opacity-0 md:group-hover:opacity-100 md:translate-x-2 md:group-hover:translate-x-0 transition-all">
         <button onClick={(e) => { e.stopPropagation(); onViewDetails?.(); }} className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-          isLight ? "bg-slate-100 hover:bg-slate-200 active:bg-slate-200" : "bg-[#1a1d27]/70 hover:bg-[#334155] active:bg-[#334155]"
+          isLight ? "bg-slate-100 hover:bg-slate-200 active:bg-slate-200" : "bg-[var(--bg-elevated)]/70 hover:bg-[var(--border-primary)] active:bg-[var(--border-primary)]"
         }`}>
           <svg className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </button>
         <button onClick={(e) => { e.stopPropagation(); onGoToSite?.(); }} className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-          isLight ? "bg-slate-100 hover:bg-slate-200 active:bg-slate-200" : "bg-[#1a1d27]/70 hover:bg-[#334155] active:bg-[#334155]"
+          isLight ? "bg-slate-100 hover:bg-slate-200 active:bg-slate-200" : "bg-[var(--bg-elevated)]/70 hover:bg-[var(--border-primary)] active:bg-[var(--border-primary)]"
         }`}>
           <svg className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />

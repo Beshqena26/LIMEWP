@@ -83,10 +83,10 @@ export default function ApiReferencePage() {
       </div>
 
       {/* Main Container */}
-      <div className={`rounded-2xl border overflow-hidden ${isLight ? "bg-white border-slate-200" : "bg-[#0f1117] border-[#1a1d27]"}`}>
+      <div className={`rounded-2xl border overflow-hidden ${isLight ? "bg-white border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
         <div className="flex">
           {/* Left Sidebar */}
-          <div className={`w-64 border-r ${isLight ? "border-slate-200 bg-slate-50" : "border-[#1a1d27] bg-[#181b28]"}`}>
+          <div className={`w-64 border-r ${isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-secondary)] bg-[var(--gradient-card-to)]"}`}>
             <div className="p-4">
               {/* Search */}
               <div className="relative mb-4">
@@ -99,7 +99,7 @@ export default function ApiReferencePage() {
                   className={`w-full h-9 pl-9 pr-3 rounded-lg text-sm focus:outline-none focus:border-slate-500/50 transition-colors ${
                     isLight
                       ? "bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400"
-                      : "bg-[#1a1d27]/50 border border-[#334155]/50 text-slate-300 placeholder:text-slate-600"
+                      : "bg-[var(--bg-elevated)]/50 border border-[var(--border-primary)]/50 text-slate-300 placeholder:text-slate-600"
                   }`}
                 />
               </div>
@@ -127,7 +127,7 @@ export default function ApiReferencePage() {
                                   : "bg-slate-700 text-slate-200"
                                 : isLight
                                   ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                  : "text-slate-400 hover:bg-[#1a1d27]/70 hover:text-slate-300"
+                                  : "text-slate-400 hover:bg-[var(--bg-elevated)]/70 hover:text-slate-300"
                             }`}
                           >
                             {item.icon && (
@@ -154,7 +154,7 @@ export default function ApiReferencePage() {
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             {/* API Overview Section */}
-            <div className={`border-b ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+            <div className={`border-b ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isLight ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300" : "bg-slate-700 text-slate-300 ring-1 ring-slate-600"}`}>
@@ -169,14 +169,14 @@ export default function ApiReferencePage() {
                 </p>
 
                 {/* Base URL */}
-                <div className={`rounded-xl p-4 flex items-center justify-between border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                <div className={`rounded-xl p-4 flex items-center justify-between border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                   <div>
                     <div className={`text-[10px] uppercase tracking-wider font-medium mb-1 ${isLight ? "text-slate-500" : "text-slate-600"}`}>Base URL</div>
                     <code className={`font-mono text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-200"}`}>
                       https://api.limewp.com/v1
                     </code>
                   </div>
-                  <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[#1a1d27] hover:bg-[#334155] text-slate-500 hover:text-slate-300"}`}>
+                  <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-500 hover:text-slate-300"}`}>
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
                     </svg>
@@ -186,7 +186,7 @@ export default function ApiReferencePage() {
             </div>
 
             {/* Authentication Section */}
-            <div className={`border-b ${isLight ? "border-slate-200" : "border-[#1a1d27]"}`}>
+            <div className={`border-b ${isLight ? "border-slate-200" : "border-[var(--border-secondary)]"}`}>
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isLight ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300" : "bg-slate-700 text-slate-300 ring-1 ring-slate-600"}`}>
@@ -208,7 +208,7 @@ export default function ApiReferencePage() {
                 </div>
 
                 {/* API Key */}
-                <div className={`rounded-xl p-4 flex items-center justify-between border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                <div className={`rounded-xl p-4 flex items-center justify-between border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                   <div>
                     <div className={`text-[10px] uppercase tracking-wider font-medium mb-1 ${isLight ? "text-slate-500" : "text-slate-600"}`}>Your API Key</div>
                     <code className={`font-mono text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>
@@ -216,10 +216,10 @@ export default function ApiReferencePage() {
                     </code>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button className={`h-8 px-3 rounded-lg text-sm font-medium transition-colors ${isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800" : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-300"}`}>
+                    <button className={`h-8 px-3 rounded-lg text-sm font-medium transition-colors ${isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800" : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-400 hover:text-slate-300"}`}>
                       Reveal
                     </button>
-                    <button className={`h-8 px-3 rounded-lg text-sm font-medium transition-colors ${isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800" : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-300"}`}>
+                    <button className={`h-8 px-3 rounded-lg text-sm font-medium transition-colors ${isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-800" : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-400 hover:text-slate-300"}`}>
                       Regenerate
                     </button>
                   </div>
@@ -228,7 +228,7 @@ export default function ApiReferencePage() {
                 {/* Header Example */}
                 <div className="mt-4">
                   <div className={`text-[11px] uppercase tracking-wider font-medium mb-2 ${isLight ? "text-slate-500" : "text-slate-600"}`}>Request Header</div>
-                  <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                  <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                     <pre className="text-sm font-mono">
                       <span className="text-slate-500">Authorization:</span>{" "}
                       <span className="text-slate-300">Bearer lwp_sk_your_api_key</span>
@@ -250,8 +250,8 @@ export default function ApiReferencePage() {
               </div>
 
               {/* Endpoint: List Sites */}
-              <div className={`rounded-xl border overflow-hidden mb-4 ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#181b28] border-[#1a1d27]"}`}>
-                <div className={`px-5 py-4 border-b flex items-center gap-3 ${isLight ? "bg-slate-100 border-slate-200" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+              <div className={`rounded-xl border overflow-hidden mb-4 ${isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--gradient-card-to)] border-[var(--border-secondary)]"}`}>
+                <div className={`px-5 py-4 border-b flex items-center gap-3 ${isLight ? "bg-slate-100 border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                   <span className={`font-mono text-[10px] font-bold px-2 py-1 rounded ${isLight ? "bg-slate-200 text-slate-600 border border-slate-300" : "bg-slate-700 text-slate-300 border border-slate-600"}`}>
                     GET
                   </span>
@@ -268,7 +268,7 @@ export default function ApiReferencePage() {
                         { name: "limit", type: "integer", desc: "Number of items per page (max 100)" },
                         { name: "status", type: "string", desc: "Filter by site status: active, suspended" },
                       ].map((param) => (
-                        <div key={param.name} className={`flex items-start gap-4 py-2 border-b last:border-0 ${isLight ? "border-slate-200/50" : "border-[#1a1d27]/50"}`}>
+                        <div key={param.name} className={`flex items-start gap-4 py-2 border-b last:border-0 ${isLight ? "border-slate-200/50" : "border-[var(--border-secondary)]/50"}`}>
                           <code className={`font-mono text-sm w-20 flex-shrink-0 ${isLight ? "text-slate-700" : "text-slate-300"}`}>{param.name}</code>
                           <span className={`text-xs w-16 flex-shrink-0 ${isLight ? "text-slate-500" : "text-slate-600"}`}>{param.type}</span>
                           <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>{param.desc}</span>
@@ -292,14 +292,14 @@ export default function ApiReferencePage() {
                                 : "bg-slate-700 text-slate-200"
                               : isLight
                                 ? "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
-                                : "text-slate-500 hover:text-slate-400 hover:bg-[#1a1d27]/50"
+                                : "text-slate-500 hover:text-slate-400 hover:bg-[var(--bg-elevated)]/50"
                           }`}
                         >
                           {tab}
                         </button>
                       ))}
                     </div>
-                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                       <pre className="text-sm font-mono">
                         <span className="text-slate-500">curl</span>{" "}
                         <span className="text-slate-400">-X GET</span>{" "}
@@ -317,7 +317,7 @@ export default function ApiReferencePage() {
                       <h4 className={`text-[11px] uppercase tracking-wider font-semibold ${isLight ? "text-slate-500" : "text-slate-500"}`}>Response</h4>
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-300"}`}>200 OK</span>
                     </div>
-                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                       <pre className="text-sm font-mono text-slate-400">
 {`{
   "data": [
@@ -343,8 +343,8 @@ export default function ApiReferencePage() {
               </div>
 
               {/* Endpoint: Create Site */}
-              <div className={`rounded-xl border overflow-hidden mb-4 ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#181b28] border-[#1a1d27]"}`}>
-                <div className={`px-5 py-4 border-b flex items-center gap-3 ${isLight ? "bg-slate-100 border-slate-200" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+              <div className={`rounded-xl border overflow-hidden mb-4 ${isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--gradient-card-to)] border-[var(--border-secondary)]"}`}>
+                <div className={`px-5 py-4 border-b flex items-center gap-3 ${isLight ? "bg-slate-100 border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                   <span className={`font-mono text-[10px] font-bold px-2 py-1 rounded ${isLight ? "bg-slate-200 text-slate-600 border border-slate-300" : "bg-slate-700 text-slate-300 border border-slate-600"}`}>
                     POST
                   </span>
@@ -362,7 +362,7 @@ export default function ApiReferencePage() {
                         { name: "wp_version", type: "string", desc: "WordPress version", required: false },
                         { name: "admin_email", type: "string", desc: "Administrator email address", required: true },
                       ].map((param) => (
-                        <div key={param.name} className={`flex items-start gap-4 py-2 border-b last:border-0 ${isLight ? "border-slate-200/50" : "border-[#1a1d27]/50"}`}>
+                        <div key={param.name} className={`flex items-start gap-4 py-2 border-b last:border-0 ${isLight ? "border-slate-200/50" : "border-[var(--border-secondary)]/50"}`}>
                           <div className="w-24 flex-shrink-0 flex items-center gap-1">
                             <code className={`font-mono text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>{param.name}</code>
                             {param.required && <span className="text-slate-500 text-xs">*</span>}
@@ -377,7 +377,7 @@ export default function ApiReferencePage() {
                   {/* Code Example */}
                   <div>
                     <h4 className={`text-[11px] uppercase tracking-wider font-semibold mb-3 ${isLight ? "text-slate-500" : "text-slate-500"}`}>Example Request</h4>
-                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                       <pre className="text-sm font-mono">
                         <span className="text-slate-500">curl</span>{" "}
                         <span className="text-slate-400">-X POST</span>{" "}
@@ -402,8 +402,8 @@ export default function ApiReferencePage() {
               </div>
 
               {/* Endpoint: Delete Site */}
-              <div className={`rounded-xl border overflow-hidden ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#181b28] border-[#1a1d27]"}`}>
-                <div className={`px-5 py-4 border-b flex items-center gap-3 ${isLight ? "bg-slate-100 border-slate-200" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+              <div className={`rounded-xl border overflow-hidden ${isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--gradient-card-to)] border-[var(--border-secondary)]"}`}>
+                <div className={`px-5 py-4 border-b flex items-center gap-3 ${isLight ? "bg-slate-100 border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                   <span className={`font-mono text-[10px] font-bold px-2 py-1 rounded ${isLight ? "bg-slate-200 text-slate-600 border border-slate-300" : "bg-slate-700 text-slate-300 border border-slate-600"}`}>
                     DELETE
                   </span>
@@ -439,7 +439,7 @@ export default function ApiReferencePage() {
                   {/* Code Example */}
                   <div>
                     <h4 className={`text-[11px] uppercase tracking-wider font-semibold mb-3 ${isLight ? "text-slate-500" : "text-slate-500"}`}>Example Request</h4>
-                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[#0d0d0f] border-[#1a1d27]"}`}>
+                    <div className={`rounded-xl p-4 border overflow-x-auto ${isLight ? "bg-slate-900 border-slate-800" : "bg-[var(--bg-primary)] border-[var(--border-secondary)]"}`}>
                       <pre className="text-sm font-mono">
                         <span className="text-slate-500">curl</span>{" "}
                         <span className="text-slate-400">-X DELETE</span>{" "}

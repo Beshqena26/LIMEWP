@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTheme } from "@/lib/context/ThemeContext";
+import { showToast } from "@/lib/toast";
 
 // Connection info
 const CONNECTION_INFO = {
@@ -39,16 +40,17 @@ export function SshSftpTab() {
   const [showPassword, setShowPassword] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const copyToClipboard = (text: string, field: string) => {
+  const copyToClipboard = (text: string, field: string, toastMsg?: string) => {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
+    showToast.success(toastMsg || "Credentials copied");
   };
 
   // Theme classes
-  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[#1e2130] to-[#181b28]";
-  const cardBorder = isLight ? "border-slate-200" : "border-[#282b3a]";
-  const dividerBorder = isLight ? "border-slate-100" : "border-[#282b3a]";
+  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]";
+  const cardBorder = isLight ? "border-slate-200" : "border-[var(--border-tertiary)]";
+  const dividerBorder = isLight ? "border-slate-100" : "border-[var(--border-tertiary)]";
   const textPrimary = isLight ? "text-slate-900" : "text-slate-100";
   const textSecondary = isLight ? "text-slate-500" : "text-slate-500";
   const textTertiary = isLight ? "text-slate-400" : "text-slate-600";
@@ -88,7 +90,7 @@ export function SshSftpTab() {
                 }
               }}
               className={`group p-3 rounded-xl cursor-pointer transition-all ${
-                isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-[#1a1d27]/30 hover:bg-[#1a1d27]/50"
+                isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-[var(--bg-elevated)]/30 hover:bg-[var(--bg-elevated)]/50"
               }`}
             >
               <div className={`text-[10px] uppercase tracking-wider ${textTertiary} mb-1.5`}>{cred.label}</div>
@@ -132,7 +134,7 @@ export function SshSftpTab() {
                 </code>
               </div>
               <button
-                onClick={() => copyToClipboard(cmd.command, cmd.label)}
+                onClick={() => copyToClipboard(cmd.command, cmd.label, "Command copied")}
                 className={`flex-shrink-0 p-1.5 rounded-lg transition-colors ${
                   isLight ? "hover:bg-slate-800 text-slate-500 hover:text-slate-300" : "hover:bg-slate-800 text-slate-600 hover:text-slate-400"
                 }`}
@@ -159,7 +161,7 @@ export function SshSftpTab() {
       <div className="relative p-6">
         <div className="flex items-center justify-between mb-4">
           <span className={`text-sm font-medium ${textPrimary}`}>SSH Keys</span>
-          <button className={`text-xs ${textTertiary} hover:${textSecondary} transition-colors`}>
+          <button onClick={() => showToast.success("SSH key added")} className={`text-xs ${textTertiary} hover:${textSecondary} transition-colors`}>
             Add key
           </button>
         </div>
@@ -173,7 +175,7 @@ export function SshSftpTab() {
               }`}
             >
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                isLight ? "bg-white" : "bg-[#1a1d27]"
+                isLight ? "bg-white" : "bg-[var(--bg-elevated)]"
               }`}>
                 <svg className={`w-4 h-4 ${textSecondary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />

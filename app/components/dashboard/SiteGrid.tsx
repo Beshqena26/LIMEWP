@@ -5,6 +5,7 @@ import { AddSiteCard } from "./AddSiteCard";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import type { DashboardSite } from "@/data/dashboard";
+import { NoSites } from "../empty-states";
 
 interface SiteGridProps {
   sites: DashboardSite[];
@@ -37,17 +38,21 @@ export function SiteGrid({ sites, onVisitSite, onManageSite }: SiteGridProps) {
       </div>
 
       {/* Site Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {sites.map((site) => (
-          <SiteCard
-            key={site.name}
-            site={site}
-            onVisit={() => onVisitSite?.(site)}
-            onManage={() => onManageSite?.(site)}
-          />
-        ))}
-        <AddSiteCard />
-      </div>
+      {sites.length === 0 ? (
+        <NoSites />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {sites.map((site) => (
+            <SiteCard
+              key={site.name}
+              site={site}
+              onVisit={() => onVisitSite?.(site)}
+              onManage={() => onManageSite?.(site)}
+            />
+          ))}
+          <AddSiteCard />
+        </div>
+      )}
     </div>
   );
 }

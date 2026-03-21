@@ -81,7 +81,7 @@ export default function CookiesPage() {
               "sticky top-24 rounded-2xl border p-5",
               isLight
                 ? "bg-white border-slate-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             )}>
               <h3 className={cn(
                 "text-sm font-semibold mb-4",
@@ -145,7 +145,7 @@ export default function CookiesPage() {
               "rounded-2xl border p-8",
               isLight
                 ? "bg-white border-slate-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             )}>
               <Section id="what" title="What Are Cookies" isLight={isLight}>
                 <p>Cookies are small text files that are placed on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to website owners.</p>

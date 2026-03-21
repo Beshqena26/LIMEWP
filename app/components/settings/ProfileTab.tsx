@@ -54,7 +54,7 @@ function ProfilePhotoCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -71,7 +71,7 @@ function ProfilePhotoCard() {
           </div>
         </div>
 
-        <div className={`flex items-center gap-6 pb-6 border-b ${isLight ? "border-slate-200" : "border-[#282b3a]"}`}>
+        <div className={`flex items-center gap-6 pb-6 border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
           <div className="relative group">
             <div className={`absolute inset-0 bg-gradient-to-r ${accent.gradient} rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity`} />
             <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${accent.gradient} flex items-center justify-center text-white text-2xl font-bold ring-4 ring-white/10`}>
@@ -85,7 +85,7 @@ function ProfilePhotoCard() {
             <Button variant="flat" className={`font-medium text-sm rounded-xl h-10 px-4 ${
               isLight
                 ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                : "bg-[#1a1d27] text-slate-400 hover:text-slate-200"
+                : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
             }`}>
               Remove
             </Button>
@@ -110,7 +110,7 @@ function PersonalInfoCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -127,7 +127,7 @@ function PersonalInfoCard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Full Name</label>
             <Input defaultValue="Lime Admin" classNames={inputClassNames} variant="bordered" size="md" />
@@ -166,7 +166,7 @@ function PreferencesCard() {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -183,7 +183,7 @@ function PreferencesCard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Timezone</label>
             <Select defaultSelectedKeys={["EST"]} classNames={selectClassNames} variant="bordered">

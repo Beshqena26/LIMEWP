@@ -39,6 +39,12 @@ export const ROUTES = {
   TERMS: "/terms",
   COOKIES: "/cookies",
 
+  // Auth
+  LOGIN: "/login",
+  SIGNUP: "/register",
+  REGISTER: "/register",
+  FORGOT_PASSWORD: "/forgot-password",
+
   // Contact
   CONTACT: "/contact",
 } as const;

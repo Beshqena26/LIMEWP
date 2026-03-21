@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { showToast } from "@/lib/toast";
 import {
   Modal,
   ModalContent,
@@ -60,7 +61,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
     setIsProcessing(true);
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Upgrading to:", selectedPlan);
+    showToast.success(`Upgraded to ${selectedPlan} plan`);
     setIsProcessing(false);
     onClose();
   };
@@ -77,10 +78,10 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
         backdrop: "bg-black/70",
         base: isLight
           ? "bg-white border border-slate-200 shadow-2xl max-w-[600px] rounded-2xl"
-          : "bg-[#0f1117] border border-[#1a1d27] shadow-2xl max-w-[600px] rounded-2xl",
-        header: isLight ? "border-b border-slate-200" : "border-b border-[#1a1d27]",
+          : "bg-[var(--bg-primary)] border border-[var(--bg-elevated)] shadow-2xl max-w-[600px] rounded-2xl",
+        header: isLight ? "border-b border-slate-200" : "border-b border-[var(--bg-elevated)]",
         body: "py-6",
-        footer: isLight ? "border-t border-slate-200" : "border-t border-[#1a1d27]",
+        footer: isLight ? "border-t border-slate-200" : "border-t border-[var(--bg-elevated)]",
       }}
     >
       <ModalContent>
@@ -122,7 +123,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
         <ModalBody>
           <div className="space-y-4">
             {/* Plan Selection */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {PLANS.map((plan) => (
                 <button
                   key={plan.id}
@@ -134,7 +135,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                         : "border-slate-500 bg-slate-800/50"
                       : isLight
                         ? "border-slate-200 hover:border-slate-300 bg-slate-50"
-                        : "border-[#282b3a] hover:border-[#334155] bg-[#1e2130]"
+                        : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)] bg-[var(--bg-secondary)]"
                   }`}
                 >
                   {plan.popular && (
@@ -196,7 +197,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
               className={`rounded-xl p-4 ${
                 isLight
                   ? "bg-slate-50 border border-slate-200"
-                  : "bg-[#1e2130] border border-[#282b3a]"
+                  : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
               }`}
             >
               <h4
@@ -232,7 +233,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                 </div>
                 <div
                   className={`flex justify-between pt-2 border-t font-semibold ${
-                    isLight ? "border-slate-200 text-slate-800" : "border-[#282b3a] text-slate-100"
+                    isLight ? "border-slate-200 text-slate-800" : "border-[var(--border-tertiary)] text-slate-100"
                   }`}
                 >
                   <span>Total</span>
@@ -279,7 +280,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             className={`font-medium text-sm rounded-xl h-10 px-5 ${
               isLight
                 ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                : "bg-[#1a1d27] text-slate-400 hover:text-slate-200"
+                : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
             }`}
           >
             Cancel

@@ -16,7 +16,7 @@ export function StatCard({ label, value, icon, color = "emerald", className }: S
 
   return (
     <div className={cn(
-      "relative group bg-gradient-to-br from-[#1e2130] to-[#181b28] rounded-xl p-4 border border-[#282b3a] hover:border-[#334155] transition-all overflow-hidden",
+      "relative group bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] rounded-xl p-4 border border-[var(--border-tertiary)] hover:border-[var(--border-primary)] transition-all overflow-hidden",
       className
     )}>
       <div className={cn("absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60", colors.bg)} />

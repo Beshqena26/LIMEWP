@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icon, Button, IconBox, Input, SectionHeader, Toggle, Card } from "../../landing-components";
+import { useTheme } from "@/lib/context/ThemeContext";
 import "../../landing.css";
 
 const brandColors = [
@@ -45,17 +46,12 @@ const iconBoxColors: Array<{ color: "lime" | "green" | "blue" | "purple" | "oran
 export default function LandingStyleGuide() {
   const [inputVal, setInputVal] = useState("");
   const [toggleOn, setToggleOn] = useState(false);
-  const [theme, setTheme] = useState(() => {
-    if (typeof document !== "undefined") return document.documentElement.dataset.theme || "dark";
-    return "dark";
-  });
+  const { resolvedTheme, setTheme } = useTheme();
+  const theme = resolvedTheme;
   const [copiedVar, setCopiedVar] = useState<string | null>(null);
 
   const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem("limewp-theme", next);
-    setTheme(next);
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
   };
 
   const copyVar = (v: string) => {
@@ -71,7 +67,7 @@ export default function LandingStyleGuide() {
   };
 
   return (
-    <div className="sg" data-theme={theme} style={{ minHeight: "100vh", background: "var(--bg0)", color: "var(--c1)", fontFamily: "var(--fb, Inter, system-ui, sans-serif)" }}>
+    <div className="sg" style={{ minHeight: "100vh", background: "var(--bg0)", color: "var(--c1)", fontFamily: "var(--fb, Inter, system-ui, sans-serif)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
         {/* Header */}
         <div style={{ padding: "40px 0 24px", borderBottom: "1px solid var(--bdrs, #1e293b)" }}>

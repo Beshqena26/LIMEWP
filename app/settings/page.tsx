@@ -17,6 +17,9 @@ import { SETTINGS_TABS, DEFAULT_NOTIFICATION_TOGGLES } from "@/data/settings";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import { getColorClasses } from "@/lib/utils/colors";
+import { SettingsSkeleton } from "../components/skeletons";
+import { useSimulatedLoading } from "@/hooks";
+import { showToast } from "@/lib/toast";
 
 const VALID_TABS = ["profile", "security", "notifications", "appearance", "billing", "apikeys"];
 
@@ -44,13 +47,18 @@ export default function SettingsPage() {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const colors = getColorClasses(accentColor);
+  const { isLoading } = useSimulatedLoading(() => true);
 
   const handleToggle = (key: string) => {
-    setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
+    setToggles((prev) => {
+      const newVal = !prev[key];
+      showToast.success(`${key.replace(/_/g, " ")} ${newVal ? "enabled" : "disabled"}`);
+      return { ...prev, [key]: newVal };
+    });
   };
 
   const handleSaveProfile = () => {
-    console.log("Saving profile changes...");
+    showToast.success("Profile saved successfully");
   };
 
   const renderTabContent = () => {
@@ -97,7 +105,7 @@ export default function SettingsPage() {
                       ? cn(colors.bg, colors.text, "ring-1", colors.ring)
                       : isLight
                         ? "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300"
-                        : "bg-[#1e2130] border border-[#282b3a] text-slate-400 hover:bg-[#1a1d27] hover:border-[#334155]"
+                        : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)] text-slate-400 hover:bg-[var(--bg-elevated)] hover:border-[var(--border-primary)]"
                   )}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -123,12 +131,16 @@ export default function SettingsPage() {
 
         {/* Tab Content with Animation */}
         <div className="flex-1 min-w-0">
-          <div
-            key={activeTab}
-            className="animate-in fade-in slide-in-from-right-2 duration-300"
-          >
-            {renderTabContent()}
-          </div>
+          {isLoading ? (
+            <SettingsSkeleton />
+          ) : (
+            <div
+              key={activeTab}
+              className="animate-in fade-in slide-in-from-right-2 duration-300"
+            >
+              {renderTabContent()}
+            </div>
+          )}
         </div>
       </div>
     </AppShell>

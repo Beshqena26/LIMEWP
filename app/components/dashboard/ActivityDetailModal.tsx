@@ -98,10 +98,10 @@ export function ActivityDetailModal({
         backdrop: "bg-black/70",
         base: isLight
           ? "bg-white border border-slate-200 shadow-2xl max-w-[500px] rounded-2xl"
-          : "bg-[#0f1117] border border-[#1a1d27] shadow-2xl max-w-[500px] rounded-2xl",
-        header: isLight ? "border-b border-slate-200" : "border-b border-[#1a1d27]",
+          : "bg-[var(--bg-primary)] border border-[var(--bg-elevated)] shadow-2xl max-w-[500px] rounded-2xl",
+        header: isLight ? "border-b border-slate-200" : "border-b border-[var(--bg-elevated)]",
         body: "py-6",
-        footer: isLight ? "border-t border-slate-200" : "border-t border-[#1a1d27]",
+        footer: isLight ? "border-t border-slate-200" : "border-t border-[var(--bg-elevated)]",
       }}
     >
       <ModalContent>
@@ -164,7 +164,7 @@ export function ActivityDetailModal({
               className={`rounded-xl p-4 flex items-center gap-3 ${
                 isLight
                   ? "bg-slate-50 border border-slate-200"
-                  : "bg-[#1e2130] border border-[#282b3a]"
+                  : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
               }`}
             >
               <Avatar
@@ -212,7 +212,7 @@ export function ActivityDetailModal({
               </label>
               <div
                 className={`rounded-xl overflow-hidden border ${
-                  isLight ? "border-slate-200" : "border-[#282b3a]"
+                  isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
                 }`}
               >
                 {getActivityMetadata(activity).map((item, index) => (
@@ -222,9 +222,9 @@ export function ActivityDetailModal({
                       index !== getActivityMetadata(activity).length - 1
                         ? isLight
                           ? "border-b border-slate-100"
-                          : "border-b border-[#282b3a]"
+                          : "border-b border-[var(--border-tertiary)]"
                         : ""
-                    } ${isLight ? "bg-white" : "bg-[#1e2130]"}`}
+                    } ${isLight ? "bg-white" : "bg-[var(--bg-secondary)]"}`}
                   >
                     <span className="text-sm text-slate-500">{item.label}</span>
                     <span
@@ -287,7 +287,7 @@ export function ActivityDetailModal({
             className={`font-medium text-sm rounded-xl h-10 px-5 ${
               isLight
                 ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                : "bg-[#1a1d27] text-slate-400 hover:text-slate-200"
+                : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
             }`}
           >
             Close

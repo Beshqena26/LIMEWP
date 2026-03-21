@@ -87,11 +87,11 @@ export function SupportChat() {
       {/* Chat Window */}
       <div
         className={cn(
-          "fixed bottom-24 right-6 z-50 w-80 sm:w-96 rounded-2xl shadow-2xl transition-all duration-300 transform origin-bottom-right",
+          "fixed bottom-24 z-50 w-[calc(100vw-1.5rem)] sm:w-96 right-3 sm:right-6 rounded-2xl shadow-2xl transition-all duration-300 transform origin-bottom-right",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none",
           isLight
             ? "bg-white border border-slate-200"
-            : "bg-[#1e2130] border border-[#282b3a]"
+            : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
         )}
       >
         {/* Header */}
@@ -143,7 +143,7 @@ export function SupportChat() {
         <div
           className={cn(
             "h-80 overflow-y-auto p-4 space-y-4",
-            isLight ? "bg-slate-50" : "bg-[#0f1117]"
+            isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]"
           )}
         >
           {messages.map((message) => (
@@ -161,7 +161,7 @@ export function SupportChat() {
                     ? cn(colors.gradient, "bg-gradient-to-r text-white")
                     : isLight
                     ? "bg-white border border-slate-200 text-slate-800"
-                    : "bg-[#1a1d27] border border-[#334155] text-slate-100"
+                    : "bg-[var(--bg-elevated)] border border-[var(--border-primary)] text-slate-100"
                 )}
               >
                 {message.content}
@@ -175,7 +175,7 @@ export function SupportChat() {
         <div
           className={cn(
             "p-4 rounded-b-2xl",
-            isLight ? "bg-white border-t border-slate-200" : "bg-[#1e2130] border-t border-[#282b3a]"
+            isLight ? "bg-white border-t border-slate-200" : "bg-[var(--bg-secondary)] border-t border-[var(--border-tertiary)]"
           )}
         >
           <div className="flex gap-2">
@@ -189,7 +189,7 @@ export function SupportChat() {
                 "flex-1 px-4 py-2 rounded-xl text-sm outline-none transition-colors",
                 isLight
                   ? "bg-slate-100 text-slate-800 placeholder-slate-400 focus:ring-2"
-                  : "bg-[#1a1d27] text-slate-100 placeholder-slate-500 focus:ring-2",
+                  : "bg-[var(--bg-elevated)] text-slate-100 placeholder-slate-500 focus:ring-2",
                 `focus:ring-${accentColor}-500/50`
               )}
             />

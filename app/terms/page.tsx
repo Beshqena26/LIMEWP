@@ -57,7 +57,7 @@ export default function TermsPage() {
               "sticky top-24 rounded-2xl border p-5",
               isLight
                 ? "bg-white border-slate-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             )}>
               <h3 className={cn(
                 "text-sm font-semibold mb-4",
@@ -121,7 +121,7 @@ export default function TermsPage() {
               "rounded-2xl border p-8",
               isLight
                 ? "bg-white border-slate-200 shadow-sm"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             )}>
               {/* Important Notice */}
               <div className={cn(

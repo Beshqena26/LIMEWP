@@ -2,6 +2,7 @@
 
 import { Switch } from "@heroui/react";
 import { useTheme, type ThemeMode, type AccentColor } from "@/lib/context/ThemeContext";
+import { showToast } from "@/lib/toast";
 
 interface ThemeOption {
   id: ThemeMode;
@@ -78,7 +79,7 @@ function ThemeCard({ theme, resolvedTheme, accentColor, onThemeChange }: ThemeCa
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -101,13 +102,13 @@ function ThemeCard({ theme, resolvedTheme, accentColor, onThemeChange }: ThemeCa
             return (
               <div
                 key={t.id}
-                onClick={() => onThemeChange(t.id)}
+                onClick={() => { onThemeChange(t.id); showToast.success(`Theme changed to ${t.label}`); }}
                 className={`group relative p-4 rounded-xl cursor-pointer text-center transition-all overflow-hidden ${
                   active
                     ? `${accent.bg} border-2 ${accent.border}`
                     : isLight
                     ? "bg-slate-100 border-2 border-transparent hover:border-slate-300"
-                    : "bg-[#1a1d27]/50 border-2 border-transparent hover:border-[#334155]"
+                    : "bg-[var(--bg-elevated)]/50 border-2 border-transparent hover:border-[var(--border-primary)]"
                 }`}
               >
                 <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-colors ${
@@ -115,7 +116,7 @@ function ThemeCard({ theme, resolvedTheme, accentColor, onThemeChange }: ThemeCa
                     ? `${accent.iconBg} ${accent.text}`
                     : isLight
                     ? "bg-slate-200 text-slate-500"
-                    : "bg-[#1e2130] text-slate-400"
+                    : "bg-[var(--bg-secondary)] text-slate-400"
                 }`}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d={t.icon} />
@@ -152,7 +153,7 @@ function AccentColorCard({ accentColor, resolvedTheme, onAccentColorChange }: Ac
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -173,10 +174,10 @@ function AccentColorCard({ accentColor, resolvedTheme, onAccentColorChange }: Ac
           {ACCENT_COLORS.map((c) => (
             <div key={c.id} className="flex flex-col items-center gap-2">
               <button
-                onClick={() => onAccentColorChange(c.id)}
+                onClick={() => { onAccentColorChange(c.id); showToast.success(`Accent color changed to ${c.label}`); }}
                 className={`w-12 h-12 rounded-xl cursor-pointer transition-all ${c.cls} ${
                   accentColor === c.id
-                    ? `ring-2 ${c.ring} ring-offset-2 ${isLight ? "ring-offset-white" : "ring-offset-[#1e2130]"} scale-110`
+                    ? `ring-2 ${c.ring} ring-offset-2 ${isLight ? "ring-offset-white" : "ring-offset-[var(--bg-secondary)]"} scale-110`
                     : "hover:scale-105 opacity-70 hover:opacity-100"
                 }`}
               />
@@ -224,7 +225,7 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -246,7 +247,7 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
             <div key={item.key} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
               isLight
                 ? "bg-slate-100/50 hover:bg-slate-100"
-                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
+                : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)]"
             }`}>
               <div>
                 <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{item.label}</p>

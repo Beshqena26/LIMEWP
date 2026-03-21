@@ -1,0 +1,199 @@
+/* ═══════════════════════════════════════════════════════════
+   Canonical Design Tokens
+   Single source of truth — values mirror styles/tokens.ts
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Dark Mode ─── */
+.dark {
+  /* Backgrounds */
+  --bg-primary: #0f1117;
+  --bg-secondary: #1e2130;
+  --bg-tertiary: #161923;
+  --bg-elevated: #1a1d27;
+  --bg-overlay: #282b3a;
+  --bg-inverse: #f1f5f9;
+  --bg-input: #1e2130;
+  --bg-hover: #222537;
+  /* Text */
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-disabled: #475569;
+  --text-inverse: #0f1117;
+  /* Borders */
+  --border-primary: #334155;
+  --border-secondary: #1e293b;
+  --border-tertiary: #282b3a;
+  --border-focus: #475569;
+  /* Status */
+  --success: #22c55e;
+  --success-bg: rgba(34,197,94,0.1);
+  --success-border: rgba(34,197,94,0.2);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.1);
+  --warning-border: rgba(245,158,11,0.2);
+  --error: #ef4444;
+  --error-bg: rgba(239,68,68,0.1);
+  --error-border: rgba(239,68,68,0.2);
+  --info: #3b82f6;
+  --info-bg: rgba(59,130,246,0.1);
+  --info-border: rgba(59,130,246,0.2);
+  /* Scrollbar */
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3), 0 1px 3px rgba(0,0,0,.15);
+  --shadow-md: 0 4px 8px rgba(0,0,0,.3), 0 2px 4px rgba(0,0,0,.2);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3);
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  /* Gradients */
+  --gradient-card-from: #1e2130;
+  --gradient-card-to: #181b28;
+  /* Glow */
+  --glow: 0 0 60px rgba(16,185,129,.1);
+  --glow-color: rgba(16,185,129,.12);
+  --glow-color-strong: rgba(16,185,129,.25);
+  /* Glass */
+  --glass: rgba(15,17,23,.7);
+  --glass-border: rgba(255,255,255,.06);
+}
+
+/* ─── Light Mode ─── */
+.light {
+  /* Backgrounds */
+  --bg-primary: #f0f2f5;
+  --bg-secondary: #f4f5f7;
+  --bg-tertiary: #ebedf1;
+  --bg-elevated: #ffffff;
+  --bg-overlay: #e8eaef;
+  --bg-inverse: #0f172a;
+  --bg-input: #f4f5f7;
+  --bg-hover: #ecedf0;
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --text-disabled: #cbd5e1;
+  --text-inverse: #f1f5f9;
+  /* Borders */
+  --border-primary: #cbd5e1;
+  --border-secondary: #e2e8f0;
+  --border-tertiary: #e8eaef;
+  --border-focus: #94a3b8;
+  /* Status */
+  --success: #16a34a;
+  --success-bg: rgba(22,163,74,0.08);
+  --success-border: rgba(22,163,74,0.15);
+  --warning: #d97706;
+  --warning-bg: rgba(217,119,6,0.08);
+  --warning-border: rgba(217,119,6,0.15);
+  --error: #dc2626;
+  --error-bg: rgba(220,38,38,0.06);
+  --error-border: rgba(220,38,38,0.15);
+  --info: #2563eb;
+  --info-bg: rgba(37,99,235,0.06);
+  --info-border: rgba(37,99,235,0.15);
+  /* Scrollbar */
+  --scrollbar-thumb: #94a3b8;
+  --scrollbar-thumb-hover: #64748b;
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.07);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.08);
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  /* Gradients */
+  --gradient-card-from: #ffffff;
+  --gradient-card-to: #f4f5f7;
+  /* Glow */
+  --glow: 0 0 60px rgba(6,150,105,.12);
+  --glow-color: rgba(5,150,105,.08);
+  --glow-color-strong: rgba(5,150,105,.18);
+  /* Glass */
+  --glass: rgba(255,255,255,.7);
+  --glass-border: rgba(255,255,255,.5);
+}
+
+/* ─── Default (matches dark) ─── */
+:root {
+  --bg-primary: #0f1117;
+  --bg-secondary: #1e2130;
+  --bg-tertiary: #161923;
+  --bg-elevated: #1a1d27;
+  --bg-overlay: #282b3a;
+  --bg-inverse: #f1f5f9;
+  --bg-input: #1e2130;
+  --bg-hover: #222537;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-disabled: #475569;
+  --text-inverse: #0f1117;
+  --border-primary: #334155;
+  --border-secondary: #1e293b;
+  --border-tertiary: #282b3a;
+  --border-focus: #475569;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+  /* Accent defaults (emerald) */
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --accent-muted: #059669;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Legacy Aliases — Panel variable names
+   These allow existing code using --bg-main, --bg-card, etc.
+   to work without changes.
+   ═══════════════════════════════════════════════════════════ */
+.dark, .light {
+  --bg-main: var(--bg-primary);
+  --bg-card: var(--bg-secondary);
+  --bg-sidebar: var(--bg-tertiary);
+  --bg-sidebar-hover: var(--bg-overlay);
+  /* --bg-elevated and --bg-input already canonical */
+  --text-sidebar: var(--text-secondary);
+  --text-sidebar-active: var(--text-primary);
+  --border: var(--border-primary);
+  --border-light: var(--border-secondary);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Legacy Aliases — Landing variable names
+   These allow landing.css to work with --bg0, --c1, etc.
+   ═══════════════════════════════════════════════════════════ */
+.dark, .light {
+  --bg0: var(--bg-primary);
+  --bg1: var(--bg-elevated);
+  --bg2: var(--bg-secondary);
+  --bg2h: var(--bg-overlay);
+  --bg3: var(--bg-tertiary);
+  --bg4: var(--bg-hover);
+  --c1: var(--text-primary);
+  --c2: var(--text-secondary);
+  --c3: var(--text-tertiary);
+  --ci: var(--text-inverse);
+  --bdr: var(--border-primary);
+  --bdrs: var(--border-secondary);
+  --acc: var(--accent);
+  --acc2: var(--accent-hover);
+  --lime: var(--accent);
+  --lime-light: var(--accent-hover);
+  --red: var(--error);
+  --sh: var(--shadow-sm);
+  --shh: var(--shadow-lg);
+  --glow: var(--glow);
+  --lime-glow: var(--glow-color);
+  --lime-glow-strong: var(--glow-color-strong);
+  --glass: var(--glass);
+  --glass-border: var(--glass-border);
+}

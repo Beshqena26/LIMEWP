@@ -40,7 +40,7 @@ export function SiteHeader({ siteName, onVisitSite, onSettings }: SiteHeaderProp
           className={`font-medium text-sm gap-2 ${
             isLight
               ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-              : "bg-[#1a1d27] text-slate-300 hover:text-white"
+              : "bg-[var(--bg-elevated)] text-slate-300 hover:text-white"
           }`}
           radius="lg"
           startContent={

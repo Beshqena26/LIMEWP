@@ -130,7 +130,7 @@ export default function DocsPage() {
               className={`font-semibold text-sm transition-all gap-2 rounded-xl ${
                 isLight
                   ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-                  : "bg-[#1a1d27] text-slate-200 hover:bg-[#334155] hover:text-white"
+                  : "bg-[var(--bg-elevated)] text-slate-200 hover:bg-[var(--border-primary)] hover:text-white"
               }`}
               startContent={
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -172,7 +172,7 @@ export default function DocsPage() {
             <div key={stat.label} className={`relative group rounded-xl p-4 border transition-all overflow-hidden ${
                 isLight
                   ? "bg-white border-slate-200 hover:border-slate-300"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a] hover:border-[#334155]"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
               }`}>
               <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${colors.bg} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
               <div className="relative flex items-center gap-3">
@@ -198,7 +198,7 @@ export default function DocsPage() {
             <div className={`relative rounded-2xl border overflow-hidden ${
                 isLight
                   ? "bg-white border-slate-200"
-                  : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
               }`}>
               {/* Corner Glow */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
@@ -219,7 +219,7 @@ export default function DocsPage() {
                     classNames={{
                       inputWrapper: isLight
                         ? ["bg-slate-100", "border-slate-200", "hover:bg-slate-100", "group-data-[focus=true]:bg-slate-100", "!rounded-xl"]
-                        : ["bg-[#1a1d27]", "border-[#334155]", "hover:bg-[#1a1d27]", "group-data-[focus=true]:bg-[#1a1d27]", "!rounded-xl"],
+                        : ["bg-[var(--bg-elevated)]", "border-[var(--border-primary)]", "hover:bg-[var(--bg-elevated)]", "group-data-[focus=true]:bg-[var(--bg-elevated)]", "!rounded-xl"],
                       input: isLight
                         ? ["text-slate-800", "text-sm", "placeholder:text-slate-500"]
                         : ["text-slate-100", "text-sm", "placeholder:text-slate-500"],
@@ -231,15 +231,15 @@ export default function DocsPage() {
                 <div className={`flex items-center justify-center gap-2 mb-4 py-2 px-3 rounded-lg border ${
                   isLight
                     ? "bg-slate-100/50 border-slate-200/50"
-                    : "bg-[#1a1d27]/50 border-[#334155]/50"
+                    : "bg-[var(--bg-elevated)]/50 border-[var(--border-primary)]/50"
                 }`}>
                   <span className="text-xs text-slate-500">Quick search</span>
                   <div className="flex items-center gap-1">
                     <kbd className={`px-1.5 py-0.5 text-[10px] font-mono rounded ${
-                      isLight ? "bg-slate-200 text-slate-600" : "bg-[#334155] text-slate-400"
+                      isLight ? "bg-slate-200 text-slate-600" : "bg-[var(--border-primary)] text-slate-400"
                     }`}>⌘</kbd>
                     <kbd className={`px-1.5 py-0.5 text-[10px] font-mono rounded ${
-                      isLight ? "bg-slate-200 text-slate-600" : "bg-[#334155] text-slate-400"
+                      isLight ? "bg-slate-200 text-slate-600" : "bg-[var(--border-primary)] text-slate-400"
                     }`}>K</kbd>
                   </div>
                 </div>
@@ -254,7 +254,7 @@ export default function DocsPage() {
                         <button
                           onClick={() => toggleSection(section.label)}
                           className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl transition-colors group ${
-                            isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
+                            isLight ? "hover:bg-slate-100" : "hover:bg-[var(--bg-elevated)]"
                           }`}
                         >
                           <div className="flex items-center gap-2.5">
@@ -273,7 +273,7 @@ export default function DocsPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
-                              isLight ? "text-slate-500 bg-slate-100" : "text-slate-600 bg-[#1a1d27]"
+                              isLight ? "text-slate-500 bg-slate-100" : "text-slate-600 bg-[var(--bg-elevated)]"
                             }`}>
                               {section.items.length}
                             </span>
@@ -290,7 +290,7 @@ export default function DocsPage() {
                         </button>
                         <div className={`overflow-hidden transition-all duration-200 ${isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                           <div className={`ml-4 pl-5 border-l space-y-0.5 py-1 ${
-                            isLight ? "border-slate-200" : "border-[#282b3a]"
+                            isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
                           }`}>
                             {section.items.map((item) => (
                               <button
@@ -301,7 +301,7 @@ export default function DocsPage() {
                                     ? `${colors.bg} ${colors.text} ring-1 ${colors.ring}`
                                     : isLight
                                       ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                                      : "text-slate-400 hover:bg-[#1a1d27] hover:text-slate-100"
+                                      : "text-slate-400 hover:bg-[var(--bg-elevated)] hover:text-slate-100"
                                 }`}
                               >
                                 <span className="truncate">{item.title}</span>
@@ -334,7 +334,7 @@ export default function DocsPage() {
             <div className={`mt-4 relative rounded-2xl border p-4 overflow-hidden ${
               isLight
                 ? "bg-white border-slate-200"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             }`}>
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-slate-500/10 to-transparent rounded-full translate-y-1/2 -translate-x-1/3" />
 
@@ -349,7 +349,7 @@ export default function DocsPage() {
                 <div className="space-y-2">
                   {popularArticles.map((article, i) => (
                     <button key={i} className={`w-full text-left p-2 rounded-lg transition-colors group ${
-                      isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
+                      isLight ? "hover:bg-slate-100" : "hover:bg-[var(--bg-elevated)]"
                     }`}>
                       <div className={`text-sm truncate ${
                         isLight
@@ -370,7 +370,7 @@ export default function DocsPage() {
           <div className={`relative rounded-2xl border overflow-hidden ${
             isLight
               ? "bg-white border-slate-200"
-              : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+              : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
           }`}>
             {/* Corner Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-slate-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60" />
@@ -424,7 +424,7 @@ export default function DocsPage() {
                   <button className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
                     isLight
                       ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700"
-                      : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-200"
+                      : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-400 hover:text-slate-200"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -434,7 +434,7 @@ export default function DocsPage() {
                   <button className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
                     isLight
                       ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700"
-                      : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-200"
+                      : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-400 hover:text-slate-200"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
@@ -444,7 +444,7 @@ export default function DocsPage() {
                   <button className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all ${
                     isLight
                       ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700"
-                      : "bg-[#1a1d27] hover:bg-[#334155] text-slate-400 hover:text-slate-200"
+                      : "bg-[var(--bg-elevated)] hover:bg-[var(--border-primary)] text-slate-400 hover:text-slate-200"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
@@ -465,7 +465,7 @@ export default function DocsPage() {
                   size="sm"
                   classNames={{
                     base: "h-1",
-                    track: isLight ? "bg-slate-200" : "bg-[#1a1d27]",
+                    track: isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]",
                     indicator: isLight ? "bg-slate-700" : "bg-slate-300",
                   }}
                 />
@@ -545,7 +545,7 @@ export default function DocsPage() {
                 isLight ? "bg-slate-900" : "bg-[#09090B]"
               }`}>
                 <div className={`flex items-center justify-between px-4 py-3 border-b ${
-                  isLight ? "border-slate-800" : "border-[#1e2130]"
+                  isLight ? "border-slate-800" : "border-[var(--border-secondary)]"
                 }`}>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1.5">
@@ -556,7 +556,7 @@ export default function DocsPage() {
                     <span className="text-slate-500 text-xs font-mono ml-2">Terminal</span>
                   </div>
                   <button className={`text-slate-500 hover:text-slate-300 transition-colors p-1 rounded ${
-                    isLight ? "hover:bg-slate-800" : "hover:bg-[#1e2130]"
+                    isLight ? "hover:bg-slate-800" : "hover:bg-[var(--bg-secondary)]"
                   }`}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
@@ -641,7 +641,7 @@ export default function DocsPage() {
                       <div key={plugin.name} className={`group relative p-4 rounded-xl border transition-all overflow-hidden ${
                         isLight
                           ? "bg-slate-50 border-slate-200 hover:border-slate-300"
-                          : "bg-[#1a1d27]/50 border-[#334155]/50 hover:border-[#334155]"
+                          : "bg-[var(--bg-elevated)]/50 border-[var(--border-primary)]/50 hover:border-[var(--border-primary)]"
                       }`}>
                         <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl ${colors.bg} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                         <div className="relative flex items-center gap-3">
@@ -689,7 +689,7 @@ export default function DocsPage() {
 
               {/* Was this helpful? */}
               <div className={`relative rounded-xl p-6 mb-8 overflow-hidden ${
-                isLight ? "bg-slate-100/50" : "bg-[#1a1d27]/50"
+                isLight ? "bg-slate-100/50" : "bg-[var(--bg-elevated)]/50"
               }`}>
                 <div className="text-center">
                   <p className={`text-sm mb-4 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Was this article helpful?</p>
@@ -703,7 +703,7 @@ export default function DocsPage() {
                             : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
                           : isLight
                             ? "bg-slate-200/50 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                            : "bg-[#334155]/50 text-slate-400 hover:bg-[#334155] hover:text-slate-200"
+                            : "bg-[var(--border-primary)]/50 text-slate-400 hover:bg-[var(--border-primary)] hover:text-slate-200"
                       }`}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -720,7 +720,7 @@ export default function DocsPage() {
                             : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
                           : isLight
                             ? "bg-slate-200/50 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                            : "bg-[#334155]/50 text-slate-400 hover:bg-[#334155] hover:text-slate-200"
+                            : "bg-[var(--border-primary)]/50 text-slate-400 hover:bg-[var(--border-primary)] hover:text-slate-200"
                       }`}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -737,10 +737,10 @@ export default function DocsPage() {
 
               {/* Bottom Navigation */}
               <div className={`flex justify-between items-center pt-6 border-t ${
-                isLight ? "border-slate-200" : "border-[#282b3a]"
+                isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
               }`}>
                 <button className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
+                  isLight ? "hover:bg-slate-100" : "hover:bg-[var(--bg-elevated)]"
                 }`}>
                   <svg className={`w-5 h-5 transition-colors ${
                     isLight ? "text-slate-400 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-300"
@@ -755,7 +755,7 @@ export default function DocsPage() {
                   </div>
                 </button>
                 <button className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  isLight ? "hover:bg-slate-100" : "hover:bg-[#1a1d27]"
+                  isLight ? "hover:bg-slate-100" : "hover:bg-[var(--bg-elevated)]"
                 }`}>
                   <div className="text-right">
                     <div className="text-xs text-slate-500">Next</div>
@@ -784,7 +784,7 @@ export default function DocsPage() {
             <div className={`relative rounded-2xl border p-4 overflow-hidden ${
               isLight
                 ? "bg-white border-slate-200"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             }`}>
               <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-slate-500/10 to-transparent rounded-full translate-y-1/3 translate-x-1/3" />
 
@@ -807,7 +807,7 @@ export default function DocsPage() {
                             : "bg-slate-700 text-slate-200 ring-1 ring-slate-600"
                           : isLight
                             ? "text-slate-500 hover:text-slate-700 hover:bg-slate-100"
-                            : "text-slate-500 hover:text-slate-300 hover:bg-[#1a1d27]"
+                            : "text-slate-500 hover:text-slate-300 hover:bg-[var(--bg-elevated)]"
                       }`}
                     >
                       {item.label}
@@ -821,7 +821,7 @@ export default function DocsPage() {
             <div className={`mt-4 relative rounded-2xl border p-4 overflow-hidden ${
               isLight
                 ? "bg-white border-slate-200"
-                : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
             }`}>
               <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-slate-500/10 to-transparent rounded-full -translate-y-1/3 -translate-x-1/3" />
 

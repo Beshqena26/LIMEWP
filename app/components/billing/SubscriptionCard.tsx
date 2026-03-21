@@ -20,7 +20,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
 
   return (
     <div className={`mb-8 group relative overflow-hidden rounded-2xl border border-emerald-500/20 hover:border-emerald-500/30 transition-all ${
-      isLight ? "bg-white" : "bg-gradient-to-br from-[#1e2130] to-[#181b28]"
+      isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]"
     }`}>
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.08] via-transparent to-sky-500/[0.08]" />
@@ -58,7 +58,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
             const percentage = (item.current / item.max) * 100;
             return (
               <div key={item.label} className={`rounded-xl p-4 border ${
-                isLight ? "bg-slate-50 border-slate-200" : "bg-[#0f1117]/50 border-[#282b3a]"
+                isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)]/50 border-[var(--border-tertiary)]"
               }`}>
                 <div className="flex items-center gap-2 mb-3">
                   <div className={`w-8 h-8 rounded-lg ${colors.bg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center`}>
@@ -77,7 +77,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
                   value={percentage}
                   classNames={{
                     base: "h-1.5",
-                    track: isLight ? "bg-slate-200" : "bg-[#1a1d27]",
+                    track: isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]",
                     indicator: `bg-gradient-to-r ${colors.gradient}`,
                   }}
                 />
@@ -88,7 +88,7 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
 
         {/* Next Billing Info */}
         <div className={`mt-5 pt-5 border-t flex items-center justify-between ${
-          isLight ? "border-slate-200" : "border-[#282b3a]"
+          isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
         }`}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 ring-1 ring-violet-500/20 flex items-center justify-center">

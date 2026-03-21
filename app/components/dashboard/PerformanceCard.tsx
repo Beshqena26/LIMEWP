@@ -53,12 +53,12 @@ export function PerformanceCard({ onViewDetails }: PerformanceCardProps) {
       "rounded-2xl border overflow-hidden h-full flex flex-col",
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     )}>
       {/* Header */}
       <div className={cn(
         "px-5 py-4 border-b flex items-center justify-between",
-        isLight ? "border-slate-200" : "border-[#1a1d27]"
+        isLight ? "border-slate-200" : "border-[var(--bg-elevated)]"
       )}>
         <div className="flex items-center gap-3">
           <div className={cn(

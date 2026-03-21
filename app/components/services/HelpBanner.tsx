@@ -14,7 +14,7 @@ export function HelpBanner({ onContactSales }: HelpBannerProps) {
     <div className={`relative overflow-hidden rounded-2xl border ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className="relative px-6 py-5 flex items-center justify-between gap-6">
         <div className="flex items-center gap-4">
@@ -35,7 +35,7 @@ export function HelpBanner({ onContactSales }: HelpBannerProps) {
           className={`h-9 px-4 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 flex-shrink-0 ${
             isLight
               ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-              : "bg-[#1a1d27] text-slate-300 hover:bg-[#334155] hover:text-white"
+              : "bg-[var(--bg-elevated)] text-slate-300 hover:bg-[var(--border-primary)] hover:text-white"
           }`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">

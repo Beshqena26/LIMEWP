@@ -83,7 +83,7 @@ export default function Footer() {
       <div className={`relative border-t transition-colors ${
         isLight
           ? "bg-white border-slate-200"
-          : "bg-[#0f1117] border-white/[0.06]"
+          : "bg-[var(--bg-primary)] border-white/[0.06]"
       }`}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12">
@@ -114,7 +114,7 @@ export default function Footer() {
                     className={`group w-10 h-10 rounded-xl flex items-center justify-center transition-all ring-1 ${
                       isLight
                         ? `bg-slate-100 text-slate-500 ring-slate-200 ${social.hoverColor}`
-                        : `bg-[#1a1d27] text-slate-400 ring-[#334155] ${social.hoverColor}`
+                        : `bg-[var(--bg-elevated)] text-slate-400 ring-[var(--border-primary)] ${social.hoverColor}`
                     }`}
                     aria-label={social.label}
                   >

@@ -76,7 +76,7 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -100,7 +100,7 @@ function EmailNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
               <div key={item.key} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
                 isLight
                   ? "bg-slate-50 hover:bg-slate-100"
-                  : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
+                  : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)]"
               }`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-9 h-9 rounded-lg ${colors.bg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center`}>
@@ -146,7 +146,7 @@ function PushNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
     <div className={`relative rounded-2xl border overflow-hidden ${
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border-[#282b3a]"
+        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
     }`}>
       <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
@@ -168,7 +168,7 @@ function PushNotificationsCard({ toggles, onToggle }: NotificationCardProps) {
             <div key={item.key} className={`flex items-center justify-between p-4 rounded-xl transition-colors ${
               isLight
                 ? "bg-slate-50 hover:bg-slate-100"
-                : "bg-[#1a1d27]/50 hover:bg-[#1a1d27]"
+                : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)]"
             }`}>
               <div>
                 <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{item.label}</p>

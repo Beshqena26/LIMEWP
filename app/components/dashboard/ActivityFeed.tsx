@@ -4,6 +4,7 @@ import { ActivityItem } from "./ActivityItem";
 import { SectionHeader } from "../ui/SectionHeader";
 import { useTheme } from "@/lib/context/ThemeContext";
 import type { DashboardActivity } from "@/data/dashboard";
+import { NoActivity } from "../empty-states";
 
 interface ActivityFeedProps {
   activities: DashboardActivity[];
@@ -24,24 +25,28 @@ export function ActivityFeed({ activities, onViewAll, onViewDetails, onGoToSite 
       <div className={`relative rounded-2xl overflow-hidden ${
         isLight
           ? "bg-white border border-slate-200"
-          : "bg-gradient-to-br from-[#1e2130] to-[#181b28] border border-[#282b3a]"
+          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
       }`}>
-        <div className={`relative divide-y ${isLight ? "divide-slate-100" : "divide-[#282b3a]"}`}>
-          {activities.map((activity, index) => (
-            <ActivityItem
-              key={index}
-              activity={activity}
-              isFirst={index === 0}
-              isLast={index === activities.length - 1}
-              onViewDetails={() => onViewDetails?.(activity)}
-              onGoToSite={() => onGoToSite?.(activity)}
-            />
-          ))}
-        </div>
+        {activities.length === 0 ? (
+          <NoActivity />
+        ) : (
+          <div className={`relative divide-y ${isLight ? "divide-slate-100" : "divide-[var(--border-tertiary)]"}`}>
+            {activities.map((activity, index) => (
+              <ActivityItem
+                key={index}
+                activity={activity}
+                isFirst={index === 0}
+                isLast={index === activities.length - 1}
+                onViewDetails={() => onViewDetails?.(activity)}
+                onGoToSite={() => onGoToSite?.(activity)}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Footer with View All */}
         <div className={`relative border-t ${
-          isLight ? "border-slate-200" : "border-[#282b3a]"
+          isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
         }`}>
           <button
             onClick={onViewAll}

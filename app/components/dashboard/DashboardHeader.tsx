@@ -37,7 +37,7 @@ export function DashboardHeader({ userName, onRefresh }: DashboardHeaderProps) {
           className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all group flex-shrink-0 ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 border-transparent hover:border-slate-200"
-              : "bg-[#1a1d27]/50 hover:bg-[#1a1d27] border-transparent hover:border-[#334155]"
+              : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] border-transparent hover:border-[var(--border-primary)]"
           }`}
         >
           <svg className={`w-5 h-5 transition-colors ${
