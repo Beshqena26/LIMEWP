@@ -167,7 +167,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-1">
           {/* Home Link */}
           {HOME_ITEM && (() => {
             const isActive = pathname === HOME_ITEM.href;
@@ -334,6 +334,7 @@ export default function Header() {
         {/* Mobile Search Icon */}
         <button
           onClick={() => setSearchOpen(true)}
+          aria-label="Search"
           className={`md:hidden min-w-[44px] min-h-[44px] w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
@@ -379,12 +380,12 @@ export default function Header() {
           }}
         >
           <DropdownTrigger>
-            <button className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
+            <button aria-label="Notifications" className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
               isLight
                 ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
                 : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200 border-transparent hover:border-[var(--border-primary)]"
             }`}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
               </svg>
               {unreadCount > 0 && (
@@ -428,11 +429,19 @@ export default function Header() {
                           <>
                             <button
                               onClick={(e) => { e.stopPropagation(); markAllRead(); }}
-                              className="text-[10px] font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
+                              className={`text-[10px] font-medium transition-colors ${
+                                isLight
+                                  ? "text-emerald-700 hover:text-emerald-800"
+                                  : "text-emerald-400 hover:text-emerald-300"
+                              }`}
                             >
                               Mark all read
                             </button>
-                            <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-lg ring-1 ring-emerald-500/20">
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ring-1 ${
+                              isLight
+                                ? "text-emerald-700 bg-emerald-100 ring-emerald-200"
+                                : "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20"
+                            }`}>
                               {unreadCount} new
                             </span>
                           </>
@@ -520,7 +529,7 @@ export default function Header() {
           }}
         >
           <DropdownTrigger>
-            <button className={`flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
+            <button aria-label="User menu" className={`flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
               isLight
                 ? "bg-slate-100/30 hover:bg-slate-100 border-transparent hover:border-slate-200"
                 : "bg-[var(--bg-elevated)]/30 hover:bg-[var(--bg-elevated)] border-transparent hover:border-[var(--border-primary)]"

@@ -21,8 +21,8 @@ export function DashboardHeader({ userName, onRefresh }: DashboardHeaderProps) {
         }`}>Welcome back, {userName}</h1>
         <span className={`text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 inline-flex items-center gap-2 shadow-sm ${
           isLight
-            ? "text-emerald-700 bg-emerald-50 ring-emerald-200"
-            : "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20"
+            ? "text-emerald-800 bg-emerald-50 ring-emerald-200"
+            : "text-emerald-300 bg-emerald-500/10 ring-emerald-500/20"
         }`}>
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -34,6 +34,7 @@ export function DashboardHeader({ userName, onRefresh }: DashboardHeaderProps) {
       <div className="flex items-center gap-3">
         <button
           onClick={onRefresh}
+          aria-label="Refresh dashboard"
           className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all group flex-shrink-0 ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 border-transparent hover:border-slate-200"

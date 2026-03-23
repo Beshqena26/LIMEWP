@@ -452,7 +452,7 @@ export default function Sidebar() {
               {SITES_DATA.length}
             </span>
           </div>
-          <button className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-105 ring-1 ${accent.btn}`}>
+          <button aria-label="Add new site" className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:scale-105 ring-1 ${accent.btn}`}>
             <svg
               className="w-4 h-4"
               fill="none"

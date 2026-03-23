@@ -70,9 +70,9 @@ export function PerformanceCard({ onViewDetails }: PerformanceCardProps) {
             </svg>
           </div>
           <div>
-            <h3 className={cn("text-sm font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
+            <h2 className={cn("text-sm font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
               Performance
-            </h3>
+            </h2>
             <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
               Site health metrics
             </p>

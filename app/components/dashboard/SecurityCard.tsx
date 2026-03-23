@@ -74,9 +74,9 @@ export function SecurityCard({ onRunScan, onViewDetails }: SecurityCardProps) {
             </svg>
           </div>
           <div>
-            <h3 className={cn("text-sm font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
+            <h2 className={cn("text-sm font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
               Security
-            </h3>
+            </h2>
             <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
               Protection status
             </p>

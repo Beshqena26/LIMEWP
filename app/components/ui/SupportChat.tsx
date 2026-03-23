@@ -123,6 +123,7 @@ export function SupportChat() {
           </div>
           <button
             onClick={() => setIsOpen(false)}
+            aria-label="Close chat"
             className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
           >
             <svg
@@ -196,6 +197,7 @@ export function SupportChat() {
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
+              aria-label="Send message"
               className={cn(
                 "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
                 colors.gradient,
