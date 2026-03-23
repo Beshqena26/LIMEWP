@@ -351,17 +351,17 @@ export default function Header() {
           onClick={() => setSearchOpen(true)}
           className={`hidden md:flex items-center gap-2 w-[200px] lg:w-[260px] h-9 px-3 rounded-xl border text-sm transition-all ${
             isLight
-              ? "bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-400"
+              ? "bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-500"
               : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] text-slate-500"
           }`}
         >
-          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <svg aria-hidden="true" className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <span className="flex-1 text-left">Search...</span>
-          <kbd className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
+          <kbd aria-hidden="true" className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
             isLight
-              ? "text-slate-400 bg-white border-slate-200"
+              ? "text-slate-500 bg-white border-slate-200"
               : "text-slate-500 bg-[var(--bg-primary)] border-[var(--border-primary)]"
           }`}>
             <span className="text-[11px]">⌘</span>K

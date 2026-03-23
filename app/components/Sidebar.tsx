@@ -398,7 +398,7 @@ export default function Sidebar() {
   const accentStyle = ACCENT_STYLES[accentColor];
 
   return (
-    <aside className={`fixed top-0 left-0 w-[260px] h-full flex flex-col z-50 border-r transition-colors ${
+    <aside aria-label="Sidebar navigation" className={`fixed top-0 left-0 w-[260px] h-full flex flex-col z-50 border-r transition-colors ${
       isLight
         ? "bg-white border-slate-200"
         : "bg-[var(--bg-primary)] border-white/[0.06]"

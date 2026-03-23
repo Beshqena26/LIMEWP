@@ -66,6 +66,7 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
 
       {/* Drawer */}
       <aside
+        aria-label="Mobile navigation"
         className={`fixed top-0 left-0 bottom-0 z-[70] w-[280px] max-w-[85vw] flex flex-col transition-transform duration-200 ease-out border-r ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } ${

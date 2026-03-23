@@ -27,6 +27,7 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
             isLight ? "bg-slate-200" : "bg-slate-800"
           )}>
             <svg
+              aria-hidden="true"
               className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")}
               fill="none"
               stroke="currentColor"
@@ -44,12 +45,12 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
           {/* Content */}
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className={cn(
+              <h2 className={cn(
                 "text-sm font-semibold",
                 isLight ? "text-slate-800" : "text-slate-100"
               )}>
                 Upgrade to Pro
-              </h3>
+              </h2>
               <span className={cn(
                 "text-[10px] font-semibold px-2 py-0.5 rounded-md",
                 isLight
@@ -61,7 +62,7 @@ export function PromoBanner({ onLearnMore, onUpgrade }: PromoBannerProps) {
             </div>
             <p className={cn(
               "text-xs",
-              isLight ? "text-slate-500" : "text-slate-400"
+              isLight ? "text-slate-600" : "text-slate-400"
             )}>
               Unlimited sites, priority support, and advanced analytics.
             </p>
