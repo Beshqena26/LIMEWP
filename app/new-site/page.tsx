@@ -99,10 +99,16 @@ const STARTER_TEMPLATES = [
   { id: "ecommerce", name: "E-commerce", gradient: "from-amber-400 to-orange-500" },
 ];
 
-const PAYMENT_CARDS = [
-  { id: "visa-4242", brand: "Visa", last4: "4242", icon: "visa" },
-  { id: "mc-8888", brand: "Mastercard", last4: "8888", icon: "mastercard" },
-  { id: "amex-1234", brand: "Amex", last4: "1234", icon: "amex" },
+const SAVED_CARDS = [
+  { id: "visa-4242", brand: "Visa", last4: "4242", expiry: "12/28", color: "bg-blue-600" },
+  { id: "mc-8888", brand: "Mastercard", last4: "8888", expiry: "06/27", color: "bg-orange-500" },
+  { id: "amex-1234", brand: "Amex", last4: "1234", expiry: "03/29", color: "bg-sky-500" },
+];
+
+const CRYPTO_OPTIONS = [
+  { key: "btc", name: "Bitcoin (BTC)", icon: "\u20BF", color: "bg-orange-500" },
+  { key: "eth", name: "Ethereum (ETH)", icon: "\u039E", color: "bg-violet-500" },
+  { key: "usdt", name: "USDT (TRC-20)", icon: "\u20AE", color: "bg-emerald-500" },
 ];
 
 const CREATION_STEPS = [
@@ -228,7 +234,13 @@ export default function NewSitePage() {
   const [dataCenter, setDataCenter] = useState("us-east");
   const [selectedPlugins, setSelectedPlugins] = useState<Set<string>>(new Set());
   const [starterTemplate, setStarterTemplate] = useState("blank");
+  const [paymentMethod, setPaymentMethod] = useState<"card" | "balance" | "crypto">("card");
   const [selectedPaymentCard, setSelectedPaymentCard] = useState("visa-4242");
+  const [showAddCard, setShowAddCard] = useState(false);
+  const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
+  const [newCardNumber, setNewCardNumber] = useState("");
+  const [newCardExpiry, setNewCardExpiry] = useState("");
+  const [newCardCvc, setNewCardCvc] = useState("");
 
   // Creation progress state
   const [creating, setCreating] = useState(false);
@@ -1434,59 +1446,117 @@ export default function NewSitePage() {
               <h3 className={cn("font-semibold text-sm mb-3", isLight ? "text-slate-900" : "text-slate-100")}>
                 Payment Method
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {PAYMENT_CARDS.map((card) => (
-                  <button
-                    key={card.id}
-                    onClick={() => setSelectedPaymentCard(card.id)}
-                    className={cn(
-                      "relative rounded-xl border-2 p-4 text-left transition-all duration-300",
-                      selectedPaymentCard === card.id
-                        ? isLight
-                          ? "border-slate-400 bg-slate-100/50 shadow-md"
-                          : "border-slate-500 bg-slate-700/20"
-                        : isLight
-                        ? "border-slate-200 bg-white hover:border-slate-300"
-                        : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
-                    )}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={cn(
-                        "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
-                        selectedPaymentCard === card.id
-                          ? isLight ? "bg-slate-800" : "bg-slate-200"
-                          : isLight ? "bg-slate-100" : "bg-slate-800"
-                      )}>
-                        <StepIcon
-                          type="creditcard"
-                          className={cn(
-                            "w-5 h-5",
-                            selectedPaymentCard === card.id
-                              ? isLight ? "text-white" : "text-slate-900"
-                              : isLight ? "text-slate-600" : "text-slate-400"
-                          )}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>
-                          {card.brand}
-                        </h4>
-                        <p className={cn("text-xs font-mono", isLight ? "text-slate-500" : "text-slate-500")}>
-                          **** {card.last4}
-                        </p>
-                      </div>
-                    </div>
-                    {selectedPaymentCard === card.id && (
-                      <div className={cn(
-                        "absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center",
-                        isLight ? "bg-slate-800" : "bg-slate-200"
-                      )}>
-                        <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
-                      </div>
-                    )}
+
+              {/* Method tabs */}
+              <div className="flex gap-2 mb-4">
+                {([
+                  { key: "card" as const, label: "Card", icon: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" },
+                  { key: "balance" as const, label: "Balance", icon: "M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 013 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 013 6v3" },
+                  { key: "crypto" as const, label: "Crypto", icon: "M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" },
+                ]).map((m) => (
+                  <button key={m.key} onClick={() => setPaymentMethod(m.key)} className={cn(
+                    "flex-1 h-10 rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1.5 border",
+                    paymentMethod === m.key
+                      ? isLight ? "border-slate-400 bg-slate-100 text-slate-800" : "border-slate-500 bg-slate-700/30 text-slate-100"
+                      : isLight ? "border-slate-200 text-slate-600 hover:bg-slate-50" : "border-slate-800 text-slate-400 hover:bg-slate-800/50"
+                  )}>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d={m.icon} /></svg>
+                    {m.label}
                   </button>
                 ))}
               </div>
+
+              {/* Card selection */}
+              {paymentMethod === "card" && (
+                <div className="space-y-2">
+                  {SAVED_CARDS.map((card) => (
+                    <button key={card.id} onClick={() => { setSelectedPaymentCard(card.id); setShowAddCard(false); }} className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left",
+                      selectedPaymentCard === card.id && !showAddCard
+                        ? isLight ? "border-emerald-500/50 bg-emerald-50" : "border-emerald-500/30 bg-emerald-500/5"
+                        : isLight ? "border-slate-200 hover:border-slate-300" : "border-slate-800 hover:border-slate-700"
+                    )}>
+                      <div className={cn("w-10 h-7 rounded-md flex items-center justify-center text-xs font-bold text-white", card.color)}>{card.brand[0]}</div>
+                      <div className="flex-1">
+                        <span className={cn("text-sm font-medium", isLight ? "text-slate-700" : "text-slate-200")}>{card.brand} •••• {card.last4}</span>
+                        <span className={cn("text-xs ml-2", isLight ? "text-slate-400" : "text-slate-500")}>exp {card.expiry}</span>
+                      </div>
+                      {selectedPaymentCard === card.id && !showAddCard && (
+                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      )}
+                    </button>
+                  ))}
+
+                  {/* Add new card */}
+                  {!showAddCard ? (
+                    <button onClick={() => setShowAddCard(true)} className={cn(
+                      "w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-dashed transition-all text-sm font-medium",
+                      isLight ? "border-slate-300 text-slate-500 hover:border-slate-400 hover:text-slate-700" : "border-slate-700 text-slate-400 hover:border-slate-600 hover:text-slate-300"
+                    )}>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                      Add New Card
+                    </button>
+                  ) : (
+                    <div className={cn("rounded-xl border p-4 space-y-3", isLight ? "border-slate-200 bg-slate-50" : "border-slate-800 bg-slate-900/50")}>
+                      <div>
+                        <label htmlFor="new-card-number" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>Card Number</label>
+                        <input id="new-card-number" type="text" value={newCardNumber} onChange={(e) => setNewCardNumber(e.target.value)} placeholder="4242 4242 4242 4242" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label htmlFor="new-card-expiry" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>Expiry</label>
+                          <input id="new-card-expiry" type="text" value={newCardExpiry} onChange={(e) => setNewCardExpiry(e.target.value)} placeholder="MM/YY" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
+                        </div>
+                        <div>
+                          <label htmlFor="new-card-cvc" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>CVC</label>
+                          <input id="new-card-cvc" type="text" value={newCardCvc} onChange={(e) => setNewCardCvc(e.target.value)} placeholder="123" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={() => setShowAddCard(false)} className={cn("flex-1 h-9 rounded-xl text-xs font-medium", isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-slate-800 text-slate-400 hover:text-slate-200")}>Cancel</button>
+                        <button onClick={() => { setShowAddCard(false); showToast.success("Card added"); }} className={cn("flex-1 h-9 rounded-xl text-xs font-semibold text-white", isLight ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-200 text-slate-900 hover:bg-slate-100")}>Save Card</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Balance */}
+              {paymentMethod === "balance" && (
+                <div className={cn("rounded-xl p-4", isLight ? "bg-slate-50 border border-slate-200" : "bg-slate-800/30 border border-slate-700")}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={cn("text-sm font-medium", isLight ? "text-slate-700" : "text-slate-200")}>Account Balance</span>
+                    <span className={cn("text-lg font-bold", isLight ? "text-slate-800" : "text-slate-100")}>$142.50</span>
+                  </div>
+                  <div className={cn("h-2 rounded-full overflow-hidden", isLight ? "bg-slate-200" : "bg-slate-700")}>
+                    <div className="h-full rounded-full bg-emerald-500" style={{ width: "71%" }} />
+                  </div>
+                  <p className={cn("text-[10px] mt-1.5", isLight ? "text-slate-400" : "text-slate-500")}>
+                    Sufficient for this purchase
+                  </p>
+                </div>
+              )}
+
+              {/* Crypto */}
+              {paymentMethod === "crypto" && (
+                <div className="space-y-2">
+                  {CRYPTO_OPTIONS.map((coin) => (
+                    <button key={coin.key} onClick={() => setSelectedCrypto(coin.key)} className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left",
+                      selectedCrypto === coin.key
+                        ? isLight ? "border-emerald-500/50 bg-emerald-50" : "border-emerald-500/30 bg-emerald-500/5"
+                        : isLight ? "border-slate-200 hover:border-slate-300" : "border-slate-800 hover:border-slate-700"
+                    )}>
+                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold", coin.color)}>{coin.icon}</div>
+                      <span className={cn("text-sm font-medium flex-1", isLight ? "text-slate-700" : "text-slate-200")}>{coin.name}</span>
+                      {selectedCrypto === coin.key && (
+                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      )}
+                    </button>
+                  ))}
+                  <p className={cn("text-[10px]", isLight ? "text-slate-400" : "text-slate-500")}>You will receive a wallet address after confirming</p>
+                </div>
+              )}
             </div>
 
             {/* Success Box */}
