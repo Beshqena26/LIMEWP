@@ -169,95 +169,9 @@ export default function DashboardPage() {
         onRefresh={handleRefresh}
       />
 
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {QUICK_STATS.map((stat) => {
-          const colors = getColorClasses(stat.color);
-          return (
-            <div
-              key={stat.label}
-              className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
-                isLight
-                  ? "bg-white border-slate-200 hover:border-slate-300"
-                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
-              }`}
-            >
-              <div className="flex items-start gap-3">
-                <div
-                  className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
-                    colors.bg
-                  }`}
-                >
-                  <svg
-                    aria-hidden="true"
-                    className={`w-5 h-5 ${isLight ? colors.text : "text-white"}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d={stat.icon} />
-                  </svg>
-                </div>
-                <div className="min-w-0">
-                  <p
-                    className={`text-2xl font-bold ${
-                      isLight ? "text-slate-900" : "text-[var(--text-primary)]"
-                    }`}
-                  >
-                    {stat.value}
-                  </p>
-                  <p
-                    className={`text-sm ${
-                      isLight ? "text-slate-500" : "text-[var(--text-secondary)]"
-                    }`}
-                  >
-                    {stat.label}
-                  </p>
-                  <p
-                    className={`text-xs mt-0.5 ${
-                      stat.positive ? "text-emerald-500" : "text-rose-500"
-                    }`}
-                  >
-                    {stat.change}
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Quick Actions Row */}
-      <div className="flex gap-3 mb-8 flex-wrap">
-        {QUICK_ACTIONS.map((action) => (
-          <button
-            key={action.label}
-            onClick={() => handleQuickAction(action.action)}
-            className={`inline-flex items-center gap-2 h-10 px-4 rounded-xl border text-sm font-medium transition-all duration-200 ${
-              isLight
-                ? "border-slate-200 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300"
-                : "border-[var(--border-tertiary)] text-[var(--text-secondary)] bg-transparent hover:bg-[var(--bg-tertiary)] hover:border-[var(--border-primary)] hover:text-[var(--text-primary)]"
-            }`}
-          >
-            <svg
-              aria-hidden="true"
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d={action.icon} />
-            </svg>
-            {action.label}
-          </button>
-        ))}
-      </div>
-
       <PromoBanner onUpgrade={() => setIsUpgradeOpen(true)} />
 
-      {/* Getting Started Checklist */}
+      {/* Getting Started Checklist — only for new users */}
       {!checklistDismissed && (
         <div
           className={`relative border rounded-2xl p-6 mb-8 overflow-hidden transition-all duration-300 ${
@@ -362,121 +276,18 @@ export default function DashboardPage() {
         <DashboardSkeleton />
       ) : (
         <>
+          {/* MY SITES — priority #1 */}
           <SiteGrid
             sites={sites!}
             onVisitSite={handleVisitSite}
             onManageSite={handleManageSite}
           />
 
-          {/* Site Health Overview */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            {SITE_HEALTH.map((site) => {
-              const healthColorKey = getHealthColor(site.score);
-              const healthColors = getColorClasses(healthColorKey);
-              return (
-                <div
-                  key={site.name}
-                  className={`flex items-center gap-4 border rounded-2xl p-4 transition-all duration-300 ${
-                    isLight
-                      ? "bg-white border-slate-200 hover:border-slate-300"
-                      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
-                  }`}
-                >
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className={`text-sm font-medium truncate ${
-                        isLight ? "text-slate-900" : "text-[var(--text-primary)]"
-                      }`}
-                    >
-                      {site.name}
-                    </p>
-                    <div className="flex items-center gap-3 mt-2">
-                      <div
-                        className={`flex-1 h-2 rounded-full ${
-                          isLight ? "bg-slate-100" : "bg-[var(--bg-tertiary)]"
-                        }`}
-                      >
-                        <div
-                          className={`h-2 rounded-full transition-all duration-500 ${healthColors.bg}`}
-                          style={{ width: `${site.score}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-shrink-0 text-right">
-                    <span
-                      className={`text-xl font-bold ${healthColors.text}`}
-                    >
-                      {site.score}
-                    </span>
-                    <span
-                      className={`text-xs block ${
-                        isLight ? "text-slate-400" : "text-[var(--text-tertiary)]"
-                      }`}
-                    >
-                      /100
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
           {/* Performance & Security 2-Column Layout */}
           <SectionHeader title="Site Overview" />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
             <PerformanceCard />
             <SecurityCard onRunScan={() => showToast.info("Security scan started")} />
-          </div>
-
-          {/* Billing Summary Card */}
-          <div
-            className={`border rounded-2xl p-5 mb-8 transition-all duration-300 ${
-              isLight
-                ? "bg-white border-slate-200 hover:border-slate-300"
-                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p
-                  className={`text-xs font-medium uppercase tracking-wider ${
-                    isLight ? "text-slate-400" : "text-[var(--text-tertiary)]"
-                  }`}
-                >
-                  Next Payment
-                </p>
-                <p
-                  className={`text-2xl font-bold mt-1 ${
-                    isLight ? "text-slate-900" : "text-[var(--text-primary)]"
-                  }`}
-                >
-                  $79.00
-                </p>
-                <p
-                  className={`text-sm mt-0.5 ${
-                    isLight ? "text-slate-500" : "text-[var(--text-secondary)]"
-                  }`}
-                >
-                  Mar 15, 2026
-                </p>
-              </div>
-              <Link
-                href={ROUTES.BILLING}
-                className={`text-sm font-medium transition-colors ${accent.text} hover:opacity-80`}
-              >
-                View Billing &rarr;
-              </Link>
-            </div>
-            <p
-              className={`text-xs mt-3 pt-3 border-t ${
-                isLight
-                  ? "text-slate-400 border-slate-100"
-                  : "text-[var(--text-tertiary)] border-[var(--border-tertiary)]"
-              }`}
-            >
-              Business Plan &bull; 2 sites
-            </p>
           </div>
 
           <ActivityFeed
