@@ -2,6 +2,8 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { createRoute } from "@/config/routes";
 import {
   Button, Chip,
   Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,
@@ -43,6 +45,7 @@ const tabList = [
 function SitePageContent() {
   const searchParams = useSearchParams();
   const siteName = searchParams.get("name") || "limewp.com";
+  const router = useRouter();
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
 
@@ -170,11 +173,30 @@ function SitePageContent() {
                 <DropdownMenu
                   aria-label="Quick Actions"
                   onAction={(key) => {
+                    if (key === "server-management") {
+                      router.push(createRoute.siteServer(siteName));
+                      return;
+                    }
+                    if (key === "database-management") {
+                      router.push(createRoute.siteDatabase(siteName));
+                      return;
+                    }
+                    if (key === "ssl-certificates") {
+                      router.push(createRoute.siteSSL(siteName));
+                      return;
+                    }
+                    if (key === "email-management") {
+                      router.push(createRoute.siteEmail(siteName));
+                      return;
+                    }
+                    if (key === "staging") {
+                      router.push(createRoute.siteStaging(siteName));
+                      return;
+                    }
                     const messages: Record<string, string> = {
                       backup: "Backup started...",
                       "clear-cache": "Cache cleared successfully",
                       "ssl-check": "SSL check in progress...",
-                      staging: "Opening staging environment...",
                       "restart-php": "PHP restarted successfully",
                       "restart-server": "Server restart initiated...",
                       "server-logs": "Loading server logs...",
@@ -196,6 +218,10 @@ function SitePageContent() {
                   <DropdownItem key="ssl-check" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>} textValue="SSL Check"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>SSL Check</span></DropdownItem>
                   <DropdownItem key="staging" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>} textValue="Staging"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Staging</span></DropdownItem>
                   <DropdownItem key="divider" isReadOnly className="p-0 my-1 cursor-default data-[hover=true]:bg-transparent" textValue="divider"><div className={`h-px mx-2 ${isLight ? "bg-slate-100" : "bg-[var(--bg-overlay)]"}`} /></DropdownItem>
+                  <DropdownItem key="server-management" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" /></svg>} textValue="Server Management"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Server Management</span></DropdownItem>
+                  <DropdownItem key="database-management" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>} textValue="Database Management"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Database Management</span></DropdownItem>
+                  <DropdownItem key="ssl-certificates" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>} textValue="SSL / Certificates"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>SSL / Certificates</span></DropdownItem>
+                  <DropdownItem key="email-management" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>} textValue="Email Management"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Email Management</span></DropdownItem>
                   <DropdownItem key="restart-php" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>} textValue="Restart PHP"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Restart PHP</span></DropdownItem>
                   <DropdownItem key="restart-server" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>} textValue="Restart Server"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Restart Server</span></DropdownItem>
                   <DropdownItem key="server-logs" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>} textValue="Server Logs"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Server Logs</span></DropdownItem>

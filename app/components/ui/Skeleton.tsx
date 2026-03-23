@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils/cn";
 
 interface SkeletonProps {
@@ -18,7 +19,7 @@ function SkeletonBar({ className }: { className?: string }) {
   return <div className={cn(shimmer, "h-3", className)} />;
 }
 
-export function Skeleton({
+export const Skeleton = React.memo(function Skeleton({
   variant = "text",
   width,
   height,
@@ -117,4 +118,4 @@ export function Skeleton({
   }
 
   return null;
-}
+});

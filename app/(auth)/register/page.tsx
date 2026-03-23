@@ -70,6 +70,9 @@ export default function RegisterPage() {
   const [shaking, setShaking] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [codeError, setCodeError] = useState("");
+  const [verifying, setVerifying] = useState(false);
 
   const {
     register,
@@ -121,6 +124,62 @@ export default function RegisterPage() {
       : `bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:${accent.focusBorder} focus:ring-1 focus:${accent.focusRing}`
   }`;
 
+  const handleCodeChange = (index: number, value: string) => {
+    if (value.length > 1) value = value.slice(-1);
+    if (value && !/^[0-9]$/.test(value)) return;
+
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+    setCodeError("");
+
+    // Auto-focus next input
+    if (value && index < 5) {
+      const next = document.getElementById(`code-${index + 1}`);
+      next?.focus();
+    }
+  };
+
+  const handleCodeKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !code[index] && index > 0) {
+      const prev = document.getElementById(`code-${index - 1}`);
+      prev?.focus();
+      const newCode = [...code];
+      newCode[index - 1] = "";
+      setCode(newCode);
+    }
+  };
+
+  const handleCodePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (!pasted) return;
+    const newCode = [...code];
+    for (let i = 0; i < 6; i++) {
+      newCode[i] = pasted[i] || "";
+    }
+    setCode(newCode);
+    setCodeError("");
+    const focusIndex = Math.min(pasted.length, 5);
+    document.getElementById(`code-${focusIndex}`)?.focus();
+  };
+
+  const handleVerifyCode = async () => {
+    const fullCode = code.join("");
+    if (fullCode.length !== 6) {
+      setCodeError("Please enter the full 6-digit code");
+      return;
+    }
+    setVerifying(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setVerifying(false);
+    // Mock: accept any 6-digit code
+    showToast.success("Email verified! Welcome to LimeWP!");
+    setTimeout(() => {
+      window.location.href = ROUTES.DASHBOARD;
+    }, 1000);
+  };
+
   // ─── Email Verification UI ───
   if (verificationEmail) {
     return (
@@ -149,33 +208,80 @@ export default function RegisterPage() {
         </div>
 
         <h1 className={`text-2xl font-bold mb-2 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-          Check your email
+          Verify your email
         </h1>
         <p className="text-sm text-slate-500 mb-1">
-          We sent a verification link to
+          We sent a 6-digit code to
         </p>
         <p className={`text-sm font-medium mb-8 ${isLight ? "text-slate-700" : "text-slate-300"}`}>
           {verificationEmail}
         </p>
 
+        {/* 6-digit code input */}
+        <div className="flex justify-center gap-2.5 mb-2" onPaste={handleCodePaste}>
+          {code.map((digit, i) => (
+            <input
+              key={i}
+              id={`code-${i}`}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleCodeChange(i, e.target.value)}
+              onKeyDown={(e) => handleCodeKeyDown(i, e)}
+              autoFocus={i === 0}
+              className={`w-12 h-14 text-center text-xl font-bold rounded-xl border outline-none transition-all ${
+                codeError
+                  ? "border-red-500 focus:ring-2 focus:ring-red-500/20"
+                  : isLight
+                  ? `bg-white border-slate-200 text-slate-800 focus:${accent.focusBorder} focus:ring-2 focus:${accent.focusRing}`
+                  : `bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 focus:${accent.focusBorder} focus:ring-2 focus:${accent.focusRing}`
+              }`}
+            />
+          ))}
+        </div>
+        {codeError && <p className="text-red-400 text-[13px] mb-4">{codeError}</p>}
+        {!codeError && <div className="mb-4" />}
+
         <button
-          onClick={handleResend}
-          disabled={resendCooldown > 0}
+          onClick={handleVerifyCode}
+          disabled={verifying}
           className={`w-full h-11 rounded-xl bg-gradient-to-r ${colors.gradient} text-white font-semibold text-sm shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2`}
         >
-          {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend email"}
+          {verifying ? (
+            <>
+              <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              Verifying...
+            </>
+          ) : (
+            "Verify email"
+          )}
         </button>
 
-        <p className="text-center text-sm text-slate-500 mt-6">
+        <div className="mt-6 flex items-center justify-between">
+          <button
+            onClick={handleResend}
+            disabled={resendCooldown > 0}
+            className={`text-sm font-medium transition-colors ${
+              resendCooldown > 0
+                ? "text-slate-400 cursor-not-allowed"
+                : isLight ? "text-slate-600 hover:text-slate-800" : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend code"}
+          </button>
           <Link
             href={ROUTES.LOGIN}
-            className={`font-medium transition-colors ${
-              isLight ? "text-slate-700 hover:text-slate-900" : "text-slate-300 hover:text-slate-100"
+            className={`text-sm font-medium transition-colors ${
+              isLight ? "text-slate-600 hover:text-slate-800" : "text-slate-400 hover:text-slate-200"
             }`}
           >
             Back to sign in
           </Link>
-        </p>
+        </div>
       </div>
     );
   }

@@ -65,7 +65,7 @@ export default function HomePage() {
   }, [])
 
   const toggleTheme = useCallback(() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light'), [resolvedTheme, setTheme])
-  const onSignup = useCallback(() => { window.location.href = ROUTES.LOGIN }, [])
+  const onSignup = useCallback(() => { window.location.href = ROUTES.REGISTER }, [])
   const { h, m, s } = useCountdown()
   const countdown = { d: 0, h, m, s }
 

@@ -26,6 +26,8 @@ export const NAV_ICONS = {
   sparkles:
     "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z",
   arrowRight: "M13 7l5 5m0 0l-5 5m5-5H6",
+  monitoring: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v-5.5m3 5.5V8.75m3 2.5V10.5",
+  migrate: "M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5",
 } as const;
 
 /**
@@ -83,6 +85,18 @@ export const NAV_GROUPS: NavGroup[] = [
         href: ROUTES.BILLING,
         icon: NAV_ICONS.billing,
         color: "sky",
+      },
+      {
+        label: "Monitoring",
+        href: ROUTES.MONITORING,
+        icon: NAV_ICONS.monitoring,
+        color: "rose",
+      },
+      {
+        label: "Migrate",
+        href: ROUTES.MIGRATE,
+        icon: NAV_ICONS.migrate,
+        color: "cyan",
       },
     ],
   },

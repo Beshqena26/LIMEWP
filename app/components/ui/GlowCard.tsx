@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 import { getColorClasses } from "@/lib/utils/colors";
 
@@ -19,7 +20,7 @@ const glowPositions = {
   "bottom-left": "translate-y-1/2 -translate-x-1/3 bottom-0 left-0",
 };
 
-export function GlowCard({
+export const GlowCard = React.memo(function GlowCard({
   children,
   glowColor = "emerald",
   glowPosition = "top-right",
@@ -45,4 +46,4 @@ export function GlowCard({
       <div className="relative">{children}</div>
     </div>
   );
-}
+});

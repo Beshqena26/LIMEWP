@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 import { getColorClasses } from "@/lib/utils/colors";
 
@@ -17,7 +18,7 @@ const sizes = {
   lg: { box: "w-12 h-12", icon: "w-6 h-6" },
 };
 
-export function IconBox({ icon, color = "emerald", size = "md", variant = "outline", className }: IconBoxProps) {
+export const IconBox = React.memo(function IconBox({ icon, color = "emerald", size = "md", variant = "outline", className }: IconBoxProps) {
   const colors = getColorClasses(color);
   const sizeClasses = sizes[size];
 
@@ -34,4 +35,4 @@ export function IconBox({ icon, color = "emerald", size = "md", variant = "outli
       </svg>
     </div>
   );
-}
+});

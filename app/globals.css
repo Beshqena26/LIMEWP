@@ -16,6 +16,23 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Accessible focus indicators — keyboard only */
+:focus-visible {
+  outline: 2px solid var(--focus-ring, #10b981);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Hide Scrollbar globally */
 * {
   scrollbar-width: none; /* Firefox */

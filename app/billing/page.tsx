@@ -20,14 +20,48 @@ import { useSimulatedLoading } from "@/hooks";
 import { NoInvoices } from "../components/empty-states";
 import { showToast } from "@/lib/toast";
 
+const PLANS = [
+  {
+    name: "Starter",
+    price: 29,
+    description: "Perfect for personal sites and blogs",
+    features: ["1 WordPress Site", "10 GB Storage", "50 GB Bandwidth", "Free SSL", "Daily Backups", "Email Support"],
+    highlighted: false,
+  },
+  {
+    name: "Business",
+    price: 79,
+    description: "For growing businesses with multiple sites",
+    features: ["5 WordPress Sites", "50 GB Storage", "500 GB Bandwidth", "Free SSL & CDN", "Real-time Backups", "Priority Support", "Staging Environment"],
+    highlighted: true,
+  },
+  {
+    name: "Enterprise",
+    price: 199,
+    description: "For agencies and high-traffic websites",
+    features: ["Unlimited Sites", "200 GB Storage", "Unlimited Bandwidth", "Free SSL & CDN", "Real-time Backups", "24/7 Dedicated Support", "Staging & Dev Environments", "Custom Caching Rules"],
+    highlighted: false,
+  },
+];
+
 const invoices = [
+  { id: "INV-2026-003", date: "Mar 25, 2026", amount: "$49.00", status: "Upcoming", description: "Business Plan - Monthly" },
+  { id: "INV-2026-002", date: "Feb 25, 2026", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
   { id: "INV-2026-001", date: "Jan 25, 2026", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
   { id: "INV-2025-012", date: "Dec 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
   { id: "INV-2025-011", date: "Nov 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
   { id: "INV-2025-010", date: "Oct 25, 2025", amount: "$9.00", status: "Paid", description: "Global CDN Add-on" },
   { id: "INV-2025-009", date: "Oct 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
   { id: "INV-2025-008", date: "Sep 25, 2025", amount: "$49.00", status: "Refunded", description: "Business Plan - Monthly" },
+  { id: "INV-2025-007", date: "Aug 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
+  { id: "INV-2025-006", date: "Jul 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
+  { id: "INV-2025-005", date: "Jun 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
+  { id: "INV-2025-004", date: "May 25, 2025", amount: "$49.00", status: "Paid", description: "Business Plan - Monthly" },
+  { id: "INV-2025-003", date: "Apr 25, 2025", amount: "$29.00", status: "Paid", description: "Starter Plan - Monthly" },
+  { id: "INV-2025-002", date: "Mar 25, 2025", amount: "$29.00", status: "Paid", description: "Starter Plan - Monthly" },
 ];
+
+const INVOICES_PER_PAGE = 5;
 
 const usageItems = [
   { label: "Sites", current: 2, max: 5, icon: "M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" },
@@ -38,10 +72,18 @@ const usageItems = [
 
 export default function BillingPage() {
   const [selectedPayment, setSelectedPayment] = useState("credit-card");
+  const [showPlans, setShowPlans] = useState(false);
+  const [invoicePage, setInvoicePage] = useState(1);
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = getColorClasses(accentColor);
   const { isLoading } = useSimulatedLoading(() => true);
+
+  const totalInvoicePages = Math.ceil(invoices.length / INVOICES_PER_PAGE);
+  const paginatedInvoices = invoices.slice(
+    (invoicePage - 1) * INVOICES_PER_PAGE,
+    invoicePage * INVOICES_PER_PAGE
+  );
 
   return (
     <AppShell>
@@ -173,16 +215,78 @@ export default function BillingPage() {
               }`}>
                 Cancel Plan
               </button>
-              <button onClick={() => showToast.info("Opening upgrade options...")} className={`h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}>
+              <button onClick={() => setShowPlans(!showPlans)} className={`h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
                 </svg>
-                Upgrade to Pro
+                {showPlans ? "Hide Plans" : "Upgrade Plan"}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Plan Comparison */}
+      {showPlans && (
+        <div className="mb-8">
+          <h2 className={`text-base font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Compare Plans</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {PLANS.map((plan) => (
+              <div
+                key={plan.name}
+                className={`relative rounded-2xl border p-6 transition-all ${
+                  plan.highlighted
+                    ? isLight
+                      ? "bg-white border-slate-400 ring-1 ring-slate-400 shadow-lg"
+                      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-slate-500 ring-1 ring-slate-500 shadow-lg"
+                    : isLight
+                      ? "bg-white border-slate-200 hover:border-slate-300"
+                      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
+                }`}
+              >
+                {plan.highlighted && (
+                  <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white ${accent.button}`}>
+                    Current Plan
+                  </div>
+                )}
+                <div className="text-center mb-5">
+                  <h3 className={`text-lg font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{plan.name}</h3>
+                  <p className={`text-xs mb-4 ${isLight ? "text-slate-500" : "text-slate-500"}`}>{plan.description}</p>
+                  <div className="flex items-baseline justify-center gap-1">
+                    <span className={`text-4xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>${plan.price}</span>
+                    <span className={`text-sm ${isLight ? "text-slate-500" : "text-slate-500"}`}>/month</span>
+                  </div>
+                </div>
+                <ul className="space-y-2.5 mb-6">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-2.5">
+                      <svg className={`w-4 h-4 flex-shrink-0 ${plan.highlighted ? accent.text : isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                      <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => {
+                    if (plan.highlighted) return;
+                    showToast.info(`Switching to ${plan.name} plan...`);
+                  }}
+                  className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    plan.highlighted
+                      ? isLight
+                        ? "bg-slate-100 text-slate-400 cursor-default"
+                        : "bg-slate-800 text-slate-500 cursor-default"
+                      : `text-white shadow-lg hover:shadow-xl ${accent.button} ${accent.buttonHover}`
+                  }`}
+                >
+                  {plan.highlighted ? "Current Plan" : plan.price > 79 ? "Upgrade" : "Downgrade"}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Payment Methods */}
       <div className="mb-10">
@@ -409,7 +513,7 @@ export default function BillingPage() {
               <TableColumn>Actions</TableColumn>
             </TableHeader>
             <TableBody>
-              {invoices.map((inv) => (
+              {paginatedInvoices.map((inv) => (
                   <TableRow key={inv.id}>
                     <TableCell>
                       <span className={`font-mono font-medium text-xs ${isLight ? "text-slate-700" : "text-slate-200"}`}>{inv.id}</span>
@@ -419,10 +523,26 @@ export default function BillingPage() {
                     <TableCell className={`font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{inv.amount}</TableCell>
                     <TableCell>
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ring-inset ${
-                        isLight ? "bg-slate-100 ring-slate-200" : "bg-slate-800 ring-slate-700"
+                        inv.status === "Upcoming"
+                          ? isLight ? "bg-amber-50 ring-amber-200" : "bg-amber-900/20 ring-amber-700"
+                          : inv.status === "Refunded"
+                            ? isLight ? "bg-rose-50 ring-rose-200" : "bg-rose-900/20 ring-rose-700"
+                            : isLight ? "bg-slate-100 ring-slate-200" : "bg-slate-800 ring-slate-700"
                       }`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${isLight ? "bg-slate-500" : "bg-slate-400"}`} />
-                        <span className={`text-[11px] font-semibold ${isLight ? "text-slate-600" : "text-slate-400"}`}>{inv.status}</span>
+                        <span className={`w-1.5 h-1.5 rounded-full ${
+                          inv.status === "Upcoming"
+                            ? "bg-amber-500"
+                            : inv.status === "Refunded"
+                              ? "bg-rose-500"
+                              : isLight ? "bg-emerald-500" : "bg-emerald-400"
+                        }`} />
+                        <span className={`text-[11px] font-semibold ${
+                          inv.status === "Upcoming"
+                            ? isLight ? "text-amber-700" : "text-amber-400"
+                            : inv.status === "Refunded"
+                              ? isLight ? "text-rose-700" : "text-rose-400"
+                              : isLight ? "text-slate-600" : "text-slate-400"
+                        }`}>{inv.status}</span>
                       </span>
                     </TableCell>
                     <TableCell>
@@ -435,7 +555,9 @@ export default function BillingPage() {
                             <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                         </button>
-                        <button className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                        <button
+                          onClick={() => showToast.success(`Downloaded ${inv.id}.pdf`)}
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
                           isLight ? "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700" : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
                         }`}>
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -449,6 +571,56 @@ export default function BillingPage() {
             </TableBody>
           </Table>
           </div>
+          )}
+
+          {/* Pagination */}
+          {invoices.length > INVOICES_PER_PAGE && (
+            <div className={`flex items-center justify-between px-6 py-4 border-t ${
+              isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
+            }`}>
+              <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-500"}`}>
+                Showing {(invoicePage - 1) * INVOICES_PER_PAGE + 1}–{Math.min(invoicePage * INVOICES_PER_PAGE, invoices.length)} of {invoices.length} invoices
+              </p>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setInvoicePage(Math.max(1, invoicePage - 1))}
+                  disabled={invoicePage === 1}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed ${
+                    isLight ? "hover:bg-slate-100 text-slate-500" : "hover:bg-[var(--bg-elevated)] text-slate-400"
+                  }`}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
+                {Array.from({ length: totalInvoicePages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setInvoicePage(page)}
+                    className={`w-8 h-8 rounded-lg text-xs font-semibold transition-all ${
+                      page === invoicePage
+                        ? `text-white ${accent.button}`
+                        : isLight
+                          ? "text-slate-600 hover:bg-slate-100"
+                          : "text-slate-400 hover:bg-[var(--bg-elevated)]"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setInvoicePage(Math.min(totalInvoicePages, invoicePage + 1))}
+                  disabled={invoicePage === totalInvoicePages}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed ${
+                    isLight ? "hover:bg-slate-100 text-slate-500" : "hover:bg-[var(--bg-elevated)] text-slate-400"
+                  }`}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>

@@ -44,9 +44,18 @@ export const ROUTES = {
   SIGNUP: "/register",
   REGISTER: "/register",
   FORGOT_PASSWORD: "/forgot-password",
+  TWO_FACTOR: "/two-factor",
+
+  // Onboarding
+  ONBOARDING: "/onboarding",
 
   // Contact
   CONTACT: "/contact",
+
+  // Panel
+  NOTIFICATIONS: "/notifications",
+  MONITORING: "/monitoring",
+  MIGRATE: "/migrate",
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;
@@ -57,4 +66,9 @@ export type RoutePath = (typeof ROUTES)[RouteKey];
  */
 export const createRoute = {
   site: (name: string) => `${ROUTES.SITE}?name=${encodeURIComponent(name)}`,
+  siteServer: (siteId: string) => `/sites/${encodeURIComponent(siteId)}/server`,
+  siteDatabase: (siteId: string) => `/sites/${encodeURIComponent(siteId)}/database`,
+  siteSSL: (siteId: string) => `/sites/${encodeURIComponent(siteId)}/ssl`,
+  siteEmail: (siteId: string) => `/sites/${encodeURIComponent(siteId)}/email`,
+  siteStaging: (siteId: string) => `/sites/${encodeURIComponent(siteId)}/staging`,
 } as const;

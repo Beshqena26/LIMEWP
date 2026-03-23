@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 
 type CalloutVariant = "info" | "warning" | "success" | "error";
@@ -53,7 +54,7 @@ const variantIcons: Record<CalloutVariant, string> = {
   error: "M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z",
 };
 
-export function Callout({ variant = "info", title, children, className }: CalloutProps) {
+export const Callout = React.memo(function Callout({ variant = "info", title, children, className }: CalloutProps) {
   const styles = variantStyles[variant];
   const iconPath = variantIcons[variant];
 
@@ -73,4 +74,4 @@ export function Callout({ variant = "info", title, children, className }: Callou
       </div>
     </div>
   );
-}
+});

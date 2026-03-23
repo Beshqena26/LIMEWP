@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useNotifications } from "@/lib/context/NotificationContext";
+import { NOTIFICATION_STYLES, type NotificationType } from "@/data/notifications";
 import {
-  Input,
   Avatar,
   Dropdown,
   DropdownTrigger,
@@ -19,6 +20,7 @@ import { ROUTES } from "@/config/routes";
 import { NAV_GROUPS, NAV_ICONS } from "@/config/navigation";
 import { useTheme } from "@/lib/context/ThemeContext";
 import MobileSidebar from "./MobileSidebar";
+import { CommandPalette } from "./ui/CommandPalette";
 
 // Accent color configuration for navigation items
 const ACCENT_STYLES = {
@@ -79,26 +81,13 @@ const ACCENT_STYLES = {
   },
 };
 
-const notifications = [
-  { type: "success", title: "Backup completed", desc: "limewp.com backup finished", time: "2 min ago", unread: true },
-  { type: "warning", title: "SSL expiring", desc: "supernova.guru cert expires in 7 days", time: "1 hour ago", unread: true },
-  { type: "update", title: "WordPress 6.7", desc: "New version available", time: "3 hours ago", unread: true },
-  { type: "info", title: "Traffic spike", desc: "limewp.com traffic up 150%", time: "Yesterday", unread: false },
-];
-
-const iconColors: Record<string, { bg: string; text: string; ring: string }> = {
-  success: { bg: "bg-emerald-500/15", text: "text-emerald-400", ring: "ring-emerald-500/20" },
-  warning: { bg: "bg-amber-500/15", text: "text-amber-400", ring: "ring-amber-500/20" },
-  update: { bg: "bg-violet-500/15", text: "text-violet-400", ring: "ring-violet-500/20" },
-  info: { bg: "bg-sky-500/15", text: "text-sky-400", ring: "ring-sky-500/20" },
-};
-
-function NotificationIcon({ type }: { type: string }) {
-  const props = { fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", strokeWidth: 1.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, className: "w-4 h-4" };
-  if (type === "success") return <svg {...props}><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
-  if (type === "warning") return <svg {...props}><path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>;
-  if (type === "update") return <svg {...props}><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>;
-  return <svg {...props}><path d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>;
+function NotificationIcon({ type }: { type: NotificationType }) {
+  const style = NOTIFICATION_STYLES[type];
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d={style.iconPath} />
+    </svg>
+  );
 }
 
 // Flatten all nav items for the header
@@ -117,16 +106,6 @@ const RESOURCES_ITEMS = ALL_NAV_ITEMS.filter(
   item => ["Documentation", "API Reference", "Community Forum", "Support"].includes(item.label)
 );
 
-// Quick search suggestions
-const SEARCH_SUGGESTIONS = [
-  { label: "Go to Dashboard", href: ROUTES.DASHBOARD, icon: NAV_ICONS.home, type: "navigation" },
-  { label: "Manage Services", href: ROUTES.SERVICES, icon: NAV_ICONS.services, type: "navigation" },
-  { label: "View Billing", href: ROUTES.BILLING, icon: NAV_ICONS.billing, type: "navigation" },
-  { label: "DNS Settings", href: ROUTES.DNS, icon: NAV_ICONS.dns, type: "navigation" },
-  { label: "Documentation", href: ROUTES.DOCS, icon: NAV_ICONS.docs, type: "resource" },
-  { label: "API Reference", href: ROUTES.API_REFERENCE, icon: NAV_ICONS.apiReference, type: "resource" },
-];
-
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -135,59 +114,22 @@ export default function Header() {
   const accent = ACCENT_STYLES[accentColor];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const { notifications, unreadCount, markAsRead, markAllRead } = useNotifications();
 
   const toggleTheme = () => setTheme(isLight ? "dark" : "light");
-  const unreadCount = notifications.filter(n => n.unread).length;
 
-  // Cmd+K / Ctrl+K keyboard shortcut and Escape to close
+  // Cmd+K / Ctrl+K keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setSearchOpen(true);
-        setTimeout(() => searchInputRef.current?.focus(), 0);
-      }
-      if (e.key === "Escape" && searchOpen) {
-        setSearchOpen(false);
-        setSearchQuery("");
-        searchInputRef.current?.blur();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [searchOpen]);
-
-  // Click outside to close search dropdown
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (searchOpen && searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
-        setSearchOpen(false);
-        setSearchQuery("");
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [searchOpen]);
-
-  // Filter suggestions based on query
-  const filteredSuggestions = searchQuery.trim()
-    ? SEARCH_SUGGESTIONS.filter(s =>
-        s.label.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : SEARCH_SUGGESTIONS;
-
-  const accentFocusClasses = {
-    emerald: "group-data-[focus=true]:!border-emerald-500/40 group-data-[focus=true]:!ring-emerald-500/20",
-    sky: "group-data-[focus=true]:!border-sky-500/40 group-data-[focus=true]:!ring-sky-500/20",
-    violet: "group-data-[focus=true]:!border-violet-500/40 group-data-[focus=true]:!ring-violet-500/20",
-    amber: "group-data-[focus=true]:!border-amber-500/40 group-data-[focus=true]:!ring-amber-500/20",
-    pink: "group-data-[focus=true]:!border-pink-500/40 group-data-[focus=true]:!ring-pink-500/20",
-  };
+  }, []);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors ${
@@ -201,6 +143,7 @@ export default function Header() {
         {/* Mobile Hamburger - LEFT side */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Open menu"
           className={`lg:hidden min-w-[44px] min-h-[44px] w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
@@ -390,10 +333,7 @@ export default function Header() {
       <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
         {/* Mobile Search Icon */}
         <button
-          onClick={() => {
-            setSearchOpen(true);
-            setTimeout(() => searchInputRef.current?.focus(), 0);
-          }}
+          onClick={() => setSearchOpen(true)}
           className={`md:hidden min-w-[44px] min-h-[44px] w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
@@ -405,129 +345,27 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* Search with Dropdown */}
-        <div ref={searchContainerRef} className="relative hidden md:block w-[200px] lg:w-[260px]">
-          <Input
-            ref={searchInputRef}
-            type="search"
-            placeholder="Search..."
-            variant="bordered"
-            radius="lg"
-            size="sm"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setSearchOpen(true)}
-            startContent={
-              <svg className={`w-4 h-4 flex-shrink-0 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            }
-            endContent={
-              <kbd className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
-                isLight
-                  ? "text-slate-400 bg-slate-100 border-slate-200"
-                  : "text-slate-500 bg-[var(--bg-primary)] border-[var(--border-primary)]"
-              }`}>
-                <span className="text-[11px]">⌘</span>K
-              </kbd>
-            }
-            classNames={{
-              base: "w-full",
-              inputWrapper: [
-                "!rounded-xl",
-                isLight ? "bg-slate-50" : "bg-[var(--bg-secondary)]",
-                isLight ? "border-slate-200" : "border-[var(--border-tertiary)]",
-                isLight ? "hover:border-slate-300" : "hover:border-[var(--border-primary)]",
-                accentFocusClasses[accentColor],
-                "group-data-[focus=true]:!ring-1",
-                "!outline-none",
-                "h-9",
-                "transition-all",
-              ],
-              input: [
-                "text-sm",
-                isLight ? "text-slate-800" : "text-slate-100",
-                isLight ? "placeholder:text-slate-400" : "placeholder:text-slate-500",
-                "!px-2",
-                "!outline-none",
-                "!ring-0",
-              ],
-            }}
-          />
-
-          {/* Search Dropdown */}
-          {searchOpen && (
-            <div className={`absolute top-full left-0 right-0 mt-1 rounded-xl shadow-2xl shadow-black/20 overflow-hidden z-50 ${
-              isLight
-                ? "bg-white border border-slate-200"
-                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
-            }`}>
-              <div className="py-1.5 w-full">
-                {/* Quick Actions Header */}
-                <div className={`px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider ${
-                  isLight ? "text-slate-400" : "text-slate-500"
-                }`}>
-                  {searchQuery.trim() ? "Results" : "Quick Actions"}
-                </div>
-
-                {/* Suggestions List */}
-                <div className="flex flex-col gap-0.5 px-1.5">
-                  {filteredSuggestions.length > 0 ? (
-                    filteredSuggestions.map((suggestion) => (
-                      <Link
-                        key={suggestion.href}
-                        href={suggestion.href}
-                        onClick={() => {
-                          setSearchOpen(false);
-                          setSearchQuery("");
-                        }}
-                        className={`flex items-center gap-2 px-2 py-2 rounded-lg transition-all w-full ${
-                          isLight
-                            ? "hover:bg-slate-100"
-                            : "hover:bg-[var(--bg-elevated)]"
-                        }`}
-                      >
-                        <svg
-                          className={`w-4 h-4 flex-shrink-0 ${
-                            suggestion.type === "navigation"
-                              ? isLight ? "text-slate-400" : "text-slate-500"
-                              : "text-violet-500"
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d={suggestion.icon} />
-                        </svg>
-                        <span className={`text-[13px] truncate flex-1 text-left ${
-                          isLight ? "text-slate-700" : "text-slate-200"
-                        }`}>
-                          {suggestion.label}
-                        </span>
-                      </Link>
-                    ))
-                  ) : (
-                    <div className={`px-2 py-4 text-center w-full ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                      <p className="text-xs">No results found</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer hint */}
-                <div className={`mt-1 pt-1.5 border-t flex items-center justify-center px-3 py-1.5 ${
-                  isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"
-                }`}>
-                  <span className={`text-[10px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                    <kbd className={`px-1 py-0.5 rounded font-mono text-[9px] ${isLight ? "bg-slate-100" : "bg-slate-800"}`}>esc</kbd> to close
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Search Trigger Button */}
+        <button
+          onClick={() => setSearchOpen(true)}
+          className={`hidden md:flex items-center gap-2 w-[200px] lg:w-[260px] h-9 px-3 rounded-xl border text-sm transition-all ${
+            isLight
+              ? "bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-400"
+              : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] text-slate-500"
+          }`}
+        >
+          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span className="flex-1 text-left">Search...</span>
+          <kbd className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
+            isLight
+              ? "text-slate-400 bg-white border-slate-200"
+              : "text-slate-500 bg-[var(--bg-primary)] border-[var(--border-primary)]"
+          }`}>
+            <span className="text-[11px]">⌘</span>K
+          </kbd>
+        </button>
 
         {/* Notifications */}
         <Dropdown
@@ -564,9 +402,16 @@ export default function Header() {
               base: "p-0",
               list: "gap-0",
             }}
+            onAction={(key) => {
+              const k = String(key);
+              if (k.startsWith("notif-")) {
+                const notif = notifications.slice(0, 8).find((_, i) => `notif-${i}` === k);
+                if (notif) markAsRead(notif.id);
+              }
+            }}
             items={[
               { key: "header", itemType: "header" as const },
-              ...notifications.map((n, i) => ({ ...n, key: `notif-${i}`, itemType: "notification" as const })),
+              ...notifications.slice(0, 8).map((n, i) => ({ ...n, key: `notif-${i}`, itemType: "notification" as const })),
               { key: "view-all", itemType: "footer" as const },
             ]}
           >
@@ -578,11 +423,21 @@ export default function Header() {
                       isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--gradient-card-to)]"
                     }`}>
                       <span className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Notifications</span>
-                      {unreadCount > 0 && (
-                        <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-lg ring-1 ring-emerald-500/20">
-                          {unreadCount} new
-                        </span>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {unreadCount > 0 && (
+                          <>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); markAllRead(); }}
+                              className="text-[10px] font-medium text-emerald-500 hover:text-emerald-400 transition-colors"
+                            >
+                              Mark all read
+                            </button>
+                            <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-lg ring-1 ring-emerald-500/20">
+                              {unreadCount} new
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </DropdownItem>
                 );
@@ -590,7 +445,7 @@ export default function Header() {
               if (item.itemType === "footer") {
                 return (
                   <DropdownItem key={item.key} className="p-0 data-[hover=true]:bg-transparent" textValue="View all">
-                    <Link href="/support" className={`flex items-center justify-center gap-2 py-3 text-sm font-semibold text-violet-500 hover:text-violet-400 transition-colors`}>
+                    <Link href="/notifications" className={`flex items-center justify-center gap-2 py-3 text-sm font-semibold text-violet-500 hover:text-violet-400 transition-colors`}>
                       View all notifications
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                         <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -599,17 +454,18 @@ export default function Header() {
                   </DropdownItem>
                 );
               }
-              const notification = item as typeof notifications[0] & { key: string; type: string };
+              const notification = item as typeof notifications[0] & { key: string };
+              const nStyle = NOTIFICATION_STYLES[notification.type];
               return (
                 <DropdownItem
                   key={notification.key}
                   className={`px-4 py-3 rounded-none border-b ${
                     isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"
-                  } ${notification.unread ? (isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]') : ''}`}
+                  } ${notification.unread ? `border-l-2 border-l-emerald-500 ${isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]'}` : ''}`}
                   textValue={notification.title}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-8 h-8 rounded-lg ${iconColors[notification.type].bg} ${iconColors[notification.type].text} ring-1 ${iconColors[notification.type].ring} flex items-center justify-center flex-shrink-0`}>
+                    <div className={`w-8 h-8 rounded-lg ${nStyle.bg} ${nStyle.text} ring-1 ${nStyle.ring} flex items-center justify-center flex-shrink-0`}>
                       <NotificationIcon type={notification.type} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -617,7 +473,7 @@ export default function Header() {
                         <span className={`text-sm font-medium ${notification.unread ? (isLight ? 'text-slate-900' : 'text-slate-100') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>{notification.title}</span>
                         {notification.unread && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
                       </div>
-                      <p className="text-xs truncate mt-0.5 text-slate-500">{notification.desc}</p>
+                      <p className="text-xs truncate mt-0.5 text-slate-500">{notification.description}</p>
                       <span className={`text-[10px] mt-1 block ${isLight ? "text-slate-400" : "text-slate-600"}`}>{notification.time}</span>
                     </div>
                   </div>
@@ -630,6 +486,7 @@ export default function Header() {
         {/* Theme Toggle - hidden on mobile (available in drawer) */}
         <button
           onClick={toggleTheme}
+          aria-label="Toggle theme"
           className={`hidden md:flex w-9 h-9 rounded-lg items-center justify-center transition-all border ${
             isLight
               ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
@@ -821,6 +678,9 @@ export default function Header() {
 
       {/* Mobile Sidebar Drawer */}
       <MobileSidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+
+      {/* Command Palette */}
+      <CommandPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }

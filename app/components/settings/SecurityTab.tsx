@@ -1,9 +1,14 @@
 "use client";
 
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Chip } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { showToast } from "@/lib/toast";
 import { INPUT_CLASS_NAMES, TWO_FACTOR_OPTIONS, ACTIVE_SESSIONS } from "@/data/settings";
+import { passwordChangeSchema, type PasswordChangeFormData } from "@/lib/validations";
+import { ConfirmDialog } from "@/app/components/ui/ConfirmDialog";
 
 // Accent color styles
 const ACCENT_STYLES = {
@@ -29,11 +34,45 @@ function PasswordCard() {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = ACCENT_STYLES[accentColor];
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<PasswordChangeFormData>({
+    resolver: zodResolver(passwordChangeSchema),
+  });
 
   const inputClassNames = isLight ? {
     inputWrapper: `bg-slate-50 border-slate-200 hover:border-slate-300 ${accent.focusBorder} !rounded-xl`,
     input: "text-slate-800 placeholder:text-slate-400",
   } : INPUT_CLASS_NAMES;
+
+  const errorInputClassNames = isLight ? {
+    inputWrapper: `bg-slate-50 border-red-400 hover:border-red-500 ${accent.focusBorder} !rounded-xl`,
+    input: "text-slate-800 placeholder:text-slate-400",
+  } : {
+    ...INPUT_CLASS_NAMES,
+    inputWrapper: Array.isArray(INPUT_CLASS_NAMES.inputWrapper)
+      ? [...INPUT_CLASS_NAMES.inputWrapper.filter((c: string) => !c.includes("border")), "border-red-400"]
+      : "bg-[var(--bg-secondary)] border-red-400 rounded-xl transition-all",
+  };
+
+  const onSubmit = async (_data: PasswordChangeFormData) => {
+    setIsSubmitting(true);
+    await new Promise((r) => setTimeout(r, 1000));
+    setIsSubmitting(false);
+    reset();
+    showToast.success("Password updated");
+  };
+
+  const onError = () => {
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
+  };
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
@@ -56,29 +95,35 @@ function PasswordCard() {
           </div>
         </div>
 
-        <div className="space-y-4 max-w-md">
+        <form onSubmit={handleSubmit(onSubmit, onError)} className={`space-y-4 max-w-md ${shake ? "animate-shake" : ""}`}>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Current Password</label>
-            <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
+            <Input type="password" placeholder="••••••••••••" classNames={errors.currentPassword ? errorInputClassNames : inputClassNames} variant="bordered" size="md" {...register("currentPassword")} />
+            {errors.currentPassword && <p className="text-red-400 text-[13px] mt-1">{errors.currentPassword.message}</p>}
           </div>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">New Password</label>
-            <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
-            <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1.5">
-              <svg className={`w-3.5 h-3.5 ${isLight ? "text-slate-400" : "text-slate-600"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-              </svg>
-              12+ characters, mixed case, numbers, symbols
-            </p>
+            <Input type="password" placeholder="••••••••••••" classNames={errors.newPassword ? errorInputClassNames : inputClassNames} variant="bordered" size="md" {...register("newPassword")} />
+            {errors.newPassword ? (
+              <p className="text-red-400 text-[13px] mt-1">{errors.newPassword.message}</p>
+            ) : (
+              <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1.5">
+                <svg className={`w-3.5 h-3.5 ${isLight ? "text-slate-400" : "text-slate-600"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                </svg>
+                12+ characters, mixed case, numbers, symbols
+              </p>
+            )}
           </div>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Confirm Password</label>
-            <Input type="password" placeholder="••••••••••••" classNames={inputClassNames} variant="bordered" size="md" />
+            <Input type="password" placeholder="••••••••••••" classNames={errors.confirmPassword ? errorInputClassNames : inputClassNames} variant="bordered" size="md" {...register("confirmPassword")} />
+            {errors.confirmPassword && <p className="text-red-400 text-[13px] mt-1">{errors.confirmPassword.message}</p>}
           </div>
-          <Button onPress={() => showToast.success("Password updated")} className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow} mt-2`}>
+          <Button type="submit" isLoading={isSubmitting} className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg ${accent.shadow} mt-2`}>
             Update Password
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );
@@ -162,94 +207,141 @@ function SessionsCard() {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = ACCENT_STYLES[accentColor];
+  const [revokeSession, setRevokeSession] = useState<number | null>(null);
+  const [isRevoking, setIsRevoking] = useState(false);
+
+  const handleRevoke = async () => {
+    setIsRevoking(true);
+    await new Promise((r) => setTimeout(r, 800));
+    setIsRevoking(false);
+    setRevokeSession(null);
+    showToast.warning("Session revoked");
+  };
 
   return (
-    <div className={`relative rounded-2xl border overflow-hidden ${
-      isLight
-        ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
-    }`}>
-      <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
+    <>
+      <div className={`relative rounded-2xl border overflow-hidden ${
+        isLight
+          ? "bg-white border-slate-200"
+          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
+      }`}>
+        <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${accent.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3`} />
 
-      <div className="relative p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className={`w-10 h-10 rounded-xl ${accent.bg} ${accent.text} ring-1 ${accent.ring} flex items-center justify-center`}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
-            </svg>
-          </div>
-          <div>
-            <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Active Sessions</h3>
-            <p className="text-xs text-slate-500">Manage your logged-in devices</p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {ACTIVE_SESSIONS.map((session, i) => (
-            <div key={i} className={`flex items-center justify-between p-4 rounded-xl ${
-              isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
-            }`}>
-              <div className="flex items-center gap-3">
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                  session.current
-                    ? `${accent.bg}`
-                    : isLight ? 'bg-slate-200' : 'bg-[var(--bg-secondary)]'
-                }`}>
-                  <svg className={`w-4 h-4 ${session.current ? accent.text : isLight ? 'text-slate-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                    <path d={session.icon} />
-                  </svg>
-                </div>
-                <div>
-                  <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{session.device}</p>
-                  <p className="text-[11px] text-slate-500">{session.location} · {session.time}</p>
-                </div>
-              </div>
-              {session.current ? (
-                <Chip size="sm" classNames={{ base: `${accent.bg} border-0`, content: `${accent.text} font-semibold text-[10px]` }}>
-                  Current
-                </Chip>
-              ) : (
-                <Button onPress={() => showToast.warning("Session revoked")} variant="flat" size="sm" className="bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 font-medium text-xs rounded-lg h-8">
-                  Revoke
-                </Button>
-              )}
+        <div className="relative p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className={`w-10 h-10 rounded-xl ${accent.bg} ${accent.text} ring-1 ${accent.ring} flex items-center justify-center`}>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+              </svg>
             </div>
-          ))}
+            <div>
+              <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Active Sessions</h3>
+              <p className="text-xs text-slate-500">Manage your logged-in devices</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {ACTIVE_SESSIONS.map((session, i) => (
+              <div key={i} className={`flex items-center justify-between p-4 rounded-xl ${
+                isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]/50"
+              }`}>
+                <div className="flex items-center gap-3">
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                    session.current
+                      ? `${accent.bg}`
+                      : isLight ? 'bg-slate-200' : 'bg-[var(--bg-secondary)]'
+                  }`}>
+                    <svg className={`w-4 h-4 ${session.current ? accent.text : isLight ? 'text-slate-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d={session.icon} />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{session.device}</p>
+                    <p className="text-[11px] text-slate-500">{session.location} · {session.time}</p>
+                  </div>
+                </div>
+                {session.current ? (
+                  <Chip size="sm" classNames={{ base: `${accent.bg} border-0`, content: `${accent.text} font-semibold text-[10px]` }}>
+                    Current
+                  </Chip>
+                ) : (
+                  <Button onPress={() => setRevokeSession(i)} variant="flat" size="sm" className="bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 font-medium text-xs rounded-lg h-8">
+                    Revoke
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
+      <ConfirmDialog
+        open={revokeSession !== null}
+        onClose={() => setRevokeSession(null)}
+        onConfirm={handleRevoke}
+        title="Revoke Session"
+        message="This will immediately log out this device. The user will need to sign in again to regain access."
+        confirmText="Revoke Session"
+        variant="warning"
+        isLoading={isRevoking}
+      />
+    </>
   );
 }
 
 function DangerZone() {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    await new Promise((r) => setTimeout(r, 1500));
+    setIsDeleting(false);
+    setShowDeleteDialog(false);
+    showToast.error("Account deletion requested");
+  };
 
   return (
-    <div className={`relative rounded-2xl border border-rose-500/20 overflow-hidden ${
-      isLight
-        ? "bg-rose-50/50"
-        : "bg-gradient-to-br from-rose-500/5 to-[var(--gradient-card-to)]"
-    }`}>
-      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-rose-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
+    <>
+      <div className={`relative rounded-2xl border border-rose-500/20 overflow-hidden ${
+        isLight
+          ? "bg-rose-50/50"
+          : "bg-gradient-to-br from-rose-500/5 to-[var(--gradient-card-to)]"
+      }`}>
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-rose-500/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
 
-      <div className="relative p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20 flex items-center justify-center">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-            </svg>
+        <div className="relative p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20 flex items-center justify-center">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-rose-400">Danger Zone</h3>
+              <p className="text-xs text-slate-500">Irreversible actions</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-base font-semibold text-rose-400">Danger Zone</h3>
-            <p className="text-xs text-slate-500">Irreversible actions</p>
-          </div>
+          <p className={`text-sm mb-4 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Once you delete your account, there is no going back. All your data will be permanently removed.</p>
+          <Button onPress={() => setShowDeleteDialog(true)} className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm rounded-xl h-10 px-5">
+            Delete Account
+          </Button>
         </div>
-        <p className={`text-sm mb-4 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Once you delete your account, there is no going back. All your data will be permanently removed.</p>
-        <Button onPress={() => showToast.error("Account deletion requested")} className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-sm rounded-xl h-10 px-5">
-          Delete Account
-        </Button>
       </div>
-    </div>
+
+      <ConfirmDialog
+        open={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={handleDelete}
+        title="Delete Account"
+        message="This action cannot be undone. All your sites, data, and settings will be permanently deleted. You will lose access to everything associated with this account."
+        confirmText="Delete Account"
+        variant="danger"
+        requireTypedConfirmation="DELETE"
+        isLoading={isDeleting}
+      />
+    </>
   );
 }

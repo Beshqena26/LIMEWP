@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
 import { getColorClasses } from "@/lib/utils/colors";
 
@@ -11,7 +12,7 @@ interface StatCardProps {
   className?: string;
 }
 
-export function StatCard({ label, value, icon, color = "emerald", className }: StatCardProps) {
+export const StatCard = React.memo(function StatCard({ label, value, icon, color = "emerald", className }: StatCardProps) {
   const colors = getColorClasses(color);
 
   return (
@@ -33,4 +34,4 @@ export function StatCard({ label, value, icon, color = "emerald", className }: S
       </div>
     </div>
   );
-}
+});

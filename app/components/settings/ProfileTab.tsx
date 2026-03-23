@@ -1,8 +1,13 @@
 "use client";
 
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Select, SelectItem } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
+import { showToast } from "@/lib/toast";
 import { INPUT_CLASS_NAMES, SELECT_CLASS_NAMES } from "@/data/settings";
+import { profileSchema, type ProfileFormData } from "@/lib/validations";
 
 // Accent color styles
 const ACCENT_STYLES = {
@@ -20,28 +25,61 @@ interface ProfileTabProps {
 export function ProfileTab({ onSave }: ProfileTabProps) {
   const { accentColor } = useTheme();
   const accent = ACCENT_STYLES[accentColor];
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      fullName: "Lime Admin",
+      email: "admin@limewp.com",
+      username: "limeadmin",
+      phone: "+1 (555) 123-4567",
+      timezone: "EST",
+      language: "en-us",
+    },
+  });
+
+  const onSubmit = async (_data: ProfileFormData) => {
+    setIsSubmitting(true);
+    await new Promise((r) => setTimeout(r, 1000));
+    setIsSubmitting(false);
+    showToast.success("Profile updated");
+    if (onSave) onSave();
+  };
+
+  const onError = () => {
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
+  };
 
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit, onError)} className={`space-y-6 ${shake ? "animate-shake" : ""}`}>
       {/* Profile Photo Card */}
       <ProfilePhotoCard />
 
       {/* Personal Info Card */}
-      <PersonalInfoCard />
+      <PersonalInfoCard register={register} errors={errors} />
 
       {/* Preferences Card */}
-      <PreferencesCard />
+      <PreferencesCard register={register} errors={errors} setValue={setValue} />
 
       {/* Save Button */}
       <div className="flex justify-end">
         <Button
-          onClick={onSave}
+          type="submit"
+          isLoading={isSubmitting}
           className={`bg-gradient-to-r ${accent.gradient} text-white font-semibold text-sm rounded-xl h-11 px-6 shadow-lg ${accent.shadow} ${accent.shadowHover} transition-all`}
         >
           Save Changes
         </Button>
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -96,7 +134,13 @@ function ProfilePhotoCard() {
   );
 }
 
-function PersonalInfoCard() {
+interface FormCardProps {
+  register: ReturnType<typeof useForm<ProfileFormData>>["register"];
+  errors: ReturnType<typeof useForm<ProfileFormData>>["formState"]["errors"];
+  setValue?: ReturnType<typeof useForm<ProfileFormData>>["setValue"];
+}
+
+function PersonalInfoCard({ register, errors }: FormCardProps) {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = ACCENT_STYLES[accentColor];
@@ -105,6 +149,14 @@ function PersonalInfoCard() {
     inputWrapper: `bg-slate-50 border-slate-200 hover:border-slate-300 ${accent.focusBorder} !rounded-xl`,
     input: "text-slate-800 placeholder:text-slate-400",
   } : INPUT_CLASS_NAMES;
+
+  const errorInputClassNames = isLight ? {
+    inputWrapper: `bg-slate-50 border-red-400 hover:border-red-500 ${accent.focusBorder} !rounded-xl`,
+    input: "text-slate-800 placeholder:text-slate-400",
+  } : {
+    ...INPUT_CLASS_NAMES,
+    inputWrapper: "bg-[var(--bg-secondary)] border-red-400 rounded-xl transition-all",
+  };
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden ${
@@ -130,19 +182,22 @@ function PersonalInfoCard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Full Name</label>
-            <Input defaultValue="Lime Admin" classNames={inputClassNames} variant="bordered" size="md" />
+            <Input classNames={errors.fullName ? errorInputClassNames : inputClassNames} variant="bordered" size="md" {...register("fullName")} />
+            {errors.fullName && <p className="text-red-400 text-[13px] mt-1">{errors.fullName.message}</p>}
           </div>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Email Address</label>
-            <Input defaultValue="admin@limewp.com" classNames={inputClassNames} variant="bordered" size="md" />
+            <Input classNames={errors.email ? errorInputClassNames : inputClassNames} variant="bordered" size="md" {...register("email")} />
+            {errors.email && <p className="text-red-400 text-[13px] mt-1">{errors.email.message}</p>}
           </div>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Username</label>
-            <Input defaultValue="limeadmin" classNames={inputClassNames} variant="bordered" size="md" />
+            <Input classNames={errors.username ? errorInputClassNames : inputClassNames} variant="bordered" size="md" {...register("username")} />
+            {errors.username && <p className="text-red-400 text-[13px] mt-1">{errors.username.message}</p>}
           </div>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Phone Number</label>
-            <Input defaultValue="+1 (555) 123-4567" classNames={inputClassNames} variant="bordered" size="md" />
+            <Input classNames={inputClassNames} variant="bordered" size="md" {...register("phone")} />
           </div>
         </div>
       </div>
@@ -150,7 +205,7 @@ function PersonalInfoCard() {
   );
 }
 
-function PreferencesCard() {
+function PreferencesCard({ register, errors, setValue }: FormCardProps) {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = ACCENT_STYLES[accentColor];
@@ -186,17 +241,30 @@ function PreferencesCard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Timezone</label>
-            <Select defaultSelectedKeys={["EST"]} classNames={selectClassNames} variant="bordered">
+            <Select
+              defaultSelectedKeys={["EST"]}
+              classNames={selectClassNames}
+              variant="bordered"
+              {...register("timezone")}
+              onChange={(e) => setValue?.("timezone", e.target.value)}
+            >
               <SelectItem key="UTC">UTC</SelectItem>
               <SelectItem key="EST">EST (Eastern)</SelectItem>
               <SelectItem key="PST">PST (Pacific)</SelectItem>
               <SelectItem key="CET">CET (Central Europe)</SelectItem>
               <SelectItem key="JST">JST (Japan)</SelectItem>
             </Select>
+            {errors.timezone && <p className="text-red-400 text-[13px] mt-1">{errors.timezone.message}</p>}
           </div>
           <div>
             <label className="block text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-2">Language</label>
-            <Select defaultSelectedKeys={["en-us"]} classNames={selectClassNames} variant="bordered">
+            <Select
+              defaultSelectedKeys={["en-us"]}
+              classNames={selectClassNames}
+              variant="bordered"
+              {...register("language")}
+              onChange={(e) => setValue?.("language", e.target.value)}
+            >
               <SelectItem key="en-us">English (US)</SelectItem>
               <SelectItem key="en-uk">English (UK)</SelectItem>
               <SelectItem key="es">Español</SelectItem>
@@ -204,6 +272,7 @@ function PreferencesCard() {
               <SelectItem key="de">Deutsch</SelectItem>
               <SelectItem key="ja">日本語</SelectItem>
             </Select>
+            {errors.language && <p className="text-red-400 text-[13px] mt-1">{errors.language.message}</p>}
           </div>
         </div>
       </div>

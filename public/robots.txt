@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /site
+Disallow: /sites/
+Disallow: /notifications
+Disallow: /monitoring
+Disallow: /migrate
+Disallow: /onboarding
+
+Sitemap: https://limewp.com/sitemap.xml

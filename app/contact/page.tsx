@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import AppShell from "../components/AppShell";
 import { Button, Input, Textarea } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { cn } from "@/lib/utils";
 import { getColorClasses } from "@/lib/utils/colors";
+import { contactSchema, type ContactFormData } from "@/lib/validations";
 
 const CONTACT_INFO = [
   {
@@ -40,14 +43,28 @@ export default function ContactPage() {
   const colors = getColorClasses(accentColor);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [shake, setShake] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
+
+  const onSubmit = async (_data: ContactFormData) => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-    }, 1000);
+    await new Promise((r) => setTimeout(r, 1000));
+    setIsSubmitting(false);
+    setSubmitted(true);
+    reset();
+  };
+
+  const onError = () => {
+    setShake(true);
+    setTimeout(() => setShake(false), 500);
   };
 
   const inputClassNames = isLight
@@ -67,6 +84,18 @@ export default function ContactPage() {
         ],
         input: ["text-slate-100", "placeholder:text-slate-500"],
         label: ["text-slate-400"],
+      };
+
+  const errorInputClassNames = isLight
+    ? {
+        inputWrapper: "bg-slate-50 border-red-400 hover:border-red-500 group-data-[focus=true]:border-red-500 !rounded-xl",
+        input: "text-slate-800 placeholder:text-slate-400",
+        label: "text-slate-600",
+      }
+    : {
+        inputWrapper: "bg-[var(--bg-secondary)] border-red-400 hover:border-red-500 rounded-xl transition-all",
+        input: "text-slate-100 placeholder:text-slate-500",
+        label: "text-slate-400",
       };
 
   return (
@@ -194,44 +223,60 @@ export default function ContactPage() {
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit(onSubmit, onError)} className={`space-y-5 ${shake ? "animate-shake" : ""}`}>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <Input
-                    label="Name"
-                    placeholder="Your name"
-                    variant="bordered"
-                    classNames={inputClassNames}
-                    isRequired
-                  />
-                  <Input
-                    label="Email"
-                    placeholder="you@example.com"
-                    type="email"
-                    variant="bordered"
-                    classNames={inputClassNames}
-                    isRequired
-                  />
+                  <div>
+                    <Input
+                      label="Name"
+                      placeholder="Your name"
+                      variant="bordered"
+                      classNames={errors.name ? errorInputClassNames : inputClassNames}
+                      {...register("name")}
+                    />
+                    {errors.name && <p className="text-red-400 text-[13px] mt-1">{errors.name.message}</p>}
+                  </div>
+                  <div>
+                    <Input
+                      label="Email"
+                      placeholder="you@example.com"
+                      type="email"
+                      variant="bordered"
+                      classNames={errors.email ? errorInputClassNames : inputClassNames}
+                      {...register("email")}
+                    />
+                    {errors.email && <p className="text-red-400 text-[13px] mt-1">{errors.email.message}</p>}
+                  </div>
                 </div>
-                <Input
-                  label="Subject"
-                  placeholder="How can we help?"
-                  variant="bordered"
-                  classNames={inputClassNames}
-                  isRequired
-                />
-                <Textarea
-                  label="Message"
-                  placeholder="Tell us more about your inquiry..."
-                  variant="bordered"
-                  minRows={5}
-                  classNames={{
-                    ...inputClassNames,
-                    inputWrapper: isLight
-                      ? "bg-slate-50 border-slate-200 hover:border-slate-300 group-data-[focus=true]:border-slate-400 !rounded-xl"
-                      : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] group-data-[focus=true]:border-[var(--border-focus)] rounded-xl transition-all",
-                  }}
-                  isRequired
-                />
+                <div>
+                  <Input
+                    label="Subject"
+                    placeholder="How can we help?"
+                    variant="bordered"
+                    classNames={errors.subject ? errorInputClassNames : inputClassNames}
+                    {...register("subject")}
+                  />
+                  {errors.subject && <p className="text-red-400 text-[13px] mt-1">{errors.subject.message}</p>}
+                </div>
+                <div>
+                  <Textarea
+                    label="Message"
+                    placeholder="Tell us more about your inquiry..."
+                    variant="bordered"
+                    minRows={5}
+                    classNames={{
+                      ...(errors.message ? errorInputClassNames : inputClassNames),
+                      inputWrapper: errors.message
+                        ? (isLight
+                          ? "bg-slate-50 border-red-400 hover:border-red-500 group-data-[focus=true]:border-red-500 !rounded-xl"
+                          : "bg-[var(--bg-secondary)] border-red-400 hover:border-red-500 rounded-xl transition-all")
+                        : (isLight
+                          ? "bg-slate-50 border-slate-200 hover:border-slate-300 group-data-[focus=true]:border-slate-400 !rounded-xl"
+                          : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] group-data-[focus=true]:border-[var(--border-focus)] rounded-xl transition-all"),
+                    }}
+                    {...register("message")}
+                  />
+                  {errors.message && <p className="text-red-400 text-[13px] mt-1">{errors.message.message}</p>}
+                </div>
                 <Button
                   type="submit"
                   isLoading={isSubmitting}
