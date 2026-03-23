@@ -50,9 +50,7 @@ export function ActivityFeed({ activities, onViewAll, onViewDetails, onGoToSite 
         }`}>
           <button
             onClick={onViewAll}
-            className={`w-full py-3.5 flex items-center justify-center gap-2 text-sm font-medium transition-colors group/btn ${
-              isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
-            }`}
+            className="w-full py-3.5 flex items-center justify-center gap-2 text-sm font-semibold transition-colors group/btn text-violet-400 hover:text-violet-300"
           >
             <span>View all activity</span>
             <svg aria-hidden="true" className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
