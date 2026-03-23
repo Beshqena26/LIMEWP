@@ -1694,6 +1694,66 @@ export default function NewSitePage() {
                       </button>
                     </div>
                   </div>
+
+                  {/* QR Code */}
+                  <div className="flex justify-center mb-4">
+                    <div className="w-36 h-36 rounded-xl bg-white p-2 shadow-sm">
+                      <svg viewBox="0 0 100 100" className="w-full h-full">
+                        {/* QR code pattern */}
+                        <rect fill="#000" x="5" y="5" width="25" height="25" rx="2" />
+                        <rect fill="#fff" x="9" y="9" width="17" height="17" rx="1" />
+                        <rect fill="#000" x="13" y="13" width="9" height="9" rx="1" />
+                        <rect fill="#000" x="70" y="5" width="25" height="25" rx="2" />
+                        <rect fill="#fff" x="74" y="9" width="17" height="17" rx="1" />
+                        <rect fill="#000" x="78" y="13" width="9" height="9" rx="1" />
+                        <rect fill="#000" x="5" y="70" width="25" height="25" rx="2" />
+                        <rect fill="#fff" x="9" y="74" width="17" height="17" rx="1" />
+                        <rect fill="#000" x="13" y="78" width="9" height="9" rx="1" />
+                        {/* Data modules */}
+                        <rect fill="#000" x="35" y="5" width="5" height="5" />
+                        <rect fill="#000" x="45" y="5" width="5" height="5" />
+                        <rect fill="#000" x="55" y="5" width="5" height="5" />
+                        <rect fill="#000" x="35" y="15" width="5" height="5" />
+                        <rect fill="#000" x="50" y="15" width="5" height="5" />
+                        <rect fill="#000" x="60" y="15" width="5" height="5" />
+                        <rect fill="#000" x="40" y="25" width="5" height="5" />
+                        <rect fill="#000" x="55" y="25" width="5" height="5" />
+                        <rect fill="#000" x="5" y="35" width="5" height="5" />
+                        <rect fill="#000" x="15" y="35" width="5" height="5" />
+                        <rect fill="#000" x="35" y="35" width="5" height="5" />
+                        <rect fill="#000" x="45" y="35" width="5" height="5" />
+                        <rect fill="#000" x="60" y="35" width="5" height="5" />
+                        <rect fill="#000" x="75" y="35" width="5" height="5" />
+                        <rect fill="#000" x="90" y="35" width="5" height="5" />
+                        <rect fill="#000" x="10" y="45" width="5" height="5" />
+                        <rect fill="#000" x="25" y="45" width="5" height="5" />
+                        <rect fill="#000" x="40" y="45" width="5" height="5" />
+                        <rect fill="#000" x="55" y="45" width="5" height="5" />
+                        <rect fill="#000" x="70" y="45" width="5" height="5" />
+                        <rect fill="#000" x="85" y="45" width="5" height="5" />
+                        <rect fill="#000" x="5" y="55" width="5" height="5" />
+                        <rect fill="#000" x="20" y="55" width="5" height="5" />
+                        <rect fill="#000" x="35" y="55" width="5" height="5" />
+                        <rect fill="#000" x="50" y="55" width="5" height="5" />
+                        <rect fill="#000" x="65" y="55" width="5" height="5" />
+                        <rect fill="#000" x="80" y="55" width="5" height="5" />
+                        <rect fill="#000" x="35" y="70" width="5" height="5" />
+                        <rect fill="#000" x="50" y="70" width="5" height="5" />
+                        <rect fill="#000" x="65" y="70" width="5" height="5" />
+                        <rect fill="#000" x="80" y="70" width="5" height="5" />
+                        <rect fill="#000" x="40" y="80" width="5" height="5" />
+                        <rect fill="#000" x="55" y="80" width="5" height="5" />
+                        <rect fill="#000" x="70" y="80" width="5" height="5" />
+                        <rect fill="#000" x="85" y="80" width="5" height="5" />
+                        <rect fill="#000" x="35" y="90" width="5" height="5" />
+                        <rect fill="#000" x="45" y="90" width="5" height="5" />
+                        <rect fill="#000" x="60" y="90" width="5" height="5" />
+                        <rect fill="#000" x="75" y="90" width="5" height="5" />
+                        <rect fill="#000" x="90" y="90" width="5" height="5" />
+                      </svg>
+                    </div>
+                  </div>
+
                   <div className="text-center">
                     <span className={cn("text-xs", cryptoTimer < 300 ? "text-rose-400" : isLight ? "text-slate-500" : "text-slate-400")}>
                       Expires in {minutes}:{seconds.toString().padStart(2, "0")}
