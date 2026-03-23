@@ -103,18 +103,25 @@ function CircularProgress({
   value,
   size = 80,
   strokeWidth = 6,
-  isLight
+  isLight,
+  highIsGood = false,
 }: {
   value: number;
   size?: number;
   strokeWidth?: number;
   isLight: boolean;
+  highIsGood?: boolean;
 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (value / 100) * circumference;
 
   const getColor = () => {
+    if (highIsGood) {
+      if (value >= 70) return "stroke-emerald-500";
+      if (value >= 40) return "stroke-amber-500";
+      return "stroke-red-500";
+    }
     if (value < 50) return "stroke-emerald-500";
     if (value < 80) return "stroke-amber-500";
     return "stroke-red-500";
@@ -164,7 +171,7 @@ export function OverviewTab({ onNavigate }: { onNavigate?: (tab: string) => void
         <div className="flex flex-col sm:flex-row items-center gap-6">
           {/* Health Score */}
           <div className="relative flex-shrink-0">
-            <CircularProgress value={HEALTH_SCORE} size={80} strokeWidth={6} isLight={isLight} />
+            <CircularProgress value={HEALTH_SCORE} size={80} strokeWidth={6} isLight={isLight} highIsGood />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className={`text-lg font-bold tabular-nums ${textPrimary}`}>{HEALTH_SCORE}</span>
               <span className={`text-[9px] uppercase tracking-wider ${textTertiary}`}>Health</span>
