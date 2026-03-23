@@ -52,7 +52,7 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
     <div
       onClick={onManage}
       className={cn(
-        "group relative rounded-2xl transition-all duration-300 cursor-pointer h-full overflow-hidden hover:-translate-y-1 hover:shadow-xl",
+        "group relative rounded-2xl transition-all duration-300 cursor-pointer h-full overflow-hidden hover:-translate-y-px hover:shadow-lg",
         isLight
           ? "bg-white border border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
           : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)] hover:border-[var(--border-primary)] hover:shadow-black/20"

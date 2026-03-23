@@ -253,17 +253,13 @@ export function PerformanceCard({ onViewDetails }: PerformanceCardProps) {
           <div className="grid grid-cols-2 gap-4">
             {metrics.map((metric) => {
               const colors = colorMap[metric.color];
-              const isExpanded = expandedMetric === metric.label;
               return (
-                <button
+                <div
                   key={metric.label}
-                  type="button"
-                  onClick={() => handleMetricClick(metric.label)}
+                  onClick={() => setShowDetailModal(true)}
                   className={cn(
                     "rounded-xl p-4 transition-all text-left cursor-pointer",
-                    colors.cardBg,
-                    isExpanded && "ring-1 ring-inset",
-                    isExpanded && (isLight ? "ring-slate-300" : "ring-slate-600")
+                    colors.cardBg
                   )}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -277,32 +273,6 @@ export function PerformanceCard({ onViewDetails }: PerformanceCardProps) {
                         {metric.label}
                       </span>
                     </div>
-                    {metric.trend && (
-                      <span className={cn(
-                        "w-5 h-5 rounded-full flex items-center justify-center",
-                        metric.trend === "up"
-                          ? "bg-emerald-500/10"
-                          : metric.trend === "down"
-                          ? "bg-rose-500/10"
-                          : isLight ? "bg-slate-100" : "bg-slate-700"
-                      )}>
-                        {metric.trend === "up" && (
-                          <svg className="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-                          </svg>
-                        )}
-                        {metric.trend === "down" && (
-                          <svg className="w-3 h-3 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                          </svg>
-                        )}
-                        {metric.trend === "stable" && (
-                          <svg className={cn("w-3 h-3", isLight ? "text-slate-400" : "text-slate-500")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
-                          </svg>
-                        )}
-                      </span>
-                    )}
                   </div>
                   <div className={cn("text-xl font-bold mb-1", isLight ? "text-slate-800" : "text-slate-100")}>
                     {metric.value}
@@ -322,13 +292,7 @@ export function PerformanceCard({ onViewDetails }: PerformanceCardProps) {
                       </div>
                     </div>
                   )}
-                  {/* Expanded inline detail */}
-                  {isExpanded && (
-                    <div className={cn("mt-3 pt-3 border-t text-xs", isLight ? "border-slate-200 text-slate-500" : "border-slate-700 text-slate-400")}>
-                      {metric.detailText}
-                    </div>
-                  )}
-                </button>
+                </div>
               );
             })}
           </div>

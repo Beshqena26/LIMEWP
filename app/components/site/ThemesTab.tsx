@@ -131,7 +131,7 @@ export function ThemesTab({ siteId }: ThemesTabProps) {
           return (
             <div
               key={theme.id}
-              className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+              className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-px hover:shadow-lg ${
                 isLight
                   ? theme.active
                     ? "bg-white border-emerald-500/40 shadow-lg shadow-emerald-500/10 hover:shadow-slate-200/50"

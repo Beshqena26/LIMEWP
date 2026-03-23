@@ -146,7 +146,7 @@ export function PluginsTab({ siteId }: PluginsTabProps) {
           return (
             <div
               key={plugin.id}
-              className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+              className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-px hover:shadow-lg ${
                 isLight
                   ? plugin.active
                     ? "bg-white border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"

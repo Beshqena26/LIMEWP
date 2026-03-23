@@ -8,6 +8,11 @@ html {
   background: var(--bg-main);
 }
 
+/* Smooth easing for all transitions */
+*, *::before, *::after {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
   background: var(--bg-main);
   color: var(--text-primary);
