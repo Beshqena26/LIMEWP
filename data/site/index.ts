@@ -9,3 +9,4 @@ export * from "./users";
 export * from "./logs";
 export * from "./redirects";
 export * from "./ipdeny";
+export * from "./addons";
