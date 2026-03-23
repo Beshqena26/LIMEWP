@@ -60,3 +60,125 @@ export const trafficSources: TrafficSource[] = [
   { source: "Social Media", visits: "1,567", pct: 18, color: "violet", icon: "M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" },
   { source: "Referrals", visits: "777", pct: 9, color: "amber", icon: "M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" },
 ];
+
+// ────────────── Traffic Chart Data ──────────────
+
+export interface TrafficDataPoint {
+  date: string;
+  visitors: number;
+  pageViews: number;
+}
+
+function generateTrafficData(days: number): TrafficDataPoint[] {
+  const data: TrafficDataPoint[] = [];
+  const now = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const rng = ((i * 7919 + 104729) % 233280) / 233280;
+    const visitors = Math.round(200 + rng * 400 + (i === Math.floor(days * 0.6) ? 300 : 0));
+    data.push({
+      date: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      visitors,
+      pageViews: Math.round(visitors * (2.2 + rng * 1.2)),
+    });
+  }
+  return data;
+}
+
+export const TRAFFIC_DATA: Record<string, TrafficDataPoint[]> = {
+  "7d": generateTrafficData(7),
+  "30d": generateTrafficData(30),
+  "90d": generateTrafficData(90),
+};
+
+// ────────────── Device Breakdown ──────────────
+
+export interface DeviceData {
+  name: string;
+  value: number;
+  color: string;
+}
+
+export const DEVICE_DATA: DeviceData[] = [
+  { name: "Desktop", value: 58, color: "#10b981" },
+  { name: "Mobile", value: 35, color: "#3b82f6" },
+  { name: "Tablet", value: 7, color: "#8b5cf6" },
+];
+
+// ────────────── Geographic Data ──────────────
+
+export interface GeoData {
+  country: string;
+  flag: string;
+  visitors: string;
+  pct: number;
+}
+
+export const GEO_DATA: GeoData[] = [
+  { country: "United States", flag: "US", visitors: "3,421", pct: 39 },
+  { country: "United Kingdom", flag: "GB", visitors: "1,245", pct: 14 },
+  { country: "Germany", flag: "DE", visitors: "987", pct: 11 },
+  { country: "France", flag: "FR", visitors: "654", pct: 8 },
+  { country: "Canada", flag: "CA", visitors: "543", pct: 6 },
+  { country: "Australia", flag: "AU", visitors: "432", pct: 5 },
+];
+
+// ────────────── Core Web Vitals ──────────────
+
+export interface WebVital {
+  name: string;
+  label: string;
+  value: string;
+  score: "good" | "needs-improvement" | "poor";
+  target: string;
+}
+
+export const WEB_VITALS: WebVital[] = [
+  { name: "LCP", label: "Largest Contentful Paint", value: "1.8s", score: "good", target: "< 2.5s" },
+  { name: "FID", label: "First Input Delay", value: "45ms", score: "good", target: "< 100ms" },
+  { name: "CLS", label: "Cumulative Layout Shift", value: "0.08", score: "good", target: "< 0.1" },
+  { name: "TTFB", label: "Time to First Byte", value: "320ms", score: "needs-improvement", target: "< 200ms" },
+];
+
+// ────────────── 404 Errors ──────────────
+
+export interface Error404 {
+  url: string;
+  hits: number;
+  lastSeen: string;
+  referrer: string;
+}
+
+export const ERRORS_404: Error404[] = [
+  { url: "/old-blog-post", hits: 45, lastSeen: "2 hours ago", referrer: "google.com" },
+  { url: "/wp-content/uploads/2024/image.jpg", hits: 23, lastSeen: "5 hours ago", referrer: "direct" },
+  { url: "/products/discontinued-item", hits: 18, lastSeen: "1 day ago", referrer: "bing.com" },
+  { url: "/api/v1/legacy", hits: 12, lastSeen: "2 days ago", referrer: "internal" },
+];
+
+// ────────────── Search Queries ──────────────
+
+export interface SearchQuery {
+  query: string;
+  clicks: number;
+  impressions: string;
+  ctr: string;
+  position: string;
+}
+
+export const SEARCH_QUERIES: SearchQuery[] = [
+  { query: "wordpress hosting", clicks: 234, impressions: "12.4K", ctr: "1.9%", position: "4.2" },
+  { query: "managed wp hosting", clicks: 187, impressions: "8.7K", ctr: "2.1%", position: "3.8" },
+  { query: "limewp review", clicks: 156, impressions: "5.2K", ctr: "3.0%", position: "2.1" },
+  { query: "fast wordpress hosting", clicks: 98, impressions: "15.1K", ctr: "0.6%", position: "7.5" },
+  { query: "wp hosting comparison", clicks: 76, impressions: "9.8K", ctr: "0.8%", position: "6.3" },
+];
+
+// ────────────── Bandwidth ──────────────
+
+export const BANDWIDTH = { used: 45.2, total: 100, unit: "GB" };
+
+// ────────────── Real-time Visitors ──────────────
+
+export const REALTIME_VISITORS = 24;

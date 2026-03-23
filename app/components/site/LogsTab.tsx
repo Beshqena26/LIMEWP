@@ -79,6 +79,7 @@ export function LogsTab({ siteId }: LogsTabProps) {
               variant="bordered"
               size="sm"
               isIconOnly
+              aria-label="Refresh logs"
               onPress={() => showToast.success("Logs refreshed")}
               className={`font-medium ${isLight ? "text-slate-700 border-slate-300 hover:border-slate-400" : "text-slate-300 border-[var(--border-primary)] hover:border-slate-500"}`}
             >
@@ -206,7 +207,7 @@ export function LogsTab({ siteId }: LogsTabProps) {
 
                 {/* Hover Actions */}
                 <div className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0">
-                  <button onClick={() => showToast.success("Log entry copied")} className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all ring-1 ${
+                  <button aria-label="Copy to clipboard" onClick={() => showToast.success("Log entry copied")} className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all ring-1 ${
                     isLight
                       ? "bg-white/90 hover:bg-slate-100 ring-slate-200"
                       : "bg-[var(--bg-elevated)]/90 hover:bg-[var(--border-primary)] ring-[var(--border-primary)]"
@@ -216,7 +217,7 @@ export function LogsTab({ siteId }: LogsTabProps) {
                       </svg>
                     </button>
 
-                  <button className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all ring-1 ${
+                  <button aria-label="View details" className={`h-7 w-7 rounded-lg flex items-center justify-center transition-all ring-1 ${
                     isLight
                       ? "bg-white/90 hover:bg-slate-100 ring-slate-200"
                       : "bg-[var(--bg-elevated)]/90 hover:bg-[var(--border-primary)] ring-[var(--border-primary)]"

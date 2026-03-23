@@ -99,7 +99,7 @@ export function SiteCard({ site, onVisit, onManage }: SiteCardProps) {
                 "text-xs transition-colors",
                 isLight ? "text-slate-500 group-hover/link:text-slate-700" : "text-slate-500 group-hover/link:text-slate-300"
               )}>{site.wordpress}</span>
-              <svg className={cn(
+              <svg aria-hidden="true" className={cn(
                 "w-3 h-3 transition-colors",
                 isLight ? "text-slate-400 group-hover/link:text-slate-600" : "text-slate-600 group-hover/link:text-slate-400"
               )} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>

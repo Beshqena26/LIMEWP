@@ -183,7 +183,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
                         Edit
                       </button>
 
-                    <button onClick={() => showToast.success("Password reset email sent")} className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
+                    <button aria-label="Reset password" onClick={() => showToast.success("Password reset email sent")} className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
                       isLight
                         ? "bg-slate-100 hover:bg-amber-500/10 ring-slate-200 hover:ring-amber-500/30"
                         : "bg-[var(--bg-elevated)]/70 hover:bg-amber-500/10 ring-[var(--border-primary)] hover:ring-amber-500/30"
@@ -193,7 +193,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
                         </svg>
                       </button>
 
-                    <button onClick={() => showToast.warning("User deleted")} className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
+                    <button aria-label="Delete user" onClick={() => showToast.warning("User deleted")} className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${
                       isLight
                         ? "bg-slate-100 hover:bg-rose-500/10 ring-slate-200 hover:ring-rose-500/30"
                         : "bg-[var(--bg-elevated)]/70 hover:bg-rose-500/10 ring-[var(--border-primary)] hover:ring-rose-500/30"

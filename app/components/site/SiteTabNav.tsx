@@ -31,6 +31,7 @@ export function SiteTabNav({ activeTab, onTabChange }: SiteTabNavProps) {
             }`}
           >
             <svg
+              aria-hidden="true"
               className={`w-4 h-4 transition-colors ${isActive ? styles.activeText : isLight ? "text-slate-500 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-400"}`}
               fill="none"
               stroke="currentColor"

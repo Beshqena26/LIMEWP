@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@heroui/react";
+import { Toggle } from "@/app/components/ui/Toggle";
 import { useTheme, type ThemeMode, type AccentColor } from "@/lib/context/ThemeContext";
 import { showToast } from "@/lib/toast";
 
@@ -207,19 +207,7 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
   const isLight = resolvedTheme === "light";
   const accent = ACCENT_STYLES[accentColor];
 
-  const getSwitchClassNames = (isSelected: boolean) => ({
-    wrapper: `transition-colors duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-      isSelected
-        ? accent.switchOn
-        : isLight
-          ? "bg-slate-300"
-          : "bg-slate-600"
-    }`,
-    thumb: `bg-white shadow-md transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
-      isSelected ? "!ml-[calc(100%-20px)]" : "!ml-0"
-    }`,
-    thumbIcon: "hidden",
-  });
+  // Using HeroUI's native color prop for consistent toggles
 
   return (
     <div className={`relative rounded-2xl border overflow-hidden transition-colors ${
@@ -253,7 +241,7 @@ function UIPreferencesCard({ toggles, resolvedTheme, accentColor, onToggle }: UI
                 <p className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{item.label}</p>
                 <p className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>{item.desc}</p>
               </div>
-              <Switch isSelected={toggles[item.key]} onValueChange={() => onToggle(item.key)} classNames={getSwitchClassNames(toggles[item.key])} />
+              <Toggle enabled={toggles[item.key]} onChange={() => onToggle(item.key)} />
             </div>
           ))}
         </div>

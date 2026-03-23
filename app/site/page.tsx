@@ -40,7 +40,29 @@ const tabList = [
   { name: "Caching", icon: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z", color: "yellow" },
   { name: "Users", icon: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z", color: "cyan" },
   { name: "Logs", icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z", color: "rose" },
+  { name: "Redirects", icon: "M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5", color: "orange" },
+  { name: "IP Deny", icon: "M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636", color: "red" },
+  { name: "Add-ons", icon: "M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z", color: "purple" },
 ];
+
+function ComingSoonTab({ title, description, icon }: { title: string; description: string; icon: string }) {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  return (
+    <div className={`rounded-2xl border p-12 flex flex-col items-center justify-center text-center ${
+      isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
+    }`}>
+      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 ${isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"}`}>
+        <svg className={`w-7 h-7 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
+        </svg>
+      </div>
+      <h2 className={`text-lg font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{title}</h2>
+      <p className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>{description}</p>
+      <span className={`mt-4 text-xs font-medium px-3 py-1 rounded-full ${isLight ? "bg-slate-100 text-slate-500" : "bg-[var(--bg-elevated)] text-slate-400"}`}>Coming soon</span>
+    </div>
+  );
+}
 
 function SitePageContent() {
   const searchParams = useSearchParams();
@@ -76,6 +98,9 @@ function SitePageContent() {
       case "users": return <UsersTab siteId={siteName} />;
       case "logs": return <LogsTab siteId={siteName} />;
       case "ssh/sftp": return <SshSftpTab />;
+      case "redirects": return <ComingSoonTab title="Redirects" description="Manage URL redirects for your site" icon="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />;
+      case "ip deny": return <ComingSoonTab title="IP Deny" description="Block specific IP addresses from accessing your site" icon="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />;
+      case "add-ons": return <ComingSoonTab title="Add-ons" description="Extend your site with additional features and integrations" icon="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z" />;
       default: return <OverviewTab />;
     }
   };

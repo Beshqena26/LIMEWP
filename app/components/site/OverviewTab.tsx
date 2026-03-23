@@ -202,7 +202,7 @@ export function OverviewTab() {
 
                 <div className="relative flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg ${colorClasses.bg} flex items-center justify-center flex-shrink-0`}>
-                    <svg className={`w-5 h-5 ${colorClasses.icon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <svg aria-hidden="true" className={`w-5 h-5 ${colorClasses.icon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d={metric.icon} />
                     </svg>
                   </div>
@@ -243,7 +243,7 @@ export function OverviewTab() {
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                 isLight ? "bg-slate-200/50" : "bg-slate-700/50"
               }`}>
-                <svg className={`w-4 h-4 ${textTertiary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <svg aria-hidden="true" className={`w-4 h-4 ${textTertiary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                 </svg>
               </div>

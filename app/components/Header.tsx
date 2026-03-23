@@ -273,7 +273,7 @@ export default function Header() {
                       <path d={NAV_ICONS.docs} />
                     </svg>
                     <span>Resources</span>
-                    <svg className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <svg aria-hidden="true" className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d={NAV_ICONS.chevronDown} />
                     </svg>
                   </button>

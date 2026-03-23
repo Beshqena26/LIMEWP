@@ -5,7 +5,7 @@ import AppShell from "@/app/components/AppShell";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
-import { Switch } from "@heroui/react";
+import { Toggle } from "@/app/components/ui/Toggle";
 import {
   ResponsiveContainer,
   LineChart,
@@ -491,16 +491,13 @@ export default function MonitoringPage() {
                   >
                     Email Notifications
                   </label>
-                  <Switch
-                    isSelected={emailEnabled}
-                    onValueChange={setEmailEnabled}
-                    size="sm"
-                  />
+                  <Toggle enabled={emailEnabled} onChange={setEmailEnabled} />
                 </div>
                 {emailEnabled && (
                   <div>
-                    <label className={labelClass}>Email address</label>
+                    <label htmlFor="alert-email" className={labelClass}>Email address</label>
                     <input
+                      id="alert-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -513,8 +510,9 @@ export default function MonitoringPage() {
 
               {/* Slack webhook */}
               <div>
-                <label className={labelClass}>Slack Webhook URL</label>
+                <label htmlFor="slack-webhook" className={labelClass}>Slack Webhook URL</label>
                 <input
+                  id="slack-webhook"
                   type="url"
                   value={slackWebhook}
                   onChange={(e) => setSlackWebhook(e.target.value)}
@@ -551,9 +549,10 @@ export default function MonitoringPage() {
 
               {/* Response threshold */}
               <div>
-                <label className={labelClass}>Response Threshold</label>
+                <label htmlFor="response-threshold" className={labelClass}>Response Threshold</label>
                 <div className="relative mt-1">
                   <select
+                    id="response-threshold"
                     value={responseThreshold}
                     onChange={(e) => setResponseThreshold(e.target.value)}
                     className={`${inputClass} appearance-none`}

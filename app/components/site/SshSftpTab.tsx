@@ -134,6 +134,7 @@ export function SshSftpTab() {
                 </code>
               </div>
               <button
+                aria-label="Copy to clipboard"
                 onClick={() => copyToClipboard(cmd.command, cmd.label, "Command copied")}
                 className={`flex-shrink-0 p-1.5 rounded-lg transition-colors ${
                   isLight ? "hover:bg-slate-800 text-slate-500 hover:text-slate-300" : "hover:bg-slate-800 text-slate-600 hover:text-slate-400"

@@ -10,6 +10,7 @@ export interface ColorClasses {
   activeBg: string;
   glow?: string;
   progress?: string;
+  switchOn?: string;
   gradient?: string;
   button?: string;
   buttonHover?: string;
@@ -28,6 +29,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-emerald-500/15",
     glow: "from-emerald-500/20",
     progress: "bg-emerald-500",
+    switchOn: "!bg-emerald-500",
     gradient: "from-emerald-500 to-emerald-600",
     button: "bg-emerald-600",
     buttonHover: "hover:bg-emerald-500",
@@ -40,6 +42,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-sky-500/15",
     glow: "from-sky-500/20",
     progress: "bg-sky-500",
+    switchOn: "!bg-sky-500",
     gradient: "from-sky-500 to-sky-600",
     button: "bg-sky-600",
     buttonHover: "hover:bg-sky-500",
@@ -52,6 +55,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-violet-500/15",
     glow: "from-violet-500/20",
     progress: "bg-violet-500",
+    switchOn: "!bg-violet-500",
     gradient: "from-violet-500 to-violet-600",
     button: "bg-violet-600",
     buttonHover: "hover:bg-violet-500",
@@ -64,6 +68,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-amber-500/15",
     glow: "from-amber-500/20",
     progress: "bg-amber-500",
+    switchOn: "!bg-amber-500",
     gradient: "from-amber-500 to-amber-600",
     button: "bg-amber-600",
     buttonHover: "hover:bg-amber-500",
@@ -76,6 +81,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-rose-500/15",
     glow: "from-rose-500/20",
     progress: "bg-rose-500",
+    switchOn: "!bg-rose-500",
     gradient: "from-rose-500 to-rose-600",
     button: "bg-rose-600",
     buttonHover: "hover:bg-rose-500",
@@ -88,6 +94,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-pink-500/15",
     glow: "from-pink-500/20",
     progress: "bg-pink-500",
+    switchOn: "!bg-pink-500",
     gradient: "from-pink-500 to-pink-600",
     button: "bg-pink-600",
     buttonHover: "hover:bg-pink-500",
@@ -100,6 +107,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-cyan-500/15",
     glow: "from-cyan-500/20",
     progress: "bg-cyan-500",
+    switchOn: "!bg-cyan-500",
     gradient: "from-cyan-500 to-cyan-600",
     button: "bg-cyan-600",
     buttonHover: "hover:bg-cyan-500",
@@ -112,6 +120,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-indigo-500/15",
     glow: "from-indigo-500/20",
     progress: "bg-indigo-500",
+    switchOn: "!bg-indigo-500",
     gradient: "from-indigo-500 to-indigo-600",
     button: "bg-indigo-600",
     buttonHover: "hover:bg-indigo-500",
@@ -124,6 +133,7 @@ export const COLOR_CLASSES: Record<string, ColorClasses> = {
     activeBg: "bg-zinc-500/15",
     glow: "from-zinc-500/20",
     progress: "bg-zinc-500",
+    switchOn: "!bg-zinc-500",
     gradient: "from-zinc-500 to-zinc-600",
     button: "bg-zinc-600",
     buttonHover: "hover:bg-zinc-500",

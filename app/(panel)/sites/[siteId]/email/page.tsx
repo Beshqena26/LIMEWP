@@ -6,7 +6,7 @@ import AppShell from "@/app/components/AppShell";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
-import { Switch } from "@heroui/react";
+import { Toggle } from "@/app/components/ui/Toggle";
 import { ConfirmDialog } from "@/app/components/ui/ConfirmDialog";
 
 /* ────────────── types ────────────── */
@@ -521,14 +521,7 @@ export default function EmailManagementPage() {
                         </td>
                         <td className={tdClass}>{ar.subject}</td>
                         <td className="px-6 py-4">
-                          <Switch
-                            isSelected={ar.active}
-                            onValueChange={() => handleToggleAutoresponder(ar.id)}
-                            size="sm"
-                            classNames={{
-                              wrapper: `${ar.active ? "!bg-emerald-500" : isLight ? "bg-slate-300" : "bg-slate-600"}`,
-                            }}
-                          />
+                          <Toggle enabled={ar.active} onChange={() => handleToggleAutoresponder(ar.id)} />
                         </td>
                         <td className="px-6 py-4">
                           {deleteBtn(() => setDeleteTarget({ type: "autoresponder", id: ar.id, label: `${ar.email} autoresponder` }))}

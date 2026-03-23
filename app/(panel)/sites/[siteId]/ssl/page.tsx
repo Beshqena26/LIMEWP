@@ -6,7 +6,7 @@ import AppShell from "@/app/components/AppShell";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
-import { Switch } from "@heroui/react";
+import { Toggle } from "@/app/components/ui/Toggle";
 
 /* ────────────── mock data ────────────── */
 
@@ -269,14 +269,7 @@ export default function SSLCertificatesPage() {
             }`}>
               <p className={labelClass}>Auto-Renew</p>
               <div className="mt-1.5">
-                <Switch
-                  isSelected={autoRenew}
-                  onValueChange={handleAutoRenewToggle}
-                  size="sm"
-                  classNames={{
-                    wrapper: `${autoRenew ? "!bg-emerald-500" : isLight ? "bg-slate-300" : "bg-slate-600"}`,
-                  }}
-                />
+                <Toggle enabled={autoRenew} onChange={handleAutoRenewToggle} />
               </div>
             </div>
           </div>
@@ -301,14 +294,7 @@ export default function SSLCertificatesPage() {
             <p className={`text-xs mb-4 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
               Redirect all HTTP traffic to HTTPS
             </p>
-            <Switch
-              isSelected={forceHttps}
-              onValueChange={handleForceHttpsToggle}
-              size="sm"
-              classNames={{
-                wrapper: `${forceHttps ? "!bg-emerald-500" : isLight ? "bg-slate-300" : "bg-slate-600"}`,
-              }}
-            />
+            <Toggle enabled={forceHttps} onChange={handleForceHttpsToggle} />
           </div>
         </div>
 
