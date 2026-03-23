@@ -26,7 +26,22 @@ export interface User {
   postsCount: number;
   isOnline: boolean;
   twoFactor: boolean;
+  status: "active" | "suspended" | "pending";
+  emailVerified: boolean;
+  lastIp: string;
+  lastDevice: string;
+  lastLocation: string;
+  joinedDate: string;
+  sessions: number;
 }
+
+export interface UserActivity {
+  action: string;
+  target: string;
+  time: string;
+}
+
+export const ROLES = ["Administrator", "Editor", "Author", "Contributor", "Subscriber"] as const;
 
 export const userStats: UserStat[] = [
   { label: "Total Users", value: "5", subtext: "WordPress users", icon: "M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z", color: "emerald" },
@@ -56,6 +71,13 @@ export const users: User[] = [
     postsCount: 24,
     isOnline: true,
     twoFactor: true,
+    status: "active",
+    emailVerified: true,
+    lastIp: "192.168.1.45",
+    lastDevice: "Chrome on macOS",
+    lastLocation: "San Francisco, US",
+    joinedDate: "Jan 15, 2025",
+    sessions: 2,
   },
   {
     id: "usr-002",
@@ -69,6 +91,13 @@ export const users: User[] = [
     postsCount: 156,
     isOnline: true,
     twoFactor: true,
+    status: "active",
+    emailVerified: true,
+    lastIp: "10.0.0.12",
+    lastDevice: "Firefox on Windows",
+    lastLocation: "New York, US",
+    joinedDate: "Feb 20, 2025",
+    sessions: 1,
   },
   {
     id: "usr-003",
@@ -82,6 +111,13 @@ export const users: User[] = [
     postsCount: 42,
     isOnline: false,
     twoFactor: false,
+    status: "active",
+    emailVerified: true,
+    lastIp: "172.16.0.8",
+    lastDevice: "Safari on iPhone",
+    lastLocation: "London, UK",
+    joinedDate: "Mar 5, 2025",
+    sessions: 0,
   },
   {
     id: "usr-004",
@@ -95,6 +131,13 @@ export const users: User[] = [
     postsCount: 8,
     isOnline: false,
     twoFactor: false,
+    status: "suspended",
+    emailVerified: false,
+    lastIp: "203.0.113.55",
+    lastDevice: "Edge on Windows",
+    lastLocation: "Toronto, CA",
+    joinedDate: "Apr 10, 2025",
+    sessions: 0,
   },
   {
     id: "usr-005",
@@ -108,8 +151,37 @@ export const users: User[] = [
     postsCount: 0,
     isOnline: false,
     twoFactor: false,
+    status: "pending",
+    emailVerified: false,
+    lastIp: "198.51.100.20",
+    lastDevice: "Chrome on Android",
+    lastLocation: "Berlin, DE",
+    joinedDate: "May 1, 2025",
+    sessions: 0,
   },
 ];
+
+export const USER_ACTIVITIES: Record<string, UserActivity[]> = {
+  "usr-001": [
+    { action: "Updated plugin", target: "Yoast SEO", time: "2 hours ago" },
+    { action: "Published post", target: "Getting Started Guide", time: "5 hours ago" },
+    { action: "Changed settings", target: "Permalink structure", time: "1 day ago" },
+  ],
+  "usr-002": [
+    { action: "Edited post", target: "Blog Post #42", time: "1 day ago" },
+    { action: "Approved comment", target: "on Homepage", time: "2 days ago" },
+  ],
+  "usr-003": [
+    { action: "Published post", target: "Travel Tips 2025", time: "3 days ago" },
+    { action: "Uploaded media", target: "hero-image.jpg", time: "4 days ago" },
+  ],
+  "usr-004": [
+    { action: "Submitted draft", target: "Product Review", time: "1 week ago" },
+  ],
+  "usr-005": [
+    { action: "Updated profile", target: "Display name", time: "2 weeks ago" },
+  ],
+};
 
 export const rolePermissions: Record<string, string[]> = {
   Administrator: ["Full access", "Manage users", "Install plugins"],
