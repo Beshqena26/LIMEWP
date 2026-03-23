@@ -65,6 +65,39 @@ const ACTIVITY = [
   { action: "PHP updated", detail: "8.3.4", time: "2d ago" },
 ];
 
+// New data constants
+const HEALTH_SCORE = 88;
+
+const SITE_QUICK_INFO = [
+  { label: "WordPress", value: "6.7.1", status: "update", update: "6.7.2" },
+  { label: "Plugins", value: "12 active", badge: "3 updates" },
+  { label: "Theme", value: "Flavor Starter" },
+  { label: "SSL", value: "324 days" },
+];
+
+const TRAFFIC_24H = { visitors: 342, pageViews: 1245, pagesPerVisit: 2.8 };
+
+const SECURITY_STATUS = [
+  { label: "Firewall", value: "Active", color: "emerald" },
+  { label: "2FA Users", value: "3 / 5", color: "sky" },
+  { label: "Last Scan", value: "2 hours ago", color: "violet" },
+  { label: "Blocked IPs", value: "6 today", color: "rose" },
+];
+
+const DISK_USAGE = [
+  { label: "WordPress Core", size: 280, color: "bg-sky-500" },
+  { label: "Media Uploads", size: 620, color: "bg-violet-500" },
+  { label: "Database", size: 180, color: "bg-amber-500" },
+  { label: "Plugins & Themes", size: 120, color: "bg-emerald-500" },
+];
+const DISK_TOTAL = DISK_USAGE.reduce((s, d) => s + d.size, 0);
+
+const RECENT_ERRORS = [
+  { level: "error", message: "PHP Fatal: undefined function wp_get_current_user()", time: "2h ago" },
+  { level: "warning", message: "Deprecated: create_function() is deprecated", time: "9h ago" },
+  { level: "error", message: "Database connection timeout after 30s", time: "1d ago" },
+];
+
 // Circular progress component
 function CircularProgress({
   value,
@@ -88,7 +121,7 @@ function CircularProgress({
   };
 
   return (
-    <svg width={size} height={size} className="-rotate-90">
+    <svg aria-hidden="true" width={size} height={size} className="-rotate-90">
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -117,22 +150,84 @@ export function OverviewTab() {
   const isLight = resolvedTheme === "light";
 
   // Theme classes
-  const cardBg = isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]";
-  const cardBorder = isLight ? "border-slate-200" : "border-[var(--border-tertiary)]";
-  const dividerBorder = isLight ? "border-slate-100" : "border-[var(--border-tertiary)]";
+  const cardClass = `rounded-2xl border ${isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"}`;
   const textPrimary = isLight ? "text-slate-900" : "text-slate-100";
   const textSecondary = isLight ? "text-slate-500" : "text-slate-500";
   const textTertiary = isLight ? "text-slate-400" : "text-slate-600";
-  const subtleBg = isLight ? "bg-slate-50" : "bg-slate-800/50";
   const hoverBg = isLight ? "hover:bg-slate-50" : "hover:bg-white/[0.02]";
+  const linkClass = "text-xs text-violet-400 hover:text-violet-300 transition-colors";
 
   return (
-    <div className={`relative rounded-2xl border overflow-hidden ${cardBg} ${cardBorder}`}>
-      {/* Subtle corner glow */}
-      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-emerald-500/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/3" />
+    <div className="space-y-5">
+      {/* Section 1: Site Health Score + Quick Info */}
+      <div className={`${cardClass} p-6`}>
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          {/* Left: Health Score */}
+          <div className="relative flex-shrink-0">
+            <CircularProgress value={HEALTH_SCORE} size={80} strokeWidth={6} isLight={isLight} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className={`text-lg font-bold tabular-nums ${textPrimary}`}>{HEALTH_SCORE}</span>
+              <span className={`text-[9px] uppercase tracking-wider ${textTertiary}`}>Health</span>
+            </div>
+          </div>
 
-      {/* Section 1: Subscription Usage */}
-      <div className="relative p-6">
+          {/* Middle: Quick Info Pills */}
+          <div className="flex flex-wrap items-center gap-2 flex-1">
+            {SITE_QUICK_INFO.map((info) => (
+              <div
+                key={info.label}
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs ${
+                  isLight ? "bg-slate-50" : "bg-slate-800/30"
+                }`}
+              >
+                {info.label === "WordPress" && (
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                      info.status === "update" ? "bg-amber-500" : "bg-emerald-500"
+                    }`}
+                  />
+                )}
+                {info.label === "SSL" && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
+                )}
+                <span className={`font-medium ${textPrimary}`}>
+                  {info.label === "WordPress" ? `WP ${info.value}` : info.value}
+                </span>
+                {info.status === "update" && (
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    isLight ? "bg-amber-100 text-amber-600" : "bg-amber-500/10 text-amber-400"
+                  }`}>
+                    Update available
+                  </span>
+                )}
+                {info.badge && (
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                    isLight ? "bg-violet-100 text-violet-600" : "bg-violet-500/10 text-violet-400"
+                  }`}>
+                    {info.badge}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Right: Site URL */}
+          <a
+            href="https://limewp.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex items-center gap-1.5 text-sm font-medium flex-shrink-0 ${textPrimary} hover:text-violet-400 transition-colors`}
+          >
+            limewp.com
+            <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {/* Section 2: Plan Usage */}
+      <div className={`${cardClass} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <span className={`text-sm font-medium ${textPrimary}`}>Plan Usage</span>
@@ -174,11 +269,8 @@ export function OverviewTab() {
         </div>
       </div>
 
-      {/* Divider */}
-      <div className={`border-t ${dividerBorder}`} />
-
-      {/* Section 2: Performance */}
-      <div className="relative p-6">
+      {/* Section 3: Performance */}
+      <div className={`${cardClass} p-6`}>
         <span className={`text-sm font-medium ${textPrimary} mb-4 block`}>Performance</span>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {PERFORMANCE.map((metric) => {
@@ -197,7 +289,6 @@ export function OverviewTab() {
                   isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-slate-800/30 hover:bg-slate-800/50"
                 }`}
               >
-                {/* Subtle glow */}
                 <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl ${colorClasses.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity`} />
 
                 <div className="relative flex items-center gap-3">
@@ -226,49 +317,193 @@ export function OverviewTab() {
         </div>
       </div>
 
-      {/* Divider */}
-      <div className={`border-t ${dividerBorder}`} />
-
-      {/* Section 3: Server Details */}
-      <div className="relative p-6">
-        <span className={`text-sm font-medium ${textPrimary} mb-4 block`}>Server</span>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {SERVER_INFO.map((item) => (
-            <div
-              key={item.label}
-              className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-slate-800/30 hover:bg-slate-800/50"
-              }`}
-            >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                isLight ? "bg-slate-200/50" : "bg-slate-700/50"
-              }`}>
-                <svg aria-hidden="true" className={`w-4 h-4 ${textTertiary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
-                </svg>
-              </div>
-              <div className="min-w-0">
-                <div className={`text-[10px] uppercase tracking-wider ${textTertiary}`}>
-                  {item.label}
-                </div>
-                <div className={`text-sm truncate ${item.mono ? "font-mono" : "font-medium"} ${textPrimary}`}>
-                  {item.value}
-                </div>
-              </div>
+      {/* Section 4: Traffic Snapshot */}
+      <div className={`${cardClass} p-6`}>
+        <div className="flex items-center justify-between mb-4">
+          <span className={`text-sm font-medium ${textPrimary}`}>Last 24 hours</span>
+          <button className={linkClass}>
+            View analytics
+            <span className="ml-0.5">&rarr;</span>
+          </button>
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className={`text-center p-3 rounded-xl ${isLight ? "bg-slate-50" : "bg-slate-800/30"}`}>
+            <div className={`text-2xl font-semibold tabular-nums ${textPrimary}`}>
+              {TRAFFIC_24H.visitors.toLocaleString()}
             </div>
-          ))}
+            <div className={`text-[10px] uppercase tracking-wider mt-1 ${textTertiary}`}>Visitors</div>
+          </div>
+          <div className={`text-center p-3 rounded-xl ${isLight ? "bg-slate-50" : "bg-slate-800/30"}`}>
+            <div className={`text-2xl font-semibold tabular-nums ${textPrimary}`}>
+              {TRAFFIC_24H.pageViews.toLocaleString()}
+            </div>
+            <div className={`text-[10px] uppercase tracking-wider mt-1 ${textTertiary}`}>Page Views</div>
+          </div>
+          <div className={`text-center p-3 rounded-xl ${isLight ? "bg-slate-50" : "bg-slate-800/30"}`}>
+            <div className={`text-2xl font-semibold tabular-nums ${textPrimary}`}>
+              {TRAFFIC_24H.pagesPerVisit}
+            </div>
+            <div className={`text-[10px] uppercase tracking-wider mt-1 ${textTertiary}`}>Pages / Visit</div>
+          </div>
         </div>
       </div>
 
-      {/* Divider */}
-      <div className={`border-t ${dividerBorder}`} />
+      {/* Section 5: Server Info + Security Status (two columns) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* Server Info */}
+        <div className={`${cardClass} p-6`}>
+          <span className={`text-sm font-medium ${textPrimary} mb-4 block`}>Server</span>
+          <div className="grid grid-cols-2 gap-3">
+            {SERVER_INFO.map((item) => (
+              <div
+                key={item.label}
+                className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                  isLight ? "bg-slate-50 hover:bg-slate-100" : "bg-slate-800/30 hover:bg-slate-800/50"
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  isLight ? "bg-slate-200/50" : "bg-slate-700/50"
+                }`}>
+                  <svg aria-hidden="true" className={`w-4 h-4 ${textTertiary}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                  </svg>
+                </div>
+                <div className="min-w-0">
+                  <div className={`text-[10px] uppercase tracking-wider ${textTertiary}`}>
+                    {item.label}
+                  </div>
+                  <div className={`text-sm truncate ${item.mono ? "font-mono" : "font-medium"} ${textPrimary}`}>
+                    {item.value}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-      {/* Section 4: Recent Activity */}
-      <div className="relative p-6">
+        {/* Security Status */}
+        <div className={`${cardClass} p-6 flex flex-col`}>
+          <div className="flex items-center justify-between mb-4">
+            <span className={`text-sm font-medium ${textPrimary}`}>Security</span>
+            <button className={linkClass}>
+              View security
+              <span className="ml-0.5">&rarr;</span>
+            </button>
+          </div>
+          <div className="space-y-3 flex-1">
+            {SECURITY_STATUS.map((item) => {
+              const dotColors: Record<string, string> = {
+                emerald: "bg-emerald-500",
+                sky: "bg-sky-500",
+                violet: "bg-violet-500",
+                rose: "bg-rose-500",
+              };
+              return (
+                <div
+                  key={item.label}
+                  className={`flex items-center justify-between p-3 rounded-xl ${
+                    isLight ? "bg-slate-50" : "bg-slate-800/30"
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className={`w-2 h-2 rounded-full ${dotColors[item.color]}`} />
+                    <span className={`text-sm ${textPrimary}`}>{item.label}</span>
+                  </div>
+                  <span className={`text-sm font-medium tabular-nums ${textPrimary}`}>{item.value}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Section 6: Disk Usage + Recent Errors (two columns) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* Disk Usage */}
+        <div className={`${cardClass} p-6`}>
+          <span className={`text-sm font-medium ${textPrimary} mb-4 block`}>Storage Breakdown</span>
+
+          {/* Stacked horizontal bar */}
+          <div className="flex h-4 rounded-full overflow-hidden mb-4">
+            {DISK_USAGE.map((segment) => (
+              <div
+                key={segment.label}
+                className={`${segment.color} transition-all duration-500`}
+                style={{ width: `${(segment.size / DISK_TOTAL) * 100}%` }}
+              />
+            ))}
+          </div>
+
+          {/* Legend */}
+          <div className="grid grid-cols-2 gap-2">
+            {DISK_USAGE.map((segment) => (
+              <div key={segment.label} className="flex items-center gap-2">
+                <span className={`w-2.5 h-2.5 rounded-full ${segment.color} flex-shrink-0`} />
+                <span className={`text-xs ${textSecondary} truncate`}>{segment.label}</span>
+                <span className={`text-xs font-medium tabular-nums ml-auto ${textPrimary}`}>
+                  {segment.size >= 1000 ? `${(segment.size / 1000).toFixed(1)} GB` : `${segment.size} MB`}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className={`mt-3 pt-3 border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+            <div className="flex items-center justify-between">
+              <span className={`text-xs ${textTertiary}`}>Total</span>
+              <span className={`text-sm font-semibold tabular-nums ${textPrimary}`}>
+                {(DISK_TOTAL / 1000).toFixed(1)} GB
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Errors */}
+        <div className={`${cardClass} p-6 flex flex-col`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className={`text-sm font-medium ${textPrimary}`}>Recent Errors</span>
+              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${
+                isLight ? "bg-red-100 text-red-600" : "bg-red-500/10 text-red-400"
+              }`}>
+                {RECENT_ERRORS.filter((e) => e.level === "error").length + RECENT_ERRORS.filter((e) => e.level === "warning").length}
+              </span>
+            </div>
+            <button className={linkClass}>
+              View all logs
+              <span className="ml-0.5">&rarr;</span>
+            </button>
+          </div>
+
+          <div className="space-y-2 flex-1">
+            {RECENT_ERRORS.map((err, index) => (
+              <div
+                key={index}
+                className={`flex items-start gap-2.5 p-3 rounded-xl ${
+                  isLight ? "bg-slate-50" : "bg-slate-800/30"
+                }`}
+              >
+                <span
+                  className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
+                    err.level === "error" ? "bg-red-500" : "bg-amber-500"
+                  }`}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className={`text-xs leading-snug truncate ${textPrimary}`}>{err.message}</div>
+                </div>
+                <span className={`text-[10px] tabular-nums flex-shrink-0 ${textTertiary}`}>{err.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Section 7: Activity */}
+      <div className={`${cardClass} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <span className={`text-sm font-medium ${textPrimary}`}>Activity</span>
-          <button className={`text-xs ${textTertiary} hover:${textSecondary} transition-colors`}>
+          <button className={linkClass}>
             View all
+            <span className="ml-0.5">&rarr;</span>
           </button>
         </div>
 
