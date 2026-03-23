@@ -7,3 +7,5 @@ export * from "./analytics";
 export * from "./caching";
 export * from "./users";
 export * from "./logs";
+export * from "./redirects";
+export * from "./ipdeny";
