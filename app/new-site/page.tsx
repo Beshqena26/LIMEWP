@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Input, Select, SelectItem } from "@heroui/react";
 import AppShell from "../components/AppShell";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { INPUT_CLASS_NAMES, SELECT_CLASS_NAMES } from "@/data/settings";
 import { ROUTES } from "@/config/routes";
 import { showToast } from "@/lib/toast";
+import { Toggle } from "@/app/components/ui/Toggle";
 
 // Step definitions with icons
 const STEPS = [
@@ -24,6 +25,7 @@ const PACKAGES = [
     id: "starter",
     name: "Starter",
     price: "$27",
+    annualPrice: "$22",
     period: "/month",
     description: "Perfect for small sites",
     features: ["1 Website", "10GB SSD Storage", "Free SSL Certificate", "Daily Backups"],
@@ -32,6 +34,7 @@ const PACKAGES = [
     id: "premium",
     name: "Premium",
     price: "$45",
+    annualPrice: "$36",
     period: "/month",
     description: "Ideal for growing businesses",
     features: ["5 Websites", "50GB SSD Storage", "Free SSL Certificate", "Daily Backups", "Staging Environment", "Priority Support"],
@@ -41,6 +44,7 @@ const PACKAGES = [
     id: "business",
     name: "Business",
     price: "$80",
+    annualPrice: "$64",
     period: "/month",
     description: "For high-traffic sites and agencies",
     features: ["Unlimited Websites", "100GB SSD Storage", "Free SSL Certificate", "Hourly Backups", "Staging Environment", "24/7 Priority Support", "Global CDN"],
@@ -74,62 +78,122 @@ const DOMAIN_TYPES = [
   },
 ];
 
+const DATA_CENTERS = [
+  { id: "us-east", name: "US East", location: "Virginia", flag: "\u{1F1FA}\u{1F1F8}", latency: "~15ms" },
+  { id: "eu-west", name: "EU West", location: "Frankfurt", flag: "\u{1F1E9}\u{1F1EA}", latency: "~25ms" },
+  { id: "asia-pacific", name: "Asia Pacific", location: "Singapore", flag: "\u{1F1F8}\u{1F1EC}", latency: "~45ms" },
+];
+
+const PLUGINS = [
+  { id: "yoast-seo", name: "Yoast SEO", recommended: true },
+  { id: "woocommerce", name: "WooCommerce", recommended: false },
+  { id: "contact-form-7", name: "Contact Form 7", recommended: false },
+  { id: "wordfence-security", name: "Wordfence Security", recommended: false },
+  { id: "wp-super-cache", name: "WP Super Cache", recommended: false },
+];
+
+const STARTER_TEMPLATES = [
+  { id: "blank", name: "Blank", gradient: "from-slate-300 to-slate-400" },
+  { id: "blog", name: "Blog", gradient: "from-blue-400 to-indigo-500" },
+  { id: "business", name: "Business", gradient: "from-emerald-400 to-teal-500" },
+  { id: "ecommerce", name: "E-commerce", gradient: "from-amber-400 to-orange-500" },
+];
+
+const PAYMENT_CARDS = [
+  { id: "visa-4242", brand: "Visa", last4: "4242", icon: "visa" },
+  { id: "mc-8888", brand: "Mastercard", last4: "8888", icon: "mastercard" },
+  { id: "amex-1234", brand: "Amex", last4: "1234", icon: "amex" },
+];
+
+const CREATION_STEPS = [
+  "Provisioning server...",
+  "Installing WordPress...",
+  "Configuring domain...",
+  "Installing plugins...",
+  "Almost ready!",
+];
+
 // Icon Component - defined outside to prevent recreation
 const StepIcon = ({ type, className }: { type: string; className?: string }) => {
   const icons: Record<string, React.ReactNode> = {
     package: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
       </svg>
     ),
     globe: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
       </svg>
     ),
     wordpress: (
-      <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm-1.5 15.5L7 9.5h2l2.5 6 2.5-6h2l-3.5 8h-2zM12 4c4.411 0 8 3.589 8 8 0 .886-.146 1.739-.414 2.535L16.5 9.5h-2l2.086 5.035L14.5 19l-2.5-6-2.5 6-2.086-4.465L9.5 9.5h-2l-3.086 5.035A7.967 7.967 0 014 12c0-4.411 3.589-8 8-8z" />
       </svg>
     ),
     rocket: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
       </svg>
     ),
     starter: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
       </svg>
     ),
     premium: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
       </svg>
     ),
     business: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21" />
       </svg>
     ),
     search: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
       </svg>
     ),
     link: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
       </svg>
     ),
     gift: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
       </svg>
     ),
     check: (
-      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    ),
+    server: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
+      </svg>
+    ),
+    plugin: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" />
+      </svg>
+    ),
+    template: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+      </svg>
+    ),
+    creditcard: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+      </svg>
+    ),
+    migrate: (
+      <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
       </svg>
     ),
   };
@@ -147,9 +211,11 @@ export default function NewSitePage() {
 
   // Form data
   const [selectedPackage, setSelectedPackage] = useState("premium");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
   const [siteName, setSiteName] = useState("");
   const [domain, setDomain] = useState("");
   const [domainType, setDomainType] = useState<"existing" | "subdomain">("existing");
+  const [domainStatus, setDomainStatus] = useState<"idle" | "checking" | "available" | "taken">("idle");
   const [sslType, setSslType] = useState<"letsencrypt" | "cloudflare">("letsencrypt");
   const [phpVersion, setPhpVersion] = useState<Set<string>>(new Set(["8.3"]));
   const [wpVersion, setWpVersion] = useState<Set<string>>(new Set(["latest"]));
@@ -159,6 +225,85 @@ export default function NewSitePage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [originCertificate, setOriginCertificate] = useState("");
   const [privateKey, setPrivateKey] = useState("");
+  const [dataCenter, setDataCenter] = useState("us-east");
+  const [selectedPlugins, setSelectedPlugins] = useState<Set<string>>(new Set());
+  const [starterTemplate, setStarterTemplate] = useState("blank");
+  const [selectedPaymentCard, setSelectedPaymentCard] = useState("visa-4242");
+
+  // Creation progress state
+  const [creating, setCreating] = useState(false);
+  const [creationStep, setCreationStep] = useState(0);
+  const [creationComplete, setCreationComplete] = useState(false);
+
+  // Domain check debounce ref
+  const domainCheckTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Domain availability check with debounce
+  useEffect(() => {
+    if (!domain || domain.length < 2) {
+      setDomainStatus("idle");
+      return;
+    }
+
+    setDomainStatus("checking");
+
+    if (domainCheckTimeout.current) {
+      clearTimeout(domainCheckTimeout.current);
+    }
+
+    domainCheckTimeout.current = setTimeout(() => {
+      const lowerDomain = domain.toLowerCase();
+      if (lowerDomain.includes("test") || lowerDomain.includes("example")) {
+        setDomainStatus("taken");
+      } else {
+        setDomainStatus("available");
+      }
+    }, 1000);
+
+    return () => {
+      if (domainCheckTimeout.current) {
+        clearTimeout(domainCheckTimeout.current);
+      }
+    };
+  }, [domain]);
+
+  // Creation progress animation
+  useEffect(() => {
+    if (!creating || creationComplete) return;
+
+    const interval = setInterval(() => {
+      setCreationStep((prev) => {
+        if (prev >= CREATION_STEPS.length - 1) {
+          clearInterval(interval);
+          setCreationComplete(true);
+          // Fire confetti
+          import("canvas-confetti").then((m) =>
+            m.default({
+              particleCount: 150,
+              spread: 80,
+              origin: { y: 0.6 },
+            })
+          );
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [creating, creationComplete]);
+
+  const togglePlugin = useCallback((pluginId: string) => {
+    setSelectedPlugins((prev) => {
+      const next = new Set(prev);
+      if (next.has(pluginId)) {
+        next.delete(pluginId);
+      } else {
+        next.add(pluginId);
+      }
+      return next;
+    });
+  }, []);
 
   const inputClassNames = useMemo(() => isLight
     ? {
@@ -206,18 +351,18 @@ export default function NewSitePage() {
   const handleSubmit = useCallback(async () => {
     if (!canProceed()) return;
 
-    setIsCreating(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    showToast.success(`Site "${siteName}" created successfully`);
-
-    setIsCreating(false);
-    router.push(ROUTES.DASHBOARD);
-  }, [canProceed, selectedPackage, siteName, domain, domainType, phpVersion, wpVersion, adminEmail, adminUsername, router]);
+    setCreating(true);
+    setCreationStep(0);
+    setCreationComplete(false);
+  }, [canProceed]);
 
   const handleCancel = useCallback(() => {
     router.push(ROUTES.DASHBOARD);
   }, [router]);
+
+  const getDisplayPrice = useCallback((pkg: typeof PACKAGES[0]) => {
+    return billingCycle === "annual" ? pkg.annualPrice : pkg.price;
+  }, [billingCycle]);
 
   // Step Indicator Component
   const StepIndicator = () => (
@@ -300,6 +445,36 @@ export default function NewSitePage() {
                 Select the plan that best fits your needs. You can upgrade anytime.
               </p>
             </div>
+
+            {/* Billing Cycle Toggle */}
+            <div className="flex items-center justify-center gap-3">
+              <span className={cn(
+                "text-sm font-medium transition-colors",
+                billingCycle === "monthly"
+                  ? isLight ? "text-slate-900" : "text-slate-100"
+                  : isLight ? "text-slate-400" : "text-slate-500"
+              )}>
+                Monthly
+              </span>
+              <Toggle
+                enabled={billingCycle === "annual"}
+                onChange={(val) => setBillingCycle(val ? "annual" : "monthly")}
+              />
+              <span className={cn(
+                "text-sm font-medium transition-colors",
+                billingCycle === "annual"
+                  ? isLight ? "text-slate-900" : "text-slate-100"
+                  : isLight ? "text-slate-400" : "text-slate-500"
+              )}>
+                Annual
+              </span>
+              {billingCycle === "annual" && (
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500 text-white">
+                  Save 20%
+                </span>
+              )}
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
               {PACKAGES.map((pkg) => (
                 <button
@@ -351,7 +526,7 @@ export default function NewSitePage() {
                         "text-3xl font-bold tracking-tight",
                         isLight ? "text-slate-900" : "text-slate-100"
                       )}>
-                        {pkg.price}
+                        {getDisplayPrice(pkg)}
                       </span>
                       <span className={cn(
                         "text-sm font-medium",
@@ -360,6 +535,11 @@ export default function NewSitePage() {
                         {pkg.period}
                       </span>
                     </div>
+                    {billingCycle === "annual" && (
+                      <p className="text-xs text-emerald-500 font-medium mt-1">
+                        Billed annually ({parseInt(pkg.annualPrice.replace("$", "")) * 12}/yr)
+                      </p>
+                    )}
                   </div>
 
                   {/* Features List */}
@@ -496,6 +676,7 @@ export default function NewSitePage() {
                 </p>
               </div>
               <Input
+                id="domain-input"
                 value={domain}
                 onValueChange={setDomain}
                 placeholder={domainType === "subdomain" ? "mysite" : "example.com"}
@@ -513,6 +694,37 @@ export default function NewSitePage() {
                   )
                 }
               />
+
+              {/* Domain Availability Status */}
+              {domain.length >= 2 && (
+                <div className="mt-2.5 flex items-center gap-2">
+                  {domainStatus === "checking" && (
+                    <>
+                      <svg className="w-4 h-4 animate-spin text-slate-400" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span className="text-xs text-slate-400">Checking availability...</span>
+                    </>
+                  )}
+                  {domainStatus === "available" && (
+                    <>
+                      <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-xs font-medium text-emerald-500">Domain available!</span>
+                    </>
+                  )}
+                  {domainStatus === "taken" && (
+                    <>
+                      <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      <span className="text-xs font-medium text-red-500">Domain already taken</span>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Info Box */}
@@ -526,7 +738,7 @@ export default function NewSitePage() {
                 "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
                 isLight ? "bg-slate-800" : "bg-slate-200"
               )}>
-                <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>
               </div>
@@ -566,7 +778,7 @@ export default function NewSitePage() {
                         ? isLight ? "bg-slate-800" : "bg-slate-200"
                         : isLight ? "bg-slate-100" : "bg-slate-800"
                     )}>
-                      <svg className={cn("w-5 h-5", sslType === "letsencrypt" ? isLight ? "text-white" : "text-slate-900" : isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <svg className={cn("w-5 h-5", sslType === "letsencrypt" ? isLight ? "text-white" : "text-slate-900" : isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                       </svg>
                     </div>
@@ -617,7 +829,7 @@ export default function NewSitePage() {
                         ? isLight ? "bg-slate-800" : "bg-slate-200"
                         : isLight ? "bg-slate-100" : "bg-slate-800"
                     )}>
-                      <svg className={cn("w-5 h-5", sslType === "cloudflare" ? isLight ? "text-white" : "text-slate-900" : isLight ? "text-slate-600" : "text-slate-400")} viewBox="0 0 24 24" fill="currentColor">
+                      <svg className={cn("w-5 h-5", sslType === "cloudflare" ? isLight ? "text-white" : "text-slate-900" : isLight ? "text-slate-600" : "text-slate-400")} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M16.5088 16.8447C16.6235 16.4476 16.5765 16.0976 16.3694 15.8224C16.1835 15.5765 15.8688 15.4329 15.4894 15.4094L8.84354 15.3553C8.75531 15.3506 8.68 15.3059 8.63531 15.2365C8.59062 15.1671 8.58354 15.0824 8.61354 15.0035C8.66531 14.8694 8.79354 14.7765 8.94354 14.7624L15.5929 14.7082C16.4894 14.6541 17.4494 13.9671 17.8094 13.1412L18.3176 11.9647C18.3694 11.8447 18.3929 11.7153 18.3788 11.5859C17.9953 9.32 16.0188 7.58 13.6376 7.58C11.5847 7.58 9.82354 8.90118 9.15177 10.7271C8.75531 10.4612 8.27531 10.3035 7.75531 10.3035C6.49177 10.3035 5.46354 11.2894 5.39531 12.5365C5.39531 12.5929 5.39531 12.6494 5.39531 12.7059C4.20708 12.9341 3.29177 13.9624 3.29177 15.2035C3.29177 15.3118 3.30354 15.4176 3.31531 15.5212C3.33062 15.6671 3.45531 15.7765 3.60354 15.7765H16.0329C16.1788 15.7765 16.31 15.6859 16.3624 15.5541L16.5088 16.8447Z"/>
                       </svg>
                     </div>
@@ -668,7 +880,7 @@ export default function NewSitePage() {
                         isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-400"
                       )}>A</span>
                       <span className={cn(isLight ? "text-slate-600" : "text-slate-400")}>@</span>
-                      <span className={cn(isLight ? "text-slate-400" : "text-slate-600")}>→</span>
+                      <span className={cn(isLight ? "text-slate-400" : "text-slate-600")}>&rarr;</span>
                       <span className={cn("font-semibold", isLight ? "text-slate-900" : "text-slate-100")}>46.4.212.172</span>
                     </div>
                     <div className={cn(
@@ -680,7 +892,7 @@ export default function NewSitePage() {
                         isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-400"
                       )}>A</span>
                       <span className={cn(isLight ? "text-slate-600" : "text-slate-400")}>www</span>
-                      <span className={cn(isLight ? "text-slate-400" : "text-slate-600")}>→</span>
+                      <span className={cn(isLight ? "text-slate-400" : "text-slate-600")}>&rarr;</span>
                       <span className={cn("font-semibold", isLight ? "text-slate-900" : "text-slate-100")}>46.4.212.172</span>
                     </div>
                   </div>
@@ -697,7 +909,7 @@ export default function NewSitePage() {
                     "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
                     isLight ? "bg-slate-800" : "bg-slate-200"
                   )}>
-                    <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <svg className={cn("w-5 h-5", isLight ? "text-white" : "text-slate-900")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
                   </div>
@@ -706,7 +918,7 @@ export default function NewSitePage() {
                       Generate an Origin Certificate
                     </p>
                     <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-slate-400")}>
-                      Go to Cloudflare → <span className="font-semibold">SSL/TLS → Origin Server</span> and create a certificate.
+                      Go to Cloudflare &rarr; <span className="font-semibold">SSL/TLS &rarr; Origin Server</span> and create a certificate.
                     </p>
                   </div>
                 </div>
@@ -718,13 +930,14 @@ export default function NewSitePage() {
                 )}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className={cn(
+                      <label htmlFor="origin-cert" className={cn(
                         "block text-sm font-medium mb-2",
                         isLight ? "text-slate-700" : "text-slate-300"
                       )}>
                         Origin Certificate
                       </label>
                       <textarea
+                        id="origin-cert"
                         value={originCertificate}
                         onChange={(e) => setOriginCertificate(e.target.value)}
                         placeholder={"-----BEGIN CERTIFICATE-----\n..."}
@@ -739,13 +952,14 @@ export default function NewSitePage() {
                       />
                     </div>
                     <div>
-                      <label className={cn(
+                      <label htmlFor="private-key" className={cn(
                         "block text-sm font-medium mb-2",
                         isLight ? "text-slate-700" : "text-slate-300"
                       )}>
                         Private Key
                       </label>
                       <textarea
+                        id="private-key"
                         value={privateKey}
                         onChange={(e) => setPrivateKey(e.target.value)}
                         placeholder={"-----BEGIN PRIVATE KEY-----\n..."}
@@ -763,6 +977,35 @@ export default function NewSitePage() {
                 </div>
               </>
             )}
+
+            {/* Migration Option */}
+            <button
+              onClick={() => router.push(ROUTES.MIGRATE)}
+              className={cn(
+                "w-full rounded-xl border-2 border-dashed p-4 flex items-center gap-3 transition-all duration-300 text-left",
+                isLight
+                  ? "border-slate-200 hover:border-slate-400 hover:bg-slate-50"
+                  : "border-slate-700 hover:border-slate-500 hover:bg-slate-800/50"
+              )}
+            >
+              <div className={cn(
+                "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
+                isLight ? "bg-slate-100" : "bg-slate-800"
+              )}>
+                <StepIcon type="migrate" className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>
+                  Already have a site? Migrate it instead
+                </h4>
+                <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
+                  Transfer your existing WordPress site to LimeWP with zero downtime
+                </p>
+              </div>
+              <svg className={cn("w-5 h-5 flex-shrink-0", isLight ? "text-slate-400" : "text-slate-600")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
           </div>
         );
 
@@ -785,6 +1028,61 @@ export default function NewSitePage() {
               </p>
             </div>
 
+            {/* Data Center Selection */}
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={cn(
+                  "w-9 h-9 rounded-lg flex items-center justify-center",
+                  isLight ? "bg-slate-100" : "bg-slate-800"
+                )}>
+                  <StepIcon type="server" className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} />
+                </div>
+                <div>
+                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>Data Center</h3>
+                  <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>Choose the closest region to your audience</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {DATA_CENTERS.map((dc) => (
+                  <button
+                    key={dc.id}
+                    onClick={() => setDataCenter(dc.id)}
+                    className={cn(
+                      "relative rounded-xl border-2 p-4 text-left transition-all duration-300",
+                      dataCenter === dc.id
+                        ? isLight
+                          ? "border-slate-400 bg-slate-100/50 shadow-md"
+                          : "border-slate-500 bg-slate-700/20"
+                        : isLight
+                        ? "border-slate-200 bg-white hover:border-slate-300"
+                        : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
+                    )}
+                  >
+                    <div className="text-center">
+                      <span className="text-2xl block mb-1.5">{dc.flag}</span>
+                      <h4 className={cn("font-semibold text-sm", isLight ? "text-slate-900" : "text-slate-100")}>
+                        {dc.name}
+                      </h4>
+                      <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>
+                        {dc.location}
+                      </p>
+                      <p className={cn("text-[11px] font-medium mt-1", isLight ? "text-slate-400" : "text-slate-600")}>
+                        {dc.latency}
+                      </p>
+                    </div>
+                    {dataCenter === dc.id && (
+                      <div className={cn(
+                        "absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center",
+                        isLight ? "bg-slate-800" : "bg-slate-200"
+                      )}>
+                        <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Site Name Card */}
             <div className={cn(
               "rounded-xl border p-5",
@@ -795,7 +1093,7 @@ export default function NewSitePage() {
                   "w-9 h-9 rounded-lg flex items-center justify-center",
                   isLight ? "bg-slate-100" : "bg-slate-800"
                 )}>
-                  <svg className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
                   </svg>
                 </div>
@@ -805,6 +1103,7 @@ export default function NewSitePage() {
                 </div>
               </div>
               <Input
+                id="site-name"
                 value={siteName}
                 onValueChange={setSiteName}
                 placeholder="My Website"
@@ -824,7 +1123,7 @@ export default function NewSitePage() {
                   "w-9 h-9 rounded-lg flex items-center justify-center",
                   isLight ? "bg-slate-100" : "bg-slate-800"
                 )}>
-                  <svg className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
                   </svg>
                 </div>
@@ -836,13 +1135,14 @@ export default function NewSitePage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className={cn(
+                  <label htmlFor="admin-username" className={cn(
                     "block text-xs font-medium mb-1.5",
                     isLight ? "text-slate-600" : "text-slate-400"
                   )}>
                     Admin Username
                   </label>
                   <Input
+                    id="admin-username"
                     value={adminUsername}
                     onValueChange={setAdminUsername}
                     placeholder="admin"
@@ -852,13 +1152,14 @@ export default function NewSitePage() {
                   />
                 </div>
                 <div>
-                  <label className={cn(
+                  <label htmlFor="admin-email" className={cn(
                     "block text-xs font-medium mb-1.5",
                     isLight ? "text-slate-600" : "text-slate-400"
                   )}>
                     Admin Email <span className="text-slate-400">*</span>
                   </label>
                   <Input
+                    id="admin-email"
                     value={adminEmail}
                     onValueChange={setAdminEmail}
                     placeholder="admin@example.com"
@@ -869,13 +1170,14 @@ export default function NewSitePage() {
                   />
                 </div>
                 <div>
-                  <label className={cn(
+                  <label htmlFor="admin-password" className={cn(
                     "block text-xs font-medium mb-1.5",
                     isLight ? "text-slate-600" : "text-slate-400"
                   )}>
                     Admin Password <span className="text-slate-400">*</span>
                   </label>
                   <Input
+                    id="admin-password"
                     value={adminPassword}
                     onValueChange={setAdminPassword}
                     placeholder="Enter password"
@@ -886,13 +1188,14 @@ export default function NewSitePage() {
                   />
                 </div>
                 <div>
-                  <label className={cn(
+                  <label htmlFor="confirm-password" className={cn(
                     "block text-xs font-medium mb-1.5",
                     isLight ? "text-slate-600" : "text-slate-400"
                   )}>
                     Confirm Password <span className="text-slate-400">*</span>
                   </label>
                   <Input
+                    id="confirm-password"
                     value={confirmPassword}
                     onValueChange={setConfirmPassword}
                     placeholder="Confirm password"
@@ -913,12 +1216,118 @@ export default function NewSitePage() {
                   ? "bg-slate-100 border border-slate-200"
                   : "bg-slate-800/50 border border-slate-700"
               )}>
-                <svg className={cn("w-4 h-4 flex-shrink-0 mt-0.5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <svg className={cn("w-4 h-4 flex-shrink-0 mt-0.5", isLight ? "text-slate-600" : "text-slate-400")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                 </svg>
                 <p className={cn("text-xs leading-relaxed", isLight ? "text-slate-600" : "text-slate-400")}>
                   <span className="font-semibold">Save these credentials!</span> You&apos;ll need them to log into your WordPress dashboard.
                 </p>
+              </div>
+            </div>
+
+            {/* Pre-installed Plugins */}
+            <div className={cn(
+              "rounded-xl border p-5",
+              isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
+            )}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className={cn(
+                  "w-9 h-9 rounded-lg flex items-center justify-center",
+                  isLight ? "bg-slate-100" : "bg-slate-800"
+                )}>
+                  <StepIcon type="plugin" className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} />
+                </div>
+                <div>
+                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>Pre-installed Plugins</h3>
+                  <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>Select plugins to install automatically</p>
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                {PLUGINS.map((plugin) => (
+                  <label
+                    key={plugin.id}
+                    htmlFor={`plugin-${plugin.id}`}
+                    className={cn(
+                      "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors",
+                      selectedPlugins.has(plugin.id)
+                        ? isLight ? "bg-slate-100" : "bg-slate-800/60"
+                        : isLight ? "hover:bg-slate-50" : "hover:bg-slate-800/30"
+                    )}
+                  >
+                    <input
+                      type="checkbox"
+                      id={`plugin-${plugin.id}`}
+                      checked={selectedPlugins.has(plugin.id)}
+                      onChange={() => togglePlugin(plugin.id)}
+                      className={cn(
+                        "w-4 h-4 rounded border-2 transition-colors cursor-pointer",
+                        isLight ? "border-slate-300 accent-slate-800" : "border-slate-600 accent-slate-200"
+                      )}
+                    />
+                    <span className={cn("text-sm font-medium flex-1", isLight ? "text-slate-700" : "text-slate-300")}>
+                      {plugin.name}
+                    </span>
+                    {plugin.recommended && (
+                      <span className={cn(
+                        "text-[10px] font-bold px-2 py-0.5 rounded-full",
+                        isLight ? "bg-slate-800 text-white" : "bg-slate-200 text-slate-900"
+                      )}>
+                        Recommended
+                      </span>
+                    )}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Starter Templates */}
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={cn(
+                  "w-9 h-9 rounded-lg flex items-center justify-center",
+                  isLight ? "bg-slate-100" : "bg-slate-800"
+                )}>
+                  <StepIcon type="template" className={cn("w-5 h-5", isLight ? "text-slate-600" : "text-slate-400")} />
+                </div>
+                <div>
+                  <h3 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>Starter Template</h3>
+                  <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>Choose a starting point for your site</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {STARTER_TEMPLATES.map((tpl) => (
+                  <button
+                    key={tpl.id}
+                    onClick={() => setStarterTemplate(tpl.id)}
+                    className={cn(
+                      "relative rounded-xl border-2 p-3 text-left transition-all duration-300 overflow-hidden",
+                      starterTemplate === tpl.id
+                        ? isLight
+                          ? "border-slate-400 shadow-md"
+                          : "border-slate-500"
+                        : isLight
+                        ? "border-slate-200 hover:border-slate-300"
+                        : "border-slate-800 hover:border-slate-700"
+                    )}
+                  >
+                    <div className={cn(
+                      "w-full h-20 rounded-lg bg-gradient-to-br mb-2.5",
+                      tpl.gradient
+                    )} />
+                    <h4 className={cn("font-semibold text-sm text-center", isLight ? "text-slate-900" : "text-slate-100")}>
+                      {tpl.name}
+                    </h4>
+                    {starterTemplate === tpl.id && (
+                      <div className={cn(
+                        "absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center",
+                        isLight ? "bg-slate-800" : "bg-slate-200"
+                      )}>
+                        <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
+                      </div>
+                    )}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -927,6 +1336,9 @@ export default function NewSitePage() {
       case 4:
         // Step 4: Finalize
         const selectedPkg = PACKAGES.find((p) => p.id === selectedPackage);
+        const displayPrice = selectedPkg ? getDisplayPrice(selectedPkg) : "";
+        const selectedDc = DATA_CENTERS.find((dc) => dc.id === dataCenter);
+        const selectedTpl = STARTER_TEMPLATES.find((t) => t.id === starterTemplate);
 
         return (
           <div className="space-y-5">
@@ -945,7 +1357,7 @@ export default function NewSitePage() {
               </p>
             </div>
 
-            {/* Summary Card */}
+            {/* Order Summary Card */}
             <div className={cn(
               "rounded-xl border overflow-hidden",
               isLight ? "bg-white border-slate-200 shadow-sm" : "bg-slate-900/50 border-slate-800"
@@ -955,22 +1367,26 @@ export default function NewSitePage() {
                 isLight ? "bg-slate-50 border-slate-200" : "bg-slate-800/50 border-slate-800"
               )}>
                 <h3 className={cn("font-semibold text-sm", isLight ? "text-slate-900" : "text-slate-100")}>
-                  Site Summary
+                  Order Summary
                 </h3>
               </div>
               <div className="p-4 space-y-0">
                 {[
-                  { label: "Package", value: `${selectedPkg?.name} (${selectedPkg?.price}${selectedPkg?.period})`, icon: "package" },
-                  { label: "Site Name", value: siteName || "—", icon: "starter" },
-                  { label: "Domain", value: domainType === "subdomain" ? `${domain || "—"}.limewp.com` : (domain || "—"), icon: "globe" },
+                  { label: "Package", value: `${selectedPkg?.name} (${displayPrice}${selectedPkg?.period})`, icon: "package" },
+                  { label: "Billing", value: billingCycle === "annual" ? "Annual (Save 20%)" : "Monthly", icon: "creditcard" },
+                  { label: "Site Name", value: siteName || "\u2014", icon: "starter" },
+                  { label: "Domain", value: domainType === "subdomain" ? `${domain || "\u2014"}.limewp.com` : (domain || "\u2014"), icon: "globe" },
+                  { label: "Data Center", value: selectedDc ? `${selectedDc.flag} ${selectedDc.name} (${selectedDc.location})` : "\u2014", icon: "server" },
+                  { label: "Template", value: selectedTpl?.name || "\u2014", icon: "template" },
+                  { label: "Plugins", value: selectedPlugins.size > 0 ? `${selectedPlugins.size} selected` : "None", icon: "plugin" },
                   { label: "PHP Version", value: PHP_VERSIONS.find((v) => v.key === Array.from(phpVersion)[0])?.label, icon: "wordpress" },
                   { label: "WordPress", value: WP_VERSIONS.find((v) => v.key === Array.from(wpVersion)[0])?.label, icon: "wordpress" },
-                ].map((item, index) => (
+                ].map((item, index, arr) => (
                   <div
                     key={item.label}
                     className={cn(
                       "flex items-center justify-between py-2.5",
-                      index < 4 && (isLight ? "border-b border-slate-100" : "border-b border-slate-800")
+                      index < arr.length - 1 && (isLight ? "border-b border-slate-100" : "border-b border-slate-800")
                     )}
                   >
                     <div className="flex items-center gap-2.5">
@@ -986,6 +1402,89 @@ export default function NewSitePage() {
                       {item.value}
                     </span>
                   </div>
+                ))}
+
+                {/* Total */}
+                <div className={cn(
+                  "flex items-center justify-between py-3 mt-2 border-t-2",
+                  isLight ? "border-slate-200" : "border-slate-700"
+                )}>
+                  <span className={cn("text-sm font-bold", isLight ? "text-slate-900" : "text-slate-100")}>
+                    Total
+                  </span>
+                  <div className="text-right">
+                    <span className={cn("text-lg font-bold", isLight ? "text-slate-900" : "text-slate-100")}>
+                      {displayPrice}
+                    </span>
+                    <span className={cn("text-sm font-medium", isLight ? "text-slate-400" : "text-slate-500")}>
+                      /month
+                    </span>
+                    {billingCycle === "annual" && (
+                      <p className="text-xs text-emerald-500 font-medium">
+                        Billed ${parseInt(displayPrice.replace("$", "")) * 12}/yr
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment Method Selection */}
+            <div>
+              <h3 className={cn("font-semibold text-sm mb-3", isLight ? "text-slate-900" : "text-slate-100")}>
+                Payment Method
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {PAYMENT_CARDS.map((card) => (
+                  <button
+                    key={card.id}
+                    onClick={() => setSelectedPaymentCard(card.id)}
+                    className={cn(
+                      "relative rounded-xl border-2 p-4 text-left transition-all duration-300",
+                      selectedPaymentCard === card.id
+                        ? isLight
+                          ? "border-slate-400 bg-slate-100/50 shadow-md"
+                          : "border-slate-500 bg-slate-700/20"
+                        : isLight
+                        ? "border-slate-200 bg-white hover:border-slate-300"
+                        : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
+                    )}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={cn(
+                        "w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0",
+                        selectedPaymentCard === card.id
+                          ? isLight ? "bg-slate-800" : "bg-slate-200"
+                          : isLight ? "bg-slate-100" : "bg-slate-800"
+                      )}>
+                        <StepIcon
+                          type="creditcard"
+                          className={cn(
+                            "w-5 h-5",
+                            selectedPaymentCard === card.id
+                              ? isLight ? "text-white" : "text-slate-900"
+                              : isLight ? "text-slate-600" : "text-slate-400"
+                          )}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={cn("font-semibold text-sm leading-tight", isLight ? "text-slate-900" : "text-slate-100")}>
+                          {card.brand}
+                        </h4>
+                        <p className={cn("text-xs font-mono", isLight ? "text-slate-500" : "text-slate-500")}>
+                          **** {card.last4}
+                        </p>
+                      </div>
+                    </div>
+                    {selectedPaymentCard === card.id && (
+                      <div className={cn(
+                        "absolute top-2.5 right-2.5 w-5 h-5 rounded-full flex items-center justify-center",
+                        isLight ? "bg-slate-800" : "bg-slate-200"
+                      )}>
+                        <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
+                      </div>
+                    )}
+                  </button>
                 ))}
               </div>
             </div>
@@ -1018,6 +1517,137 @@ export default function NewSitePage() {
     }
   };
 
+  // Creation Progress Overlay
+  if (creating) {
+    const progress = creationComplete
+      ? 100
+      : ((creationStep + 1) / CREATION_STEPS.length) * 100;
+
+    return (
+      <AppShell>
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: isLight ? "rgba(255,255,255,0.95)" : "rgba(15,23,42,0.97)" }}>
+          <div className="max-w-md w-full mx-auto px-6">
+            {!creationComplete ? (
+              <div className="text-center">
+                {/* Animated Rocket */}
+                <div className="mb-8 relative">
+                  <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center animate-pulse"
+                    style={{ background: isLight ? "#1e293b" : "#e2e8f0" }}>
+                    <StepIcon type="rocket" className={cn("w-10 h-10", isLight ? "text-white" : "text-slate-900")} />
+                  </div>
+                </div>
+
+                <h2 className={cn("text-2xl font-bold mb-2", isLight ? "text-slate-900" : "text-slate-100")}>
+                  Creating Your Site
+                </h2>
+                <p className={cn("text-sm mb-8", isLight ? "text-slate-500" : "text-slate-400")}>
+                  This will only take a moment...
+                </p>
+
+                {/* Progress Bar */}
+                <div className={cn(
+                  "w-full h-2 rounded-full overflow-hidden mb-8",
+                  isLight ? "bg-slate-200" : "bg-slate-800"
+                )}>
+                  <div
+                    className="h-full rounded-full transition-all duration-700 ease-out"
+                    style={{
+                      width: `${progress}%`,
+                      background: isLight ? "#1e293b" : "#e2e8f0",
+                    }}
+                  />
+                </div>
+
+                {/* Steps */}
+                <div className="space-y-3 text-left">
+                  {CREATION_STEPS.map((step, index) => (
+                    <div
+                      key={step}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-300",
+                        index <= creationStep
+                          ? isLight ? "bg-slate-50" : "bg-slate-800/50"
+                          : "opacity-40"
+                      )}
+                    >
+                      {index < creationStep ? (
+                        <div className={cn(
+                          "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
+                          isLight ? "bg-slate-800" : "bg-slate-200"
+                        )}>
+                          <StepIcon type="check" className={cn("w-3.5 h-3.5", isLight ? "text-white" : "text-slate-900")} />
+                        </div>
+                      ) : index === creationStep ? (
+                        <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                          <svg className={cn("w-5 h-5 animate-spin", isLight ? "text-slate-800" : "text-slate-200")} fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className={cn(
+                          "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
+                          isLight ? "bg-slate-200" : "bg-slate-700"
+                        )}>
+                          <span className={cn("text-xs font-bold", isLight ? "text-slate-400" : "text-slate-500")}>
+                            {index + 1}
+                          </span>
+                        </div>
+                      )}
+                      <span className={cn(
+                        "text-sm font-medium",
+                        index <= creationStep
+                          ? isLight ? "text-slate-900" : "text-slate-100"
+                          : isLight ? "text-slate-400" : "text-slate-600"
+                      )}>
+                        {step}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                {/* Success Icon */}
+                <div className="mb-6">
+                  <div className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center"
+                    style={{ background: "#10b981" }}>
+                    <StepIcon type="check" className="w-10 h-10 text-white" />
+                  </div>
+                </div>
+
+                <h2 className={cn("text-2xl font-bold mb-2", isLight ? "text-slate-900" : "text-slate-100")}>
+                  Your Site is Ready!
+                </h2>
+                <p className={cn("text-sm mb-3", isLight ? "text-slate-500" : "text-slate-400")}>
+                  <span className="font-semibold">{siteName || "Your site"}</span> has been created successfully.
+                </p>
+                <p className={cn("text-xs mb-8", isLight ? "text-slate-400" : "text-slate-500")}>
+                  {domainType === "subdomain" ? `${domain}.limewp.com` : domain}
+                </p>
+
+                <Button
+                  onPress={() => router.push(ROUTES.DASHBOARD)}
+                  className={cn(
+                    "font-semibold text-sm rounded-lg h-11 px-8 shadow-md transition-all hover:scale-[1.02]",
+                    isLight
+                      ? "bg-slate-800 text-white shadow-slate-500/20 hover:bg-slate-700"
+                      : "bg-slate-100 text-slate-900 shadow-slate-500/10 hover:bg-slate-200"
+                  )}
+                >
+                  Go to Dashboard
+                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
+
   return (
     <AppShell>
       <div className="max-w-3xl mx-auto pb-6">
@@ -1038,6 +1668,7 @@ export default function NewSitePage() {
               stroke="currentColor"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -1082,7 +1713,7 @@ export default function NewSitePage() {
                 : "bg-slate-800 text-slate-400 hover:text-slate-200"
             )}
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
             {currentStep === 1 ? "Cancel" : "Back"}
@@ -1100,7 +1731,7 @@ export default function NewSitePage() {
               )}
             >
               Continue
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
             </Button>
