@@ -235,8 +235,9 @@ export default function NewSitePage() {
   const [selectedPlugins, setSelectedPlugins] = useState<Set<string>>(new Set());
   const [starterTemplate, setStarterTemplate] = useState("blank");
   const [paymentMethod, setPaymentMethod] = useState<"card" | "balance" | "crypto">("card");
-  const [selectedPaymentCard, setSelectedPaymentCard] = useState("visa-4242");
-  const [showAddCard, setShowAddCard] = useState(false);
+  const [savedCards, setSavedCards] = useState<typeof SAVED_CARDS>([]);
+  const [selectedPaymentCard, setSelectedPaymentCard] = useState("");
+  const [showAddCard, setShowAddCard] = useState(true);
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
   const [newCardNumber, setNewCardNumber] = useState("");
   const [newCardExpiry, setNewCardExpiry] = useState("");
@@ -1512,7 +1513,8 @@ export default function NewSitePage() {
               {/* Card selection */}
               {paymentMethod === "card" && (
                 <div className="space-y-2">
-                  {SAVED_CARDS.map((card) => (
+                  {/* Saved cards (empty for first-time users) */}
+                  {savedCards.map((card) => (
                     <button key={card.id} onClick={() => { setSelectedPaymentCard(card.id); setShowAddCard(false); }} className={cn(
                       "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left",
                       selectedPaymentCard === card.id && !showAddCard
@@ -1530,17 +1532,22 @@ export default function NewSitePage() {
                     </button>
                   ))}
 
-                  {/* Add new card */}
-                  {!showAddCard ? (
+                  {/* Add new card — shown by default for first-time users */}
+                  {!showAddCard && savedCards.length > 0 ? (
                     <button onClick={() => setShowAddCard(true)} className={cn(
                       "w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-dashed transition-all text-sm font-medium",
                       isLight ? "border-slate-300 text-slate-500 hover:border-slate-400 hover:text-slate-700" : "border-slate-700 text-slate-400 hover:border-slate-600 hover:text-slate-300"
                     )}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                      Add New Card
+                      Add Another Card
                     </button>
                   ) : (
                     <div className={cn("rounded-xl border p-4 space-y-3", isLight ? "border-slate-200 bg-slate-50" : "border-slate-800 bg-slate-900/50")}>
+                      {savedCards.length === 0 && (
+                        <p className={cn("text-xs font-medium mb-2", isLight ? "text-slate-600" : "text-slate-300")}>
+                          Add a payment method to continue
+                        </p>
+                      )}
                       <div>
                         <label htmlFor="new-card-number" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>Card Number</label>
                         <input id="new-card-number" type="text" value={newCardNumber} onChange={(e) => setNewCardNumber(e.target.value)} placeholder="4242 4242 4242 4242" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
@@ -1556,8 +1563,21 @@ export default function NewSitePage() {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <button onClick={() => setShowAddCard(false)} className={cn("flex-1 h-9 rounded-xl text-xs font-medium", isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-slate-800 text-slate-400 hover:text-slate-200")}>Cancel</button>
-                        <button onClick={() => { setShowAddCard(false); showToast.success("Card added"); }} className={cn("flex-1 h-9 rounded-xl text-xs font-semibold text-white", isLight ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-200 text-slate-900 hover:bg-slate-100")}>Save Card</button>
+                        {savedCards.length > 0 && (
+                          <button onClick={() => setShowAddCard(false)} className={cn("flex-1 h-9 rounded-xl text-xs font-medium", isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-slate-800 text-slate-400 hover:text-slate-200")}>Cancel</button>
+                        )}
+                        <button onClick={() => {
+                          if (!newCardNumber.trim()) { showToast.error("Enter card number"); return; }
+                          const last4 = newCardNumber.trim().slice(-4) || "0000";
+                          const newCard = { id: `card-${Date.now()}`, brand: "Visa", last4, expiry: newCardExpiry || "12/28", color: "bg-blue-600" };
+                          setSavedCards((prev) => [...prev, newCard]);
+                          setSelectedPaymentCard(newCard.id);
+                          setShowAddCard(false);
+                          setNewCardNumber("");
+                          setNewCardExpiry("");
+                          setNewCardCvc("");
+                          showToast.success("Card added successfully");
+                        }} className={cn("flex-1 h-9 rounded-xl text-xs font-semibold text-white", isLight ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-200 text-slate-900 hover:bg-slate-100")}>Save Card</button>
                       </div>
                     </div>
                   )}
