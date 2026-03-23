@@ -40,12 +40,16 @@ const SITES_USING_SERVICE = ["limewp.com", "supernova.guru"];
 
 /* ── saved cards ── */
 const SAVED_CARDS = [
-  { id: "visa-4242", label: "Visa ending in 4242", brand: "Visa" },
-  { id: "mc-8888", label: "Mastercard ending in 8888", brand: "Mastercard" },
-  { id: "amex-1234", label: "Amex ending in 1234", brand: "Amex" },
+  { id: "card-1", brand: "Visa", last4: "4242", expiry: "12/28", color: "bg-blue-600" },
+  { id: "card-2", brand: "Mastercard", last4: "8888", expiry: "06/27", color: "bg-orange-500" },
+  { id: "card-3", brand: "Amex", last4: "1234", expiry: "03/29", color: "bg-sky-500" },
 ];
 
-const CRYPTO_OPTIONS = ["BTC", "ETH", "USDT"];
+const CRYPTO_OPTIONS = [
+  { key: "btc", name: "Bitcoin (BTC)", icon: "\u20BF", color: "bg-orange-500" },
+  { key: "eth", name: "Ethereum (ETH)", icon: "\u039E", color: "bg-violet-500" },
+  { key: "usdt", name: "USDT (TRC-20)", icon: "\u20AE", color: "bg-emerald-500" },
+];
 
 export default function ServicesPage() {
   const { resolvedTheme, accentColor } = useTheme();
@@ -698,98 +702,61 @@ export default function ServicesPage() {
                 ))}
               </div>
 
-              {/* Card payment */}
+              {/* Card payment — matching Add-ons style */}
               {paymentMethod === "card" && (
-                <div className="space-y-3 mb-5">
-                  <label className={labelClass}>Select a card</label>
-                  <div className="space-y-2">
-                    {SAVED_CARDS.map((card) => (
-                      <button
-                        key={card.id}
-                        onClick={() => setSelectedCard(card.id)}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left ${
-                          selectedCard === card.id
-                            ? isLight
-                              ? "border-slate-400 bg-slate-50"
-                              : "border-[var(--border-primary)] bg-[var(--bg-elevated)]"
-                            : isLight
-                              ? "border-slate-200 hover:border-slate-300"
-                              : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
-                        }`}
-                      >
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold ${isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-300"}`}>
-                          {card.brand.substring(0, 2)}
-                        </div>
-                        <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>{card.label}</span>
-                        {selectedCard === card.id && (
-                          <svg className="w-4 h-4 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="M4.5 12.75l6 6 9-13.5" />
-                          </svg>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => showToast.info("Add new card form coming soon...")}
-                    className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-500 hover:text-slate-300"}`}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M12 4v16m8-8H4" />
-                    </svg>
-                    Add New Card
-                  </button>
+                <div className="space-y-2 mb-5">
+                  {SAVED_CARDS.map((card) => (
+                    <button key={card.id} onClick={() => setSelectedCard(card.id)} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left ${
+                      selectedCard === card.id
+                        ? isLight ? "border-emerald-500/50 bg-emerald-50" : "border-emerald-500/30 bg-emerald-500/5"
+                        : isLight ? "border-slate-200 hover:border-slate-300" : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
+                    }`}>
+                      <div className={`w-10 h-7 rounded-md flex items-center justify-center text-xs font-bold text-white ${card.color}`}>{card.brand[0]}</div>
+                      <div className="flex-1">
+                        <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{card.brand} •••• {card.last4}</span>
+                        <span className={`text-xs ml-2 ${isLight ? "text-slate-400" : "text-slate-500"}`}>exp {card.expiry}</span>
+                      </div>
+                      {selectedCard === card.id && (
+                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      )}
+                    </button>
+                  ))}
                 </div>
               )}
 
-              {/* Balance payment */}
+              {/* Balance payment — matching Add-ons style */}
               {paymentMethod === "balance" && (
-                <div className="mb-5">
-                  <div className={`p-4 rounded-xl ${isLight ? "bg-slate-50" : "bg-[var(--bg-elevated)]"}`}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>Available balance</span>
-                      <span className={`text-lg font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>$142.50</span>
-                    </div>
-                    <Progress
-                      value={Math.min((purchaseTarget.price / 142.5) * 100, 100)}
-                      size="sm"
-                      classNames={{
-                        track: `h-1.5 ${isLight ? "bg-slate-200" : "bg-[var(--bg-primary)]"}`,
-                        indicator: "bg-emerald-500 rounded-full",
-                      }}
-                    />
-                    <p className={`text-xs mt-2 ${isLight ? "text-slate-500" : "text-slate-500"}`}>
-                      ${purchaseTarget.price}/mo will be deducted monthly from your balance.
-                    </p>
+                <div className={`rounded-xl p-4 mb-5 ${isLight ? "bg-slate-50 border border-slate-200" : "bg-[var(--bg-elevated)] border border-[var(--border-tertiary)]"}`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Account Balance</span>
+                    <span className={`text-lg font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>$142.50</span>
                   </div>
+                  <div className={`h-2 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-slate-700"}`}>
+                    <div className="h-full rounded-full bg-emerald-500" style={{ width: "71%" }} />
+                  </div>
+                  <p className={`text-[10px] mt-1.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Sufficient for {Math.floor(142.50 / purchaseTarget.price)} months
+                  </p>
                 </div>
               )}
 
-              {/* Crypto payment */}
+              {/* Crypto payment — matching Add-ons style */}
               {paymentMethod === "crypto" && (
-                <div className="mb-5">
-                  <label className={`${labelClass} mb-2 block`}>Select cryptocurrency</label>
-                  <div className="flex gap-2">
-                    {CRYPTO_OPTIONS.map((c) => (
-                      <button
-                        key={c}
-                        onClick={() => setSelectedCrypto(c)}
-                        className={`flex-1 h-10 rounded-xl text-sm font-medium transition-all border ${
-                          selectedCrypto === c
-                            ? isLight
-                              ? "border-slate-400 bg-slate-50 text-slate-800"
-                              : "border-[var(--border-primary)] bg-[var(--bg-elevated)] text-slate-100"
-                            : isLight
-                              ? "border-slate-200 text-slate-500 hover:border-slate-300"
-                              : "border-[var(--border-tertiary)] text-slate-500 hover:border-[var(--border-primary)]"
-                        }`}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                  </div>
-                  <p className={`text-xs mt-3 ${isLight ? "text-slate-500" : "text-slate-500"}`}>
-                    You will receive a {selectedCrypto} payment address after confirmation.
-                  </p>
+                <div className="space-y-2 mb-5">
+                  {CRYPTO_OPTIONS.map((coin) => (
+                    <button key={coin.key} onClick={() => setSelectedCrypto(coin.key)} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left ${
+                      selectedCrypto === coin.key
+                        ? isLight ? "border-emerald-500/50 bg-emerald-50" : "border-emerald-500/30 bg-emerald-500/5"
+                        : isLight ? "border-slate-200 hover:border-slate-300" : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
+                    }`}>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold ${coin.color}`}>{coin.icon}</div>
+                      <span className={`text-sm font-medium flex-1 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{coin.name}</span>
+                      {selectedCrypto === coin.key && (
+                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      )}
+                    </button>
+                  ))}
+                  <p className={`text-[10px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>You will receive a wallet address after confirming</p>
                 </div>
               )}
 
