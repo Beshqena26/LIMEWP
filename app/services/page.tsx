@@ -38,6 +38,40 @@ const UPGRADE_TIERS: Record<string, { name: string; price: number }[]> = {
 /* ── fake sites ── */
 const SITES_USING_SERVICE = ["limewp.com", "supernova.guru"];
 
+/* ── per-service stats for newly added services ── */
+const SERVICE_STATS: Record<string, { plan: string; stats: { label: string; value: string; progress: number }[] }> = {
+  "Global CDN": { plan: "Pro", stats: [
+    { label: "Bandwidth", value: "0 / 500 GB", progress: 0 },
+    { label: "Requests", value: "0 / 10M", progress: 0 },
+    { label: "Cache Hit", value: "—", progress: 0 },
+  ]},
+  "Premium SSL": { plan: "Wildcard", stats: [
+    { label: "Certificates", value: "0 / 5", progress: 0 },
+    { label: "Domains", value: "0 covered", progress: 0 },
+    { label: "Validity", value: "365 days", progress: 100 },
+  ]},
+  "Priority Backup": { plan: "Hourly", stats: [
+    { label: "Backups", value: "0 / 30", progress: 0 },
+    { label: "Storage", value: "0 / 10 GB", progress: 0 },
+    { label: "Retention", value: "30 days", progress: 100 },
+  ]},
+  "Uptime Monitoring": { plan: "Pro", stats: [
+    { label: "Sites", value: "0 / 10", progress: 0 },
+    { label: "Uptime", value: "—", progress: 0 },
+    { label: "Avg Response", value: "—", progress: 0 },
+  ]},
+  "Staging Environment": { plan: "Standard", stats: [
+    { label: "Environments", value: "0 / 3", progress: 0 },
+    { label: "Disk Used", value: "0 / 5 GB", progress: 0 },
+    { label: "Last Sync", value: "Never", progress: 0 },
+  ]},
+  "Web App Firewall": { plan: "Advanced", stats: [
+    { label: "Blocked", value: "0 today", progress: 0 },
+    { label: "Rules Active", value: "0 / 50", progress: 0 },
+    { label: "Threats", value: "0 today", progress: 0 },
+  ]},
+};
+
 /* ── saved cards ── */
 const SAVED_CARDS = [
   { id: "card-1", brand: "Visa", last4: "4242", expiry: "12/28", color: "bg-blue-600" },
@@ -140,16 +174,15 @@ export default function ServicesPage() {
     if (!purchaseTarget) return;
     setActionLoading(true);
     setTimeout(() => {
+      const info = SERVICE_STATS[purchaseTarget.name] || { plan: "Starter", stats: [{ label: "Status", value: "Active", progress: 100 }] };
       const newActive: CurrentService = {
         name: purchaseTarget.name,
-        plan: "Starter",
+        plan: info.plan,
         icon: purchaseTarget.icon,
         color: purchaseTarget.color,
         nextBilling: "Apr 23, 2026",
         price: purchaseTarget.price,
-        stats: [
-          { label: "Usage", value: "0%", progress: 0 },
-        ],
+        stats: info.stats,
       };
       setActiveServices((prev) => [...prev, newActive]);
       setSuggestedServices((prev) => prev.filter((s) => s.name !== purchaseTarget.name));
