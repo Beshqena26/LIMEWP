@@ -145,7 +145,7 @@ function CircularProgress({
   );
 }
 
-export function OverviewTab() {
+export function OverviewTab({ onNavigate }: { onNavigate?: (tab: string) => void }) {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
 
@@ -159,10 +159,10 @@ export function OverviewTab() {
 
   return (
     <div className="space-y-5">
-      {/* Section 1: Site Health Score + Quick Info */}
+      {/* Site Health + Quick Info */}
       <div className={`${cardClass} p-6`}>
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          {/* Left: Health Score */}
+          {/* Health Score */}
           <div className="relative flex-shrink-0">
             <CircularProgress value={HEALTH_SCORE} size={80} strokeWidth={6} isLight={isLight} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -171,62 +171,28 @@ export function OverviewTab() {
             </div>
           </div>
 
-          {/* Middle: Quick Info Pills */}
+          {/* Quick Info */}
           <div className="flex flex-wrap items-center gap-2 flex-1">
             {SITE_QUICK_INFO.map((info) => (
-              <div
-                key={info.label}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs ${
-                  isLight ? "bg-slate-50" : "bg-slate-800/30"
-                }`}
-              >
-                {info.label === "WordPress" && (
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                      info.status === "update" ? "bg-amber-500" : "bg-emerald-500"
-                    }`}
-                  />
-                )}
-                {info.label === "SSL" && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
-                )}
-                <span className={`font-medium ${textPrimary}`}>
-                  {info.label === "WordPress" ? `WP ${info.value}` : info.value}
-                </span>
-                {info.status === "update" && (
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                    isLight ? "bg-amber-100 text-amber-600" : "bg-amber-500/10 text-amber-400"
-                  }`}>
-                    Update available
-                  </span>
-                )}
-                {info.badge && (
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                    isLight ? "bg-violet-100 text-violet-600" : "bg-violet-500/10 text-violet-400"
-                  }`}>
-                    {info.badge}
-                  </span>
-                )}
+              <div key={info.label} className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs ${isLight ? "bg-slate-50" : "bg-slate-800/30"}`}>
+                {info.label === "WordPress" && <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${info.status === "update" ? "bg-amber-500" : "bg-emerald-500"}`} />}
+                {info.label === "SSL" && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
+                <span className={`font-medium ${textPrimary}`}>{info.label === "WordPress" ? `WP ${info.value}` : info.value}</span>
+                {info.status === "update" && <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isLight ? "bg-amber-100 text-amber-600" : "bg-amber-500/10 text-amber-400"}`}>Update available</span>}
+                {info.badge && <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isLight ? "bg-violet-100 text-violet-600" : "bg-violet-500/10 text-violet-400"}`}>{info.badge}</span>}
               </div>
             ))}
           </div>
 
-          {/* Right: Site URL */}
-          <a
-            href="https://limewp.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`flex items-center gap-1.5 text-sm font-medium flex-shrink-0 ${textPrimary} hover:text-violet-400 transition-colors`}
-          >
+          {/* Site URL */}
+          <a href="https://limewp.com" target="_blank" rel="noopener noreferrer" className={`flex items-center gap-1.5 text-sm font-medium flex-shrink-0 ${textPrimary} hover:text-violet-400 transition-colors`}>
             limewp.com
-            <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-            </svg>
+            <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
           </a>
         </div>
       </div>
 
-      {/* Section 2: Plan Usage */}
+      {/* Plan Usage */}
       <div className={`${cardClass} p-6`}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -321,7 +287,7 @@ export function OverviewTab() {
       <div className={`${cardClass} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <span className={`text-sm font-medium ${textPrimary}`}>Last 24 hours</span>
-          <button className={linkClass}>
+          <button onClick={() => onNavigate?.("analytics")} className={linkClass}>
             View analytics
             <span className="ml-0.5">&rarr;</span>
           </button>
@@ -385,7 +351,7 @@ export function OverviewTab() {
         <div className={`${cardClass} p-6 flex flex-col`}>
           <div className="flex items-center justify-between mb-4">
             <span className={`text-sm font-medium ${textPrimary}`}>Security</span>
-            <button className={linkClass}>
+            <button onClick={() => onNavigate?.("tools")} className={linkClass}>
               View security
               <span className="ml-0.5">&rarr;</span>
             </button>
@@ -468,7 +434,7 @@ export function OverviewTab() {
                 {RECENT_ERRORS.filter((e) => e.level === "error").length + RECENT_ERRORS.filter((e) => e.level === "warning").length}
               </span>
             </div>
-            <button className={linkClass}>
+            <button onClick={() => onNavigate?.("logs")} className={linkClass}>
               View all logs
               <span className="ml-0.5">&rarr;</span>
             </button>
@@ -501,7 +467,7 @@ export function OverviewTab() {
       <div className={`${cardClass} p-6`}>
         <div className="flex items-center justify-between mb-4">
           <span className={`text-sm font-medium ${textPrimary}`}>Activity</span>
-          <button className={linkClass}>
+          <button onClick={() => onNavigate?.("activity")} className={linkClass}>
             View all
             <span className="ml-0.5">&rarr;</span>
           </button>

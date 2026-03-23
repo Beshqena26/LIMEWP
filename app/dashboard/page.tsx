@@ -16,7 +16,7 @@ import {
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { DashboardSkeleton } from "../components/skeletons";
 import { DASHBOARD_SITES, DASHBOARD_ACTIVITIES, type DashboardSite, type DashboardActivity } from "@/data/dashboard";
-import { createRoute } from "@/config/routes";
+import { createRoute, ROUTES } from "@/config/routes";
 import { useSimulatedLoading } from "@/hooks";
 import { showToast } from "@/lib/toast";
 
@@ -43,7 +43,7 @@ export default function DashboardPage() {
   };
 
   const handleViewAllActivity = () => {
-    showToast.info("Loading activity history...");
+    router.push(ROUTES.ACTIVITY);
   };
 
   const handleViewActivityDetails = (activity: DashboardActivity) => {

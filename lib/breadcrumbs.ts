@@ -22,6 +22,7 @@ const ROUTE_LABELS: Record<string, string> = {
   ssl: "SSL / Certificates",
   email: "Email Management",
   staging: "Staging Environment",
+  activity: "Activity Log",
   notifications: "Notifications",
   monitoring: "Uptime Monitoring",
   migrate: "Migration Wizard",

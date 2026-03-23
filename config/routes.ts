@@ -53,6 +53,7 @@ export const ROUTES = {
   CONTACT: "/contact",
 
   // Panel
+  ACTIVITY: "/activity",
   NOTIFICATIONS: "/notifications",
   MONITORING: "/monitoring",
   MIGRATE: "/migrate",
