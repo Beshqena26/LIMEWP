@@ -1,13 +1,9 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { createRoute } from "@/config/routes";
-import {
-  Button, Chip,
-  Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,
-} from "@heroui/react";
 import AppShell from "../components/AppShell";
 import { UpgradeModal } from "../components/dashboard";
 import { OverviewTab } from "../components/site/OverviewTab";
@@ -26,6 +22,11 @@ import { RedirectsTab } from "../components/site/RedirectsTab";
 import { IPDenyTab } from "../components/site/IPDenyTab";
 import { AddonsTab } from "../components/site/AddonsTab";
 import { ActivityTab } from "../components/site/ActivityTab";
+import { StagingTab } from "@/app/(panel)/sites/[siteId]/staging/page";
+import { ServerTab } from "@/app/(panel)/sites/[siteId]/server/page";
+import { DatabaseTab } from "@/app/(panel)/sites/[siteId]/database/page";
+import { SSLTab } from "@/app/(panel)/sites/[siteId]/ssl/page";
+import { EmailTab } from "@/app/(panel)/sites/[siteId]/email/page";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { SiteDetailSkeleton } from "../components/skeletons";
 import { useSimulatedLoading } from "@/hooks";
@@ -48,6 +49,13 @@ const tabList = [
   { name: "Redirects", icon: "M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5", color: "orange" },
   { name: "IP Deny", icon: "M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636", color: "red" },
   { name: "Add-ons", icon: "M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z", color: "purple" },
+  // Separator — these navigate to separate pages
+  { name: "---", icon: "", color: "slate" },
+  { name: "Server", icon: "M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7", color: "slate" },
+  { name: "Database", icon: "M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375", color: "amber" },
+  { name: "SSL", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", color: "emerald" },
+  { name: "Email", icon: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75", color: "sky" },
+  { name: "Staging", icon: "M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z", color: "violet" },
 ];
 
 function ComingSoonTab({ title, description, icon }: { title: string; description: string; icon: string }) {
@@ -87,7 +95,43 @@ function SitePageContent() {
   const activeAccent = accentStyles[accentColor];
   const [activeTab, setActiveTab] = useState<string>("overview");
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const quickActionsRef = useRef<HTMLDivElement>(null);
   const { isLoading } = useSimulatedLoading(() => true);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (quickActionsRef.current && !quickActionsRef.current.contains(e.target as Node)) {
+        setQuickActionsOpen(false);
+      }
+    }
+    if (quickActionsOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [quickActionsOpen]);
+
+  const handleQuickAction = (key: string) => {
+    if (key === "server-management") { router.push(createRoute.siteServer(siteName)); return; }
+    if (key === "database-management") { router.push(createRoute.siteDatabase(siteName)); return; }
+    if (key === "ssl-certificates") { router.push(createRoute.siteSSL(siteName)); return; }
+    if (key === "email-management") { router.push(createRoute.siteEmail(siteName)); return; }
+    if (key === "staging") { router.push(createRoute.siteStaging(siteName)); return; }
+    const messages: Record<string, string> = {
+      backup: "Backup started...",
+      "clear-cache": "Cache cleared successfully",
+      "ssl-check": "SSL check in progress...",
+      "restart-php": "PHP restarted successfully",
+      "restart-server": "Server restart initiated...",
+      "server-logs": "Loading server logs...",
+      "security-scan": "Security scan started...",
+    };
+    const msg = messages[key];
+    if (msg) {
+      if (key === "clear-cache" || key === "restart-php") showToast.success(msg);
+      else showToast.info(msg);
+    }
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -107,6 +151,11 @@ function SitePageContent() {
       case "redirects": return <RedirectsTab siteId={siteName} />;
       case "ip deny": return <IPDenyTab siteId={siteName} />;
       case "add-ons": return <AddonsTab siteId={siteName} />;
+      case "server": return <ServerTab siteId={siteName} />;
+      case "database": return <DatabaseTab siteId={siteName} />;
+      case "ssl": return <SSLTab siteId={siteName} />;
+      case "email": return <EmailTab siteId={siteName} />;
+      case "staging": return <StagingTab siteId={siteName} />;
       default: return <OverviewTab />;
     }
   };
@@ -122,15 +171,17 @@ function SitePageContent() {
   return (
     <AppShell>
       {/* Site Header */}
-      <div className={`relative rounded-2xl border overflow-hidden mb-6 ${
+      <div className={`relative rounded-2xl border mb-6 ${
         isLight
           ? "bg-white border-slate-200"
           : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
       }`}>
         {/* Background Glows */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-emerald-500/[0.08] to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-violet-500/[0.05] to-transparent rounded-full translate-y-1/2 -translate-x-1/4" />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-sky-500/[0.03] to-transparent rounded-full -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-emerald-500/[0.08] to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-violet-500/[0.05] to-transparent rounded-full translate-y-1/2 -translate-x-1/4" />
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-sky-500/[0.03] to-transparent rounded-full -translate-x-1/2 -translate-y-1/2" />
+        </div>
 
         {/* Main Content */}
         <div className="relative p-6">
@@ -156,22 +207,22 @@ function SitePageContent() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
                 <h1 className={`text-2xl font-bold truncate ${isLight ? "text-slate-800" : "text-white"}`}>{siteName}</h1>
-                <Chip size="sm" classNames={{ base: "bg-emerald-500/10 border-0", content: "text-emerald-400 font-semibold text-[11px] px-2" }}>
-                  <span className="flex items-center gap-1.5">
+                <span className="inline-flex items-center bg-emerald-500/10 rounded-full px-2 py-0.5">
+                  <span className="flex items-center gap-1.5 text-emerald-400 font-semibold text-[11px]">
                     <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
                     </svg>
                     Active
                   </span>
-                </Chip>
-                <Chip size="sm" classNames={{ base: "bg-sky-500/10 border-0", content: "text-sky-400 font-semibold text-[11px] px-2" }}>
-                  <span className="flex items-center gap-1.5">
+                </span>
+                <span className="inline-flex items-center bg-sky-500/10 rounded-full px-2 py-0.5">
+                  <span className="flex items-center gap-1.5 text-sky-400 font-semibold text-[11px]">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                     SSL Secured
                   </span>
-                </Chip>
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>Pro Plan</span>
@@ -187,78 +238,57 @@ function SitePageContent() {
 
             {/* Action Buttons */}
             <div className="flex items-center gap-2.5 flex-wrap w-full sm:w-auto sm:flex-shrink-0">
-              <Button size="sm" className="font-semibold text-sm text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 hover:border-sky-500/30 rounded-xl px-4 h-10 gap-2 transition-all" startContent={
+              <button className="inline-flex items-center font-semibold text-sm text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 hover:border-sky-500/30 rounded-xl px-4 h-10 gap-2 transition-all">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-              }>Visit Site</Button>
-              <Button size="sm" className="font-semibold text-sm text-violet-400 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 hover:border-violet-500/30 rounded-xl px-4 h-10 gap-2 transition-all" startContent={
+                Visit Site
+              </button>
+              <button className="inline-flex items-center font-semibold text-sm text-violet-400 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 hover:border-violet-500/30 rounded-xl px-4 h-10 gap-2 transition-all">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
-              }>WP Admin</Button>
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button size="sm" className="font-semibold text-sm text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/25 rounded-xl px-4 h-10 gap-2 transition-all" startContent={
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-                  } endContent={
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M19 9l-7 7-7-7" /></svg>
-                  }>Quick Actions</Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  aria-label="Quick Actions"
-                  onAction={(key) => {
-                    if (key === "server-management") {
-                      router.push(createRoute.siteServer(siteName));
-                      return;
-                    }
-                    if (key === "database-management") {
-                      router.push(createRoute.siteDatabase(siteName));
-                      return;
-                    }
-                    if (key === "ssl-certificates") {
-                      router.push(createRoute.siteSSL(siteName));
-                      return;
-                    }
-                    if (key === "email-management") {
-                      router.push(createRoute.siteEmail(siteName));
-                      return;
-                    }
-                    if (key === "staging") {
-                      router.push(createRoute.siteStaging(siteName));
-                      return;
-                    }
-                    const messages: Record<string, string> = {
-                      backup: "Backup started...",
-                      "clear-cache": "Cache cleared successfully",
-                      "ssl-check": "SSL check in progress...",
-                      "restart-php": "PHP restarted successfully",
-                      "restart-server": "Server restart initiated...",
-                      "server-logs": "Loading server logs...",
-                      "security-scan": "Security scan started...",
-                    };
-                    const msg = messages[key as string];
-                    if (msg) {
-                      if (key === "clear-cache" || key === "restart-php") showToast.success(msg);
-                      else showToast.info(msg);
-                    }
-                  }}
-                  classNames={{
-                    base: `p-1.5 rounded-2xl min-w-[180px] ${isLight ? "bg-white border border-slate-200 shadow-xl" : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)] shadow-xl shadow-black/20"}`,
-                    list: "gap-0.5",
-                  }}
+                WP Admin
+              </button>
+              <div className="relative" ref={quickActionsRef}>
+                <button
+                  onClick={() => setQuickActionsOpen((prev) => !prev)}
+                  className="inline-flex items-center font-semibold text-sm text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/25 rounded-xl px-4 h-10 gap-2 transition-all"
                 >
-                  <DropdownItem key="backup" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>} textValue="Backup Now"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Backup Now</span></DropdownItem>
-                  <DropdownItem key="clear-cache" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>} textValue="Clear Cache"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Clear Cache</span></DropdownItem>
-                  <DropdownItem key="ssl-check" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>} textValue="SSL Check"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>SSL Check</span></DropdownItem>
-                  <DropdownItem key="staging" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>} textValue="Staging"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Staging</span></DropdownItem>
-                  <DropdownItem key="divider" isReadOnly className="p-0 my-1 cursor-default data-[hover=true]:bg-transparent" textValue="divider"><div className={`h-px mx-2 ${isLight ? "bg-slate-100" : "bg-[var(--bg-overlay)]"}`} /></DropdownItem>
-                  <DropdownItem key="server-management" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" /></svg>} textValue="Server Management"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Server Management</span></DropdownItem>
-                  <DropdownItem key="database-management" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>} textValue="Database Management"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Database Management</span></DropdownItem>
-                  <DropdownItem key="ssl-certificates" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>} textValue="SSL / Certificates"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>SSL / Certificates</span></DropdownItem>
-                  <DropdownItem key="email-management" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>} textValue="Email Management"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Email Management</span></DropdownItem>
-                  <DropdownItem key="restart-php" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>} textValue="Restart PHP"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Restart PHP</span></DropdownItem>
-                  <DropdownItem key="restart-server" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>} textValue="Restart Server"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Restart Server</span></DropdownItem>
-                  <DropdownItem key="server-logs" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>} textValue="Server Logs"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Server Logs</span></DropdownItem>
-                  <DropdownItem key="security-scan" className={`rounded-xl px-3 py-2 ${isLight ? "data-[hover=true]:bg-slate-100" : "data-[hover=true]:bg-[var(--bg-elevated)]"}`} startContent={<svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>} textValue="Security Scan"><span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>Security Scan</span></DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                  Quick Actions
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M19 9l-7 7-7-7" /></svg>
+                </button>
+                {quickActionsOpen && (
+                  <div className={`absolute right-0 top-full mt-2 z-50 p-1.5 rounded-2xl min-w-[220px] ${isLight ? "bg-white border border-slate-200 shadow-xl" : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)] shadow-xl shadow-black/20"}`}>
+                    <div className="flex flex-col gap-0.5">
+                      {[
+                        { key: "backup", label: "Backup Now", icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5", color: "text-violet-500", bg: "bg-violet-500/10" },
+                        { key: "clear-cache", label: "Clear Cache", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15", color: "text-emerald-500", bg: "bg-emerald-500/10" },
+                        { key: "restart-php", label: "Restart PHP", icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99", color: "text-orange-500", bg: "bg-orange-500/10" },
+                        { key: "ssl-check", label: "SSL Check", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", color: "text-sky-500", bg: "bg-sky-500/10" },
+                        { key: "security-scan", label: "Security Scan", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", color: "text-purple-500", bg: "bg-purple-500/10" },
+                        { key: "restart-server", label: "Restart Server", icon: "M5.636 5.636a9 9 0 1012.728 0M12 3v9", color: "text-rose-500", bg: "bg-rose-500/10" },
+                      ].map((item) => {
+                        if (item.key === "divider") {
+                          return <div key="divider" className={`h-px mx-2 my-1 ${isLight ? "bg-slate-100" : "bg-[var(--border-tertiary)]"}`} />;
+                        }
+                        return (
+                          <button
+                            key={item.key}
+                            onClick={() => {
+                              setQuickActionsOpen(false);
+                              handleQuickAction(item.key);
+                            }}
+                            className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all ${isLight ? "hover:bg-slate-50" : "hover:bg-[var(--bg-elevated)]"}`}
+                          >
+                            <div className={`w-7 h-7 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
+                              <svg className={`w-3.5 h-3.5 ${item.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d={item.icon} /></svg>
+                            </div>
+                            <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>{item.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -310,7 +340,7 @@ function SitePageContent() {
       <div className="lg:hidden mb-6 -mx-2">
         <div className="overflow-x-auto scrollbar-hide">
           <div className="flex gap-2 px-2 pb-2">
-            {tabList.map((tab) => {
+            {tabList.filter((t) => t.name !== "---").map((tab) => {
               const isActive = activeTab === tab.name.toLowerCase();
               return (
                 <button
@@ -367,6 +397,17 @@ function SitePageContent() {
           {/* Custom Tab List */}
           <div className="relative flex flex-col gap-1 p-3">
             {tabList.map((tab) => {
+              // Separator
+              if (tab.name === "---") {
+                return (
+                  <div key="separator" className="py-2">
+                    <div className={`h-px ${isLight ? "bg-slate-200" : "bg-[var(--border-tertiary)]"}`} />
+                    <p className={`text-[10px] font-semibold uppercase tracking-wider mt-2.5 mb-0.5 px-3 ${isLight ? "text-slate-400" : "text-slate-500"}`}>Advanced</p>
+                  </div>
+                );
+              }
+
+              // Regular tab
               const isActive = activeTab === tab.name.toLowerCase();
               return (
                 <button

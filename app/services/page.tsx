@@ -9,7 +9,6 @@ import { Toggle } from "@/app/components/ui/Toggle";
 import { ConfirmDialog } from "@/app/components/ui/ConfirmDialog";
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
-import { Progress } from "@heroui/react";
 import {
   CURRENT_SERVICES,
   SUGGESTED_SERVICES,
@@ -333,6 +332,26 @@ export default function ServicesPage() {
     return map[color] || "from-slate-500 to-slate-600";
   };
 
+  const colorIcon = (color: string) => {
+    const map: Record<string, { bg: string; text: string }> = {
+      emerald: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
+      sky: { bg: "bg-sky-500/10", text: "text-sky-500" },
+      violet: { bg: "bg-violet-500/10", text: "text-violet-500" },
+      amber: { bg: "bg-amber-500/10", text: "text-amber-500" },
+      rose: { bg: "bg-rose-500/10", text: "text-rose-500" },
+      zinc: { bg: "bg-slate-500/10", text: "text-slate-400" },
+    };
+    return map[color] || { bg: "bg-slate-500/10", text: "text-slate-400" };
+  };
+
+  const colorProgress = (color: string) => {
+    const map: Record<string, string> = {
+      emerald: "bg-emerald-500", sky: "bg-sky-500", violet: "bg-violet-500",
+      amber: "bg-amber-500", rose: "bg-rose-500", zinc: "bg-slate-400",
+    };
+    return map[color] || "bg-slate-400";
+  };
+
   return (
     <AppShell>
       {/* ═══════ Header ═══════ */}
@@ -411,13 +430,14 @@ export default function ServicesPage() {
             ) : (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
                 {filteredActive.map((service) => (
-                  <div key={service.name} className={cardClass}>
+                  <div key={service.name} className={`${cardClass} hover:-translate-y-px`}>
+                    <div className={`h-1 bg-gradient-to-r ${colorGradient(service.color)}`} />
                     <div className="relative p-6">
                       {/* Header */}
                       <div className="flex items-start justify-between gap-4 mb-5">
                         <div className="flex items-center gap-4">
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isLight ? "bg-slate-200" : "bg-slate-800"}`}>
-                            <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorIcon(service.color).bg}`}>
+                            <svg className={`w-6 h-6 ${colorIcon(service.color).text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                               <path d={service.icon} />
                             </svg>
                           </div>
@@ -445,14 +465,9 @@ export default function ServicesPage() {
                           <div key={stat.label} className={`rounded-xl p-3 ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]"}`}>
                             <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">{stat.label}</div>
                             <div className={`text-sm font-semibold mb-2 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{stat.value}</div>
-                            <Progress
-                              value={stat.progress}
-                              size="sm"
-                              classNames={{
-                                track: `h-1 ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`,
-                                indicator: `${isLight ? "bg-slate-500" : "bg-slate-400"} rounded-full`,
-                              }}
-                            />
+                            <div className={`h-1 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
+                              <div className={`h-full rounded-full transition-all ${colorProgress(service.color)}`} style={{ width: `${stat.progress}%` }} />
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -516,18 +531,19 @@ export default function ServicesPage() {
                 {filteredSuggested.map((service) => (
                   <div
                     key={service.name}
-                    className={`${cardClass} cursor-pointer`}
+                    className={`${cardClass} cursor-pointer hover:-translate-y-px`}
                     onClick={() => setDetailService(service)}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setDetailService(service); } }}
                     aria-label={`View details for ${service.name}`}
                   >
+                    <div className={`h-1 bg-gradient-to-r ${colorGradient(service.color)}`} />
                     <div className="relative p-5">
                       {/* Header */}
                       <div className="flex items-start justify-between gap-3 mb-3">
-                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 ${isLight ? "bg-slate-100 text-slate-600 ring-1 ring-slate-200" : "bg-slate-800 text-slate-400 ring-1 ring-slate-700"}`}>
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 ${colorIcon(service.color).bg}`}>
+                          <svg className={`w-5 h-5 ${colorIcon(service.color).text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                             <path d={service.icon} />
                           </svg>
                         </div>
@@ -629,8 +645,8 @@ export default function ServicesPage() {
 
               {/* Icon + Name */}
               <div className="flex items-center gap-4 mb-5">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isLight ? "bg-slate-200" : "bg-slate-800"}`}>
-                  <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorIcon(detailService.color).bg}`}>
+                  <svg className={`w-6 h-6 ${colorIcon(detailService.color).text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d={detailService.icon} />
                   </svg>
                 </div>
@@ -663,14 +679,9 @@ export default function ServicesPage() {
                             <span className={isLight ? "text-slate-600" : "text-slate-400"}>{stat.label}</span>
                             <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>{stat.value}</span>
                           </div>
-                          <Progress
-                            value={stat.progress}
-                            size="sm"
-                            classNames={{
-                              track: `h-1.5 ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`,
-                              indicator: `${isLight ? "bg-slate-500" : "bg-slate-400"} rounded-full`,
-                            }}
-                          />
+                          <div className={`h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
+                            <div className={`h-full rounded-full transition-all ${colorProgress(detailService.color)}`} style={{ width: `${stat.progress}%` }} />
+                          </div>
                         </div>
                       ))}
                     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
-import { Avatar, Chip } from "@heroui/react";
+// Avatar and Chip replaced with plain HTML
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
@@ -25,8 +25,9 @@ interface UsersTabProps {
 }
 
 export function UsersTab({ siteId }: UsersTabProps) {
-  const { resolvedTheme } = useTheme();
+  const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
+  const accent = getColorClasses(accentColor);
 
   // ── Shared styles ──
   const cardClass = `rounded-2xl border transition-all ${isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"}`;
@@ -458,53 +459,77 @@ export function UsersTab({ siteId }: UsersTabProps) {
             {usersList.length} users, {activeCount} active
           </p>
         </div>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="h-10 px-5 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-500/20"
-        >
-          Add User
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => showToast.success("User list exported as CSV")}
+            aria-label="Export users"
+            className={`h-9 w-9 rounded-xl flex items-center justify-center transition-all ${
+              isLight ? "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          </button>
+          <button
+            onClick={() => { setShowPermissions(true); document.getElementById("permissions-section")?.scrollIntoView({ behavior: "smooth", block: "nearest" }); }}
+            aria-label="View role permissions"
+            className={`h-9 w-9 rounded-xl flex items-center justify-center transition-all ${
+              isLight ? "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+          </button>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className={`h-9 px-4 rounded-xl text-sm font-semibold text-white transition-all flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Add User
+          </button>
+        </div>
       </div>
 
       {/* 2. Search + Filter Bar */}
-      <div className={`${cardClass} p-4 space-y-3`}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
         {/* Search */}
-        <div className="relative">
+        <div className="relative flex-1 min-w-0 w-full sm:w-auto">
           <label htmlFor="user-search" className="sr-only">Search users</label>
-          <svg className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+          <svg className={`absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
           </svg>
           <input
             id="user-search"
             type="text"
-            placeholder="Search by name or email..."
+            placeholder="Search users..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={`${inputClass} !pl-10`}
           />
         </div>
 
-        {/* Status filter pills */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className={labelClass}>Status:</span>
+        {/* Status filter */}
+        <div className={`inline-flex rounded-xl p-1 shrink-0 ${isLight ? "bg-slate-100" : "bg-[var(--bg-primary)]"}`}>
           {(["all", "active", "suspended", "pending"] as StatusFilter[]).map((s) => {
-            const active = statusFilter === s;
+            const isActive = statusFilter === s;
+            const statusColor = s === "active" ? "text-emerald-500" : s === "suspended" ? "text-rose-500" : s === "pending" ? "text-amber-500" : "";
             return (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  active
-                    ? isLight
-                      ? "bg-slate-800 text-white"
-                      : "bg-white/10 text-white"
-                    : isLight
-                    ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                    : "bg-[var(--bg-primary)] text-slate-400 hover:text-slate-200"
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                  isActive
+                    ? isLight ? "bg-white text-slate-800 shadow-sm" : "bg-[var(--bg-elevated)] text-slate-100 shadow-sm"
+                    : isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
                 }`}
               >
+                {s !== "all" && <span className={`w-1.5 h-1.5 rounded-full ${s === "active" ? "bg-emerald-500" : s === "suspended" ? "bg-rose-500" : "bg-amber-500"}`} />}
                 {s.charAt(0).toUpperCase() + s.slice(1)}
-                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${active ? (isLight ? "bg-white/20" : "bg-white/10") : (isLight ? "bg-slate-200" : "bg-white/5")}`}>
+                <span className={`text-[10px] ${isActive ? (isLight ? "text-slate-500" : "text-slate-400") : (isLight ? "text-slate-400" : "text-slate-500")}`}>
                   {statusCounts[s]}
                 </span>
               </button>
@@ -512,32 +537,25 @@ export function UsersTab({ siteId }: UsersTabProps) {
           })}
         </div>
 
-        {/* Role filter */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className={labelClass}>Role:</span>
-          <button
-            onClick={() => setRoleFilter("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              roleFilter === "all"
-                ? isLight ? "bg-slate-800 text-white" : "bg-white/10 text-white"
-                : isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-primary)] text-slate-400 hover:text-slate-200"
+        {/* Role filter dropdown */}
+        <div className="relative shrink-0">
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className={`h-10 pl-3 pr-8 rounded-xl border text-sm font-medium appearance-none cursor-pointer transition-all outline-none ${
+              isLight
+                ? "bg-white border-slate-200 text-slate-700 hover:border-slate-300 focus:border-slate-400"
+                : "bg-[var(--bg-elevated)] border-[var(--border-primary)] text-slate-200 hover:border-[var(--border-secondary)] focus:border-[var(--border-secondary)]"
             }`}
           >
-            All
-          </button>
-          {ROLES.map((r) => (
-            <button
-              key={r}
-              onClick={() => setRoleFilter(r)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                roleFilter === r
-                  ? isLight ? "bg-slate-800 text-white" : "bg-white/10 text-white"
-                  : isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-primary)] text-slate-400 hover:text-slate-200"
-              }`}
-            >
-              {r}
-            </button>
-          ))}
+            <option value="all">All Roles</option>
+            {ROLES.map((r) => (
+              <option key={r} value={r}>{r}</option>
+            ))}
+          </select>
+          <svg className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
+          </svg>
         </div>
       </div>
 
@@ -671,14 +689,9 @@ export function UsersTab({ siteId }: UsersTabProps) {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="relative flex-shrink-0">
-                        <Avatar
-                          name={user.displayName}
-                          size="sm"
-                          classNames={{
-                            base: `w-8 h-8 bg-gradient-to-br ${user.gradient}`,
-                            name: "text-white text-xs font-bold",
-                          }}
-                        />
+                        <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${user.gradient} flex items-center justify-center`}>
+                          <span className="text-white text-xs font-bold">{user.displayName.split(" ").map(n => n[0]).join("").slice(0, 2)}</span>
+                        </div>
                         {user.isOnline && (
                           <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 ${isLight ? "border-white" : "border-[var(--bg-primary)]"}`} />
                         )}
@@ -850,17 +863,12 @@ export function UsersTab({ siteId }: UsersTabProps) {
                 </svg>
               </button>
               <div className="px-5 -mt-10">
-                <Avatar
-                  name={detailUser.displayName}
-                  size="lg"
-                  classNames={{
-                    base: `w-16 h-16 bg-gradient-to-br ${detailUser.gradient} ring-4 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"}`,
-                    name: "text-white text-lg font-bold",
-                  }}
-                />
+                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${detailUser.gradient} ring-4 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"} flex items-center justify-center`}>
+                  <span className="text-white text-lg font-bold">{detailUser.displayName.split(" ").map(n => n[0]).join("").slice(0, 2)}</span>
+                </div>
                 <h2 id="drawer-title" className={`text-lg font-bold mt-3 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{detailUser.displayName}</h2>
                 <div className="flex items-center gap-2 mt-1.5">
-                  <Chip size="sm" variant="flat" classNames={{ base: "h-6", content: "text-xs font-semibold" }}>{detailUser.role}</Chip>
+                  <span className={`inline-flex items-center h-6 px-2.5 rounded-full text-xs font-semibold ${isLight ? "bg-slate-100 text-slate-600" : "bg-slate-800 text-slate-300"}`}>{detailUser.role}</span>
                   {statusBadge(detailUser.status)}
                 </div>
               </div>

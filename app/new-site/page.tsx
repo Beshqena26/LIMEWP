@@ -2,11 +2,10 @@
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Input, Select, SelectItem } from "@heroui/react";
 import AppShell from "../components/AppShell";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { cn } from "@/lib/utils";
-import { INPUT_CLASS_NAMES, SELECT_CLASS_NAMES } from "@/data/settings";
+import { INPUT_CLASS_NAMES } from "@/data/settings";
 import { ROUTES } from "@/config/routes";
 import { showToast } from "@/lib/toast";
 import { Toggle } from "@/app/components/ui/Toggle";
@@ -330,16 +329,8 @@ export default function NewSitePage() {
       }
     : INPUT_CLASS_NAMES, [isLight]);
 
-  const selectClassNames = useMemo(() => isLight
-    ? {
-        trigger: "bg-white border-slate-200 hover:border-slate-300 !rounded-xl text-slate-800 shadow-sm data-[focus=true]:border-slate-400",
-        value: "text-slate-800",
-        popoverContent: "bg-white border border-slate-200 rounded-xl shadow-lg",
-        listbox: "bg-white",
-      }
-    : SELECT_CLASS_NAMES, [isLight]);
 
-  const canProceed = useCallback(() => {
+const canProceed = useCallback(() => {
     switch (currentStep) {
       case 1:
         return !!selectedPackage;
@@ -731,25 +722,29 @@ export default function NewSitePage() {
                   {domainType === "subdomain" ? "Pick a unique name for your free subdomain" : "Enter your domain name"}
                 </p>
               </div>
-              <Input
-                id="domain-input"
-                value={domain}
-                onValueChange={setDomain}
-                placeholder={domainType === "subdomain" ? "mysite" : "example.com"}
-                classNames={inputClassNames}
-                variant="bordered"
-                size="md"
-                startContent={
-                  domainType !== "subdomain" && (
-                    <span className="text-slate-400 text-sm font-medium">https://</span>
-                  )
-                }
-                endContent={
-                  domainType === "subdomain" && (
-                    <span className={cn("text-sm font-medium", isLight ? "text-slate-600" : "text-slate-400")}>.limewp.com</span>
-                  )
-                }
-              />
+              <div className={cn(
+                "flex items-center h-10 rounded-xl border px-3 transition-colors",
+                isLight
+                  ? "bg-white border-slate-200 hover:border-slate-300 shadow-sm focus-within:border-slate-400"
+                  : inputClassNames.inputWrapper
+              )}>
+                {domainType !== "subdomain" && (
+                  <span className="text-slate-400 text-sm font-medium mr-2">https://</span>
+                )}
+                <input
+                  id="domain-input"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  placeholder={domainType === "subdomain" ? "mysite" : "example.com"}
+                  className={cn(
+                    "flex-1 bg-transparent outline-none text-sm",
+                    isLight ? "text-slate-800 placeholder:text-slate-400" : inputClassNames.input
+                  )}
+                />
+                {domainType === "subdomain" && (
+                  <span className={cn("text-sm font-medium ml-2", isLight ? "text-slate-600" : "text-slate-400")}>.limewp.com</span>
+                )}
+              </div>
 
               {/* Domain Availability Status */}
               {domain.length >= 2 && (
@@ -1158,14 +1153,17 @@ export default function NewSitePage() {
                   <p className={cn("text-xs", isLight ? "text-slate-500" : "text-slate-500")}>Appears in your WordPress dashboard</p>
                 </div>
               </div>
-              <Input
+              <input
                 id="site-name"
                 value={siteName}
-                onValueChange={setSiteName}
+                onChange={(e) => setSiteName(e.target.value)}
                 placeholder="My Website"
-                classNames={inputClassNames}
-                variant="bordered"
-                size="md"
+                className={cn(
+                  "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
+                  isLight
+                    ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                    : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
+                )}
               />
             </div>
 
@@ -1197,14 +1195,17 @@ export default function NewSitePage() {
                   )}>
                     Admin Username
                   </label>
-                  <Input
+                  <input
                     id="admin-username"
                     value={adminUsername}
-                    onValueChange={setAdminUsername}
+                    onChange={(e) => setAdminUsername(e.target.value)}
                     placeholder="admin"
-                    classNames={inputClassNames}
-                    variant="bordered"
-                    size="md"
+                    className={cn(
+                      "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
+                      isLight
+                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                        : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
+                    )}
                   />
                 </div>
                 <div>
@@ -1214,15 +1215,18 @@ export default function NewSitePage() {
                   )}>
                     Admin Email <span className="text-slate-400">*</span>
                   </label>
-                  <Input
+                  <input
                     id="admin-email"
                     value={adminEmail}
-                    onValueChange={setAdminEmail}
+                    onChange={(e) => setAdminEmail(e.target.value)}
                     placeholder="admin@example.com"
                     type="email"
-                    classNames={inputClassNames}
-                    variant="bordered"
-                    size="md"
+                    className={cn(
+                      "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
+                      isLight
+                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                        : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
+                    )}
                   />
                 </div>
                 <div>
@@ -1232,15 +1236,18 @@ export default function NewSitePage() {
                   )}>
                     Admin Password <span className="text-slate-400">*</span>
                   </label>
-                  <Input
+                  <input
                     id="admin-password"
                     value={adminPassword}
-                    onValueChange={setAdminPassword}
+                    onChange={(e) => setAdminPassword(e.target.value)}
                     placeholder="Enter password"
                     type="password"
-                    classNames={inputClassNames}
-                    variant="bordered"
-                    size="md"
+                    className={cn(
+                      "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
+                      isLight
+                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                        : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
+                    )}
                   />
                 </div>
                 <div>
@@ -1250,18 +1257,24 @@ export default function NewSitePage() {
                   )}>
                     Confirm Password <span className="text-slate-400">*</span>
                   </label>
-                  <Input
+                  <input
                     id="confirm-password"
                     value={confirmPassword}
-                    onValueChange={setConfirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm password"
                     type="password"
-                    classNames={inputClassNames}
-                    variant="bordered"
-                    size="md"
-                    isInvalid={confirmPassword.length > 0 && adminPassword !== confirmPassword}
-                    errorMessage={confirmPassword.length > 0 && adminPassword !== confirmPassword ? "Passwords do not match" : ""}
+                    className={cn(
+                      "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
+                      confirmPassword.length > 0 && adminPassword !== confirmPassword
+                        ? "border-red-500 focus:border-red-500"
+                        : isLight
+                          ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                          : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
+                    )}
                   />
+                  {confirmPassword.length > 0 && adminPassword !== confirmPassword && (
+                    <p className="text-xs text-red-500 mt-1">Passwords do not match</p>
+                  )}
                 </div>
               </div>
 
@@ -1914,10 +1927,10 @@ export default function NewSitePage() {
                   {domainType === "subdomain" ? `${domain}.limewp.com` : domain}
                 </p>
 
-                <Button
-                  onPress={() => router.push(ROUTES.DASHBOARD)}
+                <button
+                  onClick={() => router.push(ROUTES.DASHBOARD)}
                   className={cn(
-                    "font-semibold text-sm rounded-lg h-11 px-8 shadow-md transition-all hover:scale-[1.02]",
+                    "inline-flex items-center font-semibold text-sm rounded-lg h-11 px-8 shadow-md transition-all hover:scale-[1.02]",
                     isLight
                       ? "bg-slate-800 text-white shadow-slate-500/20 hover:bg-slate-700"
                       : "bg-slate-100 text-slate-900 shadow-slate-500/10 hover:bg-slate-200"
@@ -1927,7 +1940,7 @@ export default function NewSitePage() {
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
-                </Button>
+                </button>
               </div>
             )}
           </div>
@@ -1991,11 +2004,10 @@ export default function NewSitePage() {
             "flex items-center justify-between px-5 py-5",
             isLight ? "bg-slate-50/50" : "bg-slate-900/30"
           )}>
-          <Button
-            variant="flat"
-            onPress={currentStep === 1 ? handleCancel : handleBack}
+          <button
+            onClick={currentStep === 1 ? handleCancel : handleBack}
             className={cn(
-              "font-semibold text-sm rounded-lg h-10 px-5",
+              "inline-flex items-center font-semibold text-sm rounded-lg h-10 px-5",
               isLight
                 ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
                 : "bg-slate-800 text-slate-400 hover:text-slate-200"
@@ -2005,14 +2017,14 @@ export default function NewSitePage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
             {currentStep === 1 ? "Cancel" : "Back"}
-          </Button>
+          </button>
 
           {currentStep < 4 ? (
-            <Button
-              onPress={handleNext}
-              isDisabled={!canProceed()}
+            <button
+              onClick={handleNext}
+              disabled={!canProceed()}
               className={cn(
-                "font-semibold text-sm rounded-lg h-10 px-6 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]",
+                "inline-flex items-center font-semibold text-sm rounded-lg h-10 px-6 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]",
                 isLight
                   ? "bg-slate-800 text-white shadow-slate-500/20 hover:bg-slate-700 hover:shadow-slate-500/30"
                   : "bg-slate-100 text-slate-900 shadow-slate-500/10 hover:bg-slate-200 hover:shadow-slate-500/20"
@@ -2022,14 +2034,13 @@ export default function NewSitePage() {
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
               </svg>
-            </Button>
+            </button>
           ) : (
-            <Button
-              onPress={handleSubmit}
-              isDisabled={!canProceed()}
-              isLoading={isCreating}
+            <button
+              onClick={handleSubmit}
+              disabled={!canProceed() || isCreating}
               className={cn(
-                "font-semibold text-sm rounded-lg h-10 px-7 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]",
+                "inline-flex items-center font-semibold text-sm rounded-lg h-10 px-7 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02]",
                 isLight
                   ? "bg-slate-800 text-white shadow-slate-500/20 hover:bg-slate-700 hover:shadow-slate-500/30"
                   : "bg-slate-100 text-slate-900 shadow-slate-500/10 hover:bg-slate-200 hover:shadow-slate-500/20"
@@ -2041,7 +2052,7 @@ export default function NewSitePage() {
                   Launch Site
                 </>
               )}
-            </Button>
+            </button>
           )}
           </div>
         </div>

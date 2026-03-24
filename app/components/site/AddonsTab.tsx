@@ -30,7 +30,26 @@ const COLOR_MAP: Record<string, { bg: string; text: string; ring: string; gradie
   violet: { bg: "bg-violet-500/10", text: "text-violet-400", ring: "ring-violet-500/20", gradient: "from-violet-500 to-purple-600" },
   amber: { bg: "bg-amber-500/10", text: "text-amber-400", ring: "ring-amber-500/20", gradient: "from-amber-500 to-orange-600" },
   rose: { bg: "bg-rose-500/10", text: "text-rose-400", ring: "ring-rose-500/20", gradient: "from-rose-500 to-red-600" },
+  cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", ring: "ring-cyan-500/20", gradient: "from-cyan-500 to-teal-600" },
   zinc: { bg: "bg-slate-500/10", text: "text-slate-400", ring: "ring-slate-500/20", gradient: "from-slate-500 to-slate-700" },
+};
+
+const ADDON_COLORS: Record<string, string> = {
+  "Global CDN": "sky",
+  "Premium SSL": "emerald",
+  "Priority Backup": "violet",
+  "Uptime Monitoring": "amber",
+  "Staging Environment": "cyan",
+  "Web App Firewall": "rose",
+};
+
+const USAGE_PROGRESS: Record<string, number> = {
+  "Global CDN": 9,
+  "Premium SSL": 40,
+  "Priority Backup": 47,
+  "Uptime Monitoring": 100,
+  "Staging Environment": 36,
+  "Web App Firewall": 46,
 };
 
 const SAVED_CARDS = [
@@ -184,8 +203,8 @@ export function AddonsTab({ siteId }: AddonsTabProps) {
         <div className={`${cardClass} p-5 mb-5`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"}`}>
-                <svg className={`w-5 h-5 ${isLight ? "text-slate-500" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" /></svg>
+              <div className={`w-11 h-11 rounded-xl flex items-center justify-center ring-1 ${accent.bg} ${accent.ring}`}>
+                <svg className={`w-5 h-5 ${accent.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" /></svg>
               </div>
               <div>
                 <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Monthly add-on cost for this site</p>
@@ -193,7 +212,7 @@ export function AddonsTab({ siteId }: AddonsTabProps) {
               </div>
             </div>
             <div className="text-right">
-              <p className={`text-2xl font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>${monthlyCost}</p>
+              <p className={`text-2xl font-bold ${accent.text}`}>${monthlyCost}</p>
               <p className={`text-xs ${isLight ? "text-slate-400" : "text-slate-500"}`}>/month</p>
             </div>
           </div>
@@ -203,28 +222,43 @@ export function AddonsTab({ siteId }: AddonsTabProps) {
         <div className="space-y-3">
           {services.map((service) => {
             const colors = COLOR_MAP[service.color] || COLOR_MAP.emerald;
+            const addonColorKey = ADDON_COLORS[service.name] || service.color;
+            const addonColors = COLOR_MAP[addonColorKey] || colors;
+            const progress = USAGE_PROGRESS[service.name] ?? 0;
             return (
-              <div key={service.name} className={`${cardClass} overflow-hidden transition-all ${service.enabled ? isLight ? "border-emerald-500/30" : "border-emerald-500/20" : ""}`}>
-                {service.enabled && <div className={`h-1 bg-gradient-to-r ${colors.gradient}`} />}
+              <div key={service.name} className={`${cardClass} overflow-hidden transition-all duration-200 hover:-translate-y-px hover:shadow-md ${service.enabled ? `ring-1 ${addonColors.ring} ${isLight ? "shadow-sm" : ""}` : ""}`}>
+                {service.enabled && <div className={`h-1 bg-gradient-to-r ${addonColors.gradient}`} />}
                 <div className="p-5">
                   <div className="flex items-center gap-4">
                     {/* Icon */}
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${service.enabled ? `bg-gradient-to-br ${colors.gradient} ring-1 ring-white/10` : isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"}`}>
-                      <svg className={`w-6 h-6 ${service.enabled ? "text-white" : isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={service.icon} /></svg>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${service.enabled ? `bg-gradient-to-br ${addonColors.gradient} shadow-lg ring-1 ring-white/10` : `${addonColors.bg} ring-1 ${addonColors.ring}`}`}>
+                      <svg className={`w-6 h-6 ${service.enabled ? "text-white" : addonColors.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={service.icon} /></svg>
                     </div>
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <h4 className={`font-semibold text-sm ${isLight ? "text-slate-800" : "text-slate-100"}`}>{service.name}</h4>
-                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${service.enabled ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20" : isLight ? "bg-slate-100 text-slate-400" : "bg-slate-800 text-slate-500"}`}>
-                          {service.enabled ? "On" : "Off"}
-                        </span>
+                        {service.enabled ? (
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md inline-flex items-center gap-1 ${addonColors.bg} ${addonColors.text} ring-1 ${addonColors.ring}`}>
+                            <span className="relative flex h-1.5 w-1.5"><span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${addonColors.text.replace("text-", "bg-")}`} /><span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${addonColors.text.replace("text-", "bg-")}`} /></span>
+                            Active
+                          </span>
+                        ) : (
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${isLight ? "bg-slate-100 text-slate-400" : "bg-slate-800 text-slate-500"}`}>
+                            Off
+                          </span>
+                        )}
                         <span className={`text-xs font-semibold ${isLight ? "text-slate-700" : "text-slate-200"}`}>${service.price}/mo</span>
                       </div>
                       <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>{service.description}</p>
                       {service.enabled && service.usage && (
-                        <p className={`text-[11px] mt-1.5 ${colors.text}`}>{service.usage}</p>
+                        <div className="mt-2">
+                          <p className={`text-[11px] mb-1.5 ${addonColors.text}`}>{service.usage}</p>
+                          <div className={`h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-100" : "bg-slate-800"}`}>
+                            <div className={`h-full rounded-full bg-gradient-to-r ${addonColors.gradient} transition-all duration-500`} style={{ width: `${progress}%` }} />
+                          </div>
+                        </div>
                       )}
                     </div>
 

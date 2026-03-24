@@ -1,13 +1,46 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { Select, SelectItem } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { TOOLS, TOOL_CATEGORY_CONFIG, TOOL_CATEGORY_ORDER } from "@/data/site/tools";
 import { showToast } from "@/lib/toast";
 import { ConfirmDialog } from "@/app/components/ui/ConfirmDialog";
 import { Toggle } from "@/app/components/ui/Toggle";
+
+/* ── Per-tool accent colors ── */
+const TOOL_COLORS: Record<string, { bg: string; text: string; ring: string }> = {
+  "Restart PHP":            { bg: "bg-orange-500/10",  text: "text-orange-500",  ring: "ring-orange-500/20" },
+  "PHP Engine":             { bg: "bg-violet-500/10",  text: "text-violet-500",  ring: "ring-violet-500/20" },
+  "IonCube Loader":         { bg: "bg-indigo-500/10",  text: "text-indigo-500",  ring: "ring-indigo-500/20" },
+  "PHP Info":               { bg: "bg-purple-500/10",  text: "text-purple-500",  ring: "ring-purple-500/20" },
+  "Force HTTPS":            { bg: "bg-emerald-500/10", text: "text-emerald-500", ring: "ring-emerald-500/20" },
+  "Password Protection":    { bg: "bg-amber-500/10",   text: "text-amber-500",   ring: "ring-amber-500/20" },
+  "WordPress Debugging":    { bg: "bg-rose-500/10",    text: "text-rose-500",    ring: "ring-rose-500/20" },
+  "Site Preview":           { bg: "bg-sky-500/10",     text: "text-sky-500",     ring: "ring-sky-500/20" },
+  "WP-CLI":                 { bg: "bg-cyan-500/10",    text: "text-cyan-500",    ring: "ring-cyan-500/20" },
+  "Error Reporting":        { bg: "bg-pink-500/10",    text: "text-pink-500",    ring: "ring-pink-500/20" },
+  "Search & Replace":       { bg: "bg-sky-500/10",     text: "text-sky-500",     ring: "ring-sky-500/20" },
+  "Database Optimize":      { bg: "bg-amber-500/10",   text: "text-amber-500",   ring: "ring-amber-500/20" },
+  "New Relic Monitoring":   { bg: "bg-teal-500/10",    text: "text-teal-500",    ring: "ring-teal-500/20" },
+  "Early Hints":            { bg: "bg-lime-500/10",    text: "text-lime-500",    ring: "ring-lime-500/20" },
+  "Object Cache":           { bg: "bg-yellow-500/10",  text: "text-yellow-500",  ring: "ring-yellow-500/20" },
+  "Geolocation":            { bg: "bg-blue-500/10",    text: "text-blue-500",    ring: "ring-blue-500/20" },
+  "Remove Set-Cookie":      { bg: "bg-rose-500/10",    text: "text-rose-500",    ring: "ring-rose-500/20" },
+  "Maintenance Mode":       { bg: "bg-orange-500/10",  text: "text-orange-500",  ring: "ring-orange-500/20" },
+  "Cron Manager":           { bg: "bg-indigo-500/10",  text: "text-indigo-500",  ring: "ring-indigo-500/20" },
+};
+const TOOL_COLOR_FALLBACK = { bg: "bg-slate-500/10", text: "text-slate-400", ring: "ring-slate-500/20" };
+
+const CATEGORY_COLORS: Record<string, { bg: string; text: string; ring: string }> = {
+  Server:      { bg: "bg-violet-500/10",  text: "text-violet-500",  ring: "ring-violet-500/20" },
+  Security:    { bg: "bg-emerald-500/10", text: "text-emerald-500", ring: "ring-emerald-500/20" },
+  Development: { bg: "bg-cyan-500/10",    text: "text-cyan-500",    ring: "ring-cyan-500/20" },
+  Database:    { bg: "bg-amber-500/10",   text: "text-amber-500",   ring: "ring-amber-500/20" },
+  Performance: { bg: "bg-teal-500/10",    text: "text-teal-500",    ring: "ring-teal-500/20" },
+  Features:    { bg: "bg-blue-500/10",    text: "text-blue-500",    ring: "ring-blue-500/20" },
+  Advanced:    { bg: "bg-rose-500/10",    text: "text-rose-500",    ring: "ring-rose-500/20" },
+};
 
 interface ToolsTabProps {
   siteId: string;
@@ -553,7 +586,13 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                       <td className={`py-2.5 pr-3 ${textSecondary}`}>
                         <span
                           className={`inline-block text-[10px] font-semibold uppercase px-2 py-0.5 rounded ${
-                            isLight ? "bg-slate-100 text-slate-600" : "bg-[var(--bg-elevated)] text-slate-400"
+                            event.schedule === "hourly"
+                              ? "bg-sky-500/10 text-sky-500"
+                              : event.schedule === "twicedaily"
+                                ? "bg-violet-500/10 text-violet-500"
+                                : event.schedule === "daily"
+                                  ? "bg-emerald-500/10 text-emerald-500"
+                                  : "bg-amber-500/10 text-amber-500"
                           }`}
                         >
                           {event.schedule}
@@ -844,9 +883,7 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
         <div className={`px-6 py-5 border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
           <div className="flex items-center gap-3">
             <div
-              className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                isLight ? "bg-slate-100 text-slate-500" : "bg-[var(--bg-elevated)] text-slate-400"
-              }`}
+              className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center ${accent.bg} ${accent.text} ${accent.ring}`}
             >
               <svg
                 width={18}
@@ -876,13 +913,13 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
             if (!categoryTools || categoryTools.length === 0) return null;
             const config = TOOL_CATEGORY_CONFIG[category];
 
+            const cc = CATEGORY_COLORS[category] || TOOL_COLOR_FALLBACK;
+
             return (
               <div key={category} className="p-6">
                 <div className="flex items-center gap-2.5 mb-4">
                   <div
-                    className={`w-6 h-6 rounded-md text-slate-500 flex items-center justify-center ${
-                      isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-                    }`}
+                    className={`w-6 h-6 rounded-md ring-1 flex items-center justify-center ${cc.bg} ${cc.text} ${cc.ring}`}
                   >
                     <svg
                       width={14}
@@ -900,15 +937,13 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                   </div>
                   <span
                     className={`text-xs font-semibold uppercase tracking-wider ${
-                      isLight ? "text-slate-500" : "text-slate-400"
+                      isLight ? "text-slate-600" : "text-slate-300"
                     }`}
                   >
                     {category}
                   </span>
                   <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded ${
-                      isLight ? "text-slate-700 bg-slate-100" : "text-slate-400 bg-[var(--bg-elevated)]"
-                    }`}
+                    className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${cc.bg} ${cc.text}`}
                   >
                     {categoryTools.length}
                   </span>
@@ -919,23 +954,20 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                     const toggleable = isToggleable(tool);
                     const enabled = enabledTools[tool.title] ?? false;
                     const buttonLabel = toggleable ? (enabled ? "Disable" : "Enable") : tool.btn;
+                    const tc = TOOL_COLORS[tool.title] || TOOL_COLOR_FALLBACK;
 
                     return (
                       <div
                         key={tool.title}
-                        className={`group flex items-center justify-between gap-4 p-3 rounded-xl border border-transparent transition-all ${
+                        className={`group flex items-center justify-between gap-4 p-3 rounded-xl border border-transparent transition-all hover:-translate-y-px ${
                           isLight
-                            ? "bg-slate-50 hover:bg-slate-100 hover:border-slate-200"
-                            : "bg-[var(--bg-primary)] hover:bg-[var(--bg-elevated)]/50 hover:border-[var(--border-primary)]/50"
+                            ? "bg-slate-50 hover:bg-white hover:border-slate-200 hover:shadow-sm"
+                            : "bg-[var(--bg-primary)] hover:bg-[var(--bg-elevated)]/50 hover:border-[var(--border-primary)]/50 hover:shadow-lg hover:shadow-black/5"
                         }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <div
-                            className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
-                              isLight
-                                ? "bg-slate-100 text-slate-500 group-hover:text-slate-600"
-                                : "bg-[var(--bg-elevated)] text-slate-500 group-hover:text-slate-400"
-                            }`}
+                            className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center flex-shrink-0 transition-colors ${tc.bg} ${tc.text} ${tc.ring}`}
                           >
                             <svg
                               width={18}
@@ -980,37 +1012,34 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
 
                         <div className="flex-shrink-0">
                           {tool.select ? (
-                            <Select
+                            <select
                               aria-label="PHP Version"
-                              defaultSelectedKeys={["8.1.1"]}
-                              classNames={{
-                                trigger: `rounded-lg border-0 h-8 min-h-8 w-[110px] ${
-                                  isLight
-                                    ? "bg-slate-100 text-slate-700"
-                                    : "bg-[var(--bg-elevated)] text-slate-200"
-                                }`,
-                                value: `text-xs ${isLight ? "text-slate-700" : "text-slate-200"}`,
-                                popoverContent: `${
-                                  isLight ? "bg-white text-slate-700" : "bg-[var(--bg-elevated)] text-slate-200"
-                                }`,
-                              }}
-                              size="sm"
+                              defaultValue="8.1.1"
                               onChange={(e) => {
                                 if (e.target.value) showToast.success(`PHP version updated to ${e.target.value}`);
                               }}
+                              className={`h-8 w-[110px] rounded-lg border-0 px-2.5 text-xs font-medium outline-none cursor-pointer transition-colors ${
+                                isLight
+                                  ? "bg-violet-50 text-violet-700 ring-1 ring-violet-200"
+                                  : "bg-violet-500/10 text-violet-400 ring-1 ring-violet-500/20"
+                              }`}
                             >
-                              <SelectItem key="8.1.1">PHP 8.1.1</SelectItem>
-                              <SelectItem key="8.0.0">PHP 8.0.0</SelectItem>
-                              <SelectItem key="7.4.0">PHP 7.4.0</SelectItem>
-                            </Select>
+                              <option value="8.1.1">PHP 8.1.1</option>
+                              <option value="8.0.0">PHP 8.0.0</option>
+                              <option value="7.4.0">PHP 7.4.0</option>
+                            </select>
                           ) : (
                             <button
                               onClick={() => handleAction(tool)}
-                              className={`h-8 px-4 rounded-lg text-xs font-medium transition-colors ${
+                              className={`h-8 px-4 rounded-lg text-xs font-semibold transition-all ${
                                 tool.danger
-                                  ? "bg-rose-500/10 text-rose-400 hover:bg-rose-500/15"
+                                  ? "bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20 hover:bg-rose-500/20"
                                   : toggleable && enabled
-                                    ? "bg-amber-500/10 text-amber-500 hover:bg-amber-500/15"
+                                    ? "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/20 hover:bg-amber-500/20"
+                                  : (tool.btn === "Open Tool" || tool.btn === "Configure")
+                                    ? `${tc.bg} ${tc.text} ring-1 ${tc.ring} hover:brightness-110`
+                                  : toggleable && !enabled
+                                    ? "bg-emerald-500/10 text-emerald-500 ring-1 ring-emerald-500/20 hover:bg-emerald-500/20"
                                     : isLight
                                       ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
                                       : "bg-[var(--bg-elevated)] text-slate-300 hover:bg-[var(--border-primary)] hover:text-slate-100"
