@@ -103,6 +103,9 @@ export default function ServicesPage() {
   const [purchaseTarget, setPurchaseTarget] = useState<SuggestedService | null>(null);
   const [cancelTarget, setCancelTarget] = useState<CurrentService | null>(null);
   const [upgradeTarget, setUpgradeTarget] = useState<CurrentService | null>(null);
+  const [upgradeConfirm, setUpgradeConfirm] = useState<{ tier: string; price: number; priceDiff: number } | null>(null);
+  const [downgradeConfirm, setDowngradeConfirm] = useState<{ tier: string; price: number } | null>(null);
+  const [scheduledDowngrade, setScheduledDowngrade] = useState<Record<string, string>>({});
   const [paymentMethod, setPaymentMethod] = useState<"card" | "balance" | "crypto">("card");
   const [selectedCard, setSelectedCard] = useState(SAVED_CARDS[0].id);
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
@@ -253,23 +256,44 @@ export default function ServicesPage() {
     }, 2000);
   }, [purchaseTarget]);
 
-  const handleUpgrade = useCallback(
+  const handleTierClick = useCallback(
     (tierName: string, tierPrice: number) => {
       if (!upgradeTarget) return;
-      setActionLoading(true);
-      setTimeout(() => {
-        setActiveServices((prev) =>
-          prev.map((s) =>
-            s.name === upgradeTarget.name ? { ...s, plan: tierName, price: tierPrice } : s,
-          ),
-        );
-        showToast.success(`${upgradeTarget.name} upgraded to ${tierName}!`);
-        setUpgradeTarget(null);
-        setActionLoading(false);
-      }, 2000);
+      const isUpgrade = tierPrice > upgradeTarget.price;
+      if (isUpgrade) {
+        // Show payment confirmation
+        setUpgradeConfirm({ tier: tierName, price: tierPrice, priceDiff: tierPrice - upgradeTarget.price });
+      } else {
+        // Show downgrade schedule confirmation
+        setDowngradeConfirm({ tier: tierName, price: tierPrice });
+      }
     },
     [upgradeTarget],
   );
+
+  const handleUpgradeConfirm = useCallback(() => {
+    if (!upgradeTarget || !upgradeConfirm) return;
+    setActionLoading(true);
+    setTimeout(() => {
+      setActiveServices((prev) =>
+        prev.map((s) =>
+          s.name === upgradeTarget.name ? { ...s, plan: upgradeConfirm.tier, price: upgradeConfirm.price } : s,
+        ),
+      );
+      showToast.success(`${upgradeTarget.name} upgraded to ${upgradeConfirm.tier}!`);
+      setUpgradeConfirm(null);
+      setUpgradeTarget(null);
+      setActionLoading(false);
+    }, 2000);
+  }, [upgradeTarget, upgradeConfirm]);
+
+  const handleDowngradeConfirm = useCallback(() => {
+    if (!upgradeTarget || !downgradeConfirm) return;
+    setScheduledDowngrade((prev) => ({ ...prev, [upgradeTarget.name]: downgradeConfirm.tier }));
+    showToast.success(`Downgrade to ${downgradeConfirm.tier} scheduled for end of billing cycle`);
+    setDowngradeConfirm(null);
+    setUpgradeTarget(null);
+  }, [upgradeTarget, downgradeConfirm]);
 
   /* ── style tokens ── */
   const cardClass = `group relative rounded-2xl border transition-all overflow-hidden ${
@@ -1023,30 +1047,41 @@ export default function ServicesPage() {
                           <div className="flex items-center justify-between">
                             {isUpgrade && (
                               <p className={`text-[10px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                                Prorated: ~${Math.round(priceDiff * 0.5)} charged today for remaining days
+                                ~${Math.round(priceDiff * 0.5)} prorated charge today
                               </p>
                             )}
-                            {isDowngrade && (
+                            {isDowngrade && scheduledDowngrade[upgradeTarget.name] === tier.name && (
+                              <p className="text-[10px] text-amber-400 font-medium">Scheduled at end of cycle</p>
+                            )}
+                            {isDowngrade && scheduledDowngrade[upgradeTarget.name] !== tier.name && (
                               <p className={`text-[10px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                                Takes effect at end of current billing cycle
+                                No payment change until cycle ends
                               </p>
                             )}
-                            <button
-                              onClick={() => handleUpgrade(tier.name, tier.price)}
-                              disabled={actionLoading}
-                              className={`h-8 px-4 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 disabled:opacity-60 ${
-                                isUpgrade
-                                  ? `text-white ${accent.button} ${accent.buttonHover}`
-                                  : isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
-                              }`}
-                            >
-                              {actionLoading ? spinner : isUpgrade ? (
-                                <>
-                                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
-                                  Upgrade
-                                </>
-                              ) : "Downgrade"}
-                            </button>
+                            {scheduledDowngrade[upgradeTarget.name] === tier.name ? (
+                              <button
+                                onClick={() => { setScheduledDowngrade((prev) => { const n = { ...prev }; delete n[upgradeTarget.name]; return n; }); showToast.success("Downgrade cancelled"); }}
+                                className={`h-8 px-4 rounded-lg text-xs font-medium ${isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"}`}
+                              >
+                                Cancel Downgrade
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleTierClick(tier.name, tier.price)}
+                                className={`h-8 px-4 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                                  isUpgrade
+                                    ? `text-white ${accent.button} ${accent.buttonHover}`
+                                    : isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
+                                }`}
+                              >
+                                {isUpgrade ? (
+                                  <>
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
+                                    Upgrade
+                                  </>
+                                ) : "Downgrade"}
+                              </button>
+                            )}
                           </div>
                         )}
                       </div>
@@ -1065,6 +1100,75 @@ export default function ServicesPage() {
           </div>
         </div>
       )}
+
+      {/* Upgrade Payment Confirmation */}
+      {upgradeConfirm && upgradeTarget && (
+        <div className={modalOverlayClass}>
+          <div className={modalBackdropClass} onClick={() => !actionLoading && setUpgradeConfirm(null)} aria-hidden="true" />
+          <div className={modalCardClass} role="dialog" aria-modal="true" aria-labelledby="upgrade-pay-title">
+            <div className="p-6">
+              <h3 id="upgrade-pay-title" className={`text-lg font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+                Confirm Upgrade
+              </h3>
+              <p className={`text-sm mb-5 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+                Upgrade {upgradeTarget.name} to {upgradeConfirm.tier}
+              </p>
+
+              {/* Billing summary */}
+              <div className={`rounded-xl p-4 mb-4 space-y-2 ${isLight ? "bg-slate-50 border border-slate-200" : "bg-[var(--bg-elevated)] border border-[var(--border-tertiary)]"}`}>
+                <div className="flex justify-between">
+                  <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>New plan</span>
+                  <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{upgradeConfirm.tier} — ${upgradeConfirm.price}/mo</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>Previous plan</span>
+                  <span className={`text-sm ${isLight ? "text-slate-500" : "text-slate-400"} line-through`}>{upgradeTarget.plan} — ${upgradeTarget.price}/mo</span>
+                </div>
+                <div className={`flex justify-between pt-2 border-t ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Prorated charge today</span>
+                  <span className={`text-sm font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>~${Math.round(upgradeConfirm.priceDiff * 0.5)}</span>
+                </div>
+              </div>
+
+              {/* Payment method — reuse saved cards */}
+              <div className="mb-5">
+                <p className={`text-xs font-medium mb-2 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Pay with</p>
+                <div className="space-y-2">
+                  {SAVED_CARDS.map((card) => (
+                    <button key={card.id} onClick={() => setSelectedCard(card.id)} className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl border transition-all text-left ${
+                      selectedCard === card.id
+                        ? isLight ? "border-emerald-500/50 bg-emerald-50" : "border-emerald-500/30 bg-emerald-500/5"
+                        : isLight ? "border-slate-200 hover:border-slate-300" : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
+                    }`}>
+                      <div className={`w-8 h-6 rounded flex items-center justify-center text-[10px] font-bold text-white ${card.color}`}>{card.brand[0]}</div>
+                      <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>•••• {card.last4}</span>
+                      {selectedCard === card.id && <svg className="w-4 h-4 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button onClick={() => setUpgradeConfirm(null)} disabled={actionLoading} className={`flex-1 h-10 rounded-xl text-sm font-medium transition-colors ${isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"}`}>Cancel</button>
+                <button onClick={handleUpgradeConfirm} disabled={actionLoading} className={`flex-1 h-10 rounded-xl text-white text-sm font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-60 ${accent.button} ${accent.buttonHover}`}>
+                  {actionLoading ? <>{spinner} Processing...</> : `Pay $${Math.round(upgradeConfirm.priceDiff * 0.5)} & Upgrade`}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Downgrade Schedule Confirmation */}
+      <ConfirmDialog
+        open={!!downgradeConfirm && !!upgradeTarget}
+        onClose={() => setDowngradeConfirm(null)}
+        onConfirm={handleDowngradeConfirm}
+        title={`Downgrade to ${downgradeConfirm?.tier}?`}
+        message={`Your current ${upgradeTarget?.plan} plan ($${upgradeTarget?.price}/mo) stays active until the end of your billing cycle. After that, you'll automatically switch to ${downgradeConfirm?.tier} ($${downgradeConfirm?.price}/mo). No additional charges — your card will not be charged until the next cycle.`}
+        confirmText="Schedule Downgrade"
+        variant="warning"
+      />
 
       {/* ══════════════════════════════════════════════════════════════════
           MODAL: Cancel Confirmation
