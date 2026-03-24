@@ -21,17 +21,17 @@ import { ServicesSkeleton } from "../components/skeletons";
 import { useSimulatedLoading } from "@/hooks";
 
 /* ── upgrade tiers ── */
-const UPGRADE_TIERS: Record<string, { name: string; price: number }[]> = {
+const UPGRADE_TIERS: Record<string, { name: string; price: number; features: string[] }[]> = {
   "Managed WordPress Hosting": [
-    { name: "Starter", price: 19 },
-    { name: "Business", price: 49 },
-    { name: "Enterprise", price: 99 },
-    { name: "Agency", price: 199 },
+    { name: "Starter", price: 19, features: ["1 Site", "10 GB Storage", "50 GB Bandwidth", "Daily Backups"] },
+    { name: "Business", price: 49, features: ["5 Sites", "50 GB Storage", "500 GB Bandwidth", "Real-time Backups", "Staging"] },
+    { name: "Enterprise", price: 99, features: ["15 Sites", "200 GB Storage", "2 TB Bandwidth", "Priority Support", "CDN Included"] },
+    { name: "Agency", price: 199, features: ["Unlimited Sites", "500 GB Storage", "5 TB Bandwidth", "24/7 Phone Support", "White-label", "Multi-site Manager"] },
   ],
   "Email Hosting": [
-    { name: "Basic", price: 9 },
-    { name: "Professional", price: 29 },
-    { name: "Business", price: 59 },
+    { name: "Basic", price: 9, features: ["5 Mailboxes", "10 GB Storage", "Spam Filter"] },
+    { name: "Professional", price: 29, features: ["25 Mailboxes", "50 GB Storage", "Spam Filter", "Custom Rules", "Aliases"] },
+    { name: "Business", price: 59, features: ["Unlimited Mailboxes", "200 GB Storage", "Advanced Spam", "Archiving", "API Access", "Priority Support"] },
   ],
 };
 
@@ -985,43 +985,81 @@ export default function ServicesPage() {
               <div className="space-y-3">
                 {(UPGRADE_TIERS[upgradeTarget.name] || []).map((tier) => {
                   const isCurrent = tier.name === upgradeTarget.plan;
+                  const isUpgrade = tier.price > upgradeTarget.price;
                   const isDowngrade = tier.price < upgradeTarget.price;
+                  const priceDiff = tier.price - upgradeTarget.price;
                   return (
                     <div
                       key={tier.name}
-                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl border transition-all ${
+                      className={`rounded-xl border transition-all overflow-hidden ${
                         isCurrent
-                          ? isLight
-                            ? "border-slate-400 bg-slate-50"
-                            : "border-[var(--border-primary)] bg-[var(--bg-elevated)]"
-                          : isLight
-                            ? "border-slate-200 hover:border-slate-300"
-                            : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
+                          ? isLight ? "border-emerald-500/50 bg-emerald-50/50" : "border-emerald-500/30 bg-emerald-500/5"
+                          : isLight ? "border-slate-200 hover:border-slate-300" : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
                       }`}
                     >
-                      <div>
-                        <div className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                          {tier.name}
-                          {isCurrent && (
-                            <span className={`ml-2 text-xs font-medium px-2 py-0.5 rounded-md ${isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-400"}`}>
-                              Current
-                            </span>
-                          )}
+                      <div className="px-4 py-3.5">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{tier.name}</span>
+                            {isCurrent && (
+                              <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">Current</span>
+                            )}
+                            {isUpgrade && !isCurrent && (
+                              <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md bg-sky-500/10 text-sky-400 ring-1 ring-sky-500/20">+${priceDiff}/mo</span>
+                            )}
+                          </div>
+                          <span className={`text-sm font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>${tier.price}<span className="text-xs font-normal text-slate-500">/mo</span></span>
                         </div>
-                        <div className="text-xs text-slate-500 mt-0.5">${tier.price}/mo</div>
+
+                        {/* Features */}
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          {tier.features.map((f) => (
+                            <span key={f} className={`text-[10px] font-medium px-2 py-0.5 rounded-md ${isLight ? "bg-slate-100 text-slate-500" : "bg-[var(--bg-elevated)] text-slate-400"}`}>{f}</span>
+                          ))}
+                        </div>
+
+                        {/* Action */}
+                        {!isCurrent && (
+                          <div className="flex items-center justify-between">
+                            {isUpgrade && (
+                              <p className={`text-[10px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                                Prorated: ~${Math.round(priceDiff * 0.5)} charged today for remaining days
+                              </p>
+                            )}
+                            {isDowngrade && (
+                              <p className={`text-[10px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                                Takes effect at end of current billing cycle
+                              </p>
+                            )}
+                            <button
+                              onClick={() => handleUpgrade(tier.name, tier.price)}
+                              disabled={actionLoading}
+                              className={`h-8 px-4 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 disabled:opacity-60 ${
+                                isUpgrade
+                                  ? `text-white ${accent.button} ${accent.buttonHover}`
+                                  : isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
+                              }`}
+                            >
+                              {actionLoading ? spinner : isUpgrade ? (
+                                <>
+                                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" /></svg>
+                                  Upgrade
+                                </>
+                              ) : "Downgrade"}
+                            </button>
+                          </div>
+                        )}
                       </div>
-                      {!isCurrent && !isDowngrade && (
-                        <button
-                          onClick={() => handleUpgrade(tier.name, tier.price)}
-                          disabled={actionLoading}
-                          className={`h-9 px-4 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 text-white disabled:opacity-60 disabled:cursor-not-allowed ${accent.button} ${accent.buttonHover}`}
-                        >
-                          {actionLoading ? spinner : "Upgrade"}
-                        </button>
-                      )}
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Billing impact note */}
+              <div className={`mt-4 p-3 rounded-xl ${isLight ? "bg-amber-50 border border-amber-200" : "bg-amber-500/10 border border-amber-500/20"}`}>
+                <p className={`text-xs ${isLight ? "text-amber-700" : "text-amber-400"}`}>
+                  Upgrading takes effect immediately. Downgrading takes effect at the end of your current billing cycle. Prorated charges apply for upgrades.
+                </p>
               </div>
             </div>
           </div>
