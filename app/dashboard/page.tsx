@@ -55,29 +55,6 @@ const QUICK_STATS = [
   },
 ];
 
-const QUICK_ACTIONS = [
-  {
-    label: "Create Site",
-    icon: "M12 4.5v15m7.5-7.5h-15",
-    action: "create",
-  },
-  {
-    label: "Run Backup",
-    icon: "M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375",
-    action: "backup",
-  },
-  {
-    label: "Clear All Cache",
-    icon: "M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0",
-    action: "cache",
-  },
-  {
-    label: "Check SSL",
-    icon: "M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z",
-    action: "ssl",
-  },
-];
-
 const CHECKLIST = [
   { label: "Create your first site", done: true },
   { label: "Point your domain", done: true },
@@ -87,16 +64,7 @@ const CHECKLIST = [
   { label: "Enable CDN", done: false },
 ];
 
-const SITE_HEALTH = [
-  { name: "limewp.com", score: 88 },
-  { name: "supernova.guru", score: 92 },
-];
 
-function getHealthColor(score: number) {
-  if (score >= 90) return "emerald";
-  if (score >= 70) return "amber";
-  return "rose";
-}
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -136,23 +104,6 @@ export default function DashboardPage() {
 
   const handleGoToActivitySite = (activity: DashboardActivity) => {
     window.open(`https://${activity.site}`, "_blank");
-  };
-
-  const handleQuickAction = (action: string) => {
-    switch (action) {
-      case "create":
-        router.push(ROUTES.NEW_SITE);
-        break;
-      case "backup":
-        showToast.success("Backup started for all sites");
-        break;
-      case "cache":
-        showToast.success("Cache cleared across all sites");
-        break;
-      case "ssl":
-        showToast.info("SSL check started...");
-        break;
-    }
   };
 
   const completedCount = CHECKLIST.filter((item) => item.done).length;

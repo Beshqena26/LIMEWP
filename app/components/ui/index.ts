@@ -14,3 +14,4 @@ export { SupportChat } from "./SupportChat";
 export { Skeleton } from "./Skeleton";
 export { EmptyState } from "./EmptyState";
 export { ErrorBoundary } from "./ErrorBoundary";
+export { Spinner } from "./Spinner";
