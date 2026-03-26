@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { Chip } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
@@ -159,7 +158,7 @@ export function BackupsTab({ siteId }: BackupsTabProps) {
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
             <h3 className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-300"}`}>Backup History</h3>
-            <Chip size="sm" classNames={{ base: "bg-emerald-500/10 border-0", content: "text-emerald-400 font-semibold text-[10px]" }}>{backupList.length} backups</Chip>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400">{backupList.length} backups</span>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => setShowSettingsModal(true)} className={`h-9 px-4 rounded-xl text-sm font-medium transition-all flex items-center gap-2 border ${

@@ -529,7 +529,7 @@ export default function MigratePage() {
               <div
                 key={h.id}
                 className={`grid grid-cols-5 gap-4 px-5 py-3 border-b last:border-b-0 text-sm ${
-                  isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"
+                  isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"
                 }`}
               >
                 <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>
@@ -720,7 +720,7 @@ export default function MigratePage() {
               className={`flex items-center gap-4 px-5 py-3 border-b last:border-b-0 transition-colors ${
                 isLight
                   ? "border-slate-100 hover:bg-slate-50"
-                  : "border-[var(--border-tertiary)]/50 hover:bg-white/[0.02]"
+                  : "border-[var(--border-tertiary)] hover:bg-white/[0.02]"
               }`}
             >
               <input
@@ -1446,7 +1446,7 @@ export default function MigratePage() {
                   const site = sites.find((s) => s.id === id);
                   if (!site) return null;
                   return (
-                    <div key={id} className={`grid grid-cols-4 gap-2 px-4 py-2.5 text-sm border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"}`}>
+                    <div key={id} className={`grid grid-cols-4 gap-2 px-4 py-2.5 text-sm border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
                       <span className={`font-medium truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>{site.name}</span>
                       <span className={isLight ? "text-slate-500" : "text-slate-400"}>{site.size}</span>
                       <span className={`text-xs font-semibold ${

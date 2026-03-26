@@ -275,7 +275,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               onChange={(e) => setRawQuery(e.target.value)}
               className={`flex-1 bg-transparent h-full outline-none text-sm ${
                 isLight
-                  ? "text-slate-800 placeholder:text-slate-400"
+                  ? "text-slate-800 placeholder:text-slate-500"
                   : "text-slate-100 placeholder:text-slate-500"
               }`}
             />

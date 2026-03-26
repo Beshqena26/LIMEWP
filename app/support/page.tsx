@@ -277,7 +277,7 @@ export default function SupportPage() {
   }`;
 
   const textareaClass = `w-full px-3.5 py-2.5 rounded-xl border text-sm transition-all outline-none resize-none ${
-    isLight ? "bg-white border-slate-300 text-slate-800 focus:border-slate-400 placeholder:text-slate-400" : "bg-[var(--bg-elevated)] border-[var(--border-primary)] text-slate-200 focus:border-[var(--border-secondary)] placeholder:text-slate-500"
+    isLight ? "bg-white border-slate-300 text-slate-800 focus:border-slate-400 placeholder:text-slate-500" : "bg-[var(--bg-elevated)] border-[var(--border-primary)] text-slate-200 focus:border-[var(--border-secondary)] placeholder:text-slate-500"
   }`;
 
   const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";

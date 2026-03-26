@@ -91,7 +91,7 @@ export default function NotFound() {
                 className={cn(
                   "w-full pl-10 pr-4 py-3 rounded-xl text-sm outline-none transition-all",
                   isLight
-                    ? "bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-slate-300 focus:ring-1 focus:ring-slate-200"
+                    ? "bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-500 focus:border-slate-300 focus:ring-1 focus:ring-slate-200"
                     : "bg-[var(--bg-input)] border border-[var(--border-tertiary)] text-slate-100 placeholder:text-slate-500 focus:border-[var(--border-focus)] focus:ring-1 focus:ring-[var(--border-focus)]"
                 )}
               />

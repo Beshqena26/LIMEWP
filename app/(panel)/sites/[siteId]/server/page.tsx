@@ -692,7 +692,7 @@ export function ServerTab({ siteId }: { siteId: string }) {
                       className={`px-4 py-3 flex items-start gap-3 border-b last:border-b-0 transition-colors ${
                         isLight
                           ? "border-slate-100 hover:bg-slate-100"
-                          : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-elevated)]/50"
+                          : "border-[var(--border-tertiary)] hover:bg-[var(--bg-elevated)]/50"
                       }`}
                     >
                       <span className={`text-[11px] font-mono flex-shrink-0 mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>

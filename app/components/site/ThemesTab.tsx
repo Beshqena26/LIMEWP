@@ -353,7 +353,7 @@ export function ThemesTab({ siteId }: ThemesTabProps) {
                   rows={3}
                   className={`w-full rounded-xl border px-3 py-3 text-xs font-mono font-medium outline-none transition-colors resize-y min-h-[80px] mt-1.5 ${
                     isLight
-                      ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-400"
+                      ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-500"
                       : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
                   }`}
                 />

@@ -811,7 +811,7 @@ export default function DocsPage() {
 
                 {/* Keyboard Shortcut Hint */}
                 <div className={`flex items-center justify-center gap-2 mb-4 py-2 px-3 rounded-lg border ${
-                  isLight ? "bg-slate-100/50 border-slate-200/50" : "bg-[var(--bg-elevated)]/50 border-[var(--border-primary)]/50"
+                  isLight ? "bg-slate-100/50 border-slate-200/50" : "bg-[var(--bg-elevated)]/50 border-white/[0.08]"
                 }`}>
                   <span className="text-xs text-slate-500">Quick search</span>
                   <div className="flex items-center gap-1">
@@ -1201,7 +1201,7 @@ export default function DocsPage() {
                               className={`text-left p-3 rounded-xl border transition-all group hover:-translate-y-px ${
                                 isLight
                                   ? "bg-slate-50 border-slate-200 hover:border-slate-300 hover:shadow-md"
-                                  : "bg-[var(--bg-elevated)]/50 border-[var(--border-primary)]/50 hover:border-[var(--border-primary)]"
+                                  : "bg-[var(--bg-elevated)]/50 border-white/[0.08] hover:border-[var(--border-primary)]"
                               }`}
                             >
                               <div className={`w-7 h-7 rounded-lg ${rc.bg} ring-1 ${rc.ring} flex items-center justify-center mb-2`}>

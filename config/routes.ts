@@ -11,7 +11,7 @@ export const ROUTES = {
 
   // Operations
   SERVICES: "/services",
-  BILLING: "/billing",
+  BILLING: "/settings?tab=billing",
   DNS: "/dns",
 
   // Resources

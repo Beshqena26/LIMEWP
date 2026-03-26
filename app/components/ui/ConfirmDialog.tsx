@@ -180,7 +180,7 @@ export function ConfirmDialog({
               autoFocus
               className={`w-full h-10 px-3 text-sm rounded-xl border outline-none transition-all font-mono ${
                 isLight
-                  ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-400 focus:border-red-400/50 focus:ring-1 focus:ring-red-400/20"
+                  ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-500 focus:border-red-400/50 focus:ring-1 focus:ring-red-400/20"
                   : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-red-400/50 focus:ring-1 focus:ring-red-400/20"
               }`}
             />

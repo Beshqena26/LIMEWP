@@ -169,7 +169,7 @@ export default function ActivityPage() {
               const style = TYPE_STYLES[activity.type] || TYPE_STYLES.system;
               const siteGradient = SITE_COLORS[activity.site] || "from-slate-400 to-slate-500";
               return (
-                <div key={activity.id} className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"}`}>
+                <div key={activity.id} className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}>
                   <div className="flex flex-col items-center pt-1 flex-shrink-0">
                     <div className={`w-2.5 h-2.5 rounded-full ${style.dot}`} />
                     <div className={`w-px flex-1 mt-1 ${isLight ? "bg-slate-200" : "bg-[var(--border-tertiary)]"}`} />

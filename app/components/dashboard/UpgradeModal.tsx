@@ -2,14 +2,6 @@
 
 import { useState } from "react";
 import { showToast } from "@/lib/toast";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 
 interface UpgradeModalProps {
@@ -67,25 +59,18 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="2xl"
-      backdrop="opaque"
-      placement="center"
-      hideCloseButton
-      classNames={{
-        backdrop: "bg-black/70",
-        base: isLight
-          ? "bg-white border border-slate-200 shadow-2xl max-w-[600px] rounded-2xl"
-          : "bg-[var(--bg-primary)] border border-[var(--bg-elevated)] shadow-2xl max-w-[600px] rounded-2xl",
-        header: isLight ? "border-b border-slate-200" : "border-b border-[var(--bg-elevated)]",
-        body: "py-6",
-        footer: isLight ? "border-t border-slate-200" : "border-t border-[var(--bg-elevated)]",
-      }}
-    >
-      <ModalContent>
-        <ModalHeader className="flex items-center justify-between gap-3">
+    <>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70" onClick={onClose} aria-hidden="true" />
+          <div className={`relative w-full shadow-2xl max-w-[600px] rounded-2xl ${
+            isLight
+              ? "bg-white border border-slate-200"
+              : "bg-[var(--bg-primary)] border border-[var(--bg-elevated)]"
+          }`} role="dialog" aria-modal="true">
+            <div className={`flex items-center justify-between gap-3 p-6 pb-4 ${
+              isLight ? "border-b border-slate-200" : "border-b border-[var(--bg-elevated)]"
+            }`}>
           <div>
             <h2
               className={`text-lg font-semibold ${
@@ -118,9 +103,9 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
               <path d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-        </ModalHeader>
+            </div>
 
-        <ModalBody>
+            <div className="py-6 px-6">
           <div className="space-y-4">
             {/* Plan Selection */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -271,33 +256,36 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
               <span>Secure checkout powered by Stripe</span>
             </div>
           </div>
-        </ModalBody>
+            </div>
 
-        <ModalFooter>
-          <Button
-            variant="flat"
-            onPress={onClose}
-            className={`font-medium text-sm rounded-xl h-10 px-5 ${
-              isLight
-                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            Cancel
-          </Button>
-          <Button
-            onPress={handleUpgrade}
-            isLoading={isProcessing}
-            className={`font-semibold text-sm rounded-xl h-10 px-5 shadow-lg transition-all ${
-              isLight
-                ? "bg-slate-800 text-white hover:bg-slate-700 shadow-slate-500/20"
-                : "bg-slate-100 text-slate-900 hover:bg-slate-200 shadow-slate-500/10"
-            }`}
-          >
-            {isProcessing ? "Processing..." : "Upgrade Now"}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+            <div className={`flex justify-end gap-3 p-6 pt-4 ${
+              isLight ? "border-t border-slate-200" : "border-t border-[var(--bg-elevated)]"
+            }`}>
+              <button
+                onClick={onClose}
+                className={`font-medium text-sm rounded-xl h-10 px-5 ${
+                  isLight
+                    ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                    : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpgrade}
+                disabled={isProcessing}
+                className={`font-semibold text-sm rounded-xl h-10 px-5 shadow-lg transition-all disabled:opacity-60 ${
+                  isLight
+                    ? "bg-slate-800 text-white hover:bg-slate-700 shadow-slate-500/20"
+                    : "bg-slate-100 text-slate-900 hover:bg-slate-200 shadow-slate-500/10"
+                }`}
+              >
+                {isProcessing ? "Processing..." : "Upgrade Now"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

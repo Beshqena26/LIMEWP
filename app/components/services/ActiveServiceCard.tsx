@@ -1,6 +1,5 @@
 "use client";
 
-import { Progress } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import type { CurrentService } from "@/data/services";
@@ -58,14 +57,9 @@ export function ActiveServiceCard({ service, onManage, onUpgrade }: ActiveServic
             <div key={stat.label} className={`rounded-xl p-3 ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]"}`}>
               <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">{stat.label}</div>
               <div className={`text-sm font-semibold mb-2 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{stat.value}</div>
-              <Progress
-                value={stat.progress}
-                size="sm"
-                classNames={{
-                  track: `h-1 ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`,
-                  indicator: `${isLight ? "bg-slate-500" : "bg-slate-400"} rounded-full`
-                }}
-              />
+              <div className={`h-1 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
+                <div className={`h-full rounded-full transition-all ${isLight ? "bg-slate-500" : "bg-slate-400"}`} style={{ width: `${stat.progress}%` }} />
+              </div>
             </div>
           ))}
         </div>

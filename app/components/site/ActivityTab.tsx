@@ -139,7 +139,7 @@ export function ActivityTab({ siteId }: ActivityTabProps) {
                 {group.items.map((activity) => {
                   const style = TYPE_STYLES[activity.type] || TYPE_STYLES.system;
                   return (
-                    <div key={activity.id} className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"}`}>
+                    <div key={activity.id} className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}>
                       {/* Timeline dot */}
                       <div className="flex flex-col items-center pt-1 flex-shrink-0">
                         <div className={`w-2.5 h-2.5 rounded-full ${style.dot}`} />

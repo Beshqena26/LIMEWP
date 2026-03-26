@@ -315,7 +315,7 @@ export function SshSftpTab() {
 
       {/* 4. Web Terminal Card */}
       <div className={`${cardClass} overflow-hidden`}>
-        <div className="flex items-center justify-between p-4 border-b ${isLight ? 'border-slate-200' : 'border-[var(--border-tertiary)]'}">
+        <div className={`flex items-center justify-between p-4 border-b ${isLight ? "border-slate-200" : "border-white/[0.06]"}`}>
           <div className="flex items-center gap-3">
             <span className={`text-sm font-medium ${textPrimary}`}>Web Terminal</span>
           </div>
@@ -387,7 +387,7 @@ export function SshSftpTab() {
               <div
                 key={key.fingerprint}
                 className={`flex items-center gap-4 p-4 ${
-                  index !== sshKeys.length - 1 ? `border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}` : ""
+                  index !== sshKeys.length - 1 ? `border-b ${isLight ? "border-slate-200" : "border-white/[0.06]"}` : ""
                 }`}
               >
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${

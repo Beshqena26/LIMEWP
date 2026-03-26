@@ -226,7 +226,7 @@ export default function ForgotPasswordPage() {
 
   const inputBaseClasses = `w-full h-11 px-4 pl-11 text-sm rounded-xl border outline-none transition-all ${
     isLight
-      ? `bg-white border-slate-200 text-slate-800 placeholder-slate-400 focus:${accent.focusBorder} focus:ring-1 focus:${accent.focusRing}`
+      ? `bg-white border-slate-200 text-slate-800 placeholder-slate-500 focus:${accent.focusBorder} focus:ring-1 focus:${accent.focusRing}`
       : `bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:${accent.focusBorder} focus:ring-1 focus:${accent.focusRing}`
   }`;
 

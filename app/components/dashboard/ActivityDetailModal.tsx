@@ -1,14 +1,5 @@
 "use client";
 
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Avatar,
-} from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import type { DashboardActivity } from "@/data/dashboard";
@@ -87,25 +78,18 @@ export function ActivityDetailModal({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      size="2xl"
-      backdrop="opaque"
-      placement="center"
-      hideCloseButton
-      classNames={{
-        backdrop: "bg-black/70",
-        base: isLight
-          ? "bg-white border border-slate-200 shadow-2xl max-w-[500px] rounded-2xl"
-          : "bg-[var(--bg-primary)] border border-[var(--bg-elevated)] shadow-2xl max-w-[500px] rounded-2xl",
-        header: isLight ? "border-b border-slate-200" : "border-b border-[var(--bg-elevated)]",
-        body: "py-6",
-        footer: isLight ? "border-t border-slate-200" : "border-t border-[var(--bg-elevated)]",
-      }}
-    >
-      <ModalContent>
-        <ModalHeader className="flex items-center justify-between gap-3">
+    <>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/70" onClick={onClose} aria-hidden="true" />
+          <div className={`relative w-full shadow-2xl max-w-[500px] rounded-2xl ${
+            isLight
+              ? "bg-white border border-slate-200"
+              : "bg-[var(--bg-primary)] border border-[var(--bg-elevated)]"
+          }`} role="dialog" aria-modal="true">
+            <div className={`flex items-center justify-between gap-3 p-6 pb-4 ${
+              isLight ? "border-b border-slate-200" : "border-b border-[var(--bg-elevated)]"
+            }`}>
           <div className="flex items-center gap-3">
             <div
               className={`w-10 h-10 rounded-xl ${colors.bg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center`}
@@ -155,9 +139,9 @@ export function ActivityDetailModal({
               <path d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-        </ModalHeader>
+            </div>
 
-        <ModalBody>
+            <div className="py-6 px-6">
           <div className="space-y-5">
             {/* Site Info */}
             <div
@@ -167,13 +151,9 @@ export function ActivityDetailModal({
                   : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
               }`}
             >
-              <Avatar
-                name={activity.siteInitials}
-                classNames={{
-                  base: `w-10 h-10 ${activity.siteGradient} ring-1 ring-white/10`,
-                  name: "text-sm font-bold",
-                }}
-              />
+              <div className={`w-10 h-10 rounded-full ${activity.siteGradient} ring-1 ring-white/10 flex items-center justify-center`}>
+                <span className="text-sm font-bold text-white">{activity.siteInitials}</span>
+              </div>
               <div>
                 <p
                   className={`text-sm font-medium ${
@@ -278,31 +258,34 @@ export function ActivityDetailModal({
               </div>
             </div>
           </div>
-        </ModalBody>
+            </div>
 
-        <ModalFooter>
-          <Button
-            variant="flat"
-            onPress={onClose}
-            className={`font-medium text-sm rounded-xl h-10 px-5 ${
-              isLight
-                ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            Close
-          </Button>
-          <Button
-            onPress={() => {
-              onGoToSite?.();
-              onClose();
-            }}
-            className="bg-gradient-to-r from-violet-500 to-violet-600 text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg shadow-violet-500/20 hover:shadow-violet-500/30 transition-all"
-          >
-            Go to Site
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+            <div className={`flex justify-end gap-3 p-6 pt-4 ${
+              isLight ? "border-t border-slate-200" : "border-t border-[var(--bg-elevated)]"
+            }`}>
+              <button
+                onClick={onClose}
+                className={`font-medium text-sm rounded-xl h-10 px-5 ${
+                  isLight
+                    ? "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                    : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  onGoToSite?.();
+                  onClose();
+                }}
+                className="bg-gradient-to-r from-violet-500 to-violet-600 text-white font-semibold text-sm rounded-xl h-10 px-5 shadow-lg shadow-violet-500/20 hover:shadow-violet-500/30 transition-all"
+              >
+                Go to Site
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

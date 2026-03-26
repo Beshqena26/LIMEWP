@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
-import { Chip } from "@heroui/react";
 import { Toggle } from "@/app/components/ui/Toggle";
 import { showToast } from "@/lib/toast";
 import { cacheStats, cacheColorMap, cachingOptions } from "@/data/site/caching";
@@ -142,9 +141,9 @@ export function CachingTab({ siteId }: CachingTabProps) {
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
             <h3 className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-300"}`}>Cache Configuration</h3>
-            <Chip size="sm" classNames={{ base: "bg-emerald-500/10 border-0", content: "text-emerald-400 font-semibold text-[10px]" }}>
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400">
               <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />All systems active</span>
-            </Chip>
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => setShowTtlModal(true)} className={`h-9 px-3 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 border ${isLight ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50" : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] text-slate-300 hover:bg-[var(--bg-elevated)]"}`}>
@@ -174,7 +173,7 @@ export function CachingTab({ siteId }: CachingTabProps) {
                 </button>
               </div>
             </div>
-            <div className="sm:border-l sm:pl-3 flex items-end ${isLight ? 'border-slate-200' : 'border-[var(--border-tertiary)]'}">
+            <div className={`sm:border-l sm:pl-3 flex items-end ${isLight ? "border-slate-200" : "border-white/[0.06]"}`}>
               <button onClick={handleWarmup} disabled={warming} className={`h-10 px-4 rounded-xl text-sm font-medium transition-all flex items-center gap-2 border disabled:opacity-60 ${isLight ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50" : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] text-slate-300 hover:bg-[var(--bg-elevated)]"}`}>
                 {warming ? (
                   <>{spinner} Warming up...</>

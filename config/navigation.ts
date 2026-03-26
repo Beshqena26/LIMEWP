@@ -28,6 +28,7 @@ export const NAV_ICONS = {
   arrowRight: "M13 7l5 5m0 0l-5 5m5-5H6",
   monitoring: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v-5.5m3 5.5V8.75m3 2.5V10.5",
   migrate: "M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5",
+  tools: "M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z",
 } as const;
 
 /**
@@ -39,6 +40,7 @@ export interface NavItem {
   icon: string;
   badge?: string;
   color: string;
+  children?: NavItem[];
 }
 
 /**
@@ -50,8 +52,35 @@ export interface NavGroup {
 }
 
 /**
+ * Site data.
+ */
+export interface SiteData {
+  name: string;
+  icon: string;
+  gradient: string;
+  status: "online" | "offline" | "maintenance";
+  visits: string;
+}
+
+export const SITES_DATA: SiteData[] = [
+  {
+    name: "supernova.guru",
+    icon: "M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z",
+    gradient: "from-orange-500 to-red-500",
+    status: "online",
+    visits: "2.4k",
+  },
+  {
+    name: "limewp.com",
+    icon: "M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.25 2.25 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 01-5.276 3.67m0 0a9 9 0 01-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25",
+    gradient: "from-emerald-500 to-emerald-700",
+    status: "online",
+    visits: "1.8k",
+  },
+];
+
+/**
  * Main navigation groups configuration.
- * Extracted from Sidebar.tsx for centralized management.
  */
 export const NAV_GROUPS: NavGroup[] = [
   {
@@ -63,40 +92,44 @@ export const NAV_GROUPS: NavGroup[] = [
         icon: NAV_ICONS.home,
         color: "emerald",
       },
+      {
+        label: "My Sites",
+        href: "#",
+        icon: NAV_ICONS.dns,
+        color: "sky",
+        children: [
+          ...SITES_DATA.map((site) => ({
+            label: site.name,
+            href: `${ROUTES.SITE}?name=${encodeURIComponent(site.name)}`,
+            icon: site.icon,
+            color: site.status === "online" ? "emerald" : "rose",
+          })),
+          { label: "---", href: "#", icon: "", color: "slate" },
+          { label: "Add New Site", href: ROUTES.NEW_SITE, icon: NAV_ICONS.plus, color: "emerald" },
+          { label: "Migrate Site", href: ROUTES.MIGRATE, icon: NAV_ICONS.migrate, color: "cyan" },
+        ],
+      },
     ],
   },
   {
     label: "Operations",
     items: [
       {
-        label: "Services",
-        href: ROUTES.SERVICES,
-        icon: NAV_ICONS.services,
-        color: "violet",
-      },
-      {
-        label: "DNS",
-        href: ROUTES.DNS,
-        icon: NAV_ICONS.dns,
-        color: "amber",
-      },
-      {
-        label: "Billing",
-        href: ROUTES.BILLING,
-        icon: NAV_ICONS.billing,
-        color: "sky",
-      },
-      {
-        label: "Monitoring",
-        href: ROUTES.MONITORING,
-        icon: NAV_ICONS.monitoring,
-        color: "rose",
-      },
-      {
         label: "Migrate",
         href: ROUTES.MIGRATE,
         icon: NAV_ICONS.migrate,
         color: "cyan",
+      },
+      {
+        label: "Tools",
+        href: "#",
+        icon: NAV_ICONS.tools,
+        color: "violet",
+        children: [
+          { label: "Services", href: ROUTES.SERVICES, icon: NAV_ICONS.services, color: "violet" },
+          { label: "DNS", href: ROUTES.DNS, icon: NAV_ICONS.dns, color: "amber" },
+          { label: "Monitoring", href: ROUTES.MONITORING, icon: NAV_ICONS.monitoring, color: "rose" },
+        ],
       },
     ],
   },
@@ -152,30 +185,4 @@ export const GROUP_COLOR_MAP: Record<string, string> = {
   Support: "rose",
 };
 
-/**
- * Site data for the sidebar.
- */
-export interface SiteData {
-  name: string;
-  icon: string;
-  gradient: string;
-  status: "online" | "offline" | "maintenance";
-  visits: string;
-}
-
-export const SITES_DATA: SiteData[] = [
-  {
-    name: "supernova.guru",
-    icon: "M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z",
-    gradient: "from-orange-500 to-red-500",
-    status: "online",
-    visits: "2.4k",
-  },
-  {
-    name: "limewp.com",
-    icon: "M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.25 2.25 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 01-5.276 3.67m0 0a9 9 0 01-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25",
-    gradient: "from-emerald-500 to-emerald-700",
-    status: "online",
-    visits: "1.8k",
-  },
-];
+/* Sites data is now defined above NAV_GROUPS */

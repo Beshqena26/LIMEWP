@@ -138,7 +138,7 @@ export function BillingSkeleton() {
               </thead>
               <tbody className={cn(
                 "divide-y",
-                isLight ? "divide-slate-100" : "divide-[var(--border-tertiary)]/50"
+                isLight ? "divide-slate-100" : "divide-white/[0.04]"
               )}>
                 {[0, 1, 2, 3, 4, 5].map((row) => (
                   <tr key={row}>

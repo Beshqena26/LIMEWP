@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import type { DashboardActivity } from "@/data/dashboard";
 
@@ -73,14 +72,9 @@ export function ActivityItem({ activity, isFirst, isLast, onViewDetails, onGoToS
 
         <div className="flex items-center gap-2 mb-1.5">
           <div className="flex items-center gap-1.5">
-            <Avatar
-              name={activity.siteInitials}
-              size="sm"
-              classNames={{
-                base: `w-4 h-4 bg-gradient-to-br ${activity.siteGradient} ring-1 ring-white/10`,
-                name: "text-[7px] font-bold text-white",
-              }}
-            />
+            <div className={`w-4 h-4 rounded-full bg-gradient-to-br ${activity.siteGradient} ring-1 ring-white/10 flex items-center justify-center`}>
+              <span className="text-[7px] font-bold text-white">{activity.siteInitials}</span>
+            </div>
             <span className={`text-xs font-medium ${isLight ? "text-slate-600" : "text-slate-400"}`}>{activity.site}</span>
           </div>
         </div>

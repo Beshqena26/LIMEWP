@@ -491,7 +491,7 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                   {MOCK_DB_TABLES.map((table) => (
                     <tr
                       key={table.name}
-                      className={`border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"}`}
+                      className={`border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}
                     >
                       <td className="py-2.5 pr-3">
                         <input
@@ -580,7 +580,7 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                   {MOCK_CRON_EVENTS.map((event) => (
                     <tr
                       key={event.hook}
-                      className={`border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"}`}
+                      className={`border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}
                     >
                       <td className={`py-2.5 pr-3 font-mono text-xs ${textPrimary}`}>{event.hook}</td>
                       <td className={`py-2.5 pr-3 ${textSecondary}`}>
@@ -907,7 +907,7 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
         </div>
 
         {/* Tools by Category */}
-        <div className={`divide-y ${isLight ? "divide-slate-200" : "divide-[var(--border-tertiary)]"}`}>
+        <div className={`divide-y ${isLight ? "divide-slate-200" : "divide-white/[0.04]"}`}>
           {TOOL_CATEGORY_ORDER.map((category) => {
             const categoryTools = filterTools(groupedTools[category] || []);
             if (!categoryTools || categoryTools.length === 0) return null;
@@ -962,7 +962,7 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                         className={`group flex items-center justify-between gap-4 p-3 rounded-xl border border-transparent transition-all hover:-translate-y-px ${
                           isLight
                             ? "bg-slate-50 hover:bg-white hover:border-slate-200 hover:shadow-sm"
-                            : "bg-[var(--bg-primary)] hover:bg-[var(--bg-elevated)]/50 hover:border-[var(--border-primary)]/50 hover:shadow-lg hover:shadow-black/5"
+                            : "bg-[var(--bg-primary)] hover:bg-[var(--bg-elevated)]/50 hover:border-white/[0.08] hover:shadow-lg hover:shadow-black/5"
                         }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">

@@ -41,7 +41,7 @@ export function FormField({
     error
       ? "border-red-400/60 focus:border-red-400 focus:ring-1 focus:ring-red-400/30"
       : isLight
-      ? "bg-white border-slate-200 text-slate-800 placeholder-slate-400 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20"
+      ? "bg-white border-slate-200 text-slate-800 placeholder-slate-500 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20"
       : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20"
   } ${disabled ? "opacity-60 cursor-not-allowed" : ""}`;
 
@@ -66,6 +66,7 @@ export function FormField({
       <button
         type="button"
         onClick={() => setShowPassword(!showPassword)}
+        aria-label={showPassword ? "Hide password" : "Show password"}
         className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors"
         tabIndex={-1}
       >

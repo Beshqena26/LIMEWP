@@ -586,7 +586,7 @@ export default function ForumPage() {
                   className={`w-full pl-10 pr-4 py-2 rounded-lg text-sm placeholder:text-slate-500 focus:outline-none transition-all ${
                     isLight
                       ? "bg-slate-100 border border-slate-200 text-slate-800 focus:border-slate-300"
-                      : "bg-[var(--bg-elevated)]/50 border border-[var(--border-primary)]/50 text-slate-300 focus:border-[var(--border-secondary)]"
+                      : "bg-[var(--bg-elevated)]/50 border border-white/[0.08] text-slate-300 focus:border-[var(--border-secondary)]"
                   }`}
                 />
               </div>

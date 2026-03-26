@@ -48,6 +48,19 @@ export function DashboardHeader({ userName, onRefresh }: DashboardHeaderProps) {
           </svg>
         </button>
         <Link
+          href={ROUTES.MIGRATE}
+          className={`font-semibold text-sm transition-all gap-2 rounded-xl h-10 px-3 sm:px-4 flex items-center border ${
+            isLight
+              ? "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+              : "bg-[var(--bg-elevated)] text-slate-300 border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
+          }`}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+          </svg>
+          <span className="hidden sm:inline">Migrate</span>
+        </Link>
+        <Link
           href={ROUTES.NEW_SITE}
           className={`font-semibold text-sm shadow-lg transition-all gap-2 rounded-xl h-10 px-3 sm:px-4 flex items-center ${
             isLight

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import AppShell from "../components/AppShell";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
@@ -156,7 +157,7 @@ function detectBrand(num: string): string {
 
 /* ────────────────────────── Component ────────────────────────── */
 
-export default function BillingPage() {
+export function BillingContent() {
   const { resolvedTheme, accentColor } = useTheme();
   const isLight = resolvedTheme === "light";
   const accent = getColorClasses(accentColor);
@@ -468,7 +469,7 @@ export default function BillingPage() {
   };
 
   return (
-    <AppShell>
+    <>
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 mb-8">
         <div>
@@ -833,7 +834,7 @@ export default function BillingPage() {
                   const badge = getStatusBadge(inv.status, isLight);
                   return (
                     <tr key={inv.id} className={`border-b last:border-b-0 transition-colors ${
-                      isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[var(--bg-elevated)]/30 border-[var(--border-tertiary)]/50"
+                      isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[var(--bg-elevated)]/30 border-[var(--border-tertiary)]"
                     }`}>
                       <td className="py-4 px-5">
                         <span className={`font-mono font-medium text-xs ${isLight ? "text-slate-700" : "text-slate-200"}`}>{inv.id}</span>
@@ -1655,6 +1656,13 @@ export default function BillingPage() {
 
       </>
       )}
-    </AppShell>
+    </>
   );
+}
+
+// Redirect /billing to /settings?tab=billing
+export default function BillingPage() {
+  const router = useRouter();
+  useEffect(() => { router.replace("/settings?tab=billing"); }, [router]);
+  return null;
 }

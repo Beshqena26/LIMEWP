@@ -1,6 +1,5 @@
 "use client";
 
-import { Progress } from "@heroui/react";
 import { getColorClasses } from "@/lib/utils/colors";
 import { useTheme } from "@/lib/context/ThemeContext";
 import type { UsageItem } from "@/data/billing";
@@ -72,15 +71,9 @@ export function SubscriptionCard({ planName, price, usageItems, nextBillingDate,
                   <span className={`text-lg font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{item.current}</span>
                   <span className="text-xs text-slate-500">/ {item.max} {item.unit || ""}</span>
                 </div>
-                <Progress
-                  size="sm"
-                  value={percentage}
-                  classNames={{
-                    base: "h-1.5",
-                    track: isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]",
-                    indicator: `bg-gradient-to-r ${colors.gradient}`,
-                  }}
-                />
+                <div className={`h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
+                  <div className={`h-full rounded-full transition-all bg-gradient-to-r ${colors.gradient}`} style={{ width: `${percentage}%` }} />
+                </div>
               </div>
             );
           })}

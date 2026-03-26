@@ -128,6 +128,7 @@ export const profileSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email format"),
   username: z.string().min(1, "Username is required").min(3, "Username must be at least 3 characters"),
   phone: z.string().optional(),
+  company: z.string().optional(),
   timezone: z.string().min(1, "Timezone is required"),
   language: z.string().min(1, "Language is required"),
 });

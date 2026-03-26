@@ -856,7 +856,7 @@ export default function MonitoringPage() {
                           </div>
                         ))}
                       </div>
-                      <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-dashed ${isLight ? 'border-slate-200' : 'border-slate-700'}">
+                      <div className={`flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-dashed ${isLight ? "border-slate-200" : "border-white/[0.06]"}`}>
                         <span className={`text-[10px] font-semibold uppercase tracking-wider ${isLight ? "text-slate-400" : "text-slate-500"}`}>Affected regions:</span>
                         {REGIONS.map((r) => (
                           <span key={r.name} className={`text-[10px] px-1.5 py-0.5 rounded ${isLight ? "bg-slate-200 text-slate-600" : "bg-slate-700 text-slate-300"}`}>

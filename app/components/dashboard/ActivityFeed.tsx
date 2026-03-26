@@ -64,7 +64,7 @@ export function ActivityFeed({ activities, onViewAll, onViewDetails, onGoToSite 
                       key={activity.action + activity.time}
                       onClick={() => onViewDetails?.(activity)}
                       className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors cursor-pointer ${
-                        isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"
+                        isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"
                       }`}
                     >
                       {/* Timeline dot */}

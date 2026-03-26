@@ -847,7 +847,7 @@ export default function DnsManagementPage() {
               onChange={(e) => setSearchFilter(e.target.value)}
               className={`w-full pl-10 pr-4 py-2.5 rounded-xl text-sm transition-all outline-none ${
                 isLight
-                  ? "bg-slate-50 text-slate-800 placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-slate-300 border border-slate-200"
+                  ? "bg-slate-50 text-slate-800 placeholder:text-slate-500 focus:bg-white focus:ring-2 focus:ring-slate-300 border border-slate-200"
                   : "bg-[var(--bg-elevated)] text-slate-200 placeholder:text-slate-500 focus:ring-2 focus:ring-[var(--border-primary)] border border-[var(--border-tertiary)]"
               }`}
             />
@@ -975,7 +975,7 @@ export default function DnsManagementPage() {
         </div>
 
         {/* Table body */}
-        <div className={`divide-y ${isLight ? "divide-slate-100" : "divide-[var(--border-tertiary)]"}`}>
+        <div className={`divide-y ${isLight ? "divide-slate-100" : "divide-white/[0.04]"}`}>
           {filteredRecords.length === 0 ? (
             <div className={`px-5 py-16 text-center ${isLight ? "text-slate-500" : "text-slate-500"}`}>
               <svg className="w-12 h-12 mx-auto mb-3 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1} aria-hidden="true">

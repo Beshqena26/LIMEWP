@@ -34,9 +34,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <Footer />
-      <aside aria-label="Support chat">
+      <div aria-label="Support chat" role="region">
         <SupportChat />
-      </aside>
+      </div>
     </div>
   );
 }

@@ -1,15 +1,8 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  Input,
-  Avatar,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 
 const notifications = [
@@ -45,14 +38,23 @@ export default function TopHeader() {
   };
   const unreadCount = notifications.filter(n => n.unread).length;
 
-  // Get accent-specific classes for focus states
-  const accentFocusClasses = {
-    emerald: "group-data-[focus=true]:!border-emerald-500/40 group-data-[focus=true]:!ring-emerald-500/20",
-    sky: "group-data-[focus=true]:!border-sky-500/40 group-data-[focus=true]:!ring-sky-500/20",
-    violet: "group-data-[focus=true]:!border-violet-500/40 group-data-[focus=true]:!ring-violet-500/20",
-    amber: "group-data-[focus=true]:!border-amber-500/40 group-data-[focus=true]:!ring-amber-500/20",
-    pink: "group-data-[focus=true]:!border-pink-500/40 group-data-[focus=true]:!ring-pink-500/20",
-  };
+  // Notifications dropdown state
+  const [notifOpen, setNotifOpen] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (notifRef.current && !notifRef.current.contains(e.target as Node)) setNotifOpen(false); };
+    if (notifOpen) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [notifOpen]);
+
+  // User menu dropdown state
+  const [userOpen, setUserOpen] = useState(false);
+  const userRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (userRef.current && !userRef.current.contains(e.target as Node)) setUserOpen(false); };
+    if (userOpen) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [userOpen]);
 
   return (
     <header className={`h-16 px-6 flex items-center justify-between fixed top-0 right-0 left-[260px] z-50 border-b transition-colors ${
@@ -68,50 +70,27 @@ export default function TopHeader() {
               ? "bg-gradient-to-r from-emerald-500/5 to-sky-500/5"
               : "bg-gradient-to-r from-emerald-500/10 to-sky-500/10"
           }`} />
-          <Input
-            type="search"
-            placeholder="Search sites, docs, settings..."
-            variant="bordered"
-            radius="lg"
-            size="sm"
-            startContent={
-              <svg className={`w-4 h-4 flex-shrink-0 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            }
-            endContent={
-              <kbd className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
+          <div className="relative">
+            <svg className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 flex-shrink-0 pointer-events-none ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="search"
+              placeholder="Search sites, docs, settings..."
+              className={`w-[320px] h-10 pl-9 pr-14 rounded-xl border text-sm outline-none transition-all shadow-sm ${
                 isLight
-                  ? "text-slate-400 bg-slate-100 border-slate-200"
-                  : "text-slate-500 bg-[var(--bg-primary)] border-[var(--border-primary)]"
-              }`}>
-                <span className="text-[11px]">⌘</span>K
-              </kbd>
-            }
-            classNames={{
-              base: "w-[320px]",
-              inputWrapper: [
-                "!rounded-xl",
-                isLight ? "bg-slate-50" : "bg-[var(--bg-secondary)]",
-                isLight ? "border-slate-200" : "border-[var(--border-tertiary)]",
-                isLight ? "hover:border-slate-300" : "hover:border-[var(--border-primary)]",
-                accentFocusClasses[accentColor],
-                "group-data-[focus=true]:!ring-1",
-                "!outline-none",
-                "h-10",
-                "transition-all",
-                "shadow-sm",
-              ],
-              input: [
-                "text-sm",
-                isLight ? "text-slate-800" : "text-slate-100",
-                isLight ? "placeholder:text-slate-400" : "placeholder:text-slate-500",
-                "!px-2",
-                "!outline-none",
-                "!ring-0",
-              ],
-            }}
-          />
+                  ? "bg-slate-50 border-slate-200 hover:border-slate-300 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 text-slate-800 placeholder:text-slate-500"
+                  : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/20 text-slate-100 placeholder:text-slate-500"
+              }`}
+            />
+            <kbd className={`absolute right-3 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono rounded-lg border flex-shrink-0 ${
+              isLight
+                ? "text-slate-400 bg-slate-100 border-slate-200"
+                : "text-slate-500 bg-[var(--bg-primary)] border-[var(--border-primary)]"
+            }`}>
+              <span className="text-[11px]">⌘</span>K
+            </kbd>
+          </div>
         </div>
 
       </div>
@@ -119,97 +98,63 @@ export default function TopHeader() {
       {/* Right Side */}
       <div className="flex items-center gap-2">
         {/* Notifications */}
-        <Dropdown
-          placement="bottom-end"
-          classNames={{
-            content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[380px] ${
-              isLight
-                ? "bg-white border border-slate-200"
-                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
-            }`
-          }}
-        >
-          <DropdownTrigger>
-            <button className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
+        <div className="relative" ref={notifRef}>
+          <button
+            onClick={() => setNotifOpen(!notifOpen)}
+            className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
               isLight
                 ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
                 : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200 border-transparent hover:border-[var(--border-primary)]"
-            }`}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-              </svg>
-              {unreadCount > 0 && (
-                <span className={`absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full ring-2 ${
-                  isLight ? "ring-white" : "ring-[var(--bg-primary)]"
-                }`}>
-                  {unreadCount}
-                </span>
-              )}
-            </button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Notifications"
-            classNames={{
-              base: "p-0",
-              list: "gap-0",
-            }}
-            items={[
-              { key: "header", type: "header" as const },
-              ...notifications.slice(0, 4).map((n, i) => ({ ...n, key: `notif-${i}`, type: "notification" as const })),
-              { key: "view-all", type: "footer" as const },
-            ]}
+            }`}
           >
-            {(item) => {
-              if (item.type === "header") {
-                return (
-                  <DropdownItem key={item.key} isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="Notifications header">
-                    <div className={`flex items-center justify-between px-5 py-4 border-b ${
-                      isLight
-                        ? "border-slate-200 bg-slate-50"
-                        : "border-[var(--border-tertiary)] bg-gradient-to-r from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]"
-                    }`}>
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center">
-                          <svg className="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                          </svg>
-                        </div>
-                        <div>
-                          <span className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Notifications</span>
-                          <p className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Stay updated with your sites</p>
-                        </div>
-                      </div>
-                      {unreadCount > 0 && (
-                        <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-lg ring-1 ring-emerald-500/20">
-                          {unreadCount} new
-                        </span>
-                      )}
-                    </div>
-                  </DropdownItem>
-                );
-              }
-              if (item.type === "footer") {
-                return (
-                  <DropdownItem key={item.key} className="p-0 data-[hover=true]:bg-transparent" textValue="View all">
-                    <Link href="/notifications" className={`flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-violet-500 hover:text-violet-400 transition-colors ${
-                      isLight ? "bg-gradient-to-t from-violet-500/[0.03] to-transparent" : "bg-gradient-to-t from-violet-500/[0.05] to-transparent"
-                    }`}>
-                      View all notifications
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </Link>
-                  </DropdownItem>
-                );
-              }
-              const notification = item as typeof notifications[0] & { key: string; type: string };
-              return (
-                <DropdownItem
-                  key={notification.key}
-                  className={`px-4 py-3 rounded-none border-b ${
-                    isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            {unreadCount > 0 && (
+              <span className={`absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full ring-2 ${
+                isLight ? "ring-white" : "ring-[var(--bg-primary)]"
+              }`}>
+                {unreadCount}
+              </span>
+            )}
+          </button>
+          {notifOpen && (
+            <div className={`absolute right-0 top-full mt-2 rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[380px] z-50 ${
+              isLight
+                ? "bg-white border border-slate-200"
+                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
+            }`}>
+              {/* Header */}
+              <div className={`flex items-center justify-between px-5 py-4 border-b ${
+                isLight
+                  ? "border-slate-200 bg-slate-50"
+                  : "border-[var(--border-tertiary)] bg-gradient-to-r from-[var(--gradient-card-from)] to-[var(--gradient-card-to)]"
+              }`}>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Notifications</span>
+                    <p className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Stay updated with your sites</p>
+                  </div>
+                </div>
+                {unreadCount > 0 && (
+                  <span className="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-lg ring-1 ring-emerald-500/20">
+                    {unreadCount} new
+                  </span>
+                )}
+              </div>
+              {/* Notification Items */}
+              {notifications.slice(0, 4).map((notification, i) => (
+                <button
+                  key={i}
+                  className={`w-full text-left px-4 py-3 border-b transition-colors ${
+                    isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-elevated)]/50"
                   } ${notification.unread ? (isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]') : ''}`}
-                  textValue={notification.title}
+                  onClick={() => setNotifOpen(false)}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`w-9 h-9 rounded-lg ${iconColors[notification.type].bg} ${iconColors[notification.type].text} ring-1 ${iconColors[notification.type].ring} flex items-center justify-center flex-shrink-0`}>
@@ -224,11 +169,24 @@ export default function TopHeader() {
                       <span className={`text-[10px] mt-1 block ${isLight ? "text-slate-400" : "text-slate-600"}`}>{notification.time}</span>
                     </div>
                   </div>
-                </DropdownItem>
-              );
-            }}
-          </DropdownMenu>
-        </Dropdown>
+                </button>
+              ))}
+              {/* Footer */}
+              <Link
+                href="/notifications"
+                onClick={() => setNotifOpen(false)}
+                className={`flex items-center justify-center gap-2 py-3.5 text-sm font-semibold text-violet-500 hover:text-violet-400 transition-colors ${
+                  isLight ? "bg-gradient-to-t from-violet-500/[0.03] to-transparent" : "bg-gradient-to-t from-violet-500/[0.05] to-transparent"
+                }`}
+              >
+                View all notifications
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </div>
+          )}
+        </div>
 
         {/* Theme Toggle */}
         <button
@@ -255,67 +213,48 @@ export default function TopHeader() {
         <div className={`w-px h-6 mx-1 ${isLight ? "bg-slate-200" : "bg-[var(--bg-overlay)]"}`} />
 
         {/* User Menu */}
-        <Dropdown
-          placement="bottom-end"
-          classNames={{
-            content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[260px] ${
-              isLight
-                ? "bg-white border border-slate-200"
-                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
-            }`
-          }}
-        >
-          <DropdownTrigger>
-            <button className={`flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
+        <div className="relative" ref={userRef}>
+          <button
+            onClick={() => setUserOpen(!userOpen)}
+            className={`flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
               isLight
                 ? "bg-slate-100/30 hover:bg-slate-100 border-transparent hover:border-slate-200"
                 : "bg-[var(--bg-elevated)]/30 hover:bg-[var(--bg-elevated)] border-transparent hover:border-[var(--border-primary)]"
-            }`}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
-                <Avatar
-                  name="LK"
-                  size="sm"
-                  classNames={{
-                    base: "relative w-9 h-9 bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10",
-                    name: "text-white text-[11px] font-bold",
-                  }}
-                />
-                <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"}`} />
-              </div>
-              <div className="text-left hidden sm:block">
-                <div className={`text-sm font-semibold transition-colors ${isLight ? "text-slate-800 group-hover:text-slate-900" : "text-slate-200 group-hover:text-white"}`}>Lime</div>
-                <div className={`text-[10px] flex items-center gap-1 ${isLight ? "text-slate-500" : "text-slate-500"}`}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  Business Plan
-                </div>
-              </div>
-              <svg className={`w-4 h-4 transition-colors ml-1 ${isLight ? "text-slate-400 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="User menu"
-            classNames={{
-              base: "p-0",
-              list: "gap-0",
-            }}
+            }`}
           >
-            <DropdownItem key="user-info" isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="User info">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-full blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
+              <div className="relative w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10 flex items-center justify-center">
+                <span className="text-white text-[11px] font-bold">LK</span>
+              </div>
+              <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"}`} />
+            </div>
+            <div className="text-left hidden sm:block">
+              <div className={`text-sm font-semibold transition-colors ${isLight ? "text-slate-800 group-hover:text-slate-900" : "text-slate-200 group-hover:text-white"}`}>Lime</div>
+              <div className={`text-[10px] flex items-center gap-1 ${isLight ? "text-slate-500" : "text-slate-500"}`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                Business Plan
+              </div>
+            </div>
+            <svg className={`w-4 h-4 transition-colors ml-1 ${isLight ? "text-slate-400 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          {userOpen && (
+            <div className={`absolute right-0 top-full mt-2 rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[260px] z-50 ${
+              isLight
+                ? "bg-white border border-slate-200"
+                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
+            }`}>
+              {/* User Info */}
               <div className="relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-sky-500/10" />
                 <div className={`relative flex items-center gap-4 px-5 py-5 border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-xl blur-lg opacity-40" />
-                    <Avatar
-                      name="LK"
-                      size="lg"
-                      classNames={{
-                        base: "relative w-14 h-14 bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10",
-                        name: "text-white text-lg font-bold",
-                      }}
-                    />
+                    <div className="relative w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10 flex items-center justify-center">
+                      <span className="text-white text-lg font-bold">LK</span>
+                    </div>
                   </div>
                   <div className="flex-1">
                     <div className={`text-base font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Lime Starter</div>
@@ -328,95 +267,51 @@ export default function TopHeader() {
                   </div>
                 </div>
               </div>
-            </DropdownItem>
-            <DropdownItem
-              key="profile"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="My Profile"
-              startContent={
-                <div className="w-9 h-9 rounded-xl bg-sky-500/10 ring-1 ring-sky-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                  </svg>
-                </div>
-              }
-            >
-              <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>My Profile</span>
-                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Manage your account details</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="settings"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Account Settings"
-              startContent={
-                <div className="w-9 h-9 rounded-xl bg-violet-500/10 ring-1 ring-violet-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-              }
-            >
-              <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>Settings</span>
-                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Preferences & security</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="billing"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Billing & Plans"
-              startContent={
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                  </svg>
-                </div>
-              }
-            >
-              <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>Billing & Plans</span>
-                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Manage subscription</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="help"
-              className={`px-4 py-3 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Help & Support"
-              startContent={
-                <div className="w-9 h-9 rounded-xl bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                  </svg>
-                </div>
-              }
-            >
-              <div className="flex flex-col">
-                <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>Help & Support</span>
-                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>Get assistance</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="signout"
-              className={`px-4 py-3.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[var(--border-tertiary)] data-[hover=true]:bg-red-500/5"}`}
-              textValue="Sign Out"
-              onPress={() => router.push("/")}
-              startContent={
+              {/* Menu Items */}
+              {[
+                { key: "profile", label: "My Profile", desc: "Manage your account details", iconPath: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z", iconBg: "bg-sky-500/10", iconRing: "ring-sky-500/20", iconText: "text-sky-500" },
+                { key: "settings", label: "Settings", desc: "Preferences & security", iconPath: "M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z M15 12a3 3 0 11-6 0 3 3 0 016 0z", iconBg: "bg-violet-500/10", iconRing: "ring-violet-500/20", iconText: "text-violet-500" },
+                { key: "billing", label: "Billing & Plans", desc: "Manage subscription", iconPath: "M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z", iconBg: "bg-emerald-500/10", iconRing: "ring-emerald-500/20", iconText: "text-emerald-500" },
+                { key: "help", label: "Help & Support", desc: "Get assistance", iconPath: "M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z", iconBg: "bg-amber-500/10", iconRing: "ring-amber-500/20", iconText: "text-amber-500" },
+              ].map((item) => (
+                <button
+                  key={item.key}
+                  className={`w-full text-left flex items-center gap-3 px-4 py-3 transition-colors ${
+                    isLight ? "hover:bg-slate-100/50" : "hover:bg-[var(--bg-elevated)]/50"
+                  }`}
+                  onClick={() => setUserOpen(false)}
+                >
+                  <div className={`w-9 h-9 rounded-xl ${item.iconBg} ring-1 ${item.iconRing} flex items-center justify-center flex-shrink-0`}>
+                    <svg className={`w-4 h-4 ${item.iconText}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d={item.iconPath} />
+                    </svg>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-200"}`}>{item.label}</span>
+                    <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>{item.desc}</span>
+                  </div>
+                </button>
+              ))}
+              {/* Sign Out */}
+              <button
+                className={`w-full text-left flex items-center gap-3 px-4 py-3.5 border-t mt-1 transition-colors ${
+                  isLight ? "border-slate-200 hover:bg-red-500/5" : "border-[var(--border-tertiary)] hover:bg-red-500/5"
+                }`}
+                onClick={() => { setUserOpen(false); router.push("/"); }}
+              >
                 <div className="w-9 h-9 rounded-xl bg-red-500/10 ring-1 ring-red-500/20 flex items-center justify-center flex-shrink-0">
                   <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                   </svg>
                 </div>
-              }
-            >
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold text-red-400">Sign Out</span>
-                <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>End your session</span>
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-red-400">Sign Out</span>
+                  <span className={`text-[11px] ${isLight ? "text-slate-500" : "text-slate-500"}`}>End your session</span>
+                </div>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

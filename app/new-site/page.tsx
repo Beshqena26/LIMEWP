@@ -325,7 +325,7 @@ export default function NewSitePage() {
   const inputClassNames = useMemo(() => isLight
     ? {
         inputWrapper: "bg-white border-slate-200 hover:border-slate-300 !rounded-xl shadow-sm group-data-[focus=true]:border-slate-400",
-        input: "text-slate-800 placeholder:text-slate-400",
+        input: "text-slate-800 placeholder:text-slate-500",
       }
     : INPUT_CLASS_NAMES, [isLight]);
 
@@ -738,7 +738,7 @@ const canProceed = useCallback(() => {
                   placeholder={domainType === "subdomain" ? "mysite" : "example.com"}
                   className={cn(
                     "flex-1 bg-transparent outline-none text-sm",
-                    isLight ? "text-slate-800 placeholder:text-slate-400" : inputClassNames.input
+                    isLight ? "text-slate-800 placeholder:text-slate-500" : inputClassNames.input
                   )}
                 />
                 {domainType === "subdomain" && (
@@ -996,7 +996,7 @@ const canProceed = useCallback(() => {
                         className={cn(
                           "w-full px-3 py-2.5 rounded-lg border text-sm font-mono resize-none transition-colors",
                           isLight
-                            ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400"
+                            ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500"
                             : "bg-slate-900 border-slate-800 hover:border-slate-700 focus:border-slate-500 text-slate-100 placeholder:text-slate-600",
                           "focus:outline-none focus:ring-1 focus:ring-slate-500/20"
                         )}
@@ -1018,7 +1018,7 @@ const canProceed = useCallback(() => {
                         className={cn(
                           "w-full px-3 py-2.5 rounded-lg border text-sm font-mono resize-none transition-colors",
                           isLight
-                            ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400"
+                            ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500"
                             : "bg-slate-900 border-slate-800 hover:border-slate-700 focus:border-slate-500 text-slate-100 placeholder:text-slate-600",
                           "focus:outline-none focus:ring-1 focus:ring-slate-500/20"
                         )}
@@ -1161,7 +1161,7 @@ const canProceed = useCallback(() => {
                 className={cn(
                   "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
                   isLight
-                    ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                    ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500 shadow-sm"
                     : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
                 )}
               />
@@ -1203,7 +1203,7 @@ const canProceed = useCallback(() => {
                     className={cn(
                       "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
                       isLight
-                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
                     )}
                   />
@@ -1224,7 +1224,7 @@ const canProceed = useCallback(() => {
                     className={cn(
                       "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
                       isLight
-                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
                     )}
                   />
@@ -1245,7 +1245,7 @@ const canProceed = useCallback(() => {
                     className={cn(
                       "w-full h-10 rounded-xl border px-3 text-sm outline-none transition-colors",
                       isLight
-                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                        ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500 shadow-sm"
                         : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
                     )}
                   />
@@ -1268,7 +1268,7 @@ const canProceed = useCallback(() => {
                       confirmPassword.length > 0 && adminPassword !== confirmPassword
                         ? "border-red-500 focus:border-red-500"
                         : isLight
-                          ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-400 shadow-sm"
+                          ? "bg-white border-slate-200 hover:border-slate-300 focus:border-slate-400 text-slate-800 placeholder:text-slate-500 shadow-sm"
                           : "bg-transparent border-[var(--border-tertiary)] hover:border-[var(--border-primary)] focus:border-[var(--border-primary)] text-slate-200 placeholder:text-slate-600"
                     )}
                   />

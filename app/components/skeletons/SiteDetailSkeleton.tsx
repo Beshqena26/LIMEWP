@@ -56,7 +56,7 @@ export function SiteDetailSkeleton() {
           {/* Bottom stats bar */}
           <div className={cn(
             "flex items-center gap-4 mt-4 pt-4 border-t",
-            isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"
+            isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"
           )}>
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="flex items-center gap-4">

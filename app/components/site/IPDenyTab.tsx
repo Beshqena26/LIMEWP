@@ -276,7 +276,7 @@ export function IPDenyTab({ siteId }: { siteId: string }) {
   }, [activeTab]);
 
   const thClass = `text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 ${isLight ? "text-slate-500" : "text-slate-400"}`;
-  const trHoverClass = `border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"}`;
+  const trHoverClass = `border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`;
   const theadRowClass = `border-b ${isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--bg-primary)]/50"}`;
   const secondaryBtnClass = `h-9 px-3 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 border ${isLight ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50" : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] text-slate-300 hover:bg-[var(--bg-elevated)]"}`;
   const primaryBtnClass = `h-9 px-4 rounded-xl text-white text-xs font-semibold transition-all shadow-lg flex items-center gap-1.5 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`;

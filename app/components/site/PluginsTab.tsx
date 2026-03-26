@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { Avatar } from "@heroui/react";
 import { useTheme } from "@/lib/context/ThemeContext";
 import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
@@ -153,7 +152,7 @@ export function PluginsTab({ siteId }: PluginsTabProps) {
                     : "bg-white border-slate-200/70 hover:border-slate-300/50 hover:shadow-slate-200/50"
                   : plugin.active
                     ? "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] hover:shadow-black/20"
-                    : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]/70 hover:border-[var(--border-primary)]/50 hover:shadow-black/20"
+                    : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-white/[0.08] hover:shadow-black/20"
               }`}
             >
               <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
@@ -163,7 +162,9 @@ export function PluginsTab({ siteId }: PluginsTabProps) {
                 <div className="flex items-start gap-4 mb-4">
                   <div className="relative flex-shrink-0">
                     <div className={`absolute inset-0 bg-gradient-to-br ${plugin.gradient} rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity`} />
-                    <Avatar name={plugin.icon} size="lg" classNames={{ base: `relative w-14 h-14 bg-gradient-to-br ${plugin.gradient} ring-2 ring-white/10`, name: "text-white text-sm font-bold" }} />
+                    <div className={`relative w-14 h-14 rounded-full bg-gradient-to-br ${plugin.gradient} ring-2 ring-white/10 flex items-center justify-center`}>
+                      <span className="text-white text-sm font-bold">{plugin.icon}</span>
+                    </div>
                     {plugin.active && (
                       <span className={`absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full ring-2 flex items-center justify-center ${isLight ? "ring-white" : "ring-[var(--bg-secondary)]"}`}>
                         <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7" /></svg>
@@ -304,7 +305,7 @@ export function PluginsTab({ siteId }: PluginsTabProps) {
               <div>
                 <label htmlFor="plugin-config" className={labelClass}>Configuration</label>
                 <textarea id="plugin-config" placeholder="Plugin-specific settings..." rows={3} className={`w-full rounded-xl border px-3 py-3 text-sm font-medium outline-none transition-colors resize-y min-h-[80px] mt-1.5 ${
-                  isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
+                  isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-500" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
                 }`} />
               </div>
             </div>
@@ -347,7 +348,9 @@ export function PluginsTab({ siteId }: PluginsTabProps) {
                     <div key={mp.id} className={`flex items-center gap-4 p-3 rounded-xl border transition-all ${
                       isLight ? "border-slate-200 hover:border-slate-300" : "border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
                     }`}>
-                      <Avatar name={mp.icon} size="sm" classNames={{ base: `w-10 h-10 bg-gradient-to-br ${mp.gradient} ring-1 ring-white/10`, name: "text-white text-[10px] font-bold" }} />
+                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${mp.gradient} ring-1 ring-white/10 flex items-center justify-center`}>
+                        <span className="text-white text-[10px] font-bold">{mp.icon}</span>
+                      </div>
                       <div className="flex-1 min-w-0">
                         <span className={`text-sm font-semibold truncate block ${isLight ? "text-slate-800" : "text-slate-100"}`}>{mp.name}</span>
                         <p className={`text-xs truncate ${isLight ? "text-slate-500" : "text-slate-400"}`}>{mp.author} &bull; {mp.downloads}</p>

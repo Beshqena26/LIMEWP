@@ -21,9 +21,9 @@
   --text-disabled: #475569;
   --text-inverse: #0f1117;
   /* Borders */
-  --border-primary: #334155;
-  --border-secondary: #1e293b;
-  --border-tertiary: #282b3a;
+  --border-primary: #1e293b;
+  --border-secondary: #171c28;
+  --border-tertiary: #1a1e2e;
   --border-focus: #475569;
   /* Status */
   --success: #22c55e;
@@ -138,9 +138,9 @@
   --text-tertiary: #64748b;
   --text-disabled: #475569;
   --text-inverse: #0f1117;
-  --border-primary: #334155;
-  --border-secondary: #1e293b;
-  --border-tertiary: #282b3a;
+  --border-primary: #1e293b;
+  --border-secondary: #171c28;
+  --border-tertiary: #1a1e2e;
   --border-focus: #475569;
   --scrollbar-thumb: #475569;
   --scrollbar-thumb-hover: #64748b;

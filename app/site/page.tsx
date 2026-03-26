@@ -236,59 +236,16 @@ function SitePageContent() {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-2.5 flex-wrap w-full sm:w-auto sm:flex-shrink-0">
-              <button className="inline-flex items-center font-semibold text-sm text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20 hover:border-sky-500/30 rounded-xl px-4 h-10 gap-2 transition-all">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+            {/* Site Links */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button className="inline-flex items-center text-sm font-medium rounded-xl px-3 h-9 gap-1.5 transition-all border border-sky-500/20 text-sky-400 bg-sky-500/10 hover:bg-sky-500/20">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
                 Visit Site
               </button>
-              <button className="inline-flex items-center font-semibold text-sm text-violet-400 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 hover:border-violet-500/30 rounded-xl px-4 h-10 gap-2 transition-all">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
+              <button className="inline-flex items-center text-sm font-medium rounded-xl px-3 h-9 gap-1.5 transition-all border border-violet-500/20 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
                 WP Admin
               </button>
-              <div className="relative" ref={quickActionsRef}>
-                <button
-                  onClick={() => setQuickActionsOpen((prev) => !prev)}
-                  className="inline-flex items-center font-semibold text-sm text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/25 rounded-xl px-4 h-10 gap-2 transition-all"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-                  Quick Actions
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M19 9l-7 7-7-7" /></svg>
-                </button>
-                {quickActionsOpen && (
-                  <div className={`absolute right-0 top-full mt-2 z-50 p-1.5 rounded-2xl min-w-[220px] ${isLight ? "bg-white border border-slate-200 shadow-xl" : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)] shadow-xl shadow-black/20"}`}>
-                    <div className="flex flex-col gap-0.5">
-                      {[
-                        { key: "backup", label: "Backup Now", icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5", color: "text-violet-500", bg: "bg-violet-500/10" },
-                        { key: "clear-cache", label: "Clear Cache", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-                        { key: "restart-php", label: "Restart PHP", icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99", color: "text-orange-500", bg: "bg-orange-500/10" },
-                        { key: "ssl-check", label: "SSL Check", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", color: "text-sky-500", bg: "bg-sky-500/10" },
-                        { key: "security-scan", label: "Security Scan", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", color: "text-purple-500", bg: "bg-purple-500/10" },
-                        { key: "restart-server", label: "Restart Server", icon: "M5.636 5.636a9 9 0 1012.728 0M12 3v9", color: "text-rose-500", bg: "bg-rose-500/10" },
-                      ].map((item) => {
-                        if (item.key === "divider") {
-                          return <div key="divider" className={`h-px mx-2 my-1 ${isLight ? "bg-slate-100" : "bg-[var(--border-tertiary)]"}`} />;
-                        }
-                        return (
-                          <button
-                            key={item.key}
-                            onClick={() => {
-                              setQuickActionsOpen(false);
-                              handleQuickAction(item.key);
-                            }}
-                            className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-left transition-all ${isLight ? "hover:bg-slate-50" : "hover:bg-[var(--bg-elevated)]"}`}
-                          >
-                            <div className={`w-7 h-7 rounded-lg ${item.bg} flex items-center justify-center shrink-0`}>
-                              <svg className={`w-3.5 h-3.5 ${item.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d={item.icon} /></svg>
-                            </div>
-                            <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-200"}`}>{item.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
         </div>
@@ -378,7 +335,7 @@ function SitePageContent() {
         <div className={`hidden lg:block relative rounded-2xl border overflow-hidden min-w-[240px] self-start shadow-xl ${
           isLight
             ? "bg-white border-slate-200 shadow-slate-200/50"
-            : "bg-gradient-to-br from-[var(--gradient-card-from)] via-[var(--gradient-card-to)] to-[var(--bg-primary)] border-[var(--border-tertiary)]/80 shadow-black/20"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] via-[var(--gradient-card-to)] to-[var(--bg-primary)] border-[var(--border-tertiary)] shadow-black/20"
         }`}>
           {/* Ambient Glow Effects */}
           <div className="absolute top-0 left-0 w-48 h-48 bg-gradient-to-br from-emerald-500/[0.06] via-emerald-500/[0.02] to-transparent rounded-full -translate-y-1/2 -translate-x-1/2 blur-2xl" />

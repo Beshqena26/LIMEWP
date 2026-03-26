@@ -586,7 +586,7 @@ export function FileManagerTab() {
   const inputClass = cn(
     "w-full h-10 px-3 text-sm rounded-xl border outline-none transition-all",
     isLight
-      ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-400 focus:border-slate-400 focus:ring-1 focus:ring-slate-300"
+      ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-500 focus:border-slate-400 focus:ring-1 focus:ring-slate-300"
       : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-slate-500 focus:ring-1 focus:ring-slate-600"
   );
 
@@ -614,12 +614,12 @@ export function FileManagerTab() {
       "rounded-2xl border overflow-hidden",
       isLight
         ? "bg-white border-slate-200"
-        : "bg-gradient-to-br from-[var(--bg-elevated)] via-[var(--gradient-card-to)] to-[var(--bg-tertiary)] border-[var(--border-tertiary)]/80"
+        : "bg-gradient-to-br from-[var(--bg-elevated)] via-[var(--gradient-card-to)] to-[var(--bg-tertiary)] border-[var(--border-tertiary)]"
     )}>
       {/* Storage Info Bar */}
       <div className={cn(
         "px-5 py-3 border-b flex items-center justify-between gap-4",
-        isLight ? "border-slate-200 bg-slate-50/80" : "border-[var(--border-tertiary)]/50 bg-[var(--bg-secondary)]/50"
+        isLight ? "border-slate-200 bg-slate-50/80" : "border-white/[0.06] bg-[var(--bg-secondary)]/50"
       )}>
         <div className="flex items-center gap-3">
           <svg className={cn("w-4 h-4", isLight ? "text-slate-400" : "text-slate-500")} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
@@ -646,7 +646,7 @@ export function FileManagerTab() {
       {/* Header */}
       <div className={cn(
         "px-5 py-4 border-b",
-        isLight ? "border-slate-200 bg-slate-50/50" : "border-[var(--border-tertiary)]/50 bg-[var(--bg-secondary)]/30"
+        isLight ? "border-slate-200 bg-slate-50/50" : "border-white/[0.06] bg-[var(--bg-secondary)]/30"
       )}>
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -703,7 +703,7 @@ export function FileManagerTab() {
           {/* Toolbar */}
           <div className={cn(
             "px-4 py-2 border-b flex items-center justify-between gap-4 flex-wrap",
-            isLight ? "border-slate-200 bg-white" : "border-[var(--border-tertiary)]/30 bg-[var(--bg-secondary)]/20"
+            isLight ? "border-slate-200 bg-white" : "border-white/[0.06] bg-[var(--bg-secondary)]/20"
           )}>
             {/* Left: Actions */}
             <div className="flex items-center gap-1">
@@ -862,8 +862,8 @@ export function FileManagerTab() {
                   className={cn(
                     "h-8 w-36 lg:w-44 pl-8 pr-3 rounded-lg border text-xs focus:outline-none transition-all",
                     isLight
-                      ? "bg-white border-slate-200 text-slate-700 placeholder:text-slate-400 focus:border-slate-300 focus:ring-1 focus:ring-slate-200"
-                      : "bg-[var(--bg-elevated)]/50 border-[var(--border-primary)]/30 text-slate-300 placeholder:text-slate-500 focus:border-slate-600 focus:ring-1 focus:ring-slate-700"
+                      ? "bg-white border-slate-200 text-slate-700 placeholder:text-slate-500 focus:border-slate-300 focus:ring-1 focus:ring-slate-200"
+                      : "bg-white/[0.03] border-white/[0.08] text-slate-300 placeholder:text-slate-500 focus:border-white/[0.15] focus:ring-1 focus:ring-white/[0.06]"
                   )}
                 />
                 <svg className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
@@ -924,7 +924,7 @@ export function FileManagerTab() {
           {/* Breadcrumb */}
           <div className={cn(
             "px-4 py-2.5 border-b",
-            isLight ? "border-slate-200 bg-slate-50/30" : "border-[var(--border-tertiary)]/30 bg-[var(--gradient-card-to)]/30"
+            isLight ? "border-slate-200 bg-slate-50/30" : "border-[var(--border-tertiary)] bg-[var(--gradient-card-to)]/30"
           )}>
             <div className="flex items-center gap-1.5 text-sm">
               <button
@@ -970,7 +970,7 @@ export function FileManagerTab() {
                 "grid grid-cols-12 gap-4 px-4 py-2.5 text-[10px] font-semibold uppercase tracking-wider",
                 isLight
                   ? "bg-slate-100/60 text-slate-500 border-b border-slate-200"
-                  : "bg-[var(--bg-secondary)]/60 text-slate-500 border-b border-[var(--border-tertiary)]/30"
+                  : "bg-[var(--bg-secondary)]/60 text-slate-500 border-b border-white/[0.06]"
               )}>
                 <div className="col-span-5 flex items-center gap-2">
                   <input
@@ -990,7 +990,7 @@ export function FileManagerTab() {
               </div>
 
               {/* Files */}
-              <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-[var(--border-tertiary)]/20")}>
+              <div className={cn("divide-y", isLight ? "divide-slate-100" : "divide-white/[0.04]")}>
                 {filteredFiles.length === 0 && (
                   <div className="px-4 py-12 text-center">
                     <p className={cn("text-sm", isLight ? "text-slate-400" : "text-slate-500")}>
@@ -1216,7 +1216,7 @@ export function FileManagerTab() {
           {/* Footer */}
           <div className={cn(
             "px-4 py-3 border-t flex items-center justify-between gap-4",
-            isLight ? "border-slate-200 bg-slate-50/50" : "border-[var(--border-tertiary)]/50 bg-[var(--gradient-card-to)]/30"
+            isLight ? "border-slate-200 bg-slate-50/50" : "border-[var(--border-tertiary)] bg-[var(--gradient-card-to)]/30"
           )}>
             <div className="flex items-center gap-3 text-xs text-slate-500">
               {selectedFiles.length > 0 ? (

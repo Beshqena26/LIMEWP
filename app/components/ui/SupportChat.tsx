@@ -189,9 +189,9 @@ export function SupportChat() {
               className={cn(
                 "flex-1 px-4 py-2 rounded-xl text-sm outline-none transition-colors",
                 isLight
-                  ? "bg-slate-100 text-slate-800 placeholder-slate-400 focus:ring-2"
+                  ? "bg-slate-100 text-slate-800 placeholder-slate-500 focus:ring-2"
                   : "bg-[var(--bg-elevated)] text-slate-100 placeholder-slate-500 focus:ring-2",
-                `focus:ring-${accentColor}-500/50`
+                accentColor === "emerald" ? "focus:ring-emerald-500/50" : accentColor === "sky" ? "focus:ring-sky-500/50" : accentColor === "violet" ? "focus:ring-violet-500/50" : accentColor === "amber" ? "focus:ring-amber-500/50" : "focus:ring-pink-500/50"
               )}
             />
             <button

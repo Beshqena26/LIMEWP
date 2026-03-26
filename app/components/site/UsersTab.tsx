@@ -672,7 +672,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
               filteredUsers.map((user) => (
                 <tr
                   key={user.id}
-                  className={`border-b last:border-b-0 cursor-pointer transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"}`}
+                  className={`border-b last:border-b-0 cursor-pointer transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}
                   onClick={() => setDetailUser(user)}
                 >
                   {/* Checkbox */}
@@ -815,7 +815,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
               </thead>
               <tbody>
                 {allPermissions.map((perm) => (
-                  <tr key={perm} className={`border-b last:border-b-0 ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/30"}`}>
+                  <tr key={perm} className={`border-b last:border-b-0 ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
                     <td className={`text-sm px-3 py-2 ${isLight ? "text-slate-700" : "text-slate-300"}`}>{perm}</td>
                     {ROLES.map((r) => (
                       <td key={r} className="text-center px-3 py-2">

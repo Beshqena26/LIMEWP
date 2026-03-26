@@ -164,7 +164,7 @@ export function LogsTab({ siteId }: LogsTabProps) {
                   const hasTrace = !!LOG_STACK_TRACES[log.id];
                   const isExpanded = expandedLog === log.id;
                   return (
-                    <tr key={log.id} onClick={() => hasTrace && setExpandedLog(isExpanded ? null : log.id)} className={`border-b last:border-b-0 transition-colors ${hasTrace ? "cursor-pointer" : ""} ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"}`}>
+                    <tr key={log.id} onClick={() => hasTrace && setExpandedLog(isExpanded ? null : log.id)} className={`border-b last:border-b-0 transition-colors ${hasTrace ? "cursor-pointer" : ""} ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-bold ${lc.bg} ${lc.text} ${lc.ring}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${lc.dot}`} />

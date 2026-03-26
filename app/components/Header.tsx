@@ -1,21 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useNotifications } from "@/lib/context/NotificationContext";
 import { NOTIFICATION_STYLES, type NotificationType } from "@/data/notifications";
-import {
-  Avatar,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@heroui/react";
 import { ROUTES } from "@/config/routes";
 import { NAV_GROUPS, NAV_ICONS } from "@/config/navigation";
 import { useTheme } from "@/lib/context/ThemeContext";
@@ -106,6 +96,20 @@ const RESOURCES_ITEMS = ALL_NAV_ITEMS.filter(
   item => ["Documentation", "API Reference", "Community Forum", "Support"].includes(item.label)
 );
 
+/** Custom hook for click-outside dropdown closing */
+function useDropdown() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+  return { open, setOpen, ref };
+}
+
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -117,6 +121,25 @@ export default function Header() {
   const { notifications, unreadCount, markAsRead, markAllRead } = useNotifications();
 
   const toggleTheme = () => setTheme(isLight ? "dark" : "light");
+
+  // Dropdown states
+  const notifDropdown = useDropdown();
+  const userDropdown = useDropdown();
+  const resourcesDropdown = useDropdown();
+
+  // Track which nav item's popover is open (by label)
+  const [openNavPopover, setOpenNavPopover] = useState<string | null>(null);
+  const navPopoverRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (openNavPopover) {
+        const ref = navPopoverRefs.current[openNavPopover];
+        if (ref && !ref.contains(e.target as Node)) setOpenNavPopover(null);
+      }
+    };
+    if (openNavPopover) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [openNavPopover]);
 
   // Cmd+K / Ctrl+K keyboard shortcut
   useEffect(() => {
@@ -202,6 +225,63 @@ export default function Header() {
 
           {/* Other Nav Items */}
           {DIRECT_NAV_ITEMS.map((item) => {
+            // Dropdown for items with children
+            if (item.children && item.children.length > 0) {
+              const isChildActive = item.children.some(c => pathname === c.href);
+              const isPopoverOpen = openNavPopover === item.label;
+              return (
+                <div key={item.label} className="relative" ref={(el) => { navPopoverRefs.current[item.label] = el; }}>
+                  <button
+                    onClick={() => setOpenNavPopover(isPopoverOpen ? null : item.label)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${
+                      isChildActive
+                        ? isLight ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-900"
+                        : isLight ? `text-slate-600 ${accent.hoverBg} ${accent.hoverText}` : `text-slate-400 ${accent.hoverBg} ${accent.hoverText}`
+                    }`}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d={item.icon} />
+                    </svg>
+                    <span>{item.label}</span>
+                    <svg className="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </button>
+                  {isPopoverOpen && (
+                    <div className={`absolute left-0 top-full mt-2 p-1.5 rounded-xl border shadow-xl z-50 ${
+                      isLight ? "bg-white border-slate-200" : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)]"
+                    }`}>
+                      <div className="flex flex-col gap-0.5 min-w-[180px]">
+                        {item.children.map((child, idx) => {
+                          if (child.label === "---") {
+                            return <div key={`div-${idx}`} className={`h-px my-1 mx-2 ${isLight ? "bg-slate-100" : "bg-[var(--border-tertiary)]"}`} />;
+                          }
+                          const childActive = pathname === child.href;
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setOpenNavPopover(null)}
+                              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                                childActive
+                                  ? isLight ? "bg-slate-100 text-slate-900" : "bg-white/10 text-white"
+                                  : isLight ? "text-slate-600 hover:bg-slate-50 hover:text-slate-900" : "text-slate-300 hover:bg-white/5 hover:text-white"
+                              }`}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                                <path d={child.icon} />
+                              </svg>
+                              {child.label}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             const isActive = pathname === item.href;
             return (
               <Link
@@ -247,12 +327,13 @@ export default function Header() {
           })}
 
           {/* Resources Dropdown */}
-          <Popover placement="bottom-start">
-            <PopoverTrigger>
-              {(() => {
-                const isResourcesActive = RESOURCES_ITEMS.some(item => pathname === item.href);
-                return (
-                  <button className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${
+          <div className="relative" ref={resourcesDropdown.ref}>
+            {(() => {
+              const isResourcesActive = RESOURCES_ITEMS.some(item => pathname === item.href);
+              return (
+                <button
+                  onClick={() => resourcesDropdown.setOpen(!resourcesDropdown.open)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${
                     isResourcesActive
                       ? isLight
                         ? "bg-slate-800 text-white"
@@ -260,72 +341,75 @@ export default function Header() {
                       : isLight
                       ? `text-slate-600 ${accent.hoverBg} ${accent.hoverText}`
                       : `text-slate-400 ${accent.hoverBg} ${accent.hoverText}`
-                  }`}>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d={NAV_ICONS.docs} />
-                    </svg>
-                    <span>Resources</span>
-                    <svg aria-hidden="true" className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d={NAV_ICONS.chevronDown} />
-                    </svg>
-                  </button>
-                );
-              })()}
-            </PopoverTrigger>
-            <PopoverContent className={`p-2 rounded-xl shadow-2xl shadow-black/20 w-fit ${
-              isLight
-                ? "bg-white border border-slate-200"
-                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
-            }`}>
-              <div className="space-y-1">
-                {RESOURCES_ITEMS.map((item) => {
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
-                        isActive
-                          ? isLight
-                            ? "bg-slate-800"
-                            : "bg-slate-100"
-                          : isLight
-                          ? "hover:bg-slate-100"
-                          : "hover:bg-[var(--bg-elevated)]"
-                      }`}
-                    >
-                      <svg
-                        className={`w-4 h-4 ${isActive ? (isLight ? "text-white" : "text-slate-900") : isLight ? "text-slate-500" : "text-slate-400"}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                  }`}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d={NAV_ICONS.docs} />
+                  </svg>
+                  <span>Resources</span>
+                  <svg aria-hidden="true" className="w-3.5 h-3.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={NAV_ICONS.chevronDown} />
+                  </svg>
+                </button>
+              );
+            })()}
+            {resourcesDropdown.open && (
+              <div className={`absolute left-0 top-full mt-2 p-2 rounded-xl shadow-2xl shadow-black/20 w-fit z-50 ${
+                isLight
+                  ? "bg-white border border-slate-200"
+                  : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
+              }`}>
+                <div className="space-y-1">
+                  {RESOURCES_ITEMS.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => resourcesDropdown.setOpen(false)}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
+                          isActive
+                            ? isLight
+                              ? "bg-slate-800"
+                              : "bg-slate-100"
+                            : isLight
+                            ? "hover:bg-slate-100"
+                            : "hover:bg-[var(--bg-elevated)]"
+                        }`}
                       >
-                        <path d={item.icon} />
-                      </svg>
-                      <span className={`text-sm font-medium ${
-                        isActive
-                          ? isLight ? "text-white" : "text-slate-900"
-                          : isLight ? "text-slate-700" : "text-slate-200"
-                      }`}>
-                        {item.label}
-                      </span>
-                    </Link>
-                  );
-                })}
+                        <svg
+                          className={`w-4 h-4 ${isActive ? (isLight ? "text-white" : "text-slate-900") : isLight ? "text-slate-500" : "text-slate-400"}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d={item.icon} />
+                        </svg>
+                        <span className={`text-sm font-medium ${
+                          isActive
+                            ? isLight ? "text-white" : "text-slate-900"
+                            : isLight ? "text-slate-700" : "text-slate-200"
+                        }`}>
+                          {item.label}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </PopoverContent>
-          </Popover>
+            )}
+          </div>
         </nav>
       </div>
 
@@ -369,128 +453,103 @@ export default function Header() {
         </button>
 
         {/* Notifications */}
-        <Dropdown
-          placement="bottom-end"
-          classNames={{
-            content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[360px] ${
-              isLight
-                ? "bg-white border border-slate-200"
-                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
-            }`
-          }}
-        >
-          <DropdownTrigger>
-            <button aria-label="Notifications" className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
+        <div className="relative" ref={notifDropdown.ref}>
+          <button
+            aria-label="Notifications"
+            onClick={() => notifDropdown.setOpen(!notifDropdown.open)}
+            className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all border ${
               isLight
                 ? "bg-slate-100/50 hover:bg-slate-100 text-slate-500 hover:text-slate-700 border-transparent hover:border-slate-200"
                 : "bg-[var(--bg-elevated)]/50 hover:bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200 border-transparent hover:border-[var(--border-primary)]"
-            }`}>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-              </svg>
-              {unreadCount > 0 && (
-                <span className={`absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full ring-2 ${
-                  isLight ? "ring-white" : "ring-[var(--bg-primary)]"
-                }`}>
-                  {unreadCount}
-                </span>
-              )}
-            </button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Notifications"
-            classNames={{
-              base: "p-0",
-              list: "gap-0",
-            }}
-            onAction={(key) => {
-              const k = String(key);
-              if (k.startsWith("notif-")) {
-                const notif = notifications.slice(0, 8).find((_, i) => `notif-${i}` === k);
-                if (notif) markAsRead(notif.id);
-              }
-            }}
-            items={[
-              { key: "header", itemType: "header" as const },
-              ...notifications.slice(0, 8).map((n, i) => ({ ...n, key: `notif-${i}`, itemType: "notification" as const })),
-              { key: "view-all", itemType: "footer" as const },
-            ]}
+            }`}
           >
-            {(item) => {
-              if (item.itemType === "header") {
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            {unreadCount > 0 && (
+              <span className={`absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[9px] font-bold min-w-[18px] h-[18px] flex items-center justify-center rounded-full ring-2 ${
+                isLight ? "ring-white" : "ring-[var(--bg-primary)]"
+              }`}>
+                {unreadCount}
+              </span>
+            )}
+          </button>
+          {notifDropdown.open && (
+            <div className={`absolute right-0 top-full mt-2 rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[360px] z-50 ${
+              isLight
+                ? "bg-white border border-slate-200"
+                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
+            }`}>
+              {/* Header */}
+              <div className={`flex items-center justify-between px-4 py-3 border-b ${
+                isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--gradient-card-to)]"
+              }`}>
+                <span className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Notifications</span>
+                <div className="flex items-center gap-2">
+                  {unreadCount > 0 && (
+                    <>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); markAllRead(); }}
+                        className={`text-[10px] font-medium transition-colors ${
+                          isLight
+                            ? "text-emerald-700 hover:text-emerald-800"
+                            : "text-emerald-400 hover:text-emerald-300"
+                        }`}
+                      >
+                        Mark all read
+                      </button>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ring-1 ${
+                        isLight
+                          ? "text-emerald-700 bg-emerald-100 ring-emerald-200"
+                          : "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20"
+                      }`}>
+                        {unreadCount} new
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+              {/* Notification Items */}
+              {notifications.slice(0, 8).map((notification, i) => {
+                const nStyle = NOTIFICATION_STYLES[notification.type];
                 return (
-                  <DropdownItem key={item.key} isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="Notifications header">
-                    <div className={`flex items-center justify-between px-4 py-3 border-b ${
-                      isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--gradient-card-to)]"
-                    }`}>
-                      <span className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Notifications</span>
-                      <div className="flex items-center gap-2">
-                        {unreadCount > 0 && (
-                          <>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); markAllRead(); }}
-                              className={`text-[10px] font-medium transition-colors ${
-                                isLight
-                                  ? "text-emerald-700 hover:text-emerald-800"
-                                  : "text-emerald-400 hover:text-emerald-300"
-                              }`}
-                            >
-                              Mark all read
-                            </button>
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ring-1 ${
-                              isLight
-                                ? "text-emerald-700 bg-emerald-100 ring-emerald-200"
-                                : "text-emerald-400 bg-emerald-500/10 ring-emerald-500/20"
-                            }`}>
-                              {unreadCount} new
-                            </span>
-                          </>
-                        )}
+                  <button
+                    key={`notif-${i}`}
+                    className={`w-full text-left px-4 py-3 border-b transition-colors ${
+                      isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-elevated)]/50"
+                    } ${notification.unread ? `border-l-2 border-l-emerald-500 ${isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]'}` : ''}`}
+                    onClick={() => markAsRead(notification.id)}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`w-8 h-8 rounded-lg ${nStyle.bg} ${nStyle.text} ring-1 ${nStyle.ring} flex items-center justify-center flex-shrink-0`}>
+                        <NotificationIcon type={notification.type} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium ${notification.unread ? (isLight ? 'text-slate-900' : 'text-slate-100') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>{notification.title}</span>
+                          {notification.unread && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
+                        </div>
+                        <p className="text-xs truncate mt-0.5 text-slate-500">{notification.description}</p>
+                        <span className={`text-[10px] mt-1 block ${isLight ? "text-slate-400" : "text-slate-600"}`}>{notification.time}</span>
                       </div>
                     </div>
-                  </DropdownItem>
+                  </button>
                 );
-              }
-              if (item.itemType === "footer") {
-                return (
-                  <DropdownItem key={item.key} className="p-0 data-[hover=true]:bg-transparent" textValue="View all">
-                    <Link href="/notifications" className={`flex items-center justify-center gap-2 py-3 text-sm font-semibold text-violet-500 hover:text-violet-400 transition-colors`}>
-                      View all notifications
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </Link>
-                  </DropdownItem>
-                );
-              }
-              const notification = item as typeof notifications[0] & { key: string };
-              const nStyle = NOTIFICATION_STYLES[notification.type];
-              return (
-                <DropdownItem
-                  key={notification.key}
-                  className={`px-4 py-3 rounded-none border-b ${
-                    isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"
-                  } ${notification.unread ? `border-l-2 border-l-emerald-500 ${isLight ? 'bg-emerald-500/[0.02]' : 'bg-emerald-500/[0.03]'}` : ''}`}
-                  textValue={notification.title}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`w-8 h-8 rounded-lg ${nStyle.bg} ${nStyle.text} ring-1 ${nStyle.ring} flex items-center justify-center flex-shrink-0`}>
-                      <NotificationIcon type={notification.type} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className={`text-sm font-medium ${notification.unread ? (isLight ? 'text-slate-900' : 'text-slate-100') : (isLight ? 'text-slate-500' : 'text-slate-400')}`}>{notification.title}</span>
-                        {notification.unread && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />}
-                      </div>
-                      <p className="text-xs truncate mt-0.5 text-slate-500">{notification.description}</p>
-                      <span className={`text-[10px] mt-1 block ${isLight ? "text-slate-400" : "text-slate-600"}`}>{notification.time}</span>
-                    </div>
-                  </div>
-                </DropdownItem>
-              );
-            }}
-          </DropdownMenu>
-        </Dropdown>
+              })}
+              {/* Footer */}
+              <Link
+                href="/notifications"
+                onClick={() => notifDropdown.setOpen(false)}
+                className="flex items-center justify-center gap-2 py-3 text-sm font-semibold text-violet-500 hover:text-violet-400 transition-colors"
+              >
+                View all notifications
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+            </div>
+          )}
+        </div>
 
         {/* Theme Toggle - hidden on mobile (available in drawer) */}
         <button
@@ -518,128 +577,77 @@ export default function Header() {
         <div className={`hidden md:block w-px h-6 ${isLight ? "bg-slate-200" : "bg-[var(--bg-overlay)]"}`} />
 
         {/* User Menu */}
-        <Dropdown
-          placement="bottom-end"
-          classNames={{
-            content: `rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[240px] ${
-              isLight
-                ? "bg-white border border-slate-200"
-                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
-            }`
-          }}
-        >
-          <DropdownTrigger>
-            <button aria-label="User menu" className={`flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
+        <div className="relative" ref={userDropdown.ref}>
+          <button
+            aria-label="User menu"
+            onClick={() => userDropdown.setOpen(!userDropdown.open)}
+            className={`flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border transition-all group ${
               isLight
                 ? "bg-slate-100/30 hover:bg-slate-100 border-transparent hover:border-slate-200"
                 : "bg-[var(--bg-elevated)]/30 hover:bg-[var(--bg-elevated)] border-transparent hover:border-[var(--border-primary)]"
-            }`}>
-              <div className="relative">
-                <Avatar
-                  name="LK"
-                  size="sm"
-                  classNames={{
-                    base: "w-8 h-8 bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10",
-                    name: "text-white text-[10px] font-bold",
-                  }}
-                />
-                <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"}`} />
-              </div>
-              <div className="text-left hidden sm:block">
-                <div className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-200"}`}>Lime</div>
-              </div>
-              <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="User menu"
-            classNames={{
-              base: "p-0",
-              list: "gap-0",
-            }}
+            }`}
           >
-            <DropdownItem key="user-info" isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="User info">
+            <div className="relative">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10 flex items-center justify-center">
+                <span className="text-white text-[10px] font-bold">LK</span>
+              </div>
+              <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ${isLight ? "ring-white" : "ring-[var(--bg-primary)]"}`} />
+            </div>
+            <div className="text-left hidden sm:block">
+              <div className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-200"}`}>Lime</div>
+            </div>
+            <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          {userDropdown.open && (
+            <div className={`absolute right-0 top-full mt-2 rounded-2xl shadow-2xl shadow-black/30 p-0 min-w-[240px] z-50 ${
+              isLight
+                ? "bg-white border border-slate-200"
+                : "bg-[var(--bg-secondary)] border border-[var(--border-tertiary)]"
+            }`}>
+              {/* User Info */}
               <div className={`flex items-center gap-3 px-4 py-4 border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                <Avatar
-                  name="LK"
-                  size="md"
-                  classNames={{
-                    base: "w-10 h-10 bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10",
-                    name: "text-white text-sm font-bold",
-                  }}
-                />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-sky-500 ring-2 ring-white/10 flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">LK</span>
+                </div>
                 <div>
                   <div className={`text-sm font-semibold ${isLight ? "text-slate-900" : "text-slate-100"}`}>Lime Starter</div>
                   <div className="text-xs text-slate-500">lime@example.com</div>
                 </div>
               </div>
-            </DropdownItem>
-            <DropdownItem key="settings-header" isReadOnly className="p-0 cursor-default data-[hover=true]:bg-transparent" textValue="Settings">
+              {/* Settings Header */}
               <div className={`px-4 pt-3 pb-1.5 text-[10px] font-semibold uppercase tracking-wider ${isLight ? "text-slate-400" : "text-slate-500"}`}>
                 Settings
               </div>
-            </DropdownItem>
-            <DropdownItem
-              key="profile"
-              className={`px-4 py-2 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Profile"
-              href={ROUTES.SETTINGS_PROFILE}
-            >
-              <div className="flex items-center gap-3">
-                <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-                <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>Profile</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="security"
-              className={`px-4 py-2 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Security"
-              href={ROUTES.SETTINGS_SECURITY}
-            >
-              <div className="flex items-center gap-3">
-                <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-                <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>Security</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="appearance"
-              className={`px-4 py-2 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Appearance"
-              href={ROUTES.SETTINGS_APPEARANCE}
-            >
-              <div className="flex items-center gap-3">
-                <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
-                </svg>
-                <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>Appearance</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="notifications"
-              className={`px-4 py-2 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="Notifications"
-              href={ROUTES.SETTINGS_NOTIFICATIONS}
-            >
-              <div className="flex items-center gap-3">
-                <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                </svg>
-                <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>Notifications</span>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="all-settings"
-              className={`px-4 py-2 rounded-none ${isLight ? "data-[hover=true]:bg-slate-100/50" : "data-[hover=true]:bg-[var(--bg-elevated)]/50"}`}
-              textValue="All Settings"
-              href={ROUTES.SETTINGS}
-            >
-              <div className="flex items-center gap-3">
+              {/* Menu Items */}
+              {[
+                { key: "profile", label: "Profile", href: ROUTES.SETTINGS_PROFILE, iconPath: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" },
+                { key: "security", label: "Security", href: ROUTES.SETTINGS_SECURITY, iconPath: "M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" },
+                { key: "appearance", label: "Appearance", href: ROUTES.SETTINGS_APPEARANCE, iconPath: "M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" },
+                { key: "notifications", label: "Notifications", href: ROUTES.SETTINGS_NOTIFICATIONS, iconPath: "M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" },
+              ].map((item) => (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  onClick={() => userDropdown.setOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-2 transition-colors ${
+                    isLight ? "hover:bg-slate-100/50" : "hover:bg-[var(--bg-elevated)]/50"
+                  }`}
+                >
+                  <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                    <path d={item.iconPath} />
+                  </svg>
+                  <span className={`text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>{item.label}</span>
+                </Link>
+              ))}
+              <Link
+                href={ROUTES.SETTINGS}
+                onClick={() => userDropdown.setOpen(false)}
+                className={`flex items-center gap-3 px-4 py-2 transition-colors ${
+                  isLight ? "hover:bg-slate-100/50" : "hover:bg-[var(--bg-elevated)]/50"
+                }`}
+              >
                 <svg
                   className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`}
                   fill="none"
@@ -656,15 +664,14 @@ export default function Header() {
                 <svg className={`w-3.5 h-3.5 ml-auto ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
-              </div>
-            </DropdownItem>
-            <DropdownItem
-              key="signout"
-              className={`px-4 py-2.5 rounded-none border-t mt-1 ${isLight ? "border-slate-200 data-[hover=true]:bg-red-500/5" : "border-[var(--border-tertiary)] data-[hover=true]:bg-red-500/5"}`}
-              textValue="Sign Out"
-              onPress={() => router.push("/")}
-            >
-              <div className="flex items-center gap-3">
+              </Link>
+              {/* Sign Out */}
+              <button
+                className={`w-full text-left flex items-center gap-3 px-4 py-2.5 border-t mt-1 transition-colors ${
+                  isLight ? "border-slate-200 hover:bg-red-500/5" : "border-[var(--border-tertiary)] hover:bg-red-500/5"
+                }`}
+                onClick={() => { userDropdown.setOpen(false); router.push("/"); }}
+              >
                 <svg
                   className="w-4 h-4 text-red-400"
                   fill="none"
@@ -677,10 +684,10 @@ export default function Header() {
                   <path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                 </svg>
                 <span className="text-sm font-medium text-red-400">Sign Out</span>
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+              </button>
+            </div>
+          )}
+        </div>
 
       </div>
       </div>

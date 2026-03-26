@@ -77,6 +77,23 @@ function generatePassword(length = 24): string {
   return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }
 
+/** Parse size strings like "245 MB" or "1.2 GB" into MB */
+function parseSizeMB(size: string): number {
+  const match = size.match(/([\d.]+)\s*(MB|GB|KB)/i);
+  if (!match) return 0;
+  const val = parseFloat(match[1]);
+  const unit = match[2].toUpperCase();
+  if (unit === "GB") return val * 1024;
+  if (unit === "KB") return val / 1024;
+  return val;
+}
+
+function formatSizeMB(mb: number): string {
+  if (mb >= 1024) return `${(mb / 1024).toFixed(1)} GB`;
+  if (mb < 1) return `${(mb * 1024).toFixed(0)} KB`;
+  return `${Math.round(mb)} MB`;
+}
+
 /* ────────────── icons ────────────── */
 
 const SpinnerIcon = (
@@ -85,6 +102,24 @@ const SpinnerIcon = (
     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
   </svg>
 );
+
+/* ────────────── SVG paths ────────────── */
+
+const ICON_PATHS = {
+  database: "M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125",
+  chartBar: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
+  tableGrid: "M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 0v1.5c0 .621-.504 1.125-1.125 1.125",
+  clock: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
+  cog: "M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z",
+  cogInner: "M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+  wrench: "M11.42 15.17l-5.6-5.6a2.002 2.002 0 010-2.83l.17-.17a2.002 2.002 0 012.83 0l5.6 5.6m-5 5l5.6 5.6a2.002 2.002 0 002.83 0l.17-.17a2.002 2.002 0 000-2.83l-5.6-5.6m-5 5l-1.42-1.42m12.42-12.42l1.42 1.42",
+  checkCircle: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+  play: "M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z",
+  commandLine: "M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z",
+  link: "M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.552a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L4.343 8.57",
+  arrowTopRight: "M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25",
+  shield: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
+} as const;
 
 /* ────────────── component ────────────── */
 
@@ -333,6 +368,20 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
     showToast.success("Database backup completed");
   }, []);
 
+  /* ── computed stats ── */
+  const totalDatabases = databases.length;
+  const totalSizeMB = databases.reduce((sum, db) => sum + parseSizeMB(db.size), 0);
+  const totalTables = databases.reduce((sum, db) => sum + db.tables, 0);
+  const mostRecentBackup = databases.length > 0
+    ? databases.reduce((best, db) => {
+        // Simple heuristic: "Just now" < "2 hours ago" < "1 day ago" < "3 days ago" < "Never"
+        const order = ["Just now", "2 hours ago", "1 day ago", "3 days ago", "Never"];
+        const bestIdx = order.indexOf(best);
+        const dbIdx = order.indexOf(db.lastBackup);
+        return dbIdx !== -1 && (bestIdx === -1 || dbIdx < bestIdx) ? db.lastBackup : best;
+      }, databases[0].lastBackup)
+    : "Never";
+
   /* ── shared styles ── */
   const cardClass = `rounded-2xl border transition-all ${
     isLight
@@ -374,10 +423,30 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
 
   const maxBarSize = Math.max(...SIZE_HISTORY.map((s) => s.size));
 
+  /* ── Section heading helper ── */
+  const SectionHeading = ({ iconPath, iconColor, title }: { iconPath: string; iconColor: { bg: string; text: string }; title: string }) => (
+    <div className="flex items-center gap-3 mb-5">
+      <div className={`w-8 h-8 rounded-lg ${iconColor.bg} flex items-center justify-center`}>
+        <svg className={`w-4 h-4 ${iconColor.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
+        </svg>
+      </div>
+      <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{title}</h3>
+    </div>
+  );
+
+  /* ── Connection info field colors ── */
+  const connectionFieldColors = [
+    { bg: "bg-teal-500/10", text: "text-teal-500" },
+    { bg: "bg-sky-500/10", text: "text-sky-500" },
+    { bg: "bg-violet-500/10", text: "text-violet-500" },
+    { bg: "bg-amber-500/10", text: "text-amber-500" },
+  ];
+
   return (
     <>
-      {/* Page Header */}
-      <div className="flex justify-between items-start mb-8">
+      {/* ───────── 1. Page Header ───────── */}
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8">
         <div>
           <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
             Database Management
@@ -389,35 +458,105 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
             </span>
           </p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className={`h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-          Create Database
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className={secondaryBtnClass}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            Import
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className={`h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Create Database
+          </button>
+        </div>
       </div>
 
-      {/* Bulk Operations */}
-      <div className={`${cardClass} mb-6 p-5`}>
-        <div className="flex flex-wrap items-center gap-3">
-          <h3 className={`text-sm font-semibold mr-2 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            Maintenance
-          </h3>
+      {/* ───────── 2. Stats Strip ───────── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {[
+          {
+            label: "Total Databases",
+            value: String(totalDatabases),
+            iconPath: ICON_PATHS.database,
+            color: { bg: "bg-amber-500/10", text: "text-amber-500" },
+          },
+          {
+            label: "Total Size",
+            value: formatSizeMB(totalSizeMB),
+            iconPath: ICON_PATHS.chartBar,
+            color: { bg: "bg-violet-500/10", text: "text-violet-500" },
+          },
+          {
+            label: "Total Tables",
+            value: String(totalTables),
+            iconPath: ICON_PATHS.tableGrid,
+            color: { bg: "bg-sky-500/10", text: "text-sky-500" },
+          },
+          {
+            label: "Last Backup",
+            value: mostRecentBackup,
+            iconPath: ICON_PATHS.clock,
+            color: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
+          },
+        ].map((stat) => (
+          <div key={stat.label} className={`${cardClass} p-5`}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className={`w-9 h-9 rounded-xl ${stat.color.bg} flex items-center justify-center`}>
+                <svg className={`w-4.5 h-4.5 ${stat.color.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d={stat.iconPath} />
+                </svg>
+              </div>
+            </div>
+            <p className={`text-2xl font-bold tabular-nums ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+              {stat.value}
+            </p>
+            <p className={`text-xs font-medium mt-1 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+              {stat.label}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* ───────── 3. Databases Table (with Maintenance Bar inside) ───────── */}
+      <div className={`${cardClass} mb-8 overflow-hidden`}>
+        {/* Maintenance Bar — compact, inside the table card */}
+        <div className={`px-6 py-4 flex flex-wrap items-center gap-3 border-b ${
+          isLight ? "border-slate-200 bg-slate-50/50" : "border-[var(--border-tertiary)] bg-white/[0.02]"
+        }`}>
+          <div className="flex items-center gap-2 mr-1">
+            <div className="w-6 h-6 rounded-md bg-violet-500/10 flex items-center justify-center">
+              <svg className="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.cog} />
+                <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.cogInner} />
+              </svg>
+            </div>
+            <span className={`text-sm font-semibold ${isLight ? "text-slate-700" : "text-slate-200"}`}>
+              Maintenance
+            </span>
+          </div>
           <button
             onClick={handleOptimizeAll}
             disabled={optimizingAll}
             className={`${secondaryBtnClass} disabled:opacity-60`}
           >
             {optimizingAll ? SpinnerIcon : (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+              <div className="w-5 h-5 rounded-md bg-violet-500/10 flex items-center justify-center">
+                <svg className="w-3 h-3 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.cog} />
+                  <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.cogInner} />
+                </svg>
+              </div>
             )}
-            Optimize All Tables
+            Optimize All
           </button>
           <button
             onClick={handleRepairAll}
@@ -425,11 +564,13 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
             className={`${secondaryBtnClass} disabled:opacity-60`}
           >
             {repairingAll ? SpinnerIcon : (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17l-5.6-5.6a2.002 2.002 0 010-2.83l.17-.17a2.002 2.002 0 012.83 0l5.6 5.6m-5 5l5.6 5.6a2.002 2.002 0 002.83 0l.17-.17a2.002 2.002 0 000-2.83l-5.6-5.6m-5 5l-1.42-1.42m12.42-12.42l1.42 1.42" />
-              </svg>
+              <div className="w-5 h-5 rounded-md bg-amber-500/10 flex items-center justify-center">
+                <svg className="w-3 h-3 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.wrench} />
+                </svg>
+              </div>
             )}
-            Repair All Tables
+            Repair All
           </button>
           <button
             onClick={handleCheckAll}
@@ -437,17 +578,17 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
             className={`${secondaryBtnClass} disabled:opacity-60`}
           >
             {checkingAll ? SpinnerIcon : (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <div className="w-5 h-5 rounded-md bg-emerald-500/10 flex items-center justify-center">
+                <svg className="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.checkCircle} />
+                </svg>
+              </div>
             )}
-            Check All Tables
+            Check All
           </button>
         </div>
-      </div>
 
-      {/* Databases Table */}
-      <div className={`${cardClass} mb-8 overflow-hidden`}>
+        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -471,16 +612,14 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
                   className={`border-b last:border-b-0 transition-colors ${
                     isLight
                       ? "border-slate-100 hover:bg-slate-50"
-                      : "border-[var(--border-tertiary)]/50 hover:bg-white/[0.02]"
+                      : "border-[var(--border-tertiary)] hover:bg-white/[0.02]"
                   }`}
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-                      }`}>
-                        <svg className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-slate-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                      <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.database} />
                         </svg>
                       </div>
                       <button
@@ -513,7 +652,7 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
                         title="Browse Tables"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 0v1.5c0 .621-.504 1.125-1.125 1.125" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.tableGrid} />
                         </svg>
                         Browse
                       </button>
@@ -582,12 +721,17 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
         </div>
       </div>
 
-      {/* Table Browser */}
+      {/* ───────── Table Browser (inline, after table) ───────── */}
       {browsingDb && (
         <div className={`${cardClass} mb-8 overflow-hidden`}>
           <div className="p-6 pb-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.tableGrid} />
+                  </svg>
+                </div>
                 <h3 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>
                   Tables in{" "}
                   <span className="font-mono">{browsingDb}</span>
@@ -640,7 +784,7 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
                     className={`border-b last:border-b-0 transition-colors ${
                       isLight
                         ? "border-slate-100 hover:bg-slate-50"
-                        : "border-[var(--border-tertiary)]/50 hover:bg-white/[0.02]"
+                        : "border-[var(--border-tertiary)] hover:bg-white/[0.02]"
                     }`}
                   >
                     <td className="px-6 py-3">
@@ -730,12 +874,14 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
         </div>
       )}
 
-      {/* Query Runner */}
+      {/* ───────── 5. Query Runner ───────── */}
       <div className={`${cardClass} mb-8 overflow-hidden`}>
         <div className="p-6">
-          <h3 className={`text-base font-semibold mb-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            Query Runner
-          </h3>
+          <SectionHeading
+            iconPath={ICON_PATHS.commandLine}
+            iconColor={{ bg: "bg-sky-500/10", text: "text-sky-500" }}
+            title="Query Runner"
+          />
 
           {/* Warning callout */}
           <div className={`rounded-xl px-4 py-3 mb-4 flex items-start gap-3 ${
@@ -778,7 +924,7 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
               {queryRunning ? <>{SpinnerIcon} Running...</> : (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.play} />
                   </svg>
                   Execute Query
                 </>
@@ -835,7 +981,7 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
                     </thead>
                     <tbody>
                       {queryResult.data.map((row, i) => (
-                        <tr key={i} className={`border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]/50"}`}>
+                        <tr key={i} className={`border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
                           {Object.values(row).map((val, j) => (
                             <td key={j} className={`px-4 py-2 font-mono text-xs ${isLight ? "text-slate-700" : "text-slate-300"}`}>
                               {val}
@@ -863,19 +1009,60 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
         </div>
       </div>
 
-      {/* Quick Access + Database Size History */}
-      <h2 className={`text-base font-semibold mb-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-        Quick Access
-      </h2>
+      {/* ───────── 6. Two-column: Connection Info + phpMyAdmin ───────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* phpMyAdmin Button */}
+        {/* Connection Info Card */}
         <div className={cardClass}>
-          <div className="p-6 flex flex-col items-center justify-center text-center">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-              isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-            }`}>
-              <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          <div className="p-6">
+            <SectionHeading
+              iconPath={ICON_PATHS.link}
+              iconColor={{ bg: "bg-teal-500/10", text: "text-teal-500" }}
+              title="Connection Information"
+            />
+            <div className="space-y-3">
+              {CONNECTION_INFO.map((item, idx) => (
+                <div
+                  key={item.label}
+                  className={`flex items-center justify-between rounded-xl px-4 py-3 border ${
+                    isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)]/50 border-[var(--border-tertiary)]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-2 h-2 rounded-full ${connectionFieldColors[idx % connectionFieldColors.length].bg.replace('/10', '')} ${connectionFieldColors[idx % connectionFieldColors.length].text}`}>
+                      <div className={`w-2 h-2 rounded-full ${connectionFieldColors[idx % connectionFieldColors.length].bg.replace('bg-', 'bg-').replace('/10', '')}`} />
+                    </div>
+                    <div>
+                      <p className={labelClass}>{item.label}</p>
+                      <p className={`text-sm font-mono font-medium mt-0.5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+                        {item.value}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleCopy(item.value)}
+                    className={`h-8 w-8 rounded-lg flex items-center justify-center transition-colors ${
+                      isLight
+                        ? "hover:bg-slate-200 text-slate-400"
+                        : "hover:bg-[var(--bg-elevated)] text-slate-500"
+                    }`}
+                    title="Copy"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+                    </svg>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* phpMyAdmin Card */}
+        <div className={cardClass}>
+          <div className="p-6 flex flex-col items-center justify-center text-center h-full">
+            <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.arrowTopRight} />
               </svg>
             </div>
             <h3 className={`text-sm font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
@@ -899,55 +1086,18 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
             </button>
           </div>
         </div>
-
-        {/* Connection Info Card */}
-        <div className={cardClass}>
-          <div className="p-6">
-            <h3 className={`text-sm font-semibold mb-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Connection Information
-            </h3>
-            <div className="space-y-3">
-              {CONNECTION_INFO.map((item) => (
-                <div
-                  key={item.label}
-                  className={`flex items-center justify-between rounded-xl px-4 py-3 border ${
-                    isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)]/50 border-[var(--border-tertiary)]"
-                  }`}
-                >
-                  <div>
-                    <p className={labelClass}>{item.label}</p>
-                    <p className={`text-sm font-mono font-medium mt-0.5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                      {item.value}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleCopy(item.value)}
-                    className={`h-8 w-8 rounded-lg flex items-center justify-center transition-colors ${
-                      isLight
-                        ? "hover:bg-slate-200 text-slate-400"
-                        : "hover:bg-[var(--bg-elevated)] text-slate-500"
-                    }`}
-                    title="Copy"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Database Size History + Scheduled Backups */}
+      {/* ───────── 7. Two-column: Database Size History + Scheduled Backups ───────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Database Size History */}
         <div className={cardClass}>
           <div className="p-6">
-            <h3 className={`text-sm font-semibold mb-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Database Size History
-            </h3>
+            <SectionHeading
+              iconPath={ICON_PATHS.chartBar}
+              iconColor={{ bg: "bg-indigo-500/10", text: "text-indigo-500" }}
+              title="Database Size History"
+            />
             <div className="flex items-baseline gap-3 mb-1">
               <span className={`text-3xl font-bold tabular-nums ${isLight ? "text-slate-800" : "text-slate-100"}`}>
                 155 MB
@@ -997,9 +1147,11 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
         {/* Scheduled Database Backups */}
         <div className={cardClass}>
           <div className="p-6">
-            <h3 className={`text-sm font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Scheduled Database Backups
-            </h3>
+            <SectionHeading
+              iconPath={ICON_PATHS.shield}
+              iconColor={{ bg: "bg-emerald-500/10", text: "text-emerald-500" }}
+              title="Scheduled Database Backups"
+            />
 
             {/* Enable toggle */}
             <div className="flex items-center justify-between mb-5">

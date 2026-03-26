@@ -231,6 +231,29 @@ export default function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               </div>
               <div className="flex flex-col gap-1">
                 {group.items.map((item) => {
+                  if (item.children && item.children.length > 0) {
+                    return item.children.map((child) => {
+                      const isActive = pathname === child.href;
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                            isActive
+                              ? `${accent.activeBg} ${accent.text} ring-1 ${accent.activeRing}`
+                              : isLight
+                              ? `text-slate-600 ${accent.hoverBg}`
+                              : `text-slate-400 ${accent.hoverBg}`
+                          }`}
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                            <path d={child.icon} />
+                          </svg>
+                          <span>{child.label}</span>
+                        </Link>
+                      );
+                    });
+                  }
                   const isActive = pathname === item.href;
                   return (
                     <Link

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider, useTheme } from "@/lib/context/ThemeContext";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { NotificationProvider } from "@/lib/context/NotificationContext";
@@ -35,7 +34,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider>
       <AuthProvider>
         <NotificationProvider>
-          <HeroUIProvider>{children}</HeroUIProvider>
+          {children}
           <ToasterWrapper />
         </NotificationProvider>
       </AuthProvider>

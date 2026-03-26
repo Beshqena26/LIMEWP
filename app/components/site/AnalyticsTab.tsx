@@ -576,7 +576,7 @@ export function AnalyticsTab({ siteId }: AnalyticsTabProps) {
             className={`relative divide-y ${
               isLight
                 ? "divide-slate-200"
-                : "divide-[var(--border-tertiary)]"
+                : "divide-white/[0.04]"
             }`}
           >
             {topPages.map((page, index) => (
@@ -890,7 +890,7 @@ export function AnalyticsTab({ siteId }: AnalyticsTabProps) {
                 className={`divide-y ${
                   isLight
                     ? "divide-slate-200"
-                    : "divide-[var(--border-tertiary)]"
+                    : "divide-white/[0.04]"
                 }`}
               >
                 {ERRORS_404.map((err) => (
@@ -994,7 +994,7 @@ export function AnalyticsTab({ siteId }: AnalyticsTabProps) {
                 className={`divide-y ${
                   isLight
                     ? "divide-slate-200"
-                    : "divide-[var(--border-tertiary)]"
+                    : "divide-white/[0.04]"
                 }`}
               >
                 {SEARCH_QUERIES.map((sq) => (

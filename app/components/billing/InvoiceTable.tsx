@@ -1,6 +1,5 @@
 "use client";
 
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@heroui/react";
 import { SectionHeader } from "../ui/SectionHeader";
 import { useTheme } from "@/lib/context/ThemeContext";
 import type { Invoice } from "@/data/billing";
@@ -26,58 +25,50 @@ export function InvoiceTable({ invoices, onViewInvoice, onDownloadInvoice }: Inv
       <div className={`rounded-2xl border overflow-hidden ${
         isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"
       }`}>
-        <Table
-          aria-label="Invoice history"
-          removeWrapper
-          classNames={{
-            table: isLight ? "bg-white" : "bg-[var(--bg-secondary)]",
-            th: `text-xs font-semibold uppercase tracking-wider py-4 px-5 ${
-              isLight ? "bg-slate-50 text-slate-500" : "bg-[var(--bg-primary)] text-slate-500"
-            }`,
-            td: "text-sm py-4 px-5",
-            tr: `border-b last:border-b-0 transition-colors ${
-              isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[var(--bg-elevated)]/50 border-[var(--border-tertiary)]"
-            }`,
-          }}
-        >
-          <TableHeader>
-            <TableColumn>Invoice</TableColumn>
-            <TableColumn>Date</TableColumn>
-            <TableColumn>Description</TableColumn>
-            <TableColumn>Amount</TableColumn>
-            <TableColumn>Status</TableColumn>
-            <TableColumn>Actions</TableColumn>
-          </TableHeader>
-          <TableBody>
+        <table className={`w-full ${isLight ? "bg-white" : "bg-[var(--bg-secondary)]"}`}>
+          <thead>
+            <tr>
+              {["Invoice", "Date", "Description", "Amount", "Status", "Actions"].map((col) => (
+                <th
+                  key={col}
+                  className={`text-left text-xs font-semibold uppercase tracking-wider py-4 px-5 ${
+                    isLight ? "bg-slate-50 text-slate-500" : "bg-[var(--bg-primary)] text-slate-500"
+                  }`}
+                >
+                  {col}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
             {invoices.map((invoice) => {
               const statusStyle = INVOICE_STATUS_STYLES[invoice.status] || INVOICE_STATUS_STYLES.Paid;
               return (
-                <TableRow key={invoice.id}>
-                  <TableCell>
+                <tr
+                  key={invoice.id}
+                  className={`border-b last:border-b-0 transition-colors ${
+                    isLight ? "hover:bg-slate-50 border-slate-100" : "hover:bg-[var(--bg-elevated)]/50 border-[var(--border-tertiary)]"
+                  }`}
+                >
+                  <td className="text-sm py-4 px-5">
                     <span className={`font-mono font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{invoice.id}</span>
-                  </TableCell>
-                  <TableCell>
+                  </td>
+                  <td className="text-sm py-4 px-5">
                     <span className={isLight ? "text-slate-500" : "text-slate-400"}>{invoice.date}</span>
-                  </TableCell>
-                  <TableCell>
+                  </td>
+                  <td className="text-sm py-4 px-5">
                     <span className={isLight ? "text-slate-600" : "text-slate-300"}>{invoice.description}</span>
-                  </TableCell>
-                  <TableCell>
+                  </td>
+                  <td className="text-sm py-4 px-5">
                     <span className={`font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{invoice.amount}</span>
-                  </TableCell>
-                  <TableCell>
-                    <Chip
-                      size="sm"
-                      classNames={{
-                        base: `${statusStyle.bg} border-0`,
-                        content: `${statusStyle.text} font-semibold text-[10px]`
-                      }}
-                      startContent={<span className={`w-1.5 h-1.5 rounded-full ${statusStyle.dot}`} />}
-                    >
+                  </td>
+                  <td className="text-sm py-4 px-5">
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold ${statusStyle.bg} ${statusStyle.text}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${statusStyle.dot}`} />
                       {invoice.status}
-                    </Chip>
-                  </TableCell>
-                  <TableCell>
+                    </span>
+                  </td>
+                  <td className="text-sm py-4 px-5">
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => onViewInvoice?.(invoice)}
@@ -95,12 +86,12 @@ export function InvoiceTable({ invoices, onViewInvoice, onDownloadInvoice }: Inv
                         Download
                       </button>
                     </div>
-                  </TableCell>
-                </TableRow>
+                  </td>
+                </tr>
               );
             })}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </div>
     </div>
   );

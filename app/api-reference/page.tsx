@@ -1424,7 +1424,7 @@ export default function ApiReferencePage() {
             <span>Description</span>
           </div>
           {ERROR_CODES.map((err, i) => (
-            <div key={err.code} className={`grid grid-cols-[80px_1fr] items-center px-4 py-3 ${i > 0 ? `border-t ${isLight ? "border-slate-100" : "border-[var(--border-secondary)]/50"}` : ""}`}>
+            <div key={err.code} className={`grid grid-cols-[80px_1fr] items-center px-4 py-3 ${i > 0 ? `border-t ${isLight ? "border-slate-100" : "border-white/[0.06]"}` : ""}`}>
               {renderStatusBadge(err.code)}
               <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>{err.description}</span>
             </div>
@@ -1477,7 +1477,7 @@ export default function ApiReferencePage() {
               {ep.params.map((param, i) => (
                 <div
                   key={param.name}
-                  className={`flex items-start gap-4 px-4 py-3 ${i > 0 ? `border-t ${isLight ? "border-slate-100" : "border-[var(--border-secondary)]/50"}` : ""} ${isLight ? "bg-white" : "bg-transparent"}`}
+                  className={`flex items-start gap-4 px-4 py-3 ${i > 0 ? `border-t ${isLight ? "border-slate-100" : "border-white/[0.06]"}` : ""} ${isLight ? "bg-white" : "bg-transparent"}`}
                 >
                   <div className="w-32 flex-shrink-0 flex items-center gap-1.5">
                     <code className={`font-mono text-sm ${isLight ? "text-slate-700" : "text-slate-300"}`}>{param.name}</code>
@@ -1564,7 +1564,7 @@ export default function ApiReferencePage() {
                 return (
                   <div
                     key={code}
-                    className={`flex items-center gap-4 px-4 py-2.5 ${i > 0 ? `border-t ${isLight ? "border-slate-100" : "border-[var(--border-secondary)]/50"}` : ""}`}
+                    className={`flex items-center gap-4 px-4 py-2.5 ${i > 0 ? `border-t ${isLight ? "border-slate-100" : "border-white/[0.06]"}` : ""}`}
                   >
                     {renderStatusBadge(code)}
                     <span className={`text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
@@ -1643,8 +1643,8 @@ export default function ApiReferencePage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className={`w-full h-9 pl-9 pr-3 rounded-lg text-sm focus:outline-none transition-colors ${
                     isLight
-                      ? "bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:border-slate-400"
-                      : "bg-[var(--bg-elevated)]/50 border border-[var(--border-primary)]/50 text-slate-300 placeholder:text-slate-600 focus:border-[var(--border-secondary)]"
+                      ? "bg-white border border-slate-200 text-slate-800 placeholder:text-slate-500 focus:border-slate-400"
+                      : "bg-[var(--bg-elevated)]/50 border border-white/[0.08] text-slate-300 placeholder:text-slate-600 focus:border-[var(--border-secondary)]"
                   }`}
                 />
               </div>

@@ -200,6 +200,55 @@ function NavLink({ item, isLight, accentColor }: { item: NavItem; isLight: boole
   );
 }
 
+function NavDropdown({ item, isLight, accentColor }: { item: NavItem; isLight: boolean; accentColor: keyof typeof ACCENT_STYLES }) {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(true);
+  const accent = ACCENT_STYLES[accentColor];
+  const children = item.children || [];
+  const hasActiveChild = children.some((c) => pathname === c.href);
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpen((prev) => !prev); }}
+        className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer ${
+          hasActiveChild
+            ? `${accent.activeBg} ring-1 ${accent.activeRing}`
+            : isLight ? "hover:bg-slate-100" : "hover:bg-white/[0.04]"
+        }`}
+      >
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+          hasActiveChild
+            ? `${accent.activeBg} ${accent.text} ring-1 ${accent.activeRing}`
+            : isLight
+              ? "bg-slate-200/50 text-slate-500 group-hover:text-slate-700"
+              : "bg-[var(--bg-elevated)]/50 text-slate-400 group-hover:text-slate-200"
+        }`}>
+          <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d={item.icon} />
+          </svg>
+        </div>
+        <span className={`text-[13px] font-medium flex-1 text-left transition-colors ${
+          hasActiveChild ? accent.text : isLight ? "text-slate-600 group-hover:text-slate-800" : "text-slate-400 group-hover:text-slate-200"
+        }`}>
+          {item.label}
+        </span>
+        <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""} ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d={NAV_ICONS.chevronDown} />
+        </svg>
+      </button>
+      {open && (
+        <div className="pl-5 mt-1 flex flex-col gap-0.5">
+          {children.map((child) => (
+            <NavLink key={child.href} item={child} isLight={isLight} accentColor={accentColor} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SiteItems({ isLight, accentColor }: { isLight: boolean; accentColor: keyof typeof ACCENT_STYLES }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -360,11 +409,15 @@ function NavGroupComponent({
         </svg>
       </button>
       <div
-        className={`flex flex-col gap-1 overflow-hidden transition-all duration-200 ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+        className={`flex flex-col gap-1 overflow-hidden transition-all duration-200 ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
       >
-        {group.items.map((item) => (
-          <NavLink key={item.href} item={item} isLight={isLight} accentColor={accentColor} />
-        ))}
+        {group.items.map((item) =>
+          item.children && item.children.length > 0 ? (
+            <NavDropdown key={item.label} item={item} isLight={isLight} accentColor={accentColor} />
+          ) : (
+            <NavLink key={item.href} item={item} isLight={isLight} accentColor={accentColor} />
+          )
+        )}
       </div>
     </div>
   );
@@ -398,7 +451,7 @@ export default function Sidebar() {
   const accentStyle = ACCENT_STYLES[accentColor];
 
   return (
-    <aside aria-label="Sidebar navigation" className={`fixed top-0 left-0 w-[260px] h-full flex flex-col z-50 border-r transition-colors ${
+    <nav aria-label="Sidebar navigation" className={`fixed top-0 left-0 w-[260px] h-full flex flex-col z-50 border-r transition-colors ${
       isLight
         ? "bg-white border-slate-200"
         : "bg-[var(--bg-primary)] border-white/[0.06]"
@@ -588,6 +641,6 @@ export default function Sidebar() {
           </Link>
         </div>
       </div>
-    </aside>
+    </nav>
   );
 }

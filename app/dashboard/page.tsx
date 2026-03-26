@@ -11,10 +11,7 @@ import {
   ActivityFeed,
   UpgradeModal,
   ActivityDetailModal,
-  PerformanceCard,
-  SecurityCard,
 } from "../components/dashboard";
-import { SectionHeader } from "../components/ui/SectionHeader";
 import { DashboardSkeleton } from "../components/skeletons";
 import { DASHBOARD_SITES, DASHBOARD_ACTIVITIES, type DashboardSite, type DashboardActivity } from "@/data/dashboard";
 import { createRoute, ROUTES } from "@/config/routes";
@@ -283,11 +280,21 @@ export default function DashboardPage() {
             onManageSite={handleManageSite}
           />
 
-          {/* Performance & Security 2-Column Layout */}
-          <SectionHeader title="Site Overview" />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-            <PerformanceCard />
-            <SecurityCard onRunScan={() => showToast.info("Security scan started")} />
+          {/* Analytics Summary */}
+          <div className={`flex items-center justify-between px-5 py-4 rounded-2xl border mb-10 ${
+            isLight ? "bg-white border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+          }`}>
+            {QUICK_STATS.map((stat, i) => (
+              <div key={stat.label} className={`flex items-center gap-4 ${i > 0 ? `pl-4 border-l ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}` : ""}`}>
+                <div>
+                  <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>{stat.label}</span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className={`text-lg font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</span>
+                    <span className={`text-xs font-medium ${stat.positive ? "text-emerald-500" : "text-rose-500"}`}>{stat.change}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           <ActivityFeed

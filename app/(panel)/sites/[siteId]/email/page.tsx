@@ -1,23 +1,23 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import AppShell from "@/app/components/AppShell";
 import { useTheme } from "@/lib/context/ThemeContext";
-import { getColorClasses } from "@/lib/utils/colors";
 import { showToast } from "@/lib/toast";
 import { Toggle } from "@/app/components/ui/Toggle";
 import { ConfirmDialog } from "@/app/components/ui/ConfirmDialog";
 
-/* ────────────── types ────────────── */
+/* ══════════════════════════════════ Types ══════════════════════════════════ */
 
 interface EmailAccount {
   id: string;
   address: string;
-  quotaUsed: number; // MB
-  quotaTotal: number; // MB
+  quotaUsed: number;
+  quotaTotal: number;
   status: "Active" | "Suspended";
+  lastActive: string;
 }
 
 interface Forwarder {
@@ -30,41 +30,75 @@ interface Autoresponder {
   id: string;
   email: string;
   subject: string;
-  body: string;
-  active: boolean;
   startDate: string;
   endDate: string;
+  enabled: boolean;
 }
 
-/* ────────────── mock data ────────────── */
+type SpamLevel = "off" | "low" | "medium" | "high";
 
-const INITIAL_ACCOUNTS: EmailAccount[] = [
-  { id: "1", address: "info@example.com", quotaUsed: 820, quotaTotal: 2048, status: "Active" },
-  { id: "2", address: "support@example.com", quotaUsed: 1540, quotaTotal: 5120, status: "Active" },
-  { id: "3", address: "admin@example.com", quotaUsed: 210, quotaTotal: 1024, status: "Suspended" },
+interface SpamSettings {
+  level: SpamLevel;
+  autoDelete: boolean;
+  blockExecutables: boolean;
+  blacklist: string;
+  whitelist: string;
+}
+
+/* ══════════════════════════════════ Mock Data ══════════════════════════════════ */
+
+const ACCOUNTS: EmailAccount[] = [
+  { id: "e1", address: "admin@limewp.com", quotaUsed: 450, quotaTotal: 1024, status: "Active", lastActive: "2 min ago" },
+  { id: "e2", address: "info@limewp.com", quotaUsed: 280, quotaTotal: 512, status: "Active", lastActive: "1 hour ago" },
+  { id: "e3", address: "support@limewp.com", quotaUsed: 120, quotaTotal: 512, status: "Active", lastActive: "3 hours ago" },
+  { id: "e4", address: "noreply@limewp.com", quotaUsed: 50, quotaTotal: 256, status: "Suspended", lastActive: "2 weeks ago" },
+  { id: "e5", address: "dev@limewp.com", quotaUsed: 310, quotaTotal: 1024, status: "Active", lastActive: "5 min ago" },
 ];
 
-const INITIAL_FORWARDERS: Forwarder[] = [
-  { id: "1", source: "sales@example.com", destination: "info@example.com" },
-  { id: "2", source: "billing@example.com", destination: "admin@example.com" },
+const FORWARDERS: Forwarder[] = [
+  { id: "f1", source: "sales@limewp.com", destination: "admin@limewp.com" },
+  { id: "f2", source: "billing@limewp.com", destination: "info@limewp.com" },
+  { id: "f3", source: "hello@limewp.com", destination: "admin@limewp.com, info@limewp.com" },
 ];
 
-const INITIAL_AUTORESPONDERS: Autoresponder[] = [
-  { id: "1", email: "support@example.com", subject: "We received your message", body: "<p>Thank you for contacting us. We will get back to you within 24 hours.</p>", active: true, startDate: "2026-01-01", endDate: "2026-12-31" },
-  { id: "2", email: "info@example.com", subject: "Out of Office", body: "<p>I am currently out of the office and will return on Monday.</p>", active: false, startDate: "2026-03-15", endDate: "2026-03-22" },
+const AUTORESPONDERS: Autoresponder[] = [
+  { id: "ar1", email: "support@limewp.com", subject: "We received your message", startDate: "Mar 1, 2026", endDate: "Mar 31, 2026", enabled: true },
+  { id: "ar2", email: "info@limewp.com", subject: "Out of office", startDate: "Mar 20, 2026", endDate: "Mar 27, 2026", enabled: false },
 ];
 
-const DOMAIN = "example.com";
+const MAIL_CONFIG = {
+  imap: { host: "mail.limewp.com", port: "993", ssl: true },
+  smtp: { host: "mail.limewp.com", port: "465", ssl: true },
+  pop3: { host: "mail.limewp.com", port: "995", ssl: true },
+};
 
-const MAIL_CONFIG = [
-  { label: "IMAP Server", value: "mail.example.com", port: "993 (SSL)" },
-  { label: "SMTP Server", value: "mail.example.com", port: "465 (SSL)" },
-  { label: "POP3 Server", value: "mail.example.com", port: "995 (SSL)" },
-];
+const DNS_RECORDS = {
+  spf: { configured: true, value: "v=spf1 include:limewp.com ~all" },
+  dkim: { configured: true, selector: "default._domainkey", value: "v=DKIM1; k=rsa; p=MIGfMA0GCS..." },
+  dmarc: { configured: false, value: "v=DMARC1; p=none; rua=mailto:admin@limewp.com" },
+};
 
-const QUOTA_STEPS = [100, 256, 512, 1024, 2048, 5120];
+const QUOTA_STEPS = [256, 512, 1024, 2048, 5120];
 
-/* ────────────── password strength ────────────── */
+/* ══════════════════════════════════ Helpers ══════════════════════════════════ */
+
+function formatMB(mb: number): string {
+  return mb >= 1024 ? `${(mb / 1024).toFixed(1)} GB` : `${mb} MB`;
+}
+
+function quotaColor(used: number, total: number): string {
+  const pct = (used / total) * 100;
+  if (pct > 80) return "bg-rose-500";
+  if (pct > 50) return "bg-amber-500";
+  return "bg-emerald-500";
+}
+
+function quotaTextColor(used: number, total: number): string {
+  const pct = (used / total) * 100;
+  if (pct > 80) return "text-rose-400";
+  if (pct > 50) return "text-amber-400";
+  return "text-emerald-400";
+}
 
 function getPasswordStrength(pw: string): { label: string; pct: number; color: string; barClass: string } {
   if (!pw) return { label: "", pct: 0, color: "", barClass: "" };
@@ -72,1159 +106,854 @@ function getPasswordStrength(pw: string): { label: string; pct: number; color: s
   const hasLower = /[a-z]/.test(pw);
   const hasNumber = /[0-9]/.test(pw);
   const hasSpecial = /[^A-Za-z0-9]/.test(pw);
-  if (pw.length >= 10 && hasUpper && hasLower && hasNumber && hasSpecial) return { label: "Strong", pct: 100, color: "text-emerald-500", barClass: "bg-emerald-500" };
-  if (pw.length >= 8 && hasNumber) return { label: "Good", pct: 75, color: "text-sky-500", barClass: "bg-sky-500" };
-  if (pw.length >= 6) return { label: "Fair", pct: 50, color: "text-amber-500", barClass: "bg-amber-500" };
+  if (pw.length >= 10 && hasUpper && hasLower && hasNumber && hasSpecial)
+    return { label: "Strong", pct: 100, color: "text-emerald-500", barClass: "bg-emerald-500" };
+  if (pw.length >= 8 && hasNumber)
+    return { label: "Good", pct: 75, color: "text-sky-500", barClass: "bg-sky-500" };
+  if (pw.length >= 6)
+    return { label: "Fair", pct: 50, color: "text-amber-500", barClass: "bg-amber-500" };
   return { label: "Weak", pct: 25, color: "text-rose-500", barClass: "bg-rose-500" };
 }
 
-/* ────────────── tabs ────────────── */
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text);
+  showToast.success("Copied to clipboard");
+}
 
-const EMAIL_TABS = [
-  { id: "accounts", label: "Email Accounts", icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z", color: "sky" },
-  { id: "forwarders", label: "Forwarders", icon: "M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5", color: "violet" },
-  { id: "autoresponders", label: "Autoresponders", icon: "M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z", color: "amber" },
-  { id: "spam", label: "Spam & Security", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", color: "rose" },
-];
+/* ══════════════════════════════════ Icons (SVG paths) ══════════════════════════════════ */
 
-const TAB_COLORS: Record<string, { activeBg: string; activeText: string; ring: string }> = {
-  sky: { activeBg: "bg-sky-500/15", activeText: "text-sky-400", ring: "ring-sky-500/20" },
-  violet: { activeBg: "bg-violet-500/15", activeText: "text-violet-400", ring: "ring-violet-500/20" },
-  amber: { activeBg: "bg-amber-500/15", activeText: "text-amber-400", ring: "ring-amber-500/20" },
-  rose: { activeBg: "bg-rose-500/15", activeText: "text-rose-400", ring: "ring-rose-500/20" },
+const ICONS = {
+  mail: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75",
+  plus: "M12 4.5v15m7.5-7.5h-15",
+  cog: "M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z",
+  search: "M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z",
+  pencil: "M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125",
+  trash: "M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0",
+  forward: "M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5",
+  reply: "M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z",
+  server: "M21.75 17.25v-.228a4.5 4.5 0 00-.12-1.03l-2.268-9.64a3.375 3.375 0 00-3.285-2.602H7.923a3.375 3.375 0 00-3.285 2.602l-2.268 9.64a4.5 4.5 0 00-.12 1.03v.228m19.5 0a3 3 0 01-3 3H5.25a3 3 0 01-3-3m19.5 0a3 3 0 00-3-3H5.25a3 3 0 00-3 3m16.5 0h.008v.008h-.008v-.008zm-3 0h.008v.008h-.008v-.008z",
+  shield: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
+  clipboard: "M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184",
+  pause: "M15.75 5.25v13.5m-7.5-13.5v13.5",
+  play: "M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z",
+  arrowRight: "M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3",
+  xmark: "M6 18L18 6M6 6l12 12",
 };
 
-/* ────────────── spam filter levels ────────────── */
-
-const SPAM_LEVELS = [
-  { id: "off" as const, label: "Off", color: "bg-slate-500/10 text-slate-400 ring-slate-500/20" },
-  { id: "low" as const, label: "Low", color: "bg-sky-500/10 text-sky-400 ring-sky-500/20" },
-  { id: "medium" as const, label: "Medium", color: "bg-amber-500/10 text-amber-400 ring-amber-500/20" },
-  { id: "high" as const, label: "High", color: "bg-rose-500/10 text-rose-400 ring-rose-500/20" },
-  { id: "aggressive" as const, label: "Aggressive", color: "bg-red-500/10 text-red-400 ring-red-500/20" },
-];
-
-/* ────────────── helpers ────────────── */
-
-function formatQuota(mb: number) {
-  if (mb >= 1024) return `${(mb / 1024).toFixed(1)} GB`;
-  return `${mb} MB`;
-}
-
-function getQuotaColor(pct: number) {
-  if (pct >= 90) return "bg-rose-500";
-  if (pct >= 70) return "bg-amber-500";
-  return "bg-emerald-500";
-}
-
-/* ────────────── component ────────────── */
-
-export function EmailTab({ siteId }: { siteId: string }) {
-  const { resolvedTheme, accentColor } = useTheme();
-  const isLight = resolvedTheme === "light";
-  const accent = getColorClasses(accentColor);
-
-  // Tab state
-  const [activeTab, setActiveTab] = useState("accounts");
-
-  // Data state
-  const [accounts, setAccounts] = useState<EmailAccount[]>(INITIAL_ACCOUNTS);
-  const [forwarders, setForwarders] = useState<Forwarder[]>(INITIAL_FORWARDERS);
-  const [autoresponders, setAutoresponders] = useState<Autoresponder[]>(INITIAL_AUTORESPONDERS);
-
-  // Account modal
-  const [showAccountModal, setShowAccountModal] = useState(false);
-  const [editingAccount, setEditingAccount] = useState<EmailAccount | null>(null);
-  const [acctLocal, setAcctLocal] = useState("");
-  const [acctPassword, setAcctPassword] = useState("");
-  const [acctQuota, setAcctQuota] = useState(1024);
-  const [savingAccount, setSavingAccount] = useState(false);
-
-  // Forwarder modal
-  const [showForwarderModal, setShowForwarderModal] = useState(false);
-  const [fwdSource, setFwdSource] = useState("");
-  const [fwdDest, setFwdDest] = useState("");
-  const [savingForwarder, setSavingForwarder] = useState(false);
-
-  // Autoresponder modal
-  const [showAutoModal, setShowAutoModal] = useState(false);
-  const [editingAutoresponder, setEditingAutoresponder] = useState<Autoresponder | null>(null);
-  const [autoEmail, setAutoEmail] = useState("");
-  const [autoSubject, setAutoSubject] = useState("");
-  const [autoBody, setAutoBody] = useState("");
-  const [autoStart, setAutoStart] = useState("");
-  const [autoEnd, setAutoEnd] = useState("");
-  const [savingAuto, setSavingAuto] = useState(false);
-
-  // Spam & Security
-  const [spamLevel, setSpamLevel] = useState<"off" | "low" | "medium" | "high" | "aggressive">("medium");
-  const [autoDeleteSpam, setAutoDeleteSpam] = useState(true);
-  const [blockExecutables, setBlockExecutables] = useState(true);
-  const [blacklist, setBlacklist] = useState("spam-domain.com, phisher@evil.com");
-  const [whitelist, setWhitelist] = useState("trusted-partner.com");
-  const [savingSpam, setSavingSpam] = useState(false);
-
-  // DKIM/SPF/DMARC
-  const [expandedDns, setExpandedDns] = useState<string | null>(null);
-  const [generatingDkim, setGeneratingDkim] = useState(false);
-  const [dkimConfigured, setDkimConfigured] = useState(false);
-
-  // Webmail dropdown
-  const [showWebmailDropdown, setShowWebmailDropdown] = useState(false);
-
-  // Delete confirm
-  const [deleteTarget, setDeleteTarget] = useState<{ type: string; id: string; label: string } | null>(null);
-
-  /* ── account handlers ── */
-
-  const openCreateAccount = useCallback(() => {
-    setEditingAccount(null);
-    setAcctLocal("");
-    setAcctPassword("");
-    setAcctQuota(1024);
-    setShowAccountModal(true);
-  }, []);
-
-  const openEditAccount = useCallback((acct: EmailAccount) => {
-    setEditingAccount(acct);
-    setAcctLocal(acct.address.split("@")[0]);
-    setAcctPassword("");
-    setAcctQuota(acct.quotaTotal);
-    setShowAccountModal(true);
-  }, []);
-
-  const handleSaveAccount = useCallback(async () => {
-    if (!acctLocal.trim()) { showToast.error("Email address is required"); return; }
-    if (!editingAccount && !acctPassword.trim()) { showToast.error("Password is required"); return; }
-    setSavingAccount(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    if (editingAccount) {
-      setAccounts((prev) => prev.map((a) => a.id === editingAccount.id ? { ...a, address: `${acctLocal}@${DOMAIN}`, quotaTotal: acctQuota } : a));
-      showToast.success("Email account updated");
-    } else {
-      const newAcct: EmailAccount = { id: String(Date.now()), address: `${acctLocal}@${DOMAIN}`, quotaUsed: 0, quotaTotal: acctQuota, status: "Active" };
-      setAccounts((prev) => [...prev, newAcct]);
-      showToast.success("Email account created");
-    }
-    setSavingAccount(false);
-    setShowAccountModal(false);
-  }, [acctLocal, acctPassword, acctQuota, editingAccount]);
-
-  /* ── forwarder handlers ── */
-
-  const handleSaveForwarder = useCallback(async () => {
-    if (!fwdSource.trim() || !fwdDest.trim()) { showToast.error("Both source and destination are required"); return; }
-    setSavingForwarder(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setForwarders((prev) => [...prev, { id: String(Date.now()), source: fwdSource.includes("@") ? fwdSource : `${fwdSource}@${DOMAIN}`, destination: fwdDest }]);
-    showToast.success("Forwarder created");
-    setSavingForwarder(false);
-    setShowForwarderModal(false);
-    setFwdSource("");
-    setFwdDest("");
-  }, [fwdSource, fwdDest]);
-
-  /* ── autoresponder handlers ── */
-
-  const openCreateAutoresponder = useCallback(() => {
-    setEditingAutoresponder(null);
-    setAutoEmail("");
-    setAutoSubject("");
-    setAutoBody("");
-    setAutoStart("");
-    setAutoEnd("");
-    setShowAutoModal(true);
-  }, []);
-
-  const openEditAutoresponder = useCallback((ar: Autoresponder) => {
-    setEditingAutoresponder(ar);
-    setAutoEmail(ar.email);
-    setAutoSubject(ar.subject);
-    setAutoBody(ar.body);
-    setAutoStart(ar.startDate);
-    setAutoEnd(ar.endDate);
-    setShowAutoModal(true);
-  }, []);
-
-  const handleSaveAuto = useCallback(async () => {
-    if (!autoEmail || !autoSubject.trim()) { showToast.error("Email and subject are required"); return; }
-    setSavingAuto(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    if (editingAutoresponder) {
-      setAutoresponders((prev) => prev.map((a) => a.id === editingAutoresponder.id ? { ...a, email: autoEmail, subject: autoSubject, body: autoBody, startDate: autoStart, endDate: autoEnd } : a));
-      showToast.success("Autoresponder updated");
-    } else {
-      setAutoresponders((prev) => [...prev, { id: String(Date.now()), email: autoEmail, subject: autoSubject, body: autoBody, active: true, startDate: autoStart, endDate: autoEnd }]);
-      showToast.success("Autoresponder created");
-    }
-    setSavingAuto(false);
-    setShowAutoModal(false);
-    setAutoEmail("");
-    setAutoSubject("");
-    setAutoBody("");
-    setAutoStart("");
-    setAutoEnd("");
-    setEditingAutoresponder(null);
-  }, [autoEmail, autoSubject, autoBody, autoStart, autoEnd, editingAutoresponder]);
-
-  /* ── spam settings handler ── */
-
-  const handleSaveSpam = useCallback(async () => {
-    setSavingSpam(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    showToast.success("Spam & security settings saved");
-    setSavingSpam(false);
-  }, []);
-
-  /* ── DKIM generate handler ── */
-
-  const handleGenerateDkim = useCallback(async () => {
-    setGeneratingDkim(true);
-    await new Promise((r) => setTimeout(r, 2000));
-    setDkimConfigured(true);
-    showToast.success("DKIM key generated successfully");
-    setGeneratingDkim(false);
-  }, []);
-
-  const handleToggleAutoresponder = useCallback((id: string) => {
-    setAutoresponders((prev) => prev.map((a) => a.id === id ? { ...a, active: !a.active } : a));
-    const ar = autoresponders.find((a) => a.id === id);
-    showToast.success(`Autoresponder ${ar?.active ? "disabled" : "enabled"}`);
-  }, [autoresponders]);
-
-  /* ── delete handler ── */
-
-  const handleDelete = useCallback(() => {
-    if (!deleteTarget) return;
-    if (deleteTarget.type === "account") setAccounts((prev) => prev.filter((a) => a.id !== deleteTarget.id));
-    if (deleteTarget.type === "forwarder") setForwarders((prev) => prev.filter((f) => f.id !== deleteTarget.id));
-    if (deleteTarget.type === "autoresponder") setAutoresponders((prev) => prev.filter((a) => a.id !== deleteTarget.id));
-    showToast.success(`${deleteTarget.label} deleted`);
-    setDeleteTarget(null);
-  }, [deleteTarget]);
-
-  /* ── copy helper ── */
-
-  const copyToClipboard = useCallback((text: string) => {
-    navigator.clipboard.writeText(text);
-    showToast.success("Copied to clipboard");
-  }, []);
-
-  // Escape key for modals
-  useEffect(() => {
-    const anyModal = showAccountModal || showForwarderModal || showAutoModal;
-    if (!anyModal) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setShowAccountModal(false); setShowForwarderModal(false); setShowAutoModal(false); }
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [showAccountModal, showForwarderModal, showAutoModal]);
-
-  // Body scroll lock
-  useEffect(() => {
-    const anyModal = showAccountModal || showForwarderModal || showAutoModal;
-    if (anyModal) document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, [showAccountModal, showForwarderModal, showAutoModal]);
-
-  /* ── shared styles ── */
-
-  const cardClass = `rounded-2xl border transition-all ${
-    isLight
-      ? "bg-white border-slate-200"
-      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
-  }`;
-
-  const labelClass = `text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`;
-
-  const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${
-    isLight
-      ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
-  }`;
-
-  const textareaClass = `w-full rounded-xl border px-3 py-3 text-sm font-medium outline-none transition-colors resize-y min-h-[100px] ${
-    isLight
-      ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-400"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
-  }`;
-
-  const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";
-  const modalBackdropClass = "absolute inset-0 bg-black/60 backdrop-blur-sm";
-  const modalCardClass = `relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
-    isLight
-      ? "bg-white border border-slate-200"
-      : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
-  }`;
-
-  const thClass = `text-left text-xs font-semibold uppercase tracking-wider px-6 py-4 ${isLight ? "text-slate-500" : "text-slate-400"}`;
-  const tdClass = `px-6 py-4 text-sm ${isLight ? "text-slate-600" : "text-slate-300"}`;
-
-  const btnPrimary = `h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 disabled:opacity-60 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`;
-  const btnSecondary = `h-10 px-5 rounded-xl text-sm font-medium transition-colors ${
-    isLight
-      ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
-      : "bg-[var(--bg-elevated)] text-slate-400 hover:text-slate-200"
-  }`;
-
-  const spinner = (
-    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+function Icon({ d, className = "w-5 h-5" }: { d: string; className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d={d} />
     </svg>
   );
+}
 
-  /* ── action button row for each tab ── */
+/* ══════════════════════════════════ Modal Shell ══════════════════════════════════ */
 
-  const actionBtn = (label: string, onClick: () => void) => (
-    <button onClick={onClick} className={btnPrimary}>
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-      </svg>
-      {label}
-    </button>
-  );
+function Modal({ open, onClose, title, children, width = "max-w-lg" }: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  width?: string;
+}) {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const ref = useRef<HTMLDivElement>(null);
 
-  const deleteBtn = (onClick: () => void) => (
-    <button onClick={onClick} aria-label="Delete" className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-      isLight ? "text-slate-400 hover:bg-red-50 hover:text-red-500" : "text-slate-500 hover:bg-red-500/10 hover:text-red-400"
-    }`}>
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-      </svg>
-    </button>
-  );
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
-  const editBtn = (onClick: () => void) => (
-    <button onClick={onClick} aria-label="Edit" className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-      isLight ? "text-slate-400 hover:bg-slate-100 hover:text-slate-600" : "text-slate-500 hover:bg-[var(--bg-elevated)] hover:text-slate-300"
-    }`}>
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-      </svg>
-    </button>
-  );
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open, onClose]);
+
+  if (!open) return null;
 
   return (
-    <>
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div
+        ref={ref}
+        className={`relative w-full ${width} rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
+          isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+        }`}
+      >
+        <div className={`flex items-center justify-between px-6 py-4 border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+          <h3 className={`text-lg font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{title}</h3>
+          <button onClick={onClose} className={`p-1.5 rounded-lg transition-colors ${isLight ? "hover:bg-slate-100 text-slate-400" : "hover:bg-white/5 text-slate-500"}`}>
+            <Icon d={ICONS.xmark} className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="px-6 py-5">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════ Input helper ══════════════════════════════════ */
+
+function InputField({ label, value, onChange, type = "text", placeholder, mono, disabled, children }: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  placeholder?: string;
+  mono?: boolean;
+  disabled?: boolean;
+  children?: React.ReactNode;
+}) {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  return (
+    <div>
+      <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        disabled={disabled}
+        className={`w-full h-10 px-3 text-sm rounded-xl border outline-none transition-all ${mono ? "font-mono" : ""} ${
+          isLight
+            ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-500 focus:border-sky-400/50 focus:ring-1 focus:ring-sky-400/20 disabled:opacity-50"
+            : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-sky-400/50 focus:ring-1 focus:ring-sky-400/20 disabled:opacity-50"
+        }`}
+      />
+      {children}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════ EmailTab (exported) ══════════════════════════════════ */
+
+export function EmailTab({ siteId }: { siteId: string }) {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+
+  // ── State ──
+  const [accounts, setAccounts] = useState<EmailAccount[]>(ACCOUNTS);
+  const [forwarders, setForwarders] = useState<Forwarder[]>(FORWARDERS);
+  const [autoresponders, setAutoresponders] = useState<Autoresponder[]>(AUTORESPONDERS);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Modals
+  const [accountModal, setAccountModal] = useState<{ open: boolean; editing?: EmailAccount }>({ open: false });
+  const [forwarderModal, setForwarderModal] = useState<{ open: boolean; editing?: Forwarder }>({ open: false });
+  const [autoresponderModal, setAutoresponderModal] = useState<{ open: boolean; editing?: Autoresponder }>({ open: false });
+  const [spamModal, setSpamModal] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; type: string; id: string; label: string }>({ open: false, type: "", id: "", label: "" });
+
+  // Account form
+  const [accForm, setAccForm] = useState({ address: "", password: "", quota: 512, status: "Active" as "Active" | "Suspended" });
+  // Forwarder form
+  const [fwdForm, setFwdForm] = useState({ source: "", destination: "" });
+  // Autoresponder form
+  const [arForm, setArForm] = useState({ email: "", subject: "", message: "", startDate: "", endDate: "", enabled: true });
+  // Spam settings
+  const [spam, setSpam] = useState<SpamSettings>({ level: "medium", autoDelete: false, blockExecutables: true, blacklist: "", whitelist: "" });
+
+  const settingsRef = useRef<HTMLDivElement>(null);
+
+  // ── Derived ──
+  const activeAccounts = accounts.filter((a) => a.status === "Active").length;
+  const suspendedAccounts = accounts.filter((a) => a.status === "Suspended").length;
+  const totalStorageUsed = accounts.reduce((sum, a) => sum + a.quotaUsed, 0);
+  const totalStorageTotal = accounts.reduce((sum, a) => sum + a.quotaTotal, 0);
+  const filteredAccounts = accounts.filter((a) => a.address.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  // ── Card class ──
+  const card = `rounded-2xl border transition-all duration-200 hover:-translate-y-px ${
+    isLight ? "bg-white border-slate-200/80 shadow-sm" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+  }`;
+  const cardFlat = `rounded-2xl border ${isLight ? "bg-white border-slate-200/80 shadow-sm" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"}`;
+  const sectionTitle = `text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`;
+  const subtitle = `text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`;
+  const muted = isLight ? "text-slate-400" : "text-slate-500";
+  const btnPrimary = `h-9 px-4 rounded-xl text-sm font-semibold transition-all bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-500/20`;
+  const btnSecondary = `h-9 px-4 rounded-xl text-sm font-medium transition-colors ${
+    isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-white/5 text-slate-300 hover:bg-white/10"
+  }`;
+  const btnSmall = `h-8 w-8 rounded-lg flex items-center justify-center transition-colors ${
+    isLight ? "hover:bg-slate-100 text-slate-400 hover:text-slate-600" : "hover:bg-white/5 text-slate-500 hover:text-slate-300"
+  }`;
+
+  // ── Handlers ──
+  const openCreateAccount = () => {
+    setAccForm({ address: "", password: "", quota: 512, status: "Active" });
+    setAccountModal({ open: true });
+  };
+  const openEditAccount = (acc: EmailAccount) => {
+    setAccForm({ address: acc.address, password: "", quota: acc.quotaTotal, status: acc.status });
+    setAccountModal({ open: true, editing: acc });
+  };
+  const saveAccount = () => {
+    if (!accForm.address) { showToast.error("Email address is required"); return; }
+    if (accountModal.editing) {
+      setAccounts((prev) => prev.map((a) => a.id === accountModal.editing!.id ? { ...a, address: accForm.address, quotaTotal: accForm.quota, status: accForm.status } : a));
+      showToast.success("Account updated");
+    } else {
+      if (!accForm.password) { showToast.error("Password is required"); return; }
+      const newAcc: EmailAccount = { id: `e${Date.now()}`, address: accForm.address, quotaUsed: 0, quotaTotal: accForm.quota, status: accForm.status, lastActive: "Just now" };
+      setAccounts((prev) => [...prev, newAcc]);
+      showToast.success("Account created");
+    }
+    setAccountModal({ open: false });
+  };
+
+  const toggleAccountStatus = (id: string) => {
+    setAccounts((prev) => prev.map((a) => a.id === id ? { ...a, status: a.status === "Active" ? "Suspended" : "Active" } : a));
+    showToast.success("Account status updated");
+  };
+
+  const openCreateForwarder = () => {
+    setFwdForm({ source: "", destination: "" });
+    setForwarderModal({ open: true });
+  };
+  const saveForwarder = () => {
+    if (!fwdForm.source || !fwdForm.destination) { showToast.error("Both fields are required"); return; }
+    if (forwarderModal.editing) {
+      setForwarders((prev) => prev.map((f) => f.id === forwarderModal.editing!.id ? { ...f, source: fwdForm.source, destination: fwdForm.destination } : f));
+      showToast.success("Forwarder updated");
+    } else {
+      setForwarders((prev) => [...prev, { id: `f${Date.now()}`, source: fwdForm.source, destination: fwdForm.destination }]);
+      showToast.success("Forwarder created");
+    }
+    setForwarderModal({ open: false });
+  };
+
+  const openCreateAutoresponder = () => {
+    setArForm({ email: "", subject: "", message: "", startDate: "", endDate: "", enabled: true });
+    setAutoresponderModal({ open: true });
+  };
+  const openEditAutoresponder = (ar: Autoresponder) => {
+    setArForm({ email: ar.email, subject: ar.subject, message: "", startDate: ar.startDate, endDate: ar.endDate, enabled: ar.enabled });
+    setAutoresponderModal({ open: true, editing: ar });
+  };
+  const saveAutoresponder = () => {
+    if (!arForm.email || !arForm.subject) { showToast.error("Email and subject are required"); return; }
+    if (autoresponderModal.editing) {
+      setAutoresponders((prev) => prev.map((a) => a.id === autoresponderModal.editing!.id ? { ...a, email: arForm.email, subject: arForm.subject, startDate: arForm.startDate, endDate: arForm.endDate, enabled: arForm.enabled } : a));
+      showToast.success("Autoresponder updated");
+    } else {
+      setAutoresponders((prev) => [...prev, { id: `ar${Date.now()}`, email: arForm.email, subject: arForm.subject, startDate: arForm.startDate, endDate: arForm.endDate, enabled: arForm.enabled }]);
+      showToast.success("Autoresponder created");
+    }
+    setAutoresponderModal({ open: false });
+  };
+
+  const confirmDelete = () => {
+    const { type, id } = deleteConfirm;
+    if (type === "account") setAccounts((prev) => prev.filter((a) => a.id !== id));
+    if (type === "forwarder") setForwarders((prev) => prev.filter((f) => f.id !== id));
+    if (type === "autoresponder") setAutoresponders((prev) => prev.filter((a) => a.id !== id));
+    showToast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted`);
+    setDeleteConfirm({ open: false, type: "", id: "", label: "" });
+  };
+
+  const saveSpamSettings = () => {
+    showToast.success("Spam settings saved");
+    setSpamModal(false);
+  };
+
+  const passwordStrength = getPasswordStrength(accForm.password);
+
+  // ── Render ──
+  return (
+    <div className="space-y-8">
+
+      {/* ─── 1. Page Header ─── */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            Email Management
-          </h1>
-          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>
-            Manage email accounts for{" "}
-            <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>
-              {decodeURIComponent(siteId)}
-            </span>
-          </p>
+          <h1 className={`text-2xl font-bold tracking-tight ${isLight ? "text-slate-800" : "text-slate-50"}`}>Email Management</h1>
+          <p className={`text-sm mt-1 ${subtitle}`}>{decodeURIComponent(siteId)}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button onClick={() => settingsRef.current?.scrollIntoView({ behavior: "smooth" })} className={btnSecondary}>
+            <Icon d={ICONS.cog} className="w-4 h-4 mr-1.5 inline" />
+            Mail Settings
+          </button>
+          <button onClick={openCreateAccount} className={btnPrimary}>
+            <Icon d={ICONS.plus} className="w-4 h-4 mr-1.5 inline" />
+            Create Account
+          </button>
         </div>
       </div>
 
-      {/* Email Usage Analytics Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        {[
-          { label: "Total Accounts", value: String(accounts.length), iconColor: "text-sky-400", iconBg: isLight ? "bg-sky-50" : "bg-sky-500/10", icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" },
-          { label: "Storage Used", value: "1.2 / 5 GB", iconColor: "text-violet-400", iconBg: isLight ? "bg-violet-50" : "bg-violet-500/10", icon: "M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125", progress: 24 },
-          { label: "Emails Sent (30d)", value: "2,847", iconColor: "text-emerald-400", iconBg: isLight ? "bg-emerald-50" : "bg-emerald-500/10", icon: "M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" },
-          { label: "Emails Received (30d)", value: "8,234", iconColor: "text-amber-400", iconBg: isLight ? "bg-amber-50" : "bg-amber-500/10", icon: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" },
-        ].map((stat) => (
-          <div key={stat.label} className={`${cardClass} p-4 flex items-center gap-3`}>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${stat.iconBg}`}>
-              <svg className={`w-5 h-5 ${stat.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d={stat.icon} />
-              </svg>
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>{stat.label}</p>
-              <p className={`text-sm font-bold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{stat.value}</p>
-              {"progress" in stat && stat.progress !== undefined && (
-                <div className={`h-1.5 rounded-full mt-1 overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
-                  <div className="h-full rounded-full bg-violet-500 transition-all duration-500" style={{ width: `${stat.progress}%` }} />
+      {/* ─── 2. Overview Banner ─── */}
+      <div className={`${cardFlat} overflow-hidden`}>
+        <div className={`p-6 ${isLight ? "bg-gradient-to-r from-sky-50/80 to-transparent" : "bg-gradient-to-r from-sky-500/5 to-transparent"}`}>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            {/* Left: accounts + storage */}
+            <div className="flex items-center gap-8">
+              <div>
+                <div className={`text-3xl font-bold tracking-tight ${isLight ? "text-slate-800" : "text-slate-50"}`}>
+                  {accounts.length} <span className="text-lg font-medium">Accounts</span>
                 </div>
-              )}
+                <p className={`text-sm mt-0.5 ${muted}`}>
+                  {activeAccounts} active, {suspendedAccounts} suspended
+                </p>
+              </div>
+              <div className={`h-12 w-px ${isLight ? "bg-slate-200" : "bg-white/10"}`} />
+              <div className="min-w-[160px]">
+                <div className="flex items-baseline gap-1.5">
+                  <span className={`text-lg font-semibold ${isLight ? "text-slate-700" : "text-slate-200"}`}>{formatMB(totalStorageUsed)}</span>
+                  <span className={muted}>/ {formatMB(totalStorageTotal)}</span>
+                </div>
+                <div className={`h-1.5 rounded-full mt-2 ${isLight ? "bg-slate-100" : "bg-white/5"}`}>
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${quotaColor(totalStorageUsed, totalStorageTotal)}`}
+                    style={{ width: `${Math.min(100, (totalStorageUsed / totalStorageTotal) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Right: stats */}
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className={`text-sm font-medium ${isLight ? "text-slate-600" : "text-slate-300"}`}>2,847</span>
+                <span className={`text-xs ${muted}`}>sent</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-sky-500" />
+                <span className={`text-sm font-medium ${isLight ? "text-slate-600" : "text-slate-300"}`}>8,234</span>
+                <span className={`text-xs ${muted}`}>received</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
+                <span className={`text-sm font-medium ${isLight ? "text-slate-600" : "text-slate-300"}`}>12</span>
+                <span className={`text-xs ${muted}`}>blocked</span>
+              </div>
             </div>
           </div>
-        ))}
+        </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex gap-1.5 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-        {EMAIL_TABS.map((tab) => {
-          const isActive = activeTab === tab.id;
-          const styles = TAB_COLORS[tab.color];
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`group relative flex items-center gap-2 px-4 h-10 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
-                isActive
-                  ? `${styles.activeBg} ${styles.activeText} ring-1 ${styles.ring}`
-                  : isLight
-                    ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                    : "text-slate-400 hover:bg-[var(--bg-elevated)] hover:text-slate-200"
+      {/* ─── 3. Accounts Table ─── */}
+      <div className={card}>
+        <div className={`px-6 py-4 flex items-center justify-between border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center">
+              <Icon d={ICONS.mail} className="w-4 h-4 text-sky-400" />
+            </div>
+            <h2 className={sectionTitle}>Accounts</h2>
+          </div>
+          <div className="relative">
+            <Icon d={ICONS.search} className={`w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 ${muted}`} />
+            <input
+              type="text"
+              placeholder="Search accounts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`h-9 pl-9 pr-3 text-sm rounded-xl border outline-none transition-all w-56 ${
+                isLight
+                  ? "bg-slate-50 border-slate-200 text-slate-700 placeholder-slate-500 focus:border-sky-300 focus:ring-1 focus:ring-sky-200/50"
+                  : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-200 placeholder-slate-500 focus:border-sky-500/40 focus:ring-1 focus:ring-sky-500/20"
               }`}
-            >
-              <svg
-                className={`w-4 h-4 transition-colors ${isActive ? styles.activeText : isLight ? "text-slate-500 group-hover:text-slate-600" : "text-slate-500 group-hover:text-slate-400"}`}
-                fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"
-              >
-                <path d={tab.icon} />
-              </svg>
-              {tab.label}
-            </button>
-          );
-        })}
+            />
+          </div>
+        </div>
+
+        {filteredAccounts.length === 0 ? (
+          <div className="px-6 py-16 text-center">
+            <div className={`w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center ${isLight ? "bg-slate-100" : "bg-white/5"}`}>
+              <Icon d={ICONS.mail} className={`w-6 h-6 ${muted}`} />
+            </div>
+            <p className={`text-sm font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`}>No email accounts found</p>
+            <p className={`text-xs mt-1 ${muted}`}>{searchQuery ? "Try a different search term" : "Create your first email account to get started"}</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className={`text-xs uppercase tracking-wider ${muted}`}>
+                  <th className="text-left px-6 py-3 font-medium">Email Address</th>
+                  <th className="text-left px-6 py-3 font-medium">Quota</th>
+                  <th className="text-left px-6 py-3 font-medium">Status</th>
+                  <th className="text-left px-6 py-3 font-medium">Last Active</th>
+                  <th className="text-right px-6 py-3 font-medium">Actions</th>
+                </tr>
+              </thead>
+              <tbody className={`divide-y ${isLight ? "divide-slate-50" : "divide-white/[0.04]"}`}>
+                {filteredAccounts.map((acc) => {
+                  const pct = Math.round((acc.quotaUsed / acc.quotaTotal) * 100);
+                  return (
+                    <tr key={acc.id} className={`transition-colors ${isLight ? "hover:bg-slate-50/50" : "hover:bg-white/[0.02]"}`}>
+                      <td className="px-6 py-3.5">
+                        <span className={`text-sm font-mono font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>{acc.address}</span>
+                      </td>
+                      <td className="px-6 py-3.5">
+                        <div className="flex items-center gap-3 min-w-[140px]">
+                          <div className={`flex-1 h-1.5 rounded-full ${isLight ? "bg-slate-100" : "bg-white/5"}`}>
+                            <div className={`h-full rounded-full transition-all ${quotaColor(acc.quotaUsed, acc.quotaTotal)}`} style={{ width: `${pct}%` }} />
+                          </div>
+                          <span className={`text-xs tabular-nums ${quotaTextColor(acc.quotaUsed, acc.quotaTotal)}`}>{pct}%</span>
+                        </div>
+                        <p className={`text-xs mt-0.5 ${muted}`}>{formatMB(acc.quotaUsed)} / {formatMB(acc.quotaTotal)}</p>
+                      </td>
+                      <td className="px-6 py-3.5">
+                        <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${
+                          acc.status === "Active"
+                            ? "bg-emerald-500/10 text-emerald-500"
+                            : "bg-rose-500/10 text-rose-500"
+                        }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${acc.status === "Active" ? "bg-emerald-500" : "bg-rose-500"}`} />
+                          {acc.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-3.5">
+                        <span className={`text-sm ${muted}`}>{acc.lastActive}</span>
+                      </td>
+                      <td className="px-6 py-3.5">
+                        <div className="flex items-center justify-end gap-1">
+                          <button onClick={() => openEditAccount(acc)} className={btnSmall} title="Edit">
+                            <Icon d={ICONS.pencil} className="w-4 h-4" />
+                          </button>
+                          <button onClick={() => toggleAccountStatus(acc.id)} className={btnSmall} title={acc.status === "Active" ? "Suspend" : "Activate"}>
+                            <Icon d={acc.status === "Active" ? ICONS.pause : ICONS.play} className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirm({ open: true, type: "account", id: acc.id, label: acc.address })}
+                            className={`h-8 w-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "hover:bg-rose-50 text-slate-400 hover:text-rose-500" : "hover:bg-rose-500/10 text-slate-500 hover:text-rose-400"}`}
+                            title="Delete"
+                          >
+                            <Icon d={ICONS.trash} className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
-      {/* Tab Content */}
-      <div key={activeTab} className="animate-in fade-in slide-in-from-right-2 duration-300">
+      {/* ─── 4. Forwarders + Autoresponders (two columns) ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        {/* ═══════════ TAB 1: Email Accounts ═══════════ */}
-        {activeTab === "accounts" && (
-          <>
-            <div className="flex justify-end mb-4">
-              {actionBtn("Create Account", openCreateAccount)}
-            </div>
-
-            <div className={`${cardClass} overflow-hidden mb-8`}>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className={`border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                      <th className={thClass}>Email Address</th>
-                      <th className={thClass}>Quota</th>
-                      <th className={thClass}>Status</th>
-                      <th className={thClass}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {accounts.map((acct) => {
-                      const pct = (acct.quotaUsed / acct.quotaTotal) * 100;
-                      return (
-                        <tr key={acct.id} className={`border-b last:border-b-0 transition-colors ${
-                          isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"
-                        }`}>
-                          <td className={`px-6 py-4 text-sm font-medium font-mono ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                            {acct.address}
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="min-w-[160px]">
-                              <div className="flex items-center justify-between mb-1.5">
-                                <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-                                  {formatQuota(acct.quotaUsed)} / {formatQuota(acct.quotaTotal)}
-                                </span>
-                                <span className={`text-xs font-semibold ${
-                                  pct >= 90 ? "text-rose-500" : pct >= 70 ? "text-amber-500" : "text-emerald-500"
-                                }`}>
-                                  {Math.round(pct)}%
-                                </span>
-                              </div>
-                              <div className={`h-2 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
-                                <div
-                                  className={`h-full rounded-full transition-all duration-300 ${getQuotaColor(pct)}`}
-                                  style={{ width: `${pct}%` }}
-                                />
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${
-                              acct.status === "Active"
-                                ? "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20"
-                                : "bg-rose-500/10 text-rose-400 ring-rose-500/20"
-                            }`}>
-                              <span className={`w-1.5 h-1.5 rounded-full ${acct.status === "Active" ? "bg-emerald-400" : "bg-rose-400"}`} />
-                              {acct.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-1">
-                              {editBtn(() => openEditAccount(acct))}
-                              {deleteBtn(() => setDeleteTarget({ type: "account", id: acct.id, label: acct.address }))}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                    {accounts.length === 0 && (
-                      <tr><td colSpan={4} className={`px-6 py-12 text-center text-sm ${isLight ? "text-slate-400" : "text-slate-500"}`}>No email accounts yet</td></tr>
-                    )}
-                  </tbody>
-                </table>
+        {/* Forwarders */}
+        <div className={card}>
+          <div className={`px-6 py-4 flex items-center justify-between border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                <Icon d={ICONS.forward} className="w-4 h-4 text-violet-400" />
               </div>
+              <h2 className={sectionTitle}>Forwarders</h2>
             </div>
-          </>
-        )}
-
-        {/* ═══════════ TAB 2: Forwarders ═══════════ */}
-        {activeTab === "forwarders" && (
-          <>
-            <div className="flex justify-end mb-4">
-              {actionBtn("Add Forwarder", () => { setFwdSource(""); setFwdDest(""); setShowForwarderModal(true); })}
-            </div>
-
-            <div className={`${cardClass} overflow-hidden mb-8`}>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className={`border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                      <th className={thClass}>Source Email</th>
-                      <th className={thClass}>Destination Email</th>
-                      <th className={thClass}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {forwarders.map((fwd) => (
-                      <tr key={fwd.id} className={`border-b last:border-b-0 transition-colors ${
-                        isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"
-                      }`}>
-                        <td className={`px-6 py-4 text-sm font-medium font-mono ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                          {fwd.source}
-                        </td>
-                        <td className={`px-6 py-4 text-sm font-mono ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-                          <div className="flex items-center gap-2">
-                            <svg className={`w-4 h-4 ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                            </svg>
-                            {fwd.destination}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          {deleteBtn(() => setDeleteTarget({ type: "forwarder", id: fwd.id, label: `${fwd.source} → ${fwd.destination}` }))}
-                        </td>
-                      </tr>
-                    ))}
-                    {forwarders.length === 0 && (
-                      <tr><td colSpan={3} className={`px-6 py-12 text-center text-sm ${isLight ? "text-slate-400" : "text-slate-500"}`}>No forwarders configured</td></tr>
-                    )}
-                  </tbody>
-                </table>
+            <button onClick={openCreateForwarder} className="h-8 px-3 rounded-lg text-xs font-semibold transition-all bg-violet-600 hover:bg-violet-500 text-white">
+              <Icon d={ICONS.plus} className="w-3.5 h-3.5 mr-1 inline" />
+              Add
+            </button>
+          </div>
+          <div className={`divide-y ${isLight ? "divide-slate-50" : "divide-white/[0.04]"}`}>
+            {forwarders.length === 0 ? (
+              <div className="px-6 py-10 text-center">
+                <p className={`text-sm ${muted}`}>No forwarders configured</p>
               </div>
-            </div>
-          </>
-        )}
-
-        {/* ═══════════ TAB 3: Autoresponders ═══════════ */}
-        {activeTab === "autoresponders" && (
-          <>
-            <div className="flex justify-end mb-4">
-              {actionBtn("Add Autoresponder", openCreateAutoresponder)}
-            </div>
-
-            <div className={`${cardClass} overflow-hidden mb-8`}>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className={`border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                      <th className={thClass}>Email</th>
-                      <th className={thClass}>Subject</th>
-                      <th className={thClass}>Status</th>
-                      <th className={thClass}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {autoresponders.map((ar) => (
-                      <tr key={ar.id} className={`border-b last:border-b-0 transition-colors ${
-                        isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)]/50 hover:bg-[var(--bg-primary)]/50"
-                      }`}>
-                        <td className={`px-6 py-4 text-sm font-medium font-mono ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                          {ar.email}
-                        </td>
-                        <td className={tdClass}>{ar.subject}</td>
-                        <td className="px-6 py-4">
-                          <Toggle enabled={ar.active} onChange={() => handleToggleAutoresponder(ar.id)} />
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-1">
-                            {editBtn(() => openEditAutoresponder(ar))}
-                            {deleteBtn(() => setDeleteTarget({ type: "autoresponder", id: ar.id, label: `${ar.email} autoresponder` }))}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    {autoresponders.length === 0 && (
-                      <tr><td colSpan={4} className={`px-6 py-12 text-center text-sm ${isLight ? "text-slate-400" : "text-slate-500"}`}>No autoresponders configured</td></tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* ═══════════ TAB 4: Spam & Security ═══════════ */}
-        {activeTab === "spam" && (
-          <>
-            {/* Spam Filter Settings */}
-            <div className={`${cardClass} p-6 mb-6`}>
-              <h3 className={`text-sm font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                Spam Filter Settings
-              </h3>
-
-              {/* Spam filter level pills */}
-              <div className="mb-5">
-                <label className={`${labelClass} mb-2 block`}>Spam Filter Level</label>
-                <div className="flex flex-wrap gap-2">
-                  {SPAM_LEVELS.map((level) => {
-                    const isActive = spamLevel === level.id;
-                    return (
-                      <button
-                        key={level.id}
-                        onClick={() => setSpamLevel(level.id)}
-                        className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ring-1 ${
-                          isActive
-                            ? level.color
-                            : isLight
-                              ? "bg-slate-50 text-slate-500 ring-slate-200 hover:bg-slate-100"
-                              : "bg-[var(--bg-primary)] text-slate-500 ring-[var(--border-tertiary)] hover:text-slate-300"
-                        }`}
-                      >
-                        {level.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Toggles */}
-              <div className="space-y-4 mb-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Auto-delete spam after 30 days</p>
-                    <p className={`text-xs mt-0.5 ${isLight ? "text-slate-500" : "text-slate-500"}`}>Automatically purge messages marked as spam</p>
+            ) : forwarders.map((fwd) => (
+              <div key={fwd.id} className={`px-6 py-3.5 flex items-center gap-3 ${isLight ? "hover:bg-slate-50/50" : "hover:bg-white/[0.02]"} transition-colors`}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className={`font-mono truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>{fwd.source}</span>
+                    <Icon d={ICONS.arrowRight} className={`w-3.5 h-3.5 flex-shrink-0 ${muted}`} />
+                    <span className={`font-mono truncate ${muted}`}>{fwd.destination}</span>
                   </div>
-                  <Toggle enabled={autoDeleteSpam} onChange={setAutoDeleteSpam} />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Block attachments with executable extensions</p>
-                    <p className={`text-xs mt-0.5 ${isLight ? "text-slate-500" : "text-slate-500"}`}>Reject .exe, .bat, .cmd, .scr, .js attachments</p>
-                  </div>
-                  <Toggle enabled={blockExecutables} onChange={setBlockExecutables} />
-                </div>
-              </div>
-
-              {/* Blacklist */}
-              <div className="mb-4">
-                <label className={`${labelClass} mb-1.5 block`}>Custom Blacklist</label>
-                <p className={`text-xs mb-1.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>Comma-separated domains or emails to block</p>
-                <textarea
-                  value={blacklist}
-                  onChange={(e) => setBlacklist(e.target.value)}
-                  rows={3}
-                  placeholder="spam-domain.com, bad@actor.com"
-                  className={textareaClass}
-                />
-              </div>
-
-              {/* Whitelist */}
-              <div className="mb-5">
-                <label className={`${labelClass} mb-1.5 block`}>Custom Whitelist</label>
-                <p className={`text-xs mb-1.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>Comma-separated domains or emails to always allow</p>
-                <textarea
-                  value={whitelist}
-                  onChange={(e) => setWhitelist(e.target.value)}
-                  rows={3}
-                  placeholder="trusted-partner.com, friend@example.com"
-                  className={textareaClass}
-                />
-              </div>
-
-              <div className="flex justify-end">
-                <button onClick={handleSaveSpam} disabled={savingSpam} className={btnPrimary}>
-                  {savingSpam ? <>{spinner} Saving…</> : "Save Settings"}
+                <button
+                  onClick={() => setDeleteConfirm({ open: true, type: "forwarder", id: fwd.id, label: fwd.source })}
+                  className={`h-7 w-7 rounded-lg flex items-center justify-center transition-colors flex-shrink-0 ${isLight ? "hover:bg-rose-50 text-slate-400 hover:text-rose-500" : "hover:bg-rose-500/10 text-slate-500 hover:text-rose-400"}`}
+                >
+                  <Icon d={ICONS.trash} className="w-3.5 h-3.5" />
                 </button>
               </div>
-            </div>
-
-            {/* DKIM / SPF / DMARC Configuration */}
-            <div className={`${cardClass} p-6`}>
-              <h3 className={`text-sm font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                Email Authentication (DNS Records)
-              </h3>
-
-              <div className="space-y-3">
-                {/* SPF */}
-                {(() => {
-                  const isExpanded = expandedDns === "spf";
-                  return (
-                    <div className={`rounded-xl border transition-all ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                      <button
-                        onClick={() => setExpandedDns(isExpanded ? null : "spf")}
-                        className="w-full flex items-center justify-between p-4"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 ring-emerald-500/20">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                            Configured
-                          </span>
-                          <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>SPF Record</span>
-                        </div>
-                        <svg className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""} ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                      </button>
-                      {isExpanded && (
-                        <div className={`px-4 pb-4 border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
-                          <div className="pt-3 space-y-2">
-                            <p className={labelClass}>Record Type: TXT</p>
-                            <p className={labelClass}>Host: @</p>
-                            <div className={`rounded-lg p-3 flex items-center justify-between gap-2 ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]/50"}`}>
-                              <code className={`text-xs font-mono break-all ${isLight ? "text-slate-700" : "text-slate-200"}`}>v=spf1 include:_spf.limewp.com ~all</code>
-                              <button onClick={() => copyToClipboard("v=spf1 include:_spf.limewp.com ~all")} className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "text-slate-400 hover:bg-slate-100 hover:text-slate-600" : "text-slate-500 hover:bg-[var(--bg-elevated)] hover:text-slate-300"}`}>
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-
-                {/* DKIM */}
-                {(() => {
-                  const isExpanded = expandedDns === "dkim";
-                  return (
-                    <div className={`rounded-xl border transition-all ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                      <button
-                        onClick={() => setExpandedDns(isExpanded ? null : "dkim")}
-                        className="w-full flex items-center justify-between p-4"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${
-                            dkimConfigured
-                              ? "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20"
-                              : "bg-amber-500/10 text-amber-400 ring-amber-500/20"
-                          }`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${dkimConfigured ? "bg-emerald-400" : "bg-amber-400"}`} />
-                            {dkimConfigured ? "Configured" : "Not Set"}
-                          </span>
-                          <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>DKIM Record</span>
-                        </div>
-                        <svg className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""} ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                      </button>
-                      {isExpanded && (
-                        <div className={`px-4 pb-4 border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
-                          <div className="pt-3 space-y-2">
-                            <p className={labelClass}>Selector: limewp._domainkey</p>
-                            <p className={labelClass}>Record Type: TXT</p>
-                            {dkimConfigured ? (
-                              <div className={`rounded-lg p-3 flex items-center justify-between gap-2 ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]/50"}`}>
-                                <code className={`text-xs font-mono break-all ${isLight ? "text-slate-700" : "text-slate-200"}`}>v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQ...</code>
-                                <button onClick={() => copyToClipboard("v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQ...")} className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "text-slate-400 hover:bg-slate-100 hover:text-slate-600" : "text-slate-500 hover:bg-[var(--bg-elevated)] hover:text-slate-300"}`}>
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
-                                </button>
-                              </div>
-                            ) : (
-                              <button onClick={handleGenerateDkim} disabled={generatingDkim} className={btnPrimary}>
-                                {generatingDkim ? <>{spinner} Generating…</> : "Generate DKIM Key"}
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-
-                {/* DMARC */}
-                {(() => {
-                  const isExpanded = expandedDns === "dmarc";
-                  return (
-                    <div className={`rounded-xl border transition-all ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                      <button
-                        onClick={() => setExpandedDns(isExpanded ? null : "dmarc")}
-                        className="w-full flex items-center justify-between p-4"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 ring-emerald-500/20">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                            Configured
-                          </span>
-                          <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>DMARC Record</span>
-                        </div>
-                        <svg className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""} ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                      </button>
-                      {isExpanded && (
-                        <div className={`px-4 pb-4 border-t ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
-                          <div className="pt-3 space-y-2">
-                            <p className={labelClass}>Record Type: TXT</p>
-                            <p className={labelClass}>Host: _dmarc</p>
-                            <div className={`rounded-lg p-3 flex items-center justify-between gap-2 ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]/50"}`}>
-                              <code className={`text-xs font-mono break-all ${isLight ? "text-slate-700" : "text-slate-200"}`}>v=DMARC1; p=quarantine; rua=mailto:dmarc@limewp.com</code>
-                              <button onClick={() => copyToClipboard("v=DMARC1; p=quarantine; rua=mailto:dmarc@limewp.com")} className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "text-slate-400 hover:bg-slate-100 hover:text-slate-600" : "text-slate-500 hover:bg-[var(--bg-elevated)] hover:text-slate-300"}`}>
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* ═══════════ Quick Access Section ═══════════ */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-        {/* Open Webmail */}
-        <div className={cardClass}>
-          <div className="p-6 flex flex-col items-center justify-center text-center">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-              isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-            }`}>
-              <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-              </svg>
-            </div>
-            <h3 className={`text-sm font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Open Webmail
-            </h3>
-            <p className={`text-xs mb-4 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-              Choose your preferred webmail client
-            </p>
-            <div className="relative">
-              <button
-                onClick={() => setShowWebmailDropdown(!showWebmailDropdown)}
-                className={`h-10 px-5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
-                  isLight
-                    ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300"
-                    : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] text-slate-200 hover:bg-[var(--bg-elevated)] hover:border-[var(--border-primary)]"
-                }`}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                </svg>
-                Open Webmail
-                <svg className={`w-3.5 h-3.5 transition-transform ${showWebmailDropdown ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-              </button>
-              {showWebmailDropdown && (
-                <div className={`absolute top-full mt-2 left-1/2 -translate-x-1/2 w-48 rounded-xl border shadow-xl z-10 overflow-hidden ${
-                  isLight ? "bg-white border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
-                }`}>
-                  <button
-                    onClick={() => { showToast.info("Opening Roundcube webmail..."); setShowWebmailDropdown(false); }}
-                    className={`w-full text-left px-4 py-3 text-sm font-medium transition-colors flex items-center gap-2.5 ${
-                      isLight ? "text-slate-700 hover:bg-slate-50" : "text-slate-200 hover:bg-[var(--bg-elevated)]"
-                    }`}
-                  >
-                    <span className="w-2 h-2 rounded-full bg-sky-400" />
-                    Roundcube
-                  </button>
-                  <button
-                    onClick={() => { showToast.info("Opening Rainloop webmail..."); setShowWebmailDropdown(false); }}
-                    className={`w-full text-left px-4 py-3 text-sm font-medium transition-colors flex items-center gap-2.5 border-t ${
-                      isLight ? "text-slate-700 hover:bg-slate-50 border-slate-100" : "text-slate-200 hover:bg-[var(--bg-elevated)] border-[var(--border-tertiary)]"
-                    }`}
-                  >
-                    <span className="w-2 h-2 rounded-full bg-violet-400" />
-                    Rainloop
-                  </button>
-                </div>
-              )}
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Mail Configuration */}
-        <div className={cardClass}>
-          <div className="p-6">
-            <h3 className={`text-sm font-semibold mb-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Mail Configuration
-            </h3>
-            <div className="space-y-3">
-              {MAIL_CONFIG.map((item) => (
-                <div key={item.label} className={`rounded-xl p-3 border flex items-center justify-between ${
-                  isLight ? "bg-slate-50 border-slate-200" : "bg-[var(--bg-primary)]/50 border-[var(--border-tertiary)]"
-                }`}>
-                  <div>
-                    <p className={labelClass}>{item.label}</p>
-                    <p className={`text-sm font-semibold font-mono mt-0.5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                      {item.value}
-                    </p>
-                    <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                      Port: {item.port}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => copyToClipboard(item.value)}
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                      isLight ? "text-slate-400 hover:bg-slate-100 hover:text-slate-600" : "text-slate-500 hover:bg-[var(--bg-elevated)] hover:text-slate-300"
-                    }`}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
-                    </svg>
-                  </button>
+        {/* Autoresponders */}
+        <div className={card}>
+          <div className={`px-6 py-4 flex items-center justify-between border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                <Icon d={ICONS.reply} className="w-4 h-4 text-amber-400" />
+              </div>
+              <h2 className={sectionTitle}>Autoresponders</h2>
+            </div>
+            <button onClick={openCreateAutoresponder} className="h-8 px-3 rounded-lg text-xs font-semibold transition-all bg-amber-600 hover:bg-amber-500 text-white">
+              <Icon d={ICONS.plus} className="w-3.5 h-3.5 mr-1 inline" />
+              Add
+            </button>
+          </div>
+          <div className={`divide-y ${isLight ? "divide-slate-50" : "divide-white/[0.04]"}`}>
+            {autoresponders.length === 0 ? (
+              <div className="px-6 py-10 text-center">
+                <p className={`text-sm ${muted}`}>No autoresponders configured</p>
+              </div>
+            ) : autoresponders.map((ar) => (
+              <div key={ar.id} className={`px-6 py-3.5 flex items-center gap-3 ${isLight ? "hover:bg-slate-50/50" : "hover:bg-white/[0.02]"} transition-colors`}>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-medium truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>{ar.subject}</p>
+                  <p className={`text-xs mt-0.5 ${muted}`}>{ar.email} &middot; {ar.startDate} &ndash; {ar.endDate}</p>
                 </div>
+                <Toggle enabled={ar.enabled} onChange={(val) => setAutoresponders((prev) => prev.map((a) => a.id === ar.id ? { ...a, enabled: val } : a))} />
+                <button onClick={() => openEditAutoresponder(ar)} className={btnSmall}>
+                  <Icon d={ICONS.pencil} className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setDeleteConfirm({ open: true, type: "autoresponder", id: ar.id, label: ar.subject })}
+                  className={`h-8 w-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "hover:bg-rose-50 text-slate-400 hover:text-rose-500" : "hover:bg-rose-500/10 text-slate-500 hover:text-rose-400"}`}
+                >
+                  <Icon d={ICONS.trash} className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ─── 5. Mail Server Configuration ─── */}
+      <div ref={settingsRef} className={card}>
+        <div className={`px-6 py-4 border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
+              <Icon d={ICONS.server} className="w-4 h-4 text-teal-400" />
+            </div>
+            <h2 className={sectionTitle}>Mail Server Configuration</h2>
+          </div>
+        </div>
+        <div className={`grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x ${isLight ? "divide-slate-100" : "divide-white/[0.04]"}`}>
+          {(["imap", "smtp", "pop3"] as const).map((protocol) => {
+            const cfg = MAIL_CONFIG[protocol];
+            return (
+              <div key={protocol} className="px-6 py-5">
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? "text-teal-600" : "text-teal-400"}`}>{protocol}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full">SSL</span>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className={`text-xs ${muted}`}>Host</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-sm font-mono ${isLight ? "text-slate-700" : "text-slate-200"}`}>{cfg.host}</span>
+                      <button onClick={() => copyToClipboard(cfg.host)} className={`p-1 rounded transition-colors ${isLight ? "hover:bg-slate-100 text-slate-400" : "hover:bg-white/5 text-slate-500"}`}>
+                        <Icon d={ICONS.clipboard} className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-xs ${muted}`}>Port</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-sm font-mono ${isLight ? "text-slate-700" : "text-slate-200"}`}>{cfg.port}</span>
+                      <button onClick={() => copyToClipboard(cfg.port)} className={`p-1 rounded transition-colors ${isLight ? "hover:bg-slate-100 text-slate-400" : "hover:bg-white/5 text-slate-500"}`}>
+                        <Icon d={ICONS.clipboard} className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ─── 6. Security & Authentication ─── */}
+      <div className={card}>
+        <div className={`px-6 py-4 border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                <Icon d={ICONS.shield} className="w-4 h-4 text-emerald-400" />
+              </div>
+              <h2 className={sectionTitle}>Security & Authentication</h2>
+            </div>
+            <button onClick={() => setSpamModal(true)} className="h-8 px-3 rounded-lg text-xs font-semibold transition-all bg-rose-600 hover:bg-rose-500 text-white">
+              <Icon d={ICONS.shield} className="w-3.5 h-3.5 mr-1 inline" />
+              Spam Settings
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-px">
+          {/* SPF */}
+          <div className={`px-6 py-5 ${isLight ? "md:border-r border-slate-100" : "md:border-r border-[var(--border-tertiary)]"}`}>
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className={`w-2 h-2 rounded-full ${DNS_RECORDS.spf.configured ? "bg-emerald-500" : "bg-rose-500"}`} />
+              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? "text-slate-600" : "text-slate-300"}`}>SPF</span>
+            </div>
+            <div className={`text-xs font-mono break-all leading-relaxed ${muted}`}>{DNS_RECORDS.spf.value}</div>
+            <button onClick={() => copyToClipboard(DNS_RECORDS.spf.value)} className={`mt-2 text-xs font-medium transition-colors ${isLight ? "text-emerald-600 hover:text-emerald-700" : "text-emerald-400 hover:text-emerald-300"}`}>
+              Copy Record
+            </button>
+          </div>
+          {/* DKIM */}
+          <div className={`px-6 py-5 ${isLight ? "xl:border-r border-slate-100" : "xl:border-r border-[var(--border-tertiary)]"}`}>
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className={`w-2 h-2 rounded-full ${DNS_RECORDS.dkim.configured ? "bg-emerald-500" : "bg-rose-500"}`} />
+              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? "text-slate-600" : "text-slate-300"}`}>DKIM</span>
+            </div>
+            <p className={`text-xs ${muted}`}>Selector: <span className="font-mono">{DNS_RECORDS.dkim.selector}</span></p>
+            <div className="flex items-center gap-2 mt-2">
+              <button onClick={() => copyToClipboard(DNS_RECORDS.dkim.value)} className={`text-xs font-medium transition-colors ${isLight ? "text-emerald-600 hover:text-emerald-700" : "text-emerald-400 hover:text-emerald-300"}`}>
+                Copy Key
+              </button>
+              <span className={muted}>&middot;</span>
+              <button onClick={() => showToast.info("DKIM key regenerated")} className={`text-xs font-medium transition-colors ${isLight ? "text-sky-600 hover:text-sky-700" : "text-sky-400 hover:text-sky-300"}`}>
+                Regenerate
+              </button>
+            </div>
+          </div>
+          {/* DMARC */}
+          <div className={`px-6 py-5 ${isLight ? "md:border-r border-slate-100" : "md:border-r border-[var(--border-tertiary)]"}`}>
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className={`w-2 h-2 rounded-full ${DNS_RECORDS.dmarc.configured ? "bg-emerald-500" : "bg-rose-500"}`} />
+              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? "text-slate-600" : "text-slate-300"}`}>DMARC</span>
+            </div>
+            <div className={`text-xs font-mono break-all leading-relaxed ${muted}`}>{DNS_RECORDS.dmarc.value}</div>
+            <button onClick={() => copyToClipboard(DNS_RECORDS.dmarc.value)} className={`mt-2 text-xs font-medium transition-colors ${isLight ? "text-emerald-600 hover:text-emerald-700" : "text-emerald-400 hover:text-emerald-300"}`}>
+              Copy Record
+            </button>
+          </div>
+          {/* Spam Filter Level */}
+          <div className="px-6 py-5">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500" />
+              <span className={`text-xs font-bold uppercase tracking-wider ${isLight ? "text-slate-600" : "text-slate-300"}`}>Spam Filter</span>
+            </div>
+            <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full capitalize ${
+              spam.level === "high" ? "bg-rose-500/10 text-rose-500" :
+              spam.level === "medium" ? "bg-amber-500/10 text-amber-500" :
+              spam.level === "low" ? "bg-sky-500/10 text-sky-500" :
+              `${isLight ? "bg-slate-100 text-slate-500" : "bg-white/5 text-slate-400"}`
+            }`}>
+              {spam.level}
+            </span>
+            <button onClick={() => setSpamModal(true)} className={`block mt-2 text-xs font-medium transition-colors ${isLight ? "text-rose-600 hover:text-rose-700" : "text-rose-400 hover:text-rose-300"}`}>
+              Configure
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════════════════════ MODALS ══════════════════════════ */}
+
+      {/* Create / Edit Account Modal */}
+      <Modal open={accountModal.open} onClose={() => setAccountModal({ open: false })} title={accountModal.editing ? "Edit Account" : "Create Account"}>
+        <div className="space-y-4">
+          <InputField label="Email Address" value={accForm.address} onChange={(v) => setAccForm({ ...accForm, address: v })} placeholder="user@limewp.com" mono disabled={!!accountModal.editing} />
+          <div>
+            <InputField label="Password" value={accForm.password} onChange={(v) => setAccForm({ ...accForm, password: v })} type="password" placeholder={accountModal.editing ? "Leave blank to keep current" : "Enter password"} />
+            {accForm.password && (
+              <div className="mt-2">
+                <div className={`h-1.5 rounded-full ${isLight ? "bg-slate-100" : "bg-white/5"}`}>
+                  <div className={`h-full rounded-full transition-all duration-300 ${passwordStrength.barClass}`} style={{ width: `${passwordStrength.pct}%` }} />
+                </div>
+                <p className={`text-xs mt-1 font-medium ${passwordStrength.color}`}>{passwordStrength.label}</p>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Quota</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min={0}
+                max={QUOTA_STEPS.length - 1}
+                value={QUOTA_STEPS.indexOf(accForm.quota) >= 0 ? QUOTA_STEPS.indexOf(accForm.quota) : 1}
+                onChange={(e) => setAccForm({ ...accForm, quota: QUOTA_STEPS[Number(e.target.value)] })}
+                className="flex-1 accent-sky-500"
+              />
+              <span className={`text-sm font-mono font-medium min-w-[64px] text-right ${isLight ? "text-slate-700" : "text-slate-200"}`}>{formatMB(accForm.quota)}</span>
+            </div>
+          </div>
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Status</label>
+            <div className="flex gap-2">
+              {(["Active", "Suspended"] as const).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setAccForm({ ...accForm, status: s })}
+                  className={`h-9 px-4 rounded-xl text-sm font-medium transition-all ${
+                    accForm.status === s
+                      ? s === "Active" ? "bg-emerald-500/15 text-emerald-500 ring-1 ring-emerald-500/20" : "bg-rose-500/15 text-rose-500 ring-1 ring-rose-500/20"
+                      : isLight ? "bg-slate-50 text-slate-500 hover:bg-slate-100" : "bg-white/5 text-slate-400 hover:bg-white/10"
+                  }`}
+                >
+                  {s}
+                </button>
               ))}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ═══════════ Create/Edit Account Modal ═══════════ */}
-      {showAccountModal && (
-        <div className={modalOverlayClass}>
-          <div className={modalBackdropClass} onClick={() => !savingAccount && setShowAccountModal(false)} />
-          <div className={modalCardClass} role="dialog" aria-modal="true" aria-labelledby="email-account-modal-title">
-            <h3 id="email-account-modal-title" className={`text-lg font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              {editingAccount ? "Edit Email Account" : "Create Email Account"}
-            </h3>
-
-            <div className="space-y-4">
-              {/* Email address */}
-              <div>
-                <label className={labelClass}>Email Address</label>
-                <div className="flex gap-2 mt-1.5">
-                  <input
-                    type="text"
-                    value={acctLocal}
-                    onChange={(e) => setAcctLocal(e.target.value)}
-                    placeholder="username"
-                    className={inputClass}
-                    autoFocus
-                  />
-                  <span className={`flex items-center px-3 rounded-xl border text-sm font-mono whitespace-nowrap ${
-                    isLight
-                      ? "bg-slate-50 border-slate-200 text-slate-500"
-                      : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-400"
-                  }`}>
-                    @{DOMAIN}
-                  </span>
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <label className={labelClass}>{editingAccount ? "New Password (leave empty to keep)" : "Password"}</label>
-                <input
-                  type="password"
-                  value={acctPassword}
-                  onChange={(e) => setAcctPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className={`${inputClass} mt-1.5`}
-                />
-                {acctPassword && (() => {
-                  const strength = getPasswordStrength(acctPassword);
-                  return (
-                    <div className="mt-2">
-                      <div className={`h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-200" : "bg-[var(--bg-elevated)]"}`}>
-                        <div
-                          className={`h-full rounded-full transition-all duration-300 ease-out ${strength.barClass}`}
-                          style={{ width: `${strength.pct}%` }}
-                        />
-                      </div>
-                      <p className={`text-xs font-medium mt-1 ${strength.color}`}>{strength.label}</p>
-                    </div>
-                  );
-                })()}
-              </div>
-
-              {/* Quota slider */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className={labelClass}>Quota</label>
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${
-                    isLight ? "bg-slate-100 text-slate-700" : "bg-slate-800 text-slate-200"
-                  }`}>{formatQuota(acctQuota)}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  {QUOTA_STEPS.map((n, i) => {
-                    const activeIdx = QUOTA_STEPS.indexOf(acctQuota);
-                    const isFilled = i <= activeIdx;
-                    const isActive = n === acctQuota;
-                    return (
-                      <button
-                        key={n}
-                        onClick={() => setAcctQuota(n)}
-                        className="flex-1 flex flex-col items-center gap-1.5 group"
-                      >
-                        <div className={`w-full h-2 rounded-full transition-all ${
-                          isFilled
-                            ? isLight ? "bg-slate-600" : "bg-slate-300"
-                            : isLight ? "bg-slate-200 group-hover:bg-slate-300" : "bg-slate-700 group-hover:bg-slate-600"
-                        } ${isActive ? "ring-2 ring-offset-1 " + (isLight ? "ring-slate-400 ring-offset-white" : "ring-slate-500 ring-offset-[#0f1729]") : ""}`} />
-                        <span className={`text-[10px] font-medium transition-colors ${
-                          isActive
-                            ? isLight ? "text-slate-800 font-bold" : "text-slate-100 font-bold"
-                            : isLight ? "text-slate-400 group-hover:text-slate-600" : "text-slate-600 group-hover:text-slate-400"
-                        }`}>
-                          {formatQuota(n)}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 justify-end mt-6">
-              <button onClick={() => setShowAccountModal(false)} disabled={savingAccount} className={btnSecondary}>Cancel</button>
-              <button onClick={handleSaveAccount} disabled={savingAccount} className={btnPrimary}>
-                {savingAccount ? <>{spinner} Saving…</> : editingAccount ? "Save Changes" : "Create Account"}
-              </button>
-            </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <button onClick={() => setAccountModal({ open: false })} className={btnSecondary}>Cancel</button>
+            <button onClick={saveAccount} className={btnPrimary}>{accountModal.editing ? "Save Changes" : "Create Account"}</button>
           </div>
         </div>
-      )}
+      </Modal>
 
-      {/* ═══════════ Add Forwarder Modal ═══════════ */}
-      {showForwarderModal && (
-        <div className={modalOverlayClass}>
-          <div className={modalBackdropClass} onClick={() => !savingForwarder && setShowForwarderModal(false)} />
-          <div className={modalCardClass} role="dialog" aria-modal="true" aria-labelledby="email-forwarder-modal-title">
-            <h3 id="email-forwarder-modal-title" className={`text-lg font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Add Forwarder
-            </h3>
-
-            <div className="space-y-4">
-              <div>
-                <label className={labelClass}>Source Email</label>
-                <input
-                  type="text"
-                  value={fwdSource}
-                  onChange={(e) => setFwdSource(e.target.value)}
-                  placeholder={`alias@${DOMAIN}`}
-                  className={`${inputClass} mt-1.5`}
-                  autoFocus
-                />
-              </div>
-              <div>
-                <label className={labelClass}>Destination Email</label>
-                <input
-                  type="email"
-                  value={fwdDest}
-                  onChange={(e) => setFwdDest(e.target.value)}
-                  placeholder="user@example.com"
-                  className={`${inputClass} mt-1.5`}
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3 justify-end mt-6">
-              <button onClick={() => setShowForwarderModal(false)} disabled={savingForwarder} className={btnSecondary}>Cancel</button>
-              <button onClick={handleSaveForwarder} disabled={savingForwarder} className={btnPrimary}>
-                {savingForwarder ? <>{spinner} Saving…</> : "Add Forwarder"}
-              </button>
-            </div>
+      {/* Add Forwarder Modal */}
+      <Modal open={forwarderModal.open} onClose={() => setForwarderModal({ open: false })} title={forwarderModal.editing ? "Edit Forwarder" : "Add Forwarder"}>
+        <div className="space-y-4">
+          <InputField label="Source Email" value={fwdForm.source} onChange={(v) => setFwdForm({ ...fwdForm, source: v })} placeholder="alias@limewp.com" mono />
+          <InputField label="Destination Email(s)" value={fwdForm.destination} onChange={(v) => setFwdForm({ ...fwdForm, destination: v })} placeholder="user@limewp.com, other@example.com" mono />
+          <div className="flex justify-end gap-3 pt-2">
+            <button onClick={() => setForwarderModal({ open: false })} className={btnSecondary}>Cancel</button>
+            <button onClick={saveForwarder} className="h-9 px-4 rounded-xl text-sm font-semibold transition-all bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-500/20">
+              {forwarderModal.editing ? "Save Changes" : "Add Forwarder"}
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
-      {/* ═══════════ Add Autoresponder Modal ═══════════ */}
-      {showAutoModal && (
-        <div className={modalOverlayClass}>
-          <div className={modalBackdropClass} onClick={() => !savingAuto && setShowAutoModal(false)} />
-          <div className={modalCardClass} role="dialog" aria-modal="true" aria-labelledby="email-autoresponder-modal-title">
-            <h3 id="email-autoresponder-modal-title" className={`text-lg font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              {editingAutoresponder ? "Edit Autoresponder" : "Add Autoresponder"}
-            </h3>
-
-            <div className="space-y-4">
-              {/* Email select */}
-              <div>
-                <label className={labelClass}>Email Account</label>
-                <div className="relative mt-1.5">
-                  <select
-                    value={autoEmail}
-                    onChange={(e) => setAutoEmail(e.target.value)}
-                    className={`${inputClass} appearance-none`}
-                  >
-                    <option value="">Select email…</option>
-                    {accounts.map((a) => (
-                      <option key={a.id} value={a.address}>{a.address}</option>
-                    ))}
-                  </select>
-                  <svg className={`absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none ${isLight ? "text-slate-400" : "text-slate-500"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Subject */}
-              <div>
-                <label className={labelClass}>Subject</label>
-                <input
-                  type="text"
-                  value={autoSubject}
-                  onChange={(e) => setAutoSubject(e.target.value)}
-                  placeholder="e.g. Out of Office"
-                  className={`${inputClass} mt-1.5`}
-                />
-              </div>
-
-              {/* Body */}
-              <div>
-                <label className={labelClass}>Message Body (HTML)</label>
-                <textarea
-                  value={autoBody}
-                  onChange={(e) => setAutoBody(e.target.value)}
-                  placeholder="<p>Thank you for your email...</p>"
-                  rows={4}
-                  className={`${textareaClass} mt-1.5`}
-                />
-              </div>
-
-              {/* Date pickers */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className={labelClass}>Start Date</label>
-                  <input
-                    type="date"
-                    value={autoStart}
-                    onChange={(e) => setAutoStart(e.target.value)}
-                    className={`${inputClass} mt-1.5`}
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>End Date</label>
-                  <input
-                    type="date"
-                    value={autoEnd}
-                    onChange={(e) => setAutoEnd(e.target.value)}
-                    className={`${inputClass} mt-1.5`}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 justify-end mt-6">
-              <button onClick={() => setShowAutoModal(false)} disabled={savingAuto} className={btnSecondary}>Cancel</button>
-              <button onClick={handleSaveAuto} disabled={savingAuto} className={btnPrimary}>
-                {savingAuto ? <>{spinner} Saving…</> : editingAutoresponder ? "Update Autoresponder" : "Add Autoresponder"}
-              </button>
-            </div>
+      {/* Add / Edit Autoresponder Modal */}
+      <Modal open={autoresponderModal.open} onClose={() => setAutoresponderModal({ open: false })} title={autoresponderModal.editing ? "Edit Autoresponder" : "Add Autoresponder"}>
+        <div className="space-y-4">
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Email Account</label>
+            <select
+              value={arForm.email}
+              onChange={(e) => setArForm({ ...arForm, email: e.target.value })}
+              className={`w-full h-10 px-3 text-sm rounded-xl border outline-none transition-all ${
+                isLight
+                  ? "bg-slate-50 border-slate-200 text-slate-800 focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20"
+                  : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20"
+              }`}
+            >
+              <option value="">Select account...</option>
+              {accounts.map((a) => <option key={a.id} value={a.address}>{a.address}</option>)}
+            </select>
+          </div>
+          <InputField label="Subject" value={arForm.subject} onChange={(v) => setArForm({ ...arForm, subject: v })} placeholder="We received your message" />
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Message</label>
+            <textarea
+              value={arForm.message}
+              onChange={(e) => setArForm({ ...arForm, message: e.target.value })}
+              rows={4}
+              placeholder="Thank you for reaching out..."
+              className={`w-full px-3 py-2.5 text-sm rounded-xl border outline-none transition-all resize-none ${
+                isLight
+                  ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-500 focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20"
+                  : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/20"
+              }`}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <InputField label="Start Date" value={arForm.startDate} onChange={(v) => setArForm({ ...arForm, startDate: v })} placeholder="Mar 1, 2026" />
+            <InputField label="End Date" value={arForm.endDate} onChange={(v) => setArForm({ ...arForm, endDate: v })} placeholder="Mar 31, 2026" />
+          </div>
+          <div className="flex items-center justify-between">
+            <label className={`text-sm font-medium ${isLight ? "text-slate-600" : "text-slate-400"}`}>Active</label>
+            <Toggle enabled={arForm.enabled} onChange={(v) => setArForm({ ...arForm, enabled: v })} />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <button onClick={() => setAutoresponderModal({ open: false })} className={btnSecondary}>Cancel</button>
+            <button onClick={saveAutoresponder} className="h-9 px-4 rounded-xl text-sm font-semibold transition-all bg-amber-600 hover:bg-amber-500 text-white shadow-lg shadow-amber-500/20">
+              {autoresponderModal.editing ? "Save Changes" : "Add Autoresponder"}
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
-      {/* ═══════════ Delete Confirm ═══════════ */}
+      {/* Spam Settings Modal */}
+      <Modal open={spamModal} onClose={() => setSpamModal(false)} title="Spam Settings" width="max-w-xl">
+        <div className="space-y-5">
+          <div>
+            <label className={`block text-sm font-medium mb-2.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Filter Level</label>
+            <div className="flex gap-2">
+              {(["off", "low", "medium", "high"] as SpamLevel[]).map((level) => (
+                <button
+                  key={level}
+                  onClick={() => setSpam({ ...spam, level })}
+                  className={`h-9 px-4 rounded-xl text-sm font-medium capitalize transition-all ${
+                    spam.level === level
+                      ? level === "high" ? "bg-rose-500/15 text-rose-500 ring-1 ring-rose-500/20"
+                        : level === "medium" ? "bg-amber-500/15 text-amber-500 ring-1 ring-amber-500/20"
+                        : level === "low" ? "bg-sky-500/15 text-sky-500 ring-1 ring-sky-500/20"
+                        : isLight ? "bg-slate-200 text-slate-600 ring-1 ring-slate-300" : "bg-white/10 text-slate-300 ring-1 ring-white/10"
+                      : isLight ? "bg-slate-50 text-slate-500 hover:bg-slate-100" : "bg-white/5 text-slate-400 hover:bg-white/10"
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={`flex items-center justify-between py-3 border-t border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
+            <div>
+              <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Auto-delete spam</p>
+              <p className={`text-xs ${muted}`}>Automatically remove messages flagged as spam</p>
+            </div>
+            <Toggle enabled={spam.autoDelete} onChange={(v) => setSpam({ ...spam, autoDelete: v })} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Block executables</p>
+              <p className={`text-xs ${muted}`}>Reject emails with executable attachments</p>
+            </div>
+            <Toggle enabled={spam.blockExecutables} onChange={(v) => setSpam({ ...spam, blockExecutables: v })} />
+          </div>
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Blacklist (one per line)</label>
+            <textarea
+              value={spam.blacklist}
+              onChange={(e) => setSpam({ ...spam, blacklist: e.target.value })}
+              rows={3}
+              placeholder="spam@example.com&#10;*@spamdomain.com"
+              className={`w-full px-3 py-2.5 text-sm font-mono rounded-xl border outline-none transition-all resize-none ${
+                isLight
+                  ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-500 focus:border-rose-400/50 focus:ring-1 focus:ring-rose-400/20"
+                  : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-rose-400/50 focus:ring-1 focus:ring-rose-400/20"
+              }`}
+            />
+          </div>
+          <div>
+            <label className={`block text-sm font-medium mb-1.5 ${isLight ? "text-slate-600" : "text-slate-400"}`}>Whitelist (one per line)</label>
+            <textarea
+              value={spam.whitelist}
+              onChange={(e) => setSpam({ ...spam, whitelist: e.target.value })}
+              rows={3}
+              placeholder="trusted@example.com&#10;*@trusteddomain.com"
+              className={`w-full px-3 py-2.5 text-sm font-mono rounded-xl border outline-none transition-all resize-none ${
+                isLight
+                  ? "bg-slate-50 border-slate-200 text-slate-800 placeholder-slate-500 focus:border-emerald-400/50 focus:ring-1 focus:ring-emerald-400/20"
+                  : "bg-[var(--bg-elevated)] border-[var(--border-tertiary)] text-slate-100 placeholder-slate-500 focus:border-emerald-400/50 focus:ring-1 focus:ring-emerald-400/20"
+              }`}
+            />
+          </div>
+          <div className="flex justify-end gap-3 pt-2">
+            <button onClick={() => setSpamModal(false)} className={btnSecondary}>Cancel</button>
+            <button onClick={saveSpamSettings} className="h-9 px-4 rounded-xl text-sm font-semibold transition-all bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-500/20">
+              Save Settings
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delete Confirm Dialog */}
       <ConfirmDialog
-        open={!!deleteTarget}
-        onClose={() => setDeleteTarget(null)}
-        onConfirm={handleDelete}
-        title={`Delete ${deleteTarget?.label}?`}
-        message="This action cannot be undone. All associated data will be permanently removed."
+        open={deleteConfirm.open}
+        onClose={() => setDeleteConfirm({ open: false, type: "", id: "", label: "" })}
+        onConfirm={confirmDelete}
+        title={`Delete ${deleteConfirm.type}?`}
+        message={`Are you sure you want to delete "${deleteConfirm.label}"? This action cannot be undone.`}
         confirmText="Delete"
         variant="danger"
       />
-    </>
+    </div>
   );
 }
+
+/* ══════════════════════════════════ Default Page Export ══════════════════════════════════ */
 
 export default function EmailManagementPage() {
   const params = useParams();
@@ -1234,9 +963,13 @@ export default function EmailManagementPage() {
 
   return (
     <AppShell>
-      <Link href={`/site?name=${encodeURIComponent(siteId)}`} className={`inline-flex items-center gap-1.5 text-sm font-medium mb-4 transition-colors ${isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"}`}>
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
-        Back to {decodeURIComponent(siteId)}
+      <Link
+        href={`/site?name=${encodeURIComponent(siteId)}`}
+        className={`inline-flex items-center gap-1.5 text-sm font-medium mb-6 transition-colors ${
+          isLight ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
+        }`}
+      >
+        &larr; Back to {decodeURIComponent(siteId)}
       </Link>
       <EmailTab siteId={siteId} />
     </AppShell>
