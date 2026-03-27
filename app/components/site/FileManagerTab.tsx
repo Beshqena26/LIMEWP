@@ -581,7 +581,7 @@ export function FileManagerTab() {
   // Modal style helpers
   const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";
   const modalBackdropClass = "absolute inset-0 bg-black/60 backdrop-blur-sm";
-  const modalCardClass = `relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`;
+  const modalCardClass = `relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`;
 
   const inputClass = cn(
     "w-full h-10 px-3 text-sm rounded-xl border outline-none transition-all",
@@ -1477,7 +1477,7 @@ export function FileManagerTab() {
       {editTarget && (
         <div className={modalOverlayClass} role="dialog" aria-modal="true" aria-labelledby="editor-modal-title">
           <div className={modalBackdropClass} onClick={() => !actionLoading && (() => { setEditTarget(null); setEditContent(""); })()} aria-hidden="true" />
-          <div className={`relative w-full max-w-2xl rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+          <div className={`relative w-full max-w-2xl rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
             <div className="flex items-center justify-between mb-4">
               <h3 id="editor-modal-title" className={cn("text-lg font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
                 {editTarget.name}
@@ -1521,7 +1521,7 @@ export function FileManagerTab() {
       {previewTarget && (
         <div className={modalOverlayClass} role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
           <div className={modalBackdropClass} onClick={() => setPreviewTarget(null)} aria-hidden="true" />
-          <div className={`relative w-full max-w-2xl rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+          <div className={`relative w-full max-w-2xl rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
             <div className="flex items-center justify-between mb-4">
               <h3 id="preview-modal-title" className={cn("text-lg font-semibold", isLight ? "text-slate-800" : "text-slate-100")}>
                 {previewTarget.name}

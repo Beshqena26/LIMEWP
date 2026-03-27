@@ -1563,16 +1563,16 @@ const canProceed = useCallback(() => {
                       )}
                       <div>
                         <label htmlFor="new-card-number" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>Card Number</label>
-                        <input id="new-card-number" type="text" value={newCardNumber} onChange={(e) => setNewCardNumber(e.target.value)} placeholder="4242 4242 4242 4242" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
+                        <input id="new-card-number" type="text" value={newCardNumber} onChange={(e) => setNewCardNumber(e.target.value)} placeholder="4242 4242 4242 4242" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <label htmlFor="new-card-expiry" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>Expiry</label>
-                          <input id="new-card-expiry" type="text" value={newCardExpiry} onChange={(e) => setNewCardExpiry(e.target.value)} placeholder="MM/YY" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
+                          <input id="new-card-expiry" type="text" value={newCardExpiry} onChange={(e) => setNewCardExpiry(e.target.value)} placeholder="MM/YY" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
                         </div>
                         <div>
                           <label htmlFor="new-card-cvc" className={cn("text-xs font-medium block mb-1", isLight ? "text-slate-500" : "text-slate-400")}>CVC</label>
-                          <input id="new-card-cvc" type="text" value={newCardCvc} onChange={(e) => setNewCardCvc(e.target.value)} placeholder="123" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
+                          <input id="new-card-cvc" type="text" value={newCardCvc} onChange={(e) => setNewCardCvc(e.target.value)} placeholder="123" className={cn("w-full h-10 rounded-xl border px-3 text-sm font-mono outline-none transition-colors", isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]")} />
                         </div>
                       </div>
                       <div className="flex gap-2">

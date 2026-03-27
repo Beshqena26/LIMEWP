@@ -97,8 +97,10 @@ export default function HomePage() {
         <div className="nav-mid">
           {navLinks.map(l => (
             <a key={l.href} href={l.href} className={activeSection === l.href.slice(1) ? 'active' : ''} onClick={(e) => {
-              e.preventDefault()
-              document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+              if (l.href.startsWith('#')) {
+                e.preventDefault()
+                document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+              }
             }}>{l.label}</a>
           ))}
         </div>
@@ -120,9 +122,11 @@ export default function HomePage() {
         <div className="mobile-menu-links">
           {navLinks.map(l => (
             <a key={l.href} href={l.href} onClick={(e) => {
-              e.preventDefault()
-              setMobileMenu(false)
-              document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+              if (l.href.startsWith('#')) {
+                e.preventDefault()
+                setMobileMenu(false)
+                document.getElementById(l.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+              }
             }}><Icon name={l.icon} width={18} height={18} />{l.label}</a>
           ))}
         </div>

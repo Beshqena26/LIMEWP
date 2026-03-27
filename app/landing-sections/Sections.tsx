@@ -314,9 +314,9 @@ export function CTA({ Rev, onSignup }: { Rev: RevType; onSignup: () => void }) {
 }
 
 const footerCols = [
-  { title: 'Product', links: [{ l: 'Features', h: '#features' }, { l: 'Pricing', h: '#pricing' }, { l: 'WooCommerce', h: '#' }, { l: 'Enterprise', h: '#' }, { l: 'Migrations', h: '#' }] },
-  { title: 'Support', links: [{ l: 'Help Center', h: '#' }, { l: 'Contact Us', h: '#' }, { l: 'System Status', h: '#' }, { l: 'Documentation', h: '#' }] },
-  { title: 'Company', links: [{ l: 'About Us', h: '#' }, { l: 'Blog', h: '#' }, { l: 'Careers', h: '#' }, { l: 'Privacy Policy', h: '#' }, { l: 'Terms of Service', h: '#' }] },
+  { title: 'Product', links: [{ l: 'Features', h: '#features' }, { l: 'Pricing', h: '#pricing' }, { l: 'Compare', h: '/compare' }, { l: 'Migrations', h: '/migrate' }, { l: 'Status', h: '/status' }] },
+  { title: 'Support', links: [{ l: 'Documentation', h: '/docs' }, { l: 'API Reference', h: '/api-reference' }, { l: 'Contact Us', h: '/contact' }, { l: 'Community Forum', h: '/forum' }, { l: 'Support Center', h: '/support' }] },
+  { title: 'Company', links: [{ l: 'Blog', h: '/blog' }, { l: 'Changelog', h: '/changelog' }, { l: 'Privacy Policy', h: '/privacy' }, { l: 'Terms of Service', h: '/terms' }, { l: 'Cookie Policy', h: '/cookies' }] },
 ]
 
 export function Footer() {

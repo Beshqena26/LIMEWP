@@ -102,7 +102,7 @@ export function StagingTab({ siteId }: { siteId: string }) {
   const isLight = resolvedTheme === "light";
   const accent = getColorClasses(accentColor);
   const muted = isLight ? "text-slate-400" : "text-slate-500";
-  const card = `rounded-2xl border ${isLight ? "bg-white border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"}`;
+  const card = `rounded-2xl border ${isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"}`;
   const secBtn = `h-9 px-4 rounded-xl text-sm font-medium transition-colors flex items-center gap-2 ${isLight ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-white/5 text-slate-300 hover:bg-white/10"}`;
   const divider = isLight ? "divide-slate-100" : "divide-white/[0.04]";
 
@@ -243,7 +243,7 @@ export function StagingTab({ siteId }: { siteId: string }) {
                   </button>
                   {menu && (<>
                     <div className="fixed inset-0 z-10" onClick={() => setMenu(false)} />
-                    <div className={`absolute right-0 top-full mt-1 w-44 rounded-xl border py-1 z-20 ${isLight ? "bg-white border-slate-200 shadow-lg" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] shadow-2xl"}`}>
+                    <div className={`absolute right-0 top-full mt-1 w-44 rounded-xl border py-1 z-20 ${isLight ? "bg-white border-slate-200 shadow-lg" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] shadow-2xl"}`}>
                       <button onClick={() => { setMenu(false); setPushDlg(true); }} className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 ${isLight ? "hover:bg-slate-50 text-slate-700" : "hover:bg-white/5 text-slate-200"}`}>
                         <Ic d={P.up} c="w-4 h-4 text-sky-500" /> Push to Live
                       </button>
@@ -400,7 +400,7 @@ export function StagingTab({ siteId }: { siteId: string }) {
       {syncProg && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-          <div className={`relative w-full max-w-md rounded-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+          <div className={`relative w-full max-w-md rounded-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
             <h3 className={`text-lg font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>{syncAct === "push" ? "Pushing to Live" : "Pulling from Live"}</h3>
             <p className={`text-sm mb-5 ${muted}`}>Do not close this window</p>
             <StepList steps={syncSteps} muted={muted} isLight={isLight} />
@@ -413,7 +413,7 @@ export function StagingTab({ siteId }: { siteId: string }) {
       {showCreateModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowCreateModal(false)} />
-          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${isLight ? "bg-white" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
             <div className="p-6">
               <h3 className={`text-lg font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Create Staging</h3>
               <p className={`text-sm mb-6 ${muted}`}>Configure what to clone from your live site</p>

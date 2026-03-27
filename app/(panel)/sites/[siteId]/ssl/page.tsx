@@ -199,6 +199,31 @@ function Spinner({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+/* ────────────── section heading helper ────────────── */
+
+function SectionHeading({
+  icon,
+  iconColor,
+  title,
+  isLight,
+}: {
+  icon: React.ReactNode;
+  iconColor: string;
+  title: string;
+  isLight: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-2.5 mb-4">
+      <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${iconColor}`}>
+        {icon}
+      </div>
+      <h2 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+        {title}
+      </h2>
+    </div>
+  );
+}
+
 /* ────────────── component ────────────── */
 
 export function SSLTab({ siteId }: { siteId: string }) {
@@ -404,13 +429,13 @@ export function SSLTab({ siteId }: { siteId: string }) {
   const textareaClass = `w-full rounded-xl border px-3 py-3 text-xs font-mono font-medium outline-none transition-colors resize-y min-h-[120px] ${
     isLight
       ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-500"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
   }`;
 
-  const selectClass = `h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors cursor-pointer ${
+  const selectClass = `h-9 rounded-xl border px-3 text-sm font-medium outline-none transition-colors cursor-pointer ${
     isLight
       ? "bg-white border-slate-200 text-slate-700 focus:border-slate-400"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
   }`;
 
   const infoBoxClass = `rounded-xl p-4 border ${
@@ -422,16 +447,16 @@ export function SSLTab({ siteId }: { siteId: string }) {
   const modalCardClass = `relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
     isLight
       ? "bg-white border border-slate-200"
-      : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
   }`;
 
-  const btnSecondary = `h-10 px-5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
+  const btnSecondary = `h-9 px-4 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
     isLight
       ? "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300"
       : "bg-[var(--bg-secondary)] border-[var(--border-tertiary)] text-slate-200 hover:bg-[var(--bg-elevated)] hover:border-[var(--border-primary)]"
   }`;
 
-  const btnPrimary = `h-10 px-5 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 disabled:opacity-60 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`;
+  const btnPrimary = `h-9 px-4 rounded-xl text-white text-sm font-semibold transition-all shadow-lg flex items-center gap-2 disabled:opacity-60 ${accent.button} ${accent.buttonHover} ${accent.buttonShadow}`;
 
   const statusActive = CURRENT_CERT.status === "Active";
   const daysColor = getDaysRemainingColor(CURRENT_CERT.daysRemaining);
@@ -442,611 +467,572 @@ export function SSLTab({ siteId }: { siteId: string }) {
 
   const allMixedFixed = mixedContent.every((m) => m.fixed);
 
+  /* ── compact row for settings ── */
+  const settingRow = "flex items-center justify-between py-3";
+  const settingDivider = `border-b ${isLight ? "border-slate-100" : "border-white/[0.06]"}`;
+
   return (
     <>
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-          SSL / Certificates
-        </h1>
-        <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>
-          Manage SSL certificates for{" "}
-          <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>
-            {decodeURIComponent(siteId)}
-          </span>
-        </p>
+      {/* ══════════════ 1. PAGE HEADER ══════════════ */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 className={`text-2xl font-bold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+            SSL / Certificates
+          </h1>
+          <p className={`text-sm ${isLight ? "text-slate-600" : "text-slate-500"}`}>
+            Manage SSL certificates for{" "}
+            <span className={`font-medium ${isLight ? "text-slate-700" : "text-slate-300"}`}>
+              {decodeURIComponent(siteId)}
+            </span>
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button onClick={handleGenerateSSL} disabled={generating} className={btnPrimary}>
+            {generating ? (<><Spinner /> Generating...</>) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+                Generate Free SSL
+              </>
+            )}
+          </button>
+          <button onClick={() => setShowCertModal(true)} className={btnSecondary}>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            Upload Custom
+          </button>
+        </div>
       </div>
 
-      {/* ══════════════ SECTION 1 — SSL Grade Card ══════════════ */}
-      <div className={`${cardClass} mb-8`}>
+      {/* ══════════════ 2. SSL GRADE + CURRENT CERTIFICATE (merged hero card) ══════════════ */}
+      <div className={`${cardClass} mb-6`}>
         <div className="p-6">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              SSL Security Grade
-            </h2>
-            <span className={`text-xs ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-              Last tested: {SSL_GRADE.lastTested}
-            </span>
-          </div>
+          <SectionHeading
+            icon={
+              <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+            }
+            iconColor={isLight ? "bg-emerald-50" : "bg-emerald-500/10"}
+            title="SSL Grade & Current Certificate"
+            isLight={isLight}
+          />
 
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            {/* Grade circle */}
-            <div className="flex-shrink-0">
-              <div className={`w-28 h-28 rounded-full flex items-center justify-center ring-4 ${gradeColor.ring} ${
-                testingGrade ? "animate-pulse" : ""
-              }`} style={{ background: testingGrade ? undefined : undefined }}>
-                <div className={`w-24 h-24 rounded-full ${gradeColor.bg} flex items-center justify-center`}>
-                  {testingGrade ? (
-                    <Spinner className="w-8 h-8 text-white" />
-                  ) : (
-                    <span className="text-4xl font-black text-white tracking-tight">{SSL_GRADE.grade}</span>
-                  )}
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Left: Grade circle + score bars */}
+            <div className="flex flex-col items-center lg:items-start gap-4 lg:w-64 flex-shrink-0">
+              <div className="flex items-center gap-5">
+                <div className={`w-20 h-20 rounded-full flex items-center justify-center ring-4 ${gradeColor.ring} ${
+                  testingGrade ? "animate-pulse" : ""
+                }`}>
+                  <div className={`w-[68px] h-[68px] rounded-full ${gradeColor.bg} flex items-center justify-center`}>
+                    {testingGrade ? (
+                      <Spinner className="w-6 h-6 text-white" />
+                    ) : (
+                      <span className="text-3xl font-black text-white tracking-tight">{SSL_GRADE.grade}</span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-0.5">
+                  {/* Status badge */}
+                  <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 w-fit ${
+                    statusActive
+                      ? "bg-emerald-500/10 ring-emerald-500/20"
+                      : "bg-rose-500/10 ring-rose-500/20"
+                  }`}>
+                    <span className="relative flex h-2 w-2">
+                      <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                        statusActive ? "bg-emerald-400" : "bg-rose-400"
+                      }`} />
+                      <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                        statusActive ? "bg-emerald-400" : "bg-rose-400"
+                      }`} />
+                    </span>
+                    <span className={`text-xs font-semibold ${
+                      statusActive ? "text-emerald-400" : "text-rose-400"
+                    }`}>
+                      {CURRENT_CERT.status}
+                    </span>
+                  </div>
+                  <span className={`text-[11px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Tested {SSL_GRADE.lastTested}
+                  </span>
                 </div>
               </div>
-            </div>
 
-            {/* Score breakdown */}
-            <div className="flex-1 w-full space-y-3">
-              {[
-                { label: "Protocol Support", value: SSL_GRADE.protocol },
-                { label: "Key Exchange", value: SSL_GRADE.keyExchange },
-                { label: "Cipher Strength", value: SSL_GRADE.cipherStrength },
-              ].map((item) => (
-                <div key={item.label}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className={`text-sm font-medium ${isLight ? "text-slate-600" : "text-slate-300"}`}>
-                      {item.label}
-                    </span>
-                    <span className={`text-sm font-semibold ${
-                      item.value >= 90 ? "text-emerald-400" : item.value >= 70 ? "text-amber-400" : "text-rose-400"
-                    }`}>
-                      {item.value}%
-                    </span>
+              {/* Score breakdown bars */}
+              <div className="w-full space-y-2">
+                {[
+                  { label: "Protocol", value: SSL_GRADE.protocol },
+                  { label: "Key Exchange", value: SSL_GRADE.keyExchange },
+                  { label: "Cipher", value: SSL_GRADE.cipherStrength },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+                        {item.label}
+                      </span>
+                      <span className={`text-xs font-semibold ${
+                        item.value >= 90 ? "text-emerald-400" : item.value >= 70 ? "text-amber-400" : "text-rose-400"
+                      }`}>
+                        {item.value}%
+                      </span>
+                    </div>
+                    <div className={`h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-100" : "bg-slate-700/50"}`}>
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          item.value >= 90 ? "bg-emerald-500" : item.value >= 70 ? "bg-amber-500" : "bg-rose-500"
+                        }`}
+                        style={{ width: `${item.value}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className={`h-2 rounded-full overflow-hidden ${isLight ? "bg-slate-100" : "bg-slate-700/50"}`}>
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        item.value >= 90 ? "bg-emerald-500" : item.value >= 70 ? "bg-amber-500" : "bg-rose-500"
-                      }`}
-                      style={{ width: `${item.value}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Test again button */}
-            <div className="flex-shrink-0">
               <button
                 onClick={handleTestGrade}
                 disabled={testingGrade}
-                className={btnSecondary}
+                className={`text-xs font-medium flex items-center gap-1.5 transition-colors ${
+                  isLight ? "text-slate-400 hover:text-slate-600" : "text-slate-500 hover:text-slate-300"
+                }`}
               >
-                {testingGrade ? (
-                  <>
-                    <Spinner />
-                    Testing...
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
-                    </svg>
-                    Test Again
-                  </>
-                )}
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                </svg>
+                {testingGrade ? "Testing..." : "Test Again"}
               </button>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* ══════════════ SECTION 2 — Current Certificate ══════════════ */}
-      <div className={`${cardClass} mb-8`}>
-        <div className="p-6">
-          <h2 className={`text-base font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            Current Certificate
-          </h2>
+            {/* Divider */}
+            <div className={`hidden lg:block w-px self-stretch ${isLight ? "bg-slate-200" : "bg-[var(--border-tertiary)]"}`} />
+            <div className={`lg:hidden h-px w-full ${isLight ? "bg-slate-200" : "bg-[var(--border-tertiary)]"}`} />
 
-          {/* Status badge */}
-          <div className="flex items-center gap-2 mb-6">
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ring-1 ${
-              statusActive
-                ? "bg-emerald-500/10 ring-emerald-500/20"
-                : "bg-rose-500/10 ring-rose-500/20"
-            }`}>
-              <span className="relative flex h-2.5 w-2.5">
-                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                  statusActive ? "bg-emerald-400" : "bg-rose-400"
-                }`} />
-                <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-                  statusActive ? "bg-emerald-400" : "bg-rose-400"
-                }`} />
-              </span>
-              <span className={`text-sm font-semibold ${
-                statusActive ? "text-emerald-400" : "text-rose-400"
-              }`}>
-                {CURRENT_CERT.status}
-              </span>
-            </div>
-          </div>
-
-          {/* Detail grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className={infoBoxClass}>
-              <p className={labelClass}>Issuer</p>
-              <p className={`text-sm font-semibold mt-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                {CURRENT_CERT.issuer}
-              </p>
-            </div>
-
-            <div className={infoBoxClass}>
-              <p className={labelClass}>Domain</p>
-              <div className="mt-1 space-y-0.5">
-                {CURRENT_CERT.domains.map((d) => (
-                  <p key={d} className={`text-sm font-semibold font-mono ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                    {d}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            <div className={infoBoxClass}>
-              <p className={labelClass}>Valid From</p>
-              <p className={`text-sm font-semibold mt-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                {CURRENT_CERT.validFrom}
-              </p>
-            </div>
-
-            <div className={infoBoxClass}>
-              <p className={labelClass}>Valid Until</p>
-              <p className={`text-sm font-semibold mt-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                {CURRENT_CERT.validUntil}
-              </p>
-            </div>
-
-            <div className={infoBoxClass}>
-              <p className={labelClass}>Days Remaining</p>
-              <div className="mt-1.5">
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ring-1 ${daysColor.bg} ${daysColor.ring}`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${daysColor.dot}`} />
-                  <span className={`text-xs font-semibold ${daysColor.text}`}>{CURRENT_CERT.daysRemaining} days</span>
-                </span>
-              </div>
-            </div>
-
-            <div className={infoBoxClass}>
-              <p className={labelClass}>Auto-Renew</p>
-              <div className="mt-1.5">
-                <Toggle enabled={autoRenew} onChange={handleAutoRenewToggle} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════ SECTION 3 — Action Cards ══════════════ */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {/* Force HTTPS */}
-        <div className={cardClass}>
-          <div className="p-6 flex flex-col items-center justify-center text-center">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-              isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-            }`}>
-              <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-              </svg>
-            </div>
-            <h3 className={`text-sm font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Force HTTPS
-            </h3>
-            <p className={`text-xs mb-4 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-              Redirect all HTTP traffic to HTTPS
-            </p>
-            <Toggle enabled={forceHttps} onChange={handleForceHttpsToggle} />
-          </div>
-        </div>
-
-        {/* Generate Free SSL */}
-        <div className={cardClass}>
-          <div className="p-6 flex flex-col items-center justify-center text-center">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-              isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-            }`}>
-              <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-              </svg>
-            </div>
-            <h3 className={`text-sm font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Generate Free SSL
-            </h3>
-            <p className={`text-xs mb-4 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-              Issue a free certificate via Let&apos;s Encrypt
-            </p>
-            <button onClick={handleGenerateSSL} disabled={generating} className={btnPrimary}>
-              {generating ? (<><Spinner /> Generating...</>) : "Generate Free SSL"}
-            </button>
-          </div>
-        </div>
-
-        {/* Upload Custom Certificate */}
-        <div className={cardClass}>
-          <div className="p-6 flex flex-col items-center justify-center text-center">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${
-              isLight ? "bg-slate-100" : "bg-[var(--bg-elevated)]"
-            }`}>
-              <svg className={`w-6 h-6 ${isLight ? "text-slate-600" : "text-slate-300"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-              </svg>
-            </div>
-            <h3 className={`text-sm font-semibold mb-1 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-              Upload Custom Certificate
-            </h3>
-            <p className={`text-xs mb-4 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-              Install your own SSL certificate
-            </p>
-            <button onClick={() => setShowCertModal(true)} className={btnSecondary}>
-              Upload Certificate
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════ SECTION 4 — SSL/TLS Protocol Configuration ══════════════ */}
-      <div className={`${cardClass} mb-8`}>
-        <div className="p-6">
-          <h2 className={`text-base font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            SSL/TLS Protocol Configuration
-          </h2>
-
-          <div className="space-y-4">
-            {/* TLS 1.0 */}
-            <div className={`flex items-center justify-between ${infoBoxClass}`}>
-              <div className="flex items-center gap-3">
-                <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>TLS 1.0</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold bg-rose-500/10 text-rose-400 ring-rose-500/20">
-                  Insecure
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className={`text-xs font-medium ${isLight ? "text-slate-400" : "text-slate-500"}`}>Disabled</span>
-                <Toggle enabled={false} onChange={() => showToast.error("TLS 1.0 is insecure and cannot be enabled")} />
-              </div>
-            </div>
-
-            {/* TLS 1.1 */}
-            <div className={`flex items-center justify-between ${infoBoxClass}`}>
-              <div className="flex items-center gap-3">
-                <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>TLS 1.1</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold bg-amber-500/10 text-amber-400 ring-amber-500/20">
-                  Deprecated
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className={`text-xs font-medium ${isLight ? "text-slate-400" : "text-slate-500"}`}>Disabled</span>
-                <Toggle enabled={false} onChange={() => showToast.error("TLS 1.1 is deprecated and cannot be enabled")} />
-              </div>
-            </div>
-
-            {/* TLS 1.2 */}
-            <div className={`flex items-center justify-between ${infoBoxClass}`}>
-              <div className="flex items-center gap-3">
-                <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>TLS 1.2</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className={`text-xs font-medium ${tls12 ? "text-emerald-400" : (isLight ? "text-slate-400" : "text-slate-500")}`}>
-                  {tls12 ? "Enabled" : "Disabled"}
-                </span>
-                <Toggle enabled={tls12} onChange={(v) => { setTls12(v); showToast.success(`TLS 1.2 ${v ? "enabled" : "disabled"}`); }} />
-              </div>
-            </div>
-
-            {/* TLS 1.3 */}
-            <div className={`flex items-center justify-between ${infoBoxClass}`}>
-              <div className="flex items-center gap-3">
-                <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>TLS 1.3</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 ring-emerald-500/20">
-                  Recommended
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className={`text-xs font-medium ${tls13 ? "text-emerald-400" : (isLight ? "text-slate-400" : "text-slate-500")}`}>
-                  {tls13 ? "Enabled" : "Disabled"}
-                </span>
-                <Toggle enabled={tls13} onChange={(v) => { setTls13(v); showToast.success(`TLS 1.3 ${v ? "enabled" : "disabled"}`); }} />
-              </div>
-            </div>
-
-            {/* Minimum TLS version */}
-            <div className="flex items-center justify-between pt-2">
-              <div>
-                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Minimum TLS Version</span>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                  Connections below this version will be rejected
-                </p>
-              </div>
-              <select value={minTlsVersion} onChange={(e) => setMinTlsVersion(e.target.value)} className={selectClass}>
-                <option value="1.2">TLS 1.2</option>
-                <option value="1.3">TLS 1.3</option>
-              </select>
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <button onClick={handleSaveTls} disabled={savingTls} className={btnPrimary}>
-                {savingTls ? (<><Spinner /> Saving...</>) : "Save TLS Configuration"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════ SECTION 5 — HSTS Configuration ══════════════ */}
-      <div className={`${cardClass} mb-8`}>
-        <div className="p-6">
-          <h2 className={`text-base font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            HSTS Configuration
-          </h2>
-
-          <div className="space-y-5">
-            {/* Enable HSTS */}
-            <div className="flex items-center justify-between">
-              <div>
-                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Enable HSTS</span>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                  HTTP Strict Transport Security header
-                </p>
-              </div>
-              <Toggle enabled={hstsEnabled} onChange={(v) => { setHstsEnabled(v); }} />
-            </div>
-
-            {hstsEnabled && (
-              <>
-                {/* Max-Age */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Max-Age</span>
-                    <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                      How long browsers should remember HTTPS-only
-                    </p>
-                  </div>
-                  <select value={hstsMaxAge} onChange={(e) => setHstsMaxAge(e.target.value)} className={selectClass}>
-                    <option value="2592000">1 month</option>
-                    <option value="15768000">6 months</option>
-                    <option value="31536000">1 year</option>
-                    <option value="63072000">2 years</option>
-                  </select>
-                </div>
-
-                {/* Include Subdomains */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Include Subdomains</span>
-                    <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                      Apply HSTS to all subdomains
-                    </p>
-                  </div>
-                  <Toggle enabled={hstsSubdomains} onChange={setHstsSubdomains} />
-                </div>
-
-                {/* Preload */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Preload</span>
-                    <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                      Submit to browser HSTS preload lists
-                    </p>
-                  </div>
-                  <Toggle enabled={hstsPreload} onChange={setHstsPreload} />
-                </div>
-
-                {/* Warning callout */}
-                {hstsPreload && (
-                  <div className={`rounded-xl p-4 border flex items-start gap-3 ${
-                    isLight
-                      ? "bg-amber-50 border-amber-200"
-                      : "bg-amber-500/5 border-amber-500/20"
-                  }`}>
-                    <svg className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                    </svg>
-                    <div>
-                      <p className={`text-sm font-semibold ${isLight ? "text-amber-800" : "text-amber-400"}`}>Warning</p>
-                      <p className={`text-xs mt-0.5 ${isLight ? "text-amber-700" : "text-amber-400/80"}`}>
-                        Enabling HSTS with preload is permanent. Make sure all subdomains support HTTPS before enabling this option.
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-
-            <div className="flex justify-end pt-1">
-              <button onClick={handleSaveHsts} disabled={savingHsts} className={btnPrimary}>
-                {savingHsts ? (<><Spinner /> Saving...</>) : "Save HSTS Settings"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════ SECTION 6 — Certificate Renewal Settings ══════════════ */}
-      <div className={`${cardClass} mb-8`}>
-        <div className="p-6">
-          <h2 className={`text-base font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            Certificate Renewal Settings
-          </h2>
-
-          <div className="space-y-5">
-            {/* Days before expiry */}
-            <div className="flex items-center justify-between">
-              <div>
-                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Auto-Renew Before Expiry</span>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                  Days before expiry to trigger auto-renewal
-                </p>
-              </div>
-              <select value={renewDaysBefore} onChange={(e) => setRenewDaysBefore(e.target.value)} className={selectClass}>
-                <option value="7">7 days</option>
-                <option value="14">14 days</option>
-                <option value="30">30 days</option>
-              </select>
-            </div>
-
-            {/* Email on renewal */}
-            <div className="flex items-center justify-between">
-              <div>
-                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Email on Renewal</span>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                  Receive an email when certificate is renewed
-                </p>
-              </div>
-              <Toggle enabled={emailOnRenewal} onChange={setEmailOnRenewal} />
-            </div>
-
-            {/* Email on failure */}
-            <div className="flex items-center justify-between">
-              <div>
-                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Email on Failure</span>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                  Receive an email if renewal fails
-                </p>
-              </div>
-              <Toggle enabled={emailOnFailure} onChange={setEmailOnFailure} />
-            </div>
-
-            {/* Renewal attempts */}
-            <div className="flex items-center justify-between">
-              <div>
-                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Renewal Attempts</span>
-                <p className={`text-xs mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-                  Number of retry attempts if renewal fails
-                </p>
-              </div>
-              <select value={renewalAttempts} onChange={(e) => setRenewalAttempts(e.target.value)} className={selectClass}>
-                <option value="1">1 attempt</option>
-                <option value="3">3 attempts</option>
-                <option value="5">5 attempts</option>
-              </select>
-            </div>
-
-            <div className="flex justify-end pt-1">
-              <button onClick={handleSaveRenewal} disabled={savingRenewal} className={btnPrimary}>
-                {savingRenewal ? (<><Spinner /> Saving...</>) : "Save Renewal Settings"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════ SECTION 7 — Mixed Content Scanner ══════════════ */}
-      <div className={`${cardClass} mb-8`}>
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h2 className={`text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-                Mixed Content Scanner
-              </h2>
-              <p className={`text-xs mt-1 ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-                Detect HTTP resources loaded on HTTPS pages
-              </p>
-            </div>
-            <button onClick={handleScanMixedContent} disabled={scanning} className={btnSecondary}>
-              {scanning ? (<><Spinner /> Scanning...</>) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                  </svg>
-                  Scan for Mixed Content
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Progress bar */}
-          {scanning && (
-            <div className="mb-5">
-              <div className="flex items-center justify-between mb-2">
-                <span className={`text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`}>Scanning pages...</span>
-                <span className={`text-xs font-semibold ${isLight ? "text-slate-600" : "text-slate-300"}`}>{scanProgress}%</span>
-              </div>
-              <div className={`h-2 rounded-full overflow-hidden ${isLight ? "bg-slate-100" : "bg-slate-700/50"}`}>
-                <div
-                  className={`h-full rounded-full transition-all duration-200 ${accent.progress || "bg-emerald-500"}`}
-                  style={{ width: `${scanProgress}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Results */}
-          {scanComplete && (
-            <div className="space-y-3">
-              {allMixedFixed ? (
-                <div className={`flex items-center gap-3 rounded-xl p-4 border ${
-                  isLight ? "bg-emerald-50 border-emerald-200" : "bg-emerald-500/5 border-emerald-500/20"
-                }`}>
-                  <svg className="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className={`text-sm font-semibold ${isLight ? "text-emerald-700" : "text-emerald-400"}`}>
-                    No mixed content detected! All resources use HTTPS.
+            {/* Right: Certificate details as compact key-value rows */}
+            <div className="flex-1 min-w-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0">
+                {/* Issuer */}
+                <div className={`${settingRow} ${settingDivider}`}>
+                  <span className={labelClass}>Issuer</span>
+                  <span className={`text-sm font-medium text-right truncate ml-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+                    {CURRENT_CERT.issuer}
                   </span>
                 </div>
-              ) : (
-                mixedContent.filter((m) => !m.fixed).map((issue) => (
-                  <div key={issue.id} className={`flex items-center justify-between rounded-xl p-4 border ${
-                    isLight ? "bg-rose-50/50 border-rose-200" : "bg-rose-500/5 border-rose-500/20"
-                  }`}>
-                    <div className="flex-1 min-w-0 mr-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20">
-                          {issue.type}
-                        </span>
-                        <span className={`text-sm font-medium truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>
-                          {issue.url}
-                        </span>
-                      </div>
-                      <p className={`text-xs font-mono truncate ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-                        {issue.resource}
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => handleFixMixedContent(issue.id)}
-                      className="flex-shrink-0 h-8 px-3 rounded-lg text-xs font-semibold transition-colors bg-emerald-600 hover:bg-emerald-500 text-white"
-                    >
-                      Fix
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
 
-          {!scanning && !scanComplete && (
-            <div className={`flex flex-col items-center justify-center py-8 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
-              <svg className="w-12 h-12 mb-3 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-              </svg>
-              <p className="text-sm">Run a scan to check for mixed content issues</p>
+                {/* Domain */}
+                <div className={`${settingRow} ${settingDivider}`}>
+                  <span className={labelClass}>Domain</span>
+                  <div className="flex items-center gap-1.5 ml-4">
+                    {CURRENT_CERT.domains.map((d) => (
+                      <span key={d} className={`text-xs font-mono font-medium px-2 py-0.5 rounded-md ${
+                        isLight ? "bg-slate-100 text-slate-700" : "bg-slate-800/50 text-slate-300"
+                      }`}>
+                        {d}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Valid From */}
+                <div className={`${settingRow} ${settingDivider}`}>
+                  <span className={labelClass}>Valid From</span>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+                    {CURRENT_CERT.validFrom}
+                  </span>
+                </div>
+
+                {/* Valid Until */}
+                <div className={`${settingRow} ${settingDivider}`}>
+                  <span className={labelClass}>Valid Until</span>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+                    {CURRENT_CERT.validUntil}
+                  </span>
+                </div>
+
+                {/* Days Remaining */}
+                <div className={`${settingRow} ${settingDivider}`}>
+                  <span className={labelClass}>Days Remaining</span>
+                  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-xs font-semibold ${daysColor.bg} ${daysColor.ring} ${daysColor.text}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${daysColor.dot}`} />
+                    {CURRENT_CERT.daysRemaining} days
+                  </span>
+                </div>
+
+                {/* Auto-Renew */}
+                <div className={`${settingRow} ${settingDivider}`}>
+                  <span className={labelClass}>Auto-Renew</span>
+                  <Toggle enabled={autoRenew} onChange={handleAutoRenewToggle} />
+                </div>
+
+                {/* Force HTTPS */}
+                <div className={`${settingRow}`}>
+                  <span className={labelClass}>Force HTTPS</span>
+                  <Toggle enabled={forceHttps} onChange={handleForceHttpsToggle} />
+                </div>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
-      {/* ══════════════ SECTION 8 — Certificate History ══════════════ */}
+      {/* ══════════════ 3. TWO-COLUMN: TLS CONFIG + RENEWAL SETTINGS ══════════════ */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* TLS Protocol Configuration */}
+        <div className={`${cardClass}`}>
+          <div className="p-5">
+            <SectionHeading
+              icon={
+                <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a48.667 48.667 0 00-1.573 8.19M12 3.75a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.008a.75.75 0 01-.75-.75V4.5a.75.75 0 01.75-.75h.008z" />
+                </svg>
+              }
+              iconColor={isLight ? "bg-violet-50" : "bg-violet-500/10"}
+              title="TLS Protocol"
+              isLight={isLight}
+            />
+
+            <div className="space-y-0">
+              {/* TLS 1.0 */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>TLS 1.0</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20">
+                    Insecure
+                  </span>
+                </div>
+                <Toggle enabled={false} onChange={() => showToast.error("TLS 1.0 is insecure and cannot be enabled")} />
+              </div>
+
+              {/* TLS 1.1 */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>TLS 1.1</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20">
+                    Deprecated
+                  </span>
+                </div>
+                <Toggle enabled={false} onChange={() => showToast.error("TLS 1.1 is deprecated and cannot be enabled")} />
+              </div>
+
+              {/* TLS 1.2 */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>TLS 1.2</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs ${tls12 ? "text-emerald-400" : (isLight ? "text-slate-400" : "text-slate-500")}`}>
+                    {tls12 ? "On" : "Off"}
+                  </span>
+                  <Toggle enabled={tls12} onChange={(v) => { setTls12(v); showToast.success(`TLS 1.2 ${v ? "enabled" : "disabled"}`); }} />
+                </div>
+              </div>
+
+              {/* TLS 1.3 */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>TLS 1.3</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">
+                    Recommended
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs ${tls13 ? "text-emerald-400" : (isLight ? "text-slate-400" : "text-slate-500")}`}>
+                    {tls13 ? "On" : "Off"}
+                  </span>
+                  <Toggle enabled={tls13} onChange={(v) => { setTls13(v); showToast.success(`TLS 1.3 ${v ? "enabled" : "disabled"}`); }} />
+                </div>
+              </div>
+
+              {/* Minimum TLS version */}
+              <div className="flex items-center justify-between py-2.5">
+                <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Minimum Version</span>
+                <select value={minTlsVersion} onChange={(e) => setMinTlsVersion(e.target.value)} className={selectClass}>
+                  <option value="1.2">TLS 1.2</option>
+                  <option value="1.3">TLS 1.3</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-3">
+              <button onClick={handleSaveTls} disabled={savingTls} className={btnPrimary}>
+                {savingTls ? (<><Spinner /> Saving...</>) : "Save TLS"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Renewal Settings */}
+        <div className={`${cardClass}`}>
+          <div className="p-5">
+            <SectionHeading
+              icon={
+                <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
+                </svg>
+              }
+              iconColor={isLight ? "bg-violet-50" : "bg-violet-500/10"}
+              title="Renewal Settings"
+              isLight={isLight}
+            />
+
+            <div className="space-y-0">
+              {/* Days before expiry */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Renew Before Expiry</span>
+                  <p className={`text-[11px] mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Days before expiry to auto-renew
+                  </p>
+                </div>
+                <select value={renewDaysBefore} onChange={(e) => setRenewDaysBefore(e.target.value)} className={selectClass}>
+                  <option value="7">7 days</option>
+                  <option value="14">14 days</option>
+                  <option value="30">30 days</option>
+                </select>
+              </div>
+
+              {/* Email on renewal */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Email on Renewal</span>
+                  <p className={`text-[11px] mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Notify when certificate is renewed
+                  </p>
+                </div>
+                <Toggle enabled={emailOnRenewal} onChange={setEmailOnRenewal} />
+              </div>
+
+              {/* Email on failure */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Email on Failure</span>
+                  <p className={`text-[11px] mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Notify if renewal fails
+                  </p>
+                </div>
+                <Toggle enabled={emailOnFailure} onChange={setEmailOnFailure} />
+              </div>
+
+              {/* Renewal attempts */}
+              <div className="flex items-center justify-between py-2.5">
+                <div>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Retry Attempts</span>
+                  <p className={`text-[11px] mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Number of retries on failure
+                  </p>
+                </div>
+                <select value={renewalAttempts} onChange={(e) => setRenewalAttempts(e.target.value)} className={selectClass}>
+                  <option value="1">1 attempt</option>
+                  <option value="3">3 attempts</option>
+                  <option value="5">5 attempts</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-3">
+              <button onClick={handleSaveRenewal} disabled={savingRenewal} className={btnPrimary}>
+                {savingRenewal ? (<><Spinner /> Saving...</>) : "Save Renewal"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════════ 4. TWO-COLUMN: MIXED CONTENT SCANNER + HSTS ══════════════ */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Mixed Content Scanner */}
+        <div className={`${cardClass}`}>
+          <div className="p-5">
+            <div className="flex items-center justify-between mb-4">
+              <SectionHeading
+                icon={
+                  <svg className="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                }
+                iconColor={isLight ? "bg-sky-50" : "bg-sky-500/10"}
+                title="Mixed Content Scanner"
+                isLight={isLight}
+              />
+              <button onClick={handleScanMixedContent} disabled={scanning} className={`${btnSecondary} h-8 px-3 text-xs`}>
+                {scanning ? (<><Spinner /> Scanning...</>) : "Scan"}
+              </button>
+            </div>
+
+            {/* Progress bar */}
+            {scanning && (
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>Scanning pages...</span>
+                  <span className={`text-xs font-semibold ${isLight ? "text-slate-600" : "text-slate-300"}`}>{scanProgress}%</span>
+                </div>
+                <div className={`h-1.5 rounded-full overflow-hidden ${isLight ? "bg-slate-100" : "bg-slate-700/50"}`}>
+                  <div
+                    className={`h-full rounded-full transition-all duration-200 ${accent.progress || "bg-emerald-500"}`}
+                    style={{ width: `${scanProgress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Results */}
+            {scanComplete && (
+              <div className="space-y-2">
+                {allMixedFixed ? (
+                  <div className={`flex items-center gap-2.5 rounded-xl p-3 border ${
+                    isLight ? "bg-emerald-50 border-emerald-200" : "bg-emerald-500/5 border-emerald-500/20"
+                  }`}>
+                    <svg className="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className={`text-sm font-medium ${isLight ? "text-emerald-700" : "text-emerald-400"}`}>
+                      All resources use HTTPS.
+                    </span>
+                  </div>
+                ) : (
+                  mixedContent.filter((m) => !m.fixed).map((issue) => (
+                    <div key={issue.id} className={`flex items-center justify-between rounded-xl p-3 border ${
+                      isLight ? "bg-rose-50/50 border-rose-200" : "bg-rose-500/5 border-rose-500/20"
+                    }`}>
+                      <div className="flex-1 min-w-0 mr-3">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20">
+                            {issue.type}
+                          </span>
+                          <span className={`text-xs font-medium truncate ${isLight ? "text-slate-700" : "text-slate-200"}`}>
+                            {issue.url}
+                          </span>
+                        </div>
+                        <p className={`text-[11px] font-mono truncate ${isLight ? "text-slate-500" : "text-slate-400"}`}>
+                          {issue.resource}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleFixMixedContent(issue.id)}
+                        className="flex-shrink-0 h-7 px-2.5 rounded-lg text-xs font-semibold transition-colors bg-emerald-600 hover:bg-emerald-500 text-white"
+                      >
+                        Fix
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {!scanning && !scanComplete && (
+              <div className={`flex flex-col items-center justify-center py-6 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                <svg className="w-10 h-10 mb-2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                <p className="text-xs">Run a scan to detect mixed content</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* HSTS Configuration */}
+        <div className={`${cardClass}`}>
+          <div className="p-5">
+            <SectionHeading
+              icon={
+                <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                </svg>
+              }
+              iconColor={isLight ? "bg-amber-50" : "bg-amber-500/10"}
+              title="HSTS Configuration"
+              isLight={isLight}
+            />
+
+            <div className="space-y-0">
+              {/* Enable HSTS */}
+              <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                <div>
+                  <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Enable HSTS</span>
+                  <p className={`text-[11px] mt-0.5 ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                    Strict Transport Security header
+                  </p>
+                </div>
+                <Toggle enabled={hstsEnabled} onChange={(v) => { setHstsEnabled(v); }} />
+              </div>
+
+              {hstsEnabled && (
+                <>
+                  {/* Max-Age */}
+                  <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Max-Age</span>
+                    <select value={hstsMaxAge} onChange={(e) => setHstsMaxAge(e.target.value)} className={selectClass}>
+                      <option value="2592000">1 month</option>
+                      <option value="15768000">6 months</option>
+                      <option value="31536000">1 year</option>
+                      <option value="63072000">2 years</option>
+                    </select>
+                  </div>
+
+                  {/* Include Subdomains */}
+                  <div className={`flex items-center justify-between py-2.5 ${settingDivider}`}>
+                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Include Subdomains</span>
+                    <Toggle enabled={hstsSubdomains} onChange={setHstsSubdomains} />
+                  </div>
+
+                  {/* Preload */}
+                  <div className={`flex items-center justify-between py-2.5 ${hstsPreload ? settingDivider : ""}`}>
+                    <span className={`text-sm font-medium ${isLight ? "text-slate-700" : "text-slate-200"}`}>Preload</span>
+                    <Toggle enabled={hstsPreload} onChange={setHstsPreload} />
+                  </div>
+
+                  {/* Warning callout */}
+                  {hstsPreload && (
+                    <div className={`rounded-lg p-3 border flex items-start gap-2.5 mt-2 ${
+                      isLight
+                        ? "bg-amber-50 border-amber-200"
+                        : "bg-amber-500/5 border-amber-500/20"
+                    }`}>
+                      <svg className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                      </svg>
+                      <p className={`text-[11px] leading-relaxed ${isLight ? "text-amber-700" : "text-amber-400/80"}`}>
+                        Enabling HSTS preload is permanent. Ensure all subdomains support HTTPS.
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            <div className="flex justify-end pt-3">
+              <button onClick={handleSaveHsts} disabled={savingHsts} className={btnPrimary}>
+                {savingHsts ? (<><Spinner /> Saving...</>) : "Save HSTS"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════════ 5. CERTIFICATE HISTORY TABLE ══════════════ */}
       <div className={`${cardClass} overflow-hidden`}>
-        <div className="p-6 pb-0">
-          <h2 className={`text-base font-semibold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
-            Certificate History
-          </h2>
+        <div className="px-5 pt-5 pb-0">
+          <SectionHeading
+            icon={
+              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            }
+            iconColor={isLight ? "bg-slate-100" : "bg-slate-500/10"}
+            title="Certificate History"
+            isLight={isLight}
+          />
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className={`border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-                {["Domain", "Issuer", "Type", "Valid From", "Valid To", "Days Left", "Status", "Actions"].map((col) => (
-                  <th key={col} className={`text-left text-xs font-semibold uppercase tracking-wider px-6 py-4 ${
+                {["Domain", "Issuer", "Type", "Valid From", "Valid To", "Status", "Actions"].map((col) => (
+                  <th key={col} className={`text-left text-[11px] font-semibold uppercase tracking-wider px-5 py-3 ${
                     isLight ? "text-slate-500" : "text-slate-400"
                   }`}>
                     {col}
@@ -1064,54 +1050,51 @@ export function SSLTab({ siteId }: { siteId: string }) {
                     className={`border-b last:border-b-0 transition-colors ${
                       isLight
                         ? "border-slate-100 hover:bg-slate-50"
-                        : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"
+                        : "border-white/[0.06] hover:bg-white/[0.02]"
                     }`}
                   >
-                    <td className={`px-6 py-4 text-sm font-medium font-mono ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+                    <td className={`px-5 py-3 text-sm font-medium font-mono ${isLight ? "text-slate-800" : "text-slate-100"}`}>
                       {row.domain}
                     </td>
-                    <td className={`px-6 py-4 text-sm ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+                    <td className={`px-5 py-3 text-sm ${isLight ? "text-slate-600" : "text-slate-300"}`}>
                       {row.issuer}
                     </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${getTypeColors(row.type)}`}>
+                    <td className="px-5 py-3">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${getTypeColors(row.type)}`}>
                         {row.type}
                       </span>
                     </td>
-                    <td className={`px-6 py-4 text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                    <td className={`px-5 py-3 text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                       {row.validFrom}
                     </td>
-                    <td className={`px-6 py-4 text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                    <td className={`px-5 py-3 text-sm ${isLight ? "text-slate-600" : "text-slate-400"}`}>
                       {row.validTo}
                     </td>
-                    <td className="px-6 py-4">
-                      {row.daysRemaining > 0 ? (
-                        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${rowDaysColor.bg} ${rowDaysColor.ring}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${rowDaysColor.dot}`} />
-                          <span className={rowDaysColor.text}>{row.daysRemaining}d</span>
+                    <td className="px-5 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${statusColors.bg} ${statusColors.ring}`}>
+                          <span className={`w-1.5 h-1.5 rounded-full ${statusColors.dot}`} />
+                          <span className={statusColors.text}>{row.status}</span>
                         </span>
-                      ) : (
-                        <span className={`text-xs ${isLight ? "text-slate-400" : "text-slate-500"}`}>--</span>
-                      )}
+                        {row.daysRemaining > 0 && (
+                          <span className={`text-[10px] font-semibold ${rowDaysColor.text}`}>
+                            {row.daysRemaining}d
+                          </span>
+                        )}
+                      </div>
                     </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full ring-1 text-[10px] font-semibold ${statusColors.bg} ${statusColors.ring}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${statusColors.dot}`} />
-                        <span className={statusColors.text}>{row.status}</span>
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1">
+                    <td className="px-5 py-3">
+                      <div className="flex items-center gap-0.5">
                         {/* View details */}
                         {CERT_DETAILS[row.id] && (
                           <button
                             onClick={() => setDetailCertId(row.id)}
                             title="View details"
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
                               isLight ? "hover:bg-slate-100 text-slate-500" : "hover:bg-[var(--bg-elevated)] text-slate-400"
                             }`}
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
@@ -1121,11 +1104,11 @@ export function SSLTab({ siteId }: { siteId: string }) {
                         <button
                           onClick={() => handleDownloadCert(row.id)}
                           title="Download"
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
                             isLight ? "hover:bg-slate-100 text-slate-500" : "hover:bg-[var(--bg-elevated)] text-slate-400"
                           }`}
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                           </svg>
                         </button>
@@ -1134,9 +1117,9 @@ export function SSLTab({ siteId }: { siteId: string }) {
                           <button
                             onClick={() => setConfirmRevoke(row.id)}
                             title="Revoke"
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-500/10 text-rose-400`}
+                            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-500/10 text-rose-400"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                             </svg>
                           </button>
@@ -1146,9 +1129,9 @@ export function SSLTab({ siteId }: { siteId: string }) {
                           <button
                             onClick={() => setConfirmDelete(row.id)}
                             title="Delete"
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-500/10 text-rose-400`}
+                            className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors hover:bg-rose-500/10 text-rose-400"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                             </svg>
                           </button>
@@ -1160,7 +1143,7 @@ export function SSLTab({ siteId }: { siteId: string }) {
               })}
               {certHistory.length === 0 && (
                 <tr>
-                  <td colSpan={8} className={`px-6 py-12 text-center text-sm ${isLight ? "text-slate-400" : "text-slate-500"}`}>
+                  <td colSpan={7} className={`px-5 py-10 text-center text-sm ${isLight ? "text-slate-400" : "text-slate-500"}`}>
                     No certificate history available
                   </td>
                 </tr>

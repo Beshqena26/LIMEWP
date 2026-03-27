@@ -249,7 +249,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           className={`relative w-full max-w-[640px] rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${
             isLight
               ? "bg-white border border-slate-200"
-              : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+              : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
           }`}
         >
           {/* Search Input */}

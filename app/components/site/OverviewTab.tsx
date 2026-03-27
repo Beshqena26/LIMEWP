@@ -165,7 +165,7 @@ export function OverviewTab({ onNavigate }: { onNavigate?: (tab: string) => void
               className={`inline-flex items-center gap-2 h-9 px-3.5 rounded-xl text-sm font-medium transition-all border disabled:opacity-60 ${
                 isLight
                   ? "bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 active:bg-slate-100"
-                  : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-300 hover:border-[var(--border-primary)] hover:bg-white/[0.02] active:bg-white/[0.04]"
+                  : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-300 hover:border-[var(--border-primary)] hover:bg-white/[0.02] active:bg-white/[0.04]"
               }`}
             >
               {isChecking ? (
@@ -392,7 +392,7 @@ export function OverviewTab({ onNavigate }: { onNavigate?: (tab: string) => void
       {backupModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setBackupModal(false)} />
-          <div className={`relative w-full max-w-sm rounded-2xl shadow-2xl p-6 ${isLight ? "bg-white" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+          <div className={`relative w-full max-w-sm rounded-2xl shadow-2xl p-6 ${isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
             <h3 className={`text-base font-semibold mb-4 ${textPrimary}`}>Backing up your site</h3>
             <div className="space-y-3">
               {modalSteps.map((step, i) => (
@@ -416,7 +416,7 @@ export function OverviewTab({ onNavigate }: { onNavigate?: (tab: string) => void
       {speedModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSpeedModal(false)} />
-          <div className={`relative w-full max-w-sm rounded-2xl shadow-2xl p-6 ${isLight ? "bg-white" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+          <div className={`relative w-full max-w-sm rounded-2xl shadow-2xl p-6 ${isLight ? "bg-white" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
             <h3 className={`text-base font-semibold mb-4 ${textPrimary}`}>Optimizing your site</h3>
             <div className="space-y-3">
               {modalSteps.map((step, i) => (

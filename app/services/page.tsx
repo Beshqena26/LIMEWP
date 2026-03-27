@@ -303,13 +303,13 @@ export default function ServicesPage() {
   const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${
     isLight
       ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
   }`;
   const labelClass = `text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`;
   const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";
   const modalBackdropClass = "absolute inset-0 bg-black/60 backdrop-blur-sm";
   const modalCardClass = `relative w-full max-w-lg rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden ${
-    isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+    isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
   }`;
 
   const spinner = (
@@ -916,7 +916,7 @@ export default function ServicesPage() {
                     {/* Wallet + timer (paying step only) */}
                     {cryptoStep === "paying" && (
                       <>
-                        <div className={`rounded-lg p-3 mb-3 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+                        <div className={`rounded-lg p-3 mb-3 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
                           <p className={`text-[10px] mb-1.5 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Send exactly to this address:</p>
                           <div className="flex items-center gap-2">
                             <p className={`text-xs font-mono break-all flex-1 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{coin.address}</p>

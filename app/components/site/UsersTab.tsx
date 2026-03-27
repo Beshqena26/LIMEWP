@@ -31,7 +31,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
 
   // ── Shared styles ──
   const cardClass = `rounded-2xl border transition-all ${isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"}`;
-  const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"}`;
+  const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"}`;
   const labelClass = `text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`;
 
   // ── State ──
@@ -616,7 +616,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
                 e.target.value = "";
               }}
               defaultValue=""
-              className={`h-8 rounded-lg border text-xs font-medium px-2 outline-none ${isLight ? "bg-white border-slate-200 text-slate-700" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-300"}`}
+              className={`h-8 rounded-lg border text-xs font-medium px-2 outline-none ${isLight ? "bg-white border-slate-200 text-slate-700" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-300"}`}
             >
               <option value="" disabled>Change Role</option>
               {ROLES.map((r) => (
@@ -712,7 +712,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
                       className={`h-7 px-2 rounded-lg text-xs font-semibold border outline-none cursor-pointer transition-colors ${
                         isLight
                           ? "bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300"
-                          : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-300 hover:border-[var(--border-primary)]"
+                          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-300 hover:border-[var(--border-primary)]"
                       }`}
                     >
                       {ROLES.map((r) => (
@@ -1032,7 +1032,7 @@ export function UsersTab({ siteId }: UsersTabProps) {
             aria-modal="true"
             aria-labelledby="add-user-title"
             className={`relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
-              isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+              isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
             }`}
           >
             <h3 id="add-user-title" className={`text-lg font-bold mb-5 ${isLight ? "text-slate-800" : "text-slate-100"}`}>Add User</h3>

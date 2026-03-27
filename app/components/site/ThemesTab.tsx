@@ -90,13 +90,13 @@ export function ThemesTab({ siteId }: ThemesTabProps) {
 
   /* ── styles ── */
   const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${
-    isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
+    isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
   }`;
   const labelClass = `text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`;
   const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";
   const modalBackdropClass = "absolute inset-0 bg-black/60 backdrop-blur-sm";
   const modalCardClass = `relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
-    isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+    isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
   }`;
 
   const spinner = (
@@ -354,7 +354,7 @@ export function ThemesTab({ siteId }: ThemesTabProps) {
                   className={`w-full rounded-xl border px-3 py-3 text-xs font-mono font-medium outline-none transition-colors resize-y min-h-[80px] mt-1.5 ${
                     isLight
                       ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400 placeholder:text-slate-500"
-                      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
+                      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)] placeholder:text-slate-500"
                   }`}
                 />
               </div>
@@ -387,7 +387,7 @@ export function ThemesTab({ siteId }: ThemesTabProps) {
         <div className={modalOverlayClass}>
           <div className={modalBackdropClass} onClick={() => !installing && setShowInstallModal(false)} aria-hidden="true" />
           <div className={`relative w-full max-w-lg rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
-            isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+            isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
           }`} role="dialog" aria-modal="true" aria-labelledby="install-theme-title">
             <h3 id="install-theme-title" className={`text-lg font-semibold mb-4 ${isLight ? "text-slate-800" : "text-slate-100"}`}>
               Install Theme

@@ -7,9 +7,9 @@
 .dark {
   /* Backgrounds */
   --bg-primary: #0f1117;
-  --bg-secondary: #1e2130;
-  --bg-tertiary: #161923;
-  --bg-elevated: #1a1d27;
+  --bg-secondary: #161a28;
+  --bg-tertiary: #131724;
+  --bg-elevated: #1c2033;
   --bg-overlay: #282b3a;
   --bg-inverse: #f1f5f9;
   --bg-input: #1e2130;
@@ -21,9 +21,9 @@
   --text-disabled: #475569;
   --text-inverse: #0f1117;
   /* Borders */
-  --border-primary: #1e293b;
-  --border-secondary: #171c28;
-  --border-tertiary: #1a1e2e;
+  --border-primary: #2d3548;
+  --border-secondary: #232a3a;
+  --border-tertiary: #262d3f;
   --border-focus: #475569;
   /* Status */
   --success: #22c55e;
@@ -52,8 +52,8 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
   /* Gradients */
-  --gradient-card-from: #1e2130;
-  --gradient-card-to: #181b28;
+  --gradient-card-from: #191d2e;
+  --gradient-card-to: #151926;
   /* Glow */
   --glow: 0 0 60px rgba(16,185,129,.1);
   --glow-color: rgba(16,185,129,.12);
@@ -126,9 +126,9 @@
 /* ─── Default (matches dark) ─── */
 :root {
   --bg-primary: #0f1117;
-  --bg-secondary: #1e2130;
-  --bg-tertiary: #161923;
-  --bg-elevated: #1a1d27;
+  --bg-secondary: #161a28;
+  --bg-tertiary: #131724;
+  --bg-elevated: #1c2033;
   --bg-overlay: #282b3a;
   --bg-inverse: #f1f5f9;
   --bg-input: #1e2130;
@@ -138,9 +138,9 @@
   --text-tertiary: #64748b;
   --text-disabled: #475569;
   --text-inverse: #0f1117;
-  --border-primary: #1e293b;
-  --border-secondary: #171c28;
-  --border-tertiary: #1a1e2e;
+  --border-primary: #2d3548;
+  --border-secondary: #232a3a;
+  --border-tertiary: #262d3f;
   --border-focus: #475569;
   --scrollbar-thumb: #475569;
   --scrollbar-thumb-hover: #64748b;

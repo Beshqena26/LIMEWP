@@ -156,7 +156,7 @@ function SitePageContent() {
       case "ssl": return <SSLTab siteId={siteName} />;
       case "email": return <EmailTab siteId={siteName} />;
       case "staging": return <StagingTab siteId={siteName} />;
-      default: return <OverviewTab />;
+      default: return <OverviewTab onNavigate={setActiveTab} />;
     }
   };
 

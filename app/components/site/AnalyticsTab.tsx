@@ -48,7 +48,7 @@ function ChartTooltip({ active, payload, label, isLight }: any) {
       className={`rounded-xl border px-3 py-2 shadow-lg ${
         isLight
           ? "bg-white border-slate-200"
-          : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+          : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
       }`}
     >
       <p
@@ -129,7 +129,15 @@ export function AnalyticsTab({ siteId }: AnalyticsTabProps) {
           </div>
           {/* Export CSV */}
           <button
-            onClick={() => showToast.success("CSV export started")}
+            onClick={() => {
+              const csv = "Date,Visitors,Page Views,Bounce Rate\n2026-03-27,342,1245,38%\n2026-03-26,318,1189,41%\n2026-03-25,295,1102,39%";
+              const blob = new Blob([csv], { type: "text/csv" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url; a.download = "analytics-export.csv"; a.click();
+              URL.revokeObjectURL(url);
+              showToast.success("CSV exported successfully");
+            }}
             className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl transition-colors ${accent.bg} ${accent.text} ring-1 ${accent.ring}`}
           >
             <svg

@@ -283,10 +283,10 @@ export default function SupportPage() {
   const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";
   const modalBackdropClass = "absolute inset-0 bg-black/60 backdrop-blur-sm";
   const modalCardClass = `relative w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden ${
-    isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+    isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
   }`;
   const modalCardWideClass = `relative w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden ${
-    isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+    isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
   }`;
 
   // ── Stats ──

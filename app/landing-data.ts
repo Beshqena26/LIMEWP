@@ -43,6 +43,8 @@ export const navLinks = [
   { href: '#pricing', label: 'Pricing', icon: 'cart' },
   { href: '#testimonials', label: 'Reviews', icon: 'star' },
   { href: '#faq', label: 'FAQ', icon: 'chat' },
+  { href: '/blog', label: 'Blog', icon: 'grid' },
+  { href: '/changelog', label: 'Changelog', icon: 'refresh-single' },
 ]
 
 export const comparisonRows = [

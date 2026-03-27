@@ -52,6 +52,13 @@ export const ROUTES = {
   // Contact
   CONTACT: "/contact",
 
+  // Additional Pages
+  STATUS: "/status",
+  CHANGELOG: "/changelog",
+  REFERRAL: "/referral",
+  COMPARE: "/compare",
+  BLOG: "/blog",
+
   // Panel
   ACTIVITY: "/activity",
   NOTIFICATIONS: "/notifications",

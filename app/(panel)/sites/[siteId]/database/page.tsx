@@ -392,7 +392,7 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
   const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${
     isLight
       ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
   }`;
 
   const labelClass = `text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`;
@@ -402,13 +402,13 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
   const modalCardClass = `relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
     isLight
       ? "bg-white border border-slate-200"
-      : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
   }`;
 
   const selectClass = `h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors appearance-none cursor-pointer ${
     isLight
       ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400"
-      : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
+      : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"
   }`;
 
   const secondaryBtnClass = `h-9 px-4 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 border ${
@@ -676,7 +676,7 @@ export function DatabaseTab({ siteId }: { siteId: string }) {
                             <div className={`absolute right-0 top-full mt-1 w-44 rounded-xl border shadow-xl z-20 py-1 ${
                               isLight
                                 ? "bg-white border-slate-200"
-                                : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+                                : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
                             }`}>
                               {[
                                 { label: "Export", icon: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3", action: () => handleExport(db) },

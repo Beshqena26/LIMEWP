@@ -145,7 +145,7 @@ export function ConfirmDialog({
         className={`relative w-full max-w-md rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${
           isLight
             ? "bg-white border border-slate-200"
-            : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+            : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
         }`}
       >
         {/* Icon */}

@@ -298,7 +298,7 @@ export function AddonsTab({ siteId }: AddonsTabProps) {
       {purchaseTarget && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => !actionLoading && closePurchaseModal()} aria-hidden="true" />
-          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`} role="dialog" aria-modal="true" aria-labelledby="purchase-title">
+          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`} role="dialog" aria-modal="true" aria-labelledby="purchase-title">
             {/* Gradient header */}
             <div className={`h-16 bg-gradient-to-r ${(COLOR_MAP[purchaseTarget.color] || COLOR_MAP.emerald).gradient} flex items-center px-6`}>
               <div className="flex items-center gap-3">
@@ -444,7 +444,7 @@ export function AddonsTab({ siteId }: AddonsTabProps) {
                       {/* Wallet address */}
                       {cryptoStep === "paying" && (
                         <>
-                          <div className={`rounded-lg p-3 mb-3 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`}>
+                          <div className={`rounded-lg p-3 mb-3 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`}>
                             <p className={`text-[10px] mb-1.5 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Send exactly to this address:</p>
                             <div className="flex items-center gap-2">
                               <p className={`text-xs font-mono break-all flex-1 ${isLight ? "text-slate-700" : "text-slate-200"}`}>{coin.address}</p>

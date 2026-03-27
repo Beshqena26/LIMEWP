@@ -20,6 +20,7 @@ export default function NotificationsPage() {
   const { notifications, unreadCount, markAsRead, markAllRead, deleteRead } = useNotifications();
 
   const [activeTab, setActiveTab] = useState<TabFilter>("all");
+  const [typeFilter, setTypeFilter] = useState<NotificationType | "all">("all");
   const [page, setPage] = useState(1);
 
   const cardClass = `rounded-2xl border transition-all ${
@@ -28,10 +29,13 @@ export default function NotificationsPage() {
       : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
   }`;
 
+  // Get unique types from notifications
+  const activeTypes = Array.from(new Set(notifications.map((n) => n.type)));
+
   const filteredNotifications = notifications.filter((n) => {
-    if (activeTab === "unread") return n.unread;
-    if (activeTab === "read") return !n.unread;
-    return true;
+    const matchTab = activeTab === "all" || (activeTab === "unread" ? n.unread : !n.unread);
+    const matchType = typeFilter === "all" || n.type === typeFilter;
+    return matchTab && matchType;
   });
 
   const totalPages = Math.max(1, Math.ceil(filteredNotifications.length / ITEMS_PER_PAGE));
@@ -139,6 +143,40 @@ export default function NotificationsPage() {
                 >
                   {tab.count}
                 </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Type filter pills */}
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => { setTypeFilter("all"); setPage(1); }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              typeFilter === "all"
+                ? isLight ? "bg-slate-800 text-white" : "bg-white/10 text-white"
+                : isLight ? "text-slate-500 hover:bg-slate-100" : "text-slate-400 hover:bg-white/[0.04]"
+            }`}
+          >
+            All types
+          </button>
+          {activeTypes.map((type) => {
+            const s = NOTIFICATION_STYLES[type];
+            const isActive = typeFilter === type;
+            const count = notifications.filter((n) => n.type === type).length;
+            return (
+              <button
+                key={type}
+                onClick={() => { setTypeFilter(type); setPage(1); }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all inline-flex items-center gap-1.5 ${
+                  isActive
+                    ? `${s.bg} ${s.text} ring-1 ${s.ring}`
+                    : isLight ? "text-slate-500 hover:bg-slate-100" : "text-slate-400 hover:bg-white/[0.04]"
+                }`}
+              >
+                {isActive && <span className={`w-1.5 h-1.5 rounded-full ${s.text.replace("text-", "bg-")}`} />}
+                {s.label}
+                <span className={`text-[10px] ${isActive ? "opacity-70" : "opacity-50"}`}>{count}</span>
               </button>
             );
           })}

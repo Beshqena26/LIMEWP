@@ -75,11 +75,11 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
 
   // Style classes
   const cardClass = `rounded-2xl border transition-all ${isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"}`;
-  const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"}`;
+  const inputClass = `w-full h-10 rounded-xl border px-3 text-sm font-medium outline-none transition-colors ${isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"}`;
   const labelClass = `text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`;
   const modalOverlayClass = "fixed inset-0 z-[100] flex items-center justify-center p-4";
   const modalBackdropClass = "absolute inset-0 bg-black/60 backdrop-blur-sm";
-  const modalCardClass = `relative w-full max-w-lg rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`;
+  const modalCardClass = `relative w-full max-w-lg rounded-2xl shadow-2xl p-6 animate-in fade-in zoom-in-95 duration-200 ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`;
 
   // Helpers
   const resetForm = useCallback(() => {
@@ -610,7 +610,7 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
                             ? `${tc.bg} border-current ${tc.text} ring-1 ${tc.ring}`
                             : isLight
                               ? "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
-                              : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-400 hover:border-[var(--border-primary)]"
+                              : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-400 hover:border-[var(--border-primary)]"
                         }`}
                       >
                         <div className="text-sm font-bold mb-0.5">{rt.label}</div>
@@ -686,7 +686,7 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
                   onChange={(e) => setImportText(e.target.value)}
                   placeholder={"source,destination,type\n/old,/new,301"}
                   rows={8}
-                  className={`w-full rounded-xl border px-3 py-2.5 text-sm font-mono outline-none transition-colors resize-none mt-1.5 ${isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"}`}
+                  className={`w-full rounded-xl border px-3 py-2.5 text-sm font-mono outline-none transition-colors resize-none mt-1.5 ${isLight ? "bg-white border-slate-200 text-slate-800 focus:border-slate-400" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] text-slate-200 focus:border-[var(--border-primary)]"}`}
                 />
               </div>
               <p className={`text-[11px] ${isLight ? "text-slate-400" : "text-slate-500"}`}>

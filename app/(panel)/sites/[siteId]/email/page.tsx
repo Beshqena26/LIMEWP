@@ -184,7 +184,7 @@ function Modal({ open, onClose, title, children, width = "max-w-lg" }: {
       <div
         ref={ref}
         className={`relative w-full ${width} rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-200 ${
-          isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"
+          isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"
         }`}
       >
         <div className={`flex items-center justify-between px-6 py-4 border-b ${isLight ? "border-slate-100" : "border-[var(--border-tertiary)]"}`}>
@@ -272,9 +272,9 @@ export function EmailTab({ siteId }: { siteId: string }) {
 
   // ── Card class ──
   const card = `rounded-2xl border transition-all duration-200 hover:-translate-y-px ${
-    isLight ? "bg-white border-slate-200/80 shadow-sm" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+    isLight ? "bg-white border-slate-200/80 shadow-sm" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
   }`;
-  const cardFlat = `rounded-2xl border ${isLight ? "bg-white border-slate-200/80 shadow-sm" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"}`;
+  const cardFlat = `rounded-2xl border ${isLight ? "bg-white border-slate-200/80 shadow-sm" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"}`;
   const sectionTitle = `text-base font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`;
   const subtitle = `text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`;
   const muted = isLight ? "text-slate-400" : "text-slate-500";

@@ -117,6 +117,28 @@ export default function DashboardPage() {
         onRefresh={handleRefresh}
       />
 
+      {/* Free Trial Banner */}
+      <div className={`flex items-center justify-between px-5 py-3.5 rounded-2xl mb-6 ${
+        isLight
+          ? "bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200"
+          : "bg-gradient-to-r from-emerald-500/[0.08] to-teal-500/[0.08] border border-emerald-500/20"
+      }`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${isLight ? "bg-emerald-100" : "bg-emerald-500/15"}`}>
+            <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+          </div>
+          <div>
+            <span className={`text-sm font-semibold ${isLight ? "text-emerald-800" : "text-emerald-300"}`}>Free Trial — 142 days remaining</span>
+            <span className={`text-xs ml-2 ${isLight ? "text-emerald-600" : "text-emerald-400/70"}`}>Your 6-month free hosting is active</span>
+          </div>
+        </div>
+        <Link href="/settings?tab=billing" className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
+          isLight ? "text-emerald-700 hover:bg-emerald-100" : "text-emerald-400 hover:bg-emerald-500/10"
+        }`}>
+          View plan →
+        </Link>
+      </div>
+
       <PromoBanner onUpgrade={() => setIsUpgradeOpen(true)} />
 
       {/* Getting Started Checklist — only for new users */}
@@ -233,10 +255,10 @@ export default function DashboardPage() {
 
           {/* Analytics Summary */}
           <div className={`flex items-center justify-between px-5 py-4 rounded-2xl border mb-10 ${
-            isLight ? "bg-white border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+            isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
           }`}>
             {QUICK_STATS.map((stat, i) => (
-              <div key={stat.label} className={`flex items-center gap-4 ${i > 0 ? `pl-4 border-l ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}` : ""}`}>
+              <div key={stat.label} className={`flex items-center gap-4 ${i > 0 ? `pl-4 border-l ${isLight ? "border-slate-200" : "border-white/[0.08]"}` : ""}`}>
                 <div>
                   <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>{stat.label}</span>
                   <div className="flex items-baseline gap-1.5">

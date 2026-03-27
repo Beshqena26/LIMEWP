@@ -1303,7 +1303,7 @@ export default function MigratePage() {
     <div className={`min-h-screen flex flex-col transition-colors ${isLight ? "bg-slate-50" : "bg-[var(--bg-primary)]"}`}>
       {/* Top bar */}
       <div className={`px-6 py-4 flex items-center justify-between border-b ${
-        isLight ? "bg-white border-slate-200" : "bg-[var(--bg-primary)] border-[var(--border-tertiary)]"
+        isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
       }`}>
         <Image
           src="/limewp-logo.svg"
@@ -1352,7 +1352,7 @@ export default function MigratePage() {
       {showVerify && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowVerify(false)} aria-hidden="true" />
-          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`} role="dialog" aria-modal="true">
+          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`} role="dialog" aria-modal="true">
             <div className="h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500" />
             <div className="p-6">
               <div className="flex items-center justify-between mb-5">
@@ -1410,7 +1410,7 @@ export default function MigratePage() {
       {showReport && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowReport(false)} aria-hidden="true" />
-          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-[var(--bg-primary)] border border-[var(--border-tertiary)]"}`} role="dialog" aria-modal="true">
+          <div className={`relative w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${isLight ? "bg-white border border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border border-[var(--border-tertiary)]"}`} role="dialog" aria-modal="true">
             <div className="h-1.5 bg-gradient-to-r from-sky-500 to-indigo-500" />
             <div className="p-6">
               <div className="flex items-center justify-between mb-5">
