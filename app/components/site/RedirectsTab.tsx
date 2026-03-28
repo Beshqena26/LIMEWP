@@ -360,7 +360,7 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className={`border-b ${isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--bg-primary)]/50"}`}>
+                    <tr className={`border-b ${isLight ? "border-slate-200 bg-slate-50" : "border-white/[0.06] bg-white/[0.02]"}`}>
                       <th className={`text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 w-16 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Enable</th>
                       <th className={`text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Source &rarr; Destination</th>
                       <th className={`text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 w-20 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Type</th>
@@ -382,7 +382,7 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
                         return (
                           <tr
                             key={r.id}
-                            className={`border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}
+                            className={`border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-white/[0.04] hover:bg-white/[0.02]"}`}
                           >
                             <td className="px-4 py-3">
                               <Toggle enabled={r.enabled} onChange={(val) => handleToggle(r.id, val)} />
@@ -485,7 +485,7 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className={`border-b ${isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--bg-primary)]/50"}`}>
+                  <tr className={`border-b ${isLight ? "border-slate-200 bg-slate-50" : "border-white/[0.06] bg-white/[0.02]"}`}>
                     <th className={`text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 ${isLight ? "text-slate-500" : "text-slate-400"}`}>URL</th>
                     <th className={`text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 w-20 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Hits</th>
                     <th className={`text-left text-xs font-semibold uppercase tracking-wider px-4 py-3 w-32 ${isLight ? "text-slate-500" : "text-slate-400"}`}>Last Seen</th>
@@ -504,7 +504,7 @@ export function RedirectsTab({ siteId }: { siteId: string }) {
                     errors404.map((e) => (
                       <tr
                         key={e.id}
-                        className={`border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}
+                        className={`border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-white/[0.04] hover:bg-white/[0.02]"}`}
                       >
                         <td className="px-4 py-3">
                           <span className={`text-sm font-mono ${isLight ? "text-slate-800" : "text-slate-200"}`}>{e.url}</span>

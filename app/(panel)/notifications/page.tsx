@@ -235,6 +235,7 @@ export default function NotificationsPage() {
                   onClick={() => {
                     if (notification.unread) markAsRead(notification.id);
                   }}
+                  aria-label={`${notification.unread ? "Mark as read: " : ""}${notification.title}`}
                   className={`${cardClass} w-full text-left p-4 flex items-start gap-4 hover:scale-[1.005] cursor-pointer ${
                     notification.unread ? "border-l-2 border-l-emerald-500" : ""
                   }`}

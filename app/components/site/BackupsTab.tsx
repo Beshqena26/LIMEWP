@@ -129,7 +129,6 @@ export function BackupsTab({ siteId }: BackupsTabProps) {
               <div key={stat.label} className={`group relative border rounded-2xl p-5 overflow-hidden transition-all duration-300 ${
                 isLight ? "bg-white border-slate-200 hover:border-slate-300" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)]"
               }`}>
-                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-60`} />
                 <div className="relative">
                   <div className="flex items-center justify-between mb-3">
                     <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${colors.iconBg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center group-hover:scale-105 transition-transform`}>
@@ -176,86 +175,67 @@ export function BackupsTab({ siteId }: BackupsTabProps) {
           </div>
         </div>
 
-        {/* Backup Cards */}
-        <div className="space-y-3">
-          {backupList.map((backup, index) => {
-            const colors = backupColorMap[backup.color] || backupColorMap.emerald;
-            const isLatest = index === 0;
-            return (
-              <div key={backup.id} className={`group relative border rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg ${
-                isLight
-                  ? isLatest ? "bg-white border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-slate-200/50" : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-slate-200/50"
-                  : isLatest ? "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-emerald-500/30 hover:border-emerald-500/50 hover:shadow-black/20" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)] hover:border-[var(--border-primary)] hover:shadow-black/20"
-              }`}>
-                <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl ${colors.glow} to-transparent rounded-full -translate-y-1/2 translate-x-1/3 opacity-50`} />
-                <div className="relative p-5">
-                  <div className="flex items-start gap-4">
-                    {/* Icon */}
-                    <div className="relative flex-shrink-0">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors.iconBg} ${colors.text} ring-1 ${colors.ring} flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg`}>
-                        {backup.type === "automatic" ? (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        ) : (
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg>
-                        )}
-                      </div>
-                      {isLatest && (
-                        <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                          <span className={`relative inline-flex rounded-full h-3 w-3 bg-emerald-500 ring-2 ${isLight ? "ring-white" : "ring-[var(--bg-secondary)]"}`} />
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className={`font-semibold text-[15px] ${isLight ? "text-slate-800" : "text-slate-100"}`}>{backup.name}</span>
-                        {isLatest && <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20">Latest</span>}
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md capitalize ${backup.type === "automatic" ? "bg-sky-500/10 text-sky-400 ring-1 ring-sky-500/20" : "bg-violet-500/10 text-violet-400 ring-1 ring-violet-500/20"}`}>{backup.type}</span>
-                      </div>
-                      <div className="flex items-center gap-4 mb-3 text-xs text-slate-500">
-                        <span className="flex items-center gap-1.5">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
-                          {backup.date}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                          {backup.time}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" /></svg>
-                          <span className="font-mono">{backup.size}</span>
-                        </span>
-                      </div>
+        {/* Backup Table */}
+        <div className={`rounded-2xl border overflow-hidden ${
+          isLight ? "bg-white border-slate-200" : "bg-gradient-to-br from-[var(--gradient-card-from)] to-[var(--gradient-card-to)] border-[var(--border-tertiary)]"
+        }`}>
+          <table className="w-full">
+            <thead>
+              <tr className={`border-b ${isLight ? "border-slate-200" : "border-white/[0.06]"}`}>
+                {["Name", "Date", "Size", "Type", "Includes", "Actions"].map((h) => (
+                  <th key={h} className={`text-left text-xs font-semibold uppercase tracking-wider px-5 py-3 ${isLight ? "text-slate-500" : "text-slate-400"}`}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {backupList.map((backup, index) => {
+                const isLatest = index === 0;
+                return (
+                  <tr key={backup.id} className={`border-b last:border-b-0 transition-colors ${
+                    isLight ? "border-slate-100 hover:bg-slate-50" : "border-white/[0.04] hover:bg-white/[0.02]"
+                  }`}>
+                    <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <span className={`text-[11px] ${isLight ? "text-slate-600" : "text-slate-500"}`}>Includes:</span>
-                        <div className="flex gap-1.5">
-                          {backup.includes.map((item) => (
-                            <span key={item} className={`text-[10px] font-medium px-2 py-0.5 rounded-md ring-1 ${isLight ? "text-slate-500 bg-slate-100 ring-slate-200" : "text-slate-400 bg-[var(--bg-elevated)] ring-[var(--border-primary)]"}`}>{item}</span>
-                          ))}
-                        </div>
+                        <span className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>{backup.name}</span>
+                        {isLatest && <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${isLight ? "bg-emerald-50 text-emerald-700" : "bg-emerald-500/10 text-emerald-400"}`}>Latest</span>}
                       </div>
-                    </div>
-
-                    {/* Hover Actions */}
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0">
-                      <button onClick={() => setRestoreTarget(backup)} aria-label="Restore backup" className="h-9 px-3.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-sm font-medium hover:bg-emerald-500/20 transition-all ring-1 ring-emerald-500/20 flex items-center gap-1.5">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
-                        Restore
-                      </button>
-                      <button onClick={() => handleDownload(backup)} aria-label="Download backup" className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${isLight ? "bg-slate-100 hover:bg-slate-200 ring-slate-200" : "bg-[var(--bg-elevated)]/70 hover:bg-[var(--border-primary)] ring-[var(--border-primary)]"}`}>
-                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
-                      </button>
-                      <button onClick={() => setDeleteTarget(backup)} aria-label="Delete backup" className={`h-9 w-9 rounded-lg flex items-center justify-center transition-all ring-1 ${isLight ? "bg-slate-100 hover:bg-rose-50 ring-slate-200 hover:ring-rose-500/30" : "bg-[var(--bg-elevated)]/70 hover:bg-rose-500/10 ring-[var(--border-primary)] hover:ring-rose-500/30"}`}>
-                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                    </td>
+                    <td className={`px-5 py-3.5 text-sm ${isLight ? "text-slate-600" : "text-slate-300"}`}>
+                      {backup.date} <span className={isLight ? "text-slate-400" : "text-slate-500"}>{backup.time}</span>
+                    </td>
+                    <td className={`px-5 py-3.5 text-sm font-mono ${isLight ? "text-slate-600" : "text-slate-300"}`}>{backup.size}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full capitalize ${
+                        backup.type === "automatic"
+                          ? isLight ? "bg-sky-50 text-sky-700" : "bg-sky-500/10 text-sky-400"
+                          : isLight ? "bg-violet-50 text-violet-700" : "bg-violet-500/10 text-violet-400"
+                      }`}>{backup.type}</span>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex gap-1">
+                        {backup.includes.map((item) => (
+                          <span key={item} className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${isLight ? "bg-slate-100 text-slate-500" : "bg-white/[0.04] text-slate-400"}`}>{item}</span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => setRestoreTarget(backup)} aria-label="Restore" className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "hover:bg-emerald-50 text-emerald-500" : "hover:bg-emerald-500/10 text-emerald-400"}`}>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" /></svg>
+                        </button>
+                        <button onClick={() => handleDownload(backup)} aria-label="Download" className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "hover:bg-slate-100 text-slate-400 hover:text-slate-600" : "hover:bg-white/[0.06] text-slate-500 hover:text-slate-300"}`}>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                        </button>
+                        <button onClick={() => setDeleteTarget(backup)} aria-label="Delete" className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isLight ? "hover:bg-rose-50 text-rose-400 hover:text-rose-600" : "hover:bg-rose-500/10 text-rose-400 hover:text-rose-300"}`}>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 

@@ -131,7 +131,7 @@ export function ActivityTab({ siteId }: ActivityTabProps) {
             {grouped.map((group, gi) => (
               <div key={group.date}>
                 {/* Date header */}
-                <div className={`px-6 py-2.5 ${isLight ? "bg-slate-50 border-b border-slate-200" : "bg-[var(--bg-primary)]/50 border-b border-[var(--border-tertiary)]"}`}>
+                <div className={`px-6 py-2.5 ${isLight ? "bg-slate-50 border-b border-slate-200" : "bg-white/[0.02] border-b border-white/[0.06]"}`}>
                   <span className={`text-xs font-semibold uppercase tracking-wider ${isLight ? "text-slate-500" : "text-slate-400"}`}>{group.date}</span>
                 </div>
 
@@ -139,11 +139,11 @@ export function ActivityTab({ siteId }: ActivityTabProps) {
                 {group.items.map((activity) => {
                   const style = TYPE_STYLES[activity.type] || TYPE_STYLES.system;
                   return (
-                    <div key={activity.id} className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-[var(--border-tertiary)] hover:bg-[var(--bg-primary)]/50"}`}>
+                    <div key={activity.id} className={`flex items-start gap-4 px-6 py-4 border-b last:border-b-0 transition-colors ${isLight ? "border-slate-100 hover:bg-slate-50" : "border-white/[0.04] hover:bg-white/[0.02]"}`}>
                       {/* Timeline dot */}
                       <div className="flex flex-col items-center pt-1 flex-shrink-0">
                         <div className={`w-2.5 h-2.5 rounded-full ${style.dot}`} />
-                        <div className={`w-px flex-1 mt-1 ${isLight ? "bg-slate-200" : "bg-[var(--border-tertiary)]"}`} />
+                        <div className={`w-px flex-1 mt-1 ${isLight ? "bg-slate-200" : "bg-white/[0.06]"}`} />
                       </div>
 
                       {/* Content */}
@@ -169,7 +169,7 @@ export function ActivityTab({ siteId }: ActivityTabProps) {
 
         {/* Pagination */}
         {filteredActivities.length > ITEMS_PER_PAGE && (
-          <div className={`flex items-center justify-between px-6 py-3 border-t ${isLight ? "border-slate-200 bg-slate-50" : "border-[var(--border-tertiary)] bg-[var(--bg-primary)]/50"}`}>
+          <div className={`flex items-center justify-between px-6 py-3 border-t ${isLight ? "border-slate-200 bg-slate-50" : "border-white/[0.06] bg-white/[0.02]"}`}>
             <span className={`text-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>
               Showing {(page - 1) * ITEMS_PER_PAGE + 1}-{Math.min(page * ITEMS_PER_PAGE, filteredActivities.length)} of {filteredActivities.length}
             </span>

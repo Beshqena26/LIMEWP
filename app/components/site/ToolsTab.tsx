@@ -105,6 +105,9 @@ export function ToolsTab({ siteId }: ToolsTabProps) {
   /* ── Search ── */
   const [searchQuery, setSearchQuery] = useState("");
 
+  /* ── Category filter ── */
+  const [activeCategory, setActiveCategory] = useState("All");
+
   // Track enabled/disabled state for toggleable tools
   const [enabledTools, setEnabledTools] = useState<Record<string, boolean>>(() => {
     const init: Record<string, boolean> = {};
@@ -330,7 +333,7 @@ export function ToolsTab({ siteId }: ToolsTabProps) {
   const textPrimary = isLight ? "text-slate-800" : "text-slate-100";
   const textSecondary = isLight ? "text-slate-500" : "text-slate-400";
 
-  /* ── Filter tools by search ── */
+  /* ── Filter tools by search and category ── */
   const filterTools = (tools: typeof TOOLS) => {
     if (!searchQuery.trim()) return tools;
     const q = searchQuery.toLowerCase();
@@ -338,6 +341,30 @@ export function ToolsTab({ siteId }: ToolsTabProps) {
       (t) => t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)
     );
   };
+
+  // Get the visible tools list based on search + category
+  const getVisibleTools = (): typeof TOOLS => {
+    const isSearching = searchQuery.trim().length > 0;
+
+    if (isSearching) {
+      // When searching, show all matching tools regardless of category
+      return filterTools(TOOLS);
+    }
+
+    if (activeCategory === "All") {
+      // Show all tools in category order
+      const ordered: typeof TOOLS = [];
+      for (const cat of TOOL_CATEGORY_ORDER) {
+        if (groupedTools[cat]) ordered.push(...groupedTools[cat]);
+      }
+      return ordered;
+    }
+
+    // Show tools from selected category
+    return groupedTools[activeCategory] || [];
+  };
+
+  const visibleTools = getVisibleTools();
 
   /* ── Render configure modal content ── */
   const renderConfigureModalContent = () => {
@@ -850,11 +877,65 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
     );
   };
 
+  /* ── Category pill colors for active state ── */
+  const getCategoryPillClasses = (category: string) => {
+    const isActive = activeCategory === category;
+    if (category === "All") {
+      if (isActive) {
+        return isLight
+          ? "bg-slate-800 text-white"
+          : "bg-white text-slate-900";
+      }
+      return isLight
+        ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
+        : "bg-white/[0.06] text-slate-400 hover:bg-white/[0.10]";
+    }
+    const cc = CATEGORY_COLORS[category] || TOOL_COLOR_FALLBACK;
+    if (isActive) {
+      // Use the category's color scheme for active pill
+      return `${cc.bg} ${cc.text} ring-1 ${cc.ring}`;
+    }
+    return isLight
+      ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
+      : "bg-white/[0.06] text-slate-400 hover:bg-white/[0.10]";
+  };
+
+  /* ── Action button style ── */
+  const getActionButtonClass = (tool: (typeof TOOLS)[0]) => {
+    const toggleable = isToggleable(tool);
+    const enabled = enabledTools[tool.title] ?? false;
+
+    if (tool.danger) {
+      return "bg-rose-500/10 text-rose-400 hover:bg-rose-500/20";
+    }
+    if (toggleable && enabled) {
+      return "bg-amber-500/10 text-amber-500 hover:bg-amber-500/20";
+    }
+    if (toggleable && !enabled) {
+      return "bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20";
+    }
+    // Default neutral
+    return isLight
+      ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
+      : "bg-white/[0.06] text-slate-300 hover:bg-white/[0.10]";
+  };
+
   return (
     <>
-      {/* ── Search Filter ── */}
-      <div className={`${cardClass} p-4 mb-5`}>
-        <div className="relative">
+      {/* ── 1. Header row (inline) ── */}
+      <div className="flex items-center justify-between gap-4 mb-4">
+        <div className="flex items-center gap-2.5">
+          <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>
+            Site Tools
+          </h3>
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+            isLight ? "bg-slate-100 text-slate-500" : "bg-white/[0.06] text-slate-400"
+          }`}>
+            {TOOLS.length}
+          </span>
+        </div>
+
+        <div className="relative w-64">
           <svg
             className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${textSecondary}`}
             fill="none"
@@ -878,52 +959,65 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
         </div>
       </div>
 
+      {/* ── 2. Category tab pills ── */}
+      <div className="flex items-center gap-2 mb-4 flex-wrap">
+        {["All", ...TOOL_CATEGORY_ORDER].map((category) => (
+          <button
+            key={category}
+            onClick={() => setActiveCategory(category)}
+            className={`h-8 px-3.5 rounded-lg text-xs font-semibold transition-all ${getCategoryPillClasses(category)}`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* ── 3. Tool list (single card) ── */}
       <div className={cardClass}>
-        {/* Header */}
-        <div className={`px-6 py-5 border-b ${isLight ? "border-slate-200" : "border-[var(--border-tertiary)]"}`}>
-          <div className="flex items-center gap-3">
-            <div
-              className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center ${accent.bg} ${accent.text} ${accent.ring}`}
+        {visibleTools.length === 0 ? (
+          /* Empty state */
+          <div className="flex flex-col items-center justify-center py-16 px-6">
+            <svg
+              className={`w-10 h-10 mb-3 ${textSecondary}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
             >
-              <svg
-                width={18}
-                height={18}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M21.75 6.75a4.5 4.5 0 01-4.884 4.484c-1.076-.091-2.264.071-2.95.904l-7.152 8.684a2.548 2.548 0 11-3.586-3.586l8.684-7.152c.833-.686.995-1.874.904-2.95a4.5 4.5 0 016.336-4.486l-3.276 3.276a3.004 3.004 0 002.25 2.25l3.276-3.276c.256.565.398 1.192.398 1.852zM15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className={`text-sm font-semibold ${isLight ? "text-slate-800" : "text-slate-100"}`}>Site Tools</h3>
-              <p className="text-xs text-slate-500">{TOOLS.length} tools available</p>
-            </div>
+              <path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <p className={`text-sm font-medium ${textPrimary}`}>No tools found</p>
+            <p className={`text-xs mt-1 ${textSecondary}`}>
+              Try adjusting your search or selected category.
+            </p>
           </div>
-        </div>
+        ) : (
+          <div className={`divide-y ${isLight ? "divide-slate-100" : "divide-white/[0.04]"}`}>
+            {visibleTools.map((tool) => {
+              const toggleable = isToggleable(tool);
+              const enabled = enabledTools[tool.title] ?? false;
+              const buttonLabel = toggleable ? (enabled ? "Disable" : "Enable") : tool.btn;
+              const tc = TOOL_COLORS[tool.title] || TOOL_COLOR_FALLBACK;
 
-        {/* Tools by Category */}
-        <div className={`divide-y ${isLight ? "divide-slate-200" : "divide-white/[0.04]"}`}>
-          {TOOL_CATEGORY_ORDER.map((category) => {
-            const categoryTools = filterTools(groupedTools[category] || []);
-            if (!categoryTools || categoryTools.length === 0) return null;
-            const config = TOOL_CATEGORY_CONFIG[category];
-
-            const cc = CATEGORY_COLORS[category] || TOOL_COLOR_FALLBACK;
-
-            return (
-              <div key={category} className="p-6">
-                <div className="flex items-center gap-2.5 mb-4">
+              return (
+                <div
+                  key={tool.title}
+                  className={`flex items-center gap-4 px-5 py-3.5 transition-colors ${
+                    isLight
+                      ? "hover:bg-slate-50"
+                      : "hover:bg-white/[0.02]"
+                  }`}
+                >
+                  {/* Icon */}
                   <div
-                    className={`w-6 h-6 rounded-md ring-1 flex items-center justify-center ${cc.bg} ${cc.text} ${cc.ring}`}
+                    className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center flex-shrink-0 ${tc.bg} ${tc.text} ${tc.ring}`}
                   >
                     <svg
-                      width={14}
-                      height={14}
+                      width={18}
+                      height={18}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -932,131 +1026,70 @@ Extensions: curl, gd, mbstring, mysqli, openssl, zip, redis`}
                       strokeLinejoin="round"
                       aria-hidden="true"
                     >
-                      <path d={config.icon} />
+                      <path d={tool.icon} />
                     </svg>
                   </div>
-                  <span
-                    className={`text-xs font-semibold uppercase tracking-wider ${
-                      isLight ? "text-slate-600" : "text-slate-300"
-                    }`}
-                  >
-                    {category}
-                  </span>
-                  <span
-                    className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${cc.bg} ${cc.text}`}
-                  >
-                    {categoryTools.length}
-                  </span>
-                </div>
 
-                <div className="space-y-2">
-                  {categoryTools.map((tool) => {
-                    const toggleable = isToggleable(tool);
-                    const enabled = enabledTools[tool.title] ?? false;
-                    const buttonLabel = toggleable ? (enabled ? "Disable" : "Enable") : tool.btn;
-                    const tc = TOOL_COLORS[tool.title] || TOOL_COLOR_FALLBACK;
+                  {/* Name + description */}
+                  <div className="flex-1 min-w-0">
+                    <h4
+                      className={`text-sm font-medium truncate ${
+                        isLight ? "text-slate-700" : "text-slate-200"
+                      }`}
+                    >
+                      {tool.title}
+                    </h4>
+                    <p className="text-xs text-slate-500 truncate">{tool.desc}</p>
+                  </div>
 
-                    return (
-                      <div
-                        key={tool.title}
-                        className={`group flex items-center justify-between gap-4 p-3 rounded-xl border border-transparent transition-all hover:-translate-y-px ${
+                  {/* Status badge for toggleable tools */}
+                  {toggleable && (
+                    <span
+                      className={`flex-shrink-0 text-[9px] font-bold uppercase px-2 py-0.5 rounded ${
+                        enabled
+                          ? "bg-emerald-500/10 text-emerald-500"
+                          : isLight
+                            ? "bg-slate-100 text-slate-400"
+                            : "bg-white/[0.06] text-slate-500"
+                      }`}
+                    >
+                      {enabled ? "ON" : "OFF"}
+                    </span>
+                  )}
+
+                  {/* Action button / PHP select */}
+                  <div className="flex-shrink-0">
+                    {tool.select ? (
+                      <select
+                        aria-label="PHP Version"
+                        defaultValue="8.1.1"
+                        onChange={(e) => {
+                          if (e.target.value) showToast.success(`PHP version updated to ${e.target.value}`);
+                        }}
+                        className={`h-8 w-[110px] rounded-lg border-0 px-2.5 text-xs font-medium outline-none cursor-pointer transition-colors ${
                           isLight
-                            ? "bg-slate-50 hover:bg-white hover:border-slate-200 hover:shadow-sm"
-                            : "bg-[var(--bg-primary)] hover:bg-[var(--bg-elevated)]/50 hover:border-white/[0.08] hover:shadow-lg hover:shadow-black/5"
+                            ? "bg-violet-50 text-violet-700 ring-1 ring-violet-200"
+                            : "bg-violet-500/10 text-violet-400 ring-1 ring-violet-500/20"
                         }`}
                       >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div
-                            className={`w-9 h-9 rounded-lg ring-1 flex items-center justify-center flex-shrink-0 transition-colors ${tc.bg} ${tc.text} ${tc.ring}`}
-                          >
-                            <svg
-                              width={18}
-                              height={18}
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <path d={tool.icon} />
-                            </svg>
-                          </div>
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <h4
-                                className={`text-sm font-medium truncate ${
-                                  isLight ? "text-slate-700" : "text-slate-200"
-                                }`}
-                              >
-                                {tool.title}
-                              </h4>
-                              {toggleable && (
-                                <span
-                                  className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
-                                    enabled
-                                      ? "bg-emerald-500/10 text-emerald-500"
-                                      : isLight
-                                        ? "bg-slate-100 text-slate-400"
-                                        : "bg-slate-800 text-slate-500"
-                                  }`}
-                                >
-                                  {enabled ? "On" : "Off"}
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-xs text-slate-500 truncate">{tool.desc}</p>
-                          </div>
-                        </div>
-
-                        <div className="flex-shrink-0">
-                          {tool.select ? (
-                            <select
-                              aria-label="PHP Version"
-                              defaultValue="8.1.1"
-                              onChange={(e) => {
-                                if (e.target.value) showToast.success(`PHP version updated to ${e.target.value}`);
-                              }}
-                              className={`h-8 w-[110px] rounded-lg border-0 px-2.5 text-xs font-medium outline-none cursor-pointer transition-colors ${
-                                isLight
-                                  ? "bg-violet-50 text-violet-700 ring-1 ring-violet-200"
-                                  : "bg-violet-500/10 text-violet-400 ring-1 ring-violet-500/20"
-                              }`}
-                            >
-                              <option value="8.1.1">PHP 8.1.1</option>
-                              <option value="8.0.0">PHP 8.0.0</option>
-                              <option value="7.4.0">PHP 7.4.0</option>
-                            </select>
-                          ) : (
-                            <button
-                              onClick={() => handleAction(tool)}
-                              className={`h-8 px-4 rounded-lg text-xs font-semibold transition-all ${
-                                tool.danger
-                                  ? "bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/20 hover:bg-rose-500/20"
-                                  : toggleable && enabled
-                                    ? "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/20 hover:bg-amber-500/20"
-                                  : (tool.btn === "Open Tool" || tool.btn === "Configure")
-                                    ? `${tc.bg} ${tc.text} ring-1 ${tc.ring} hover:brightness-110`
-                                  : toggleable && !enabled
-                                    ? "bg-emerald-500/10 text-emerald-500 ring-1 ring-emerald-500/20 hover:bg-emerald-500/20"
-                                    : isLight
-                                      ? "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-                                      : "bg-[var(--bg-elevated)] text-slate-300 hover:bg-[var(--border-primary)] hover:text-slate-100"
-                              }`}
-                            >
-                              {buttonLabel}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
+                        <option value="8.1.1">PHP 8.1.1</option>
+                        <option value="8.0.0">PHP 8.0.0</option>
+                        <option value="7.4.0">PHP 7.4.0</option>
+                      </select>
+                    ) : (
+                      <button
+                        onClick={() => handleAction(tool)}
+                        className={`h-8 px-4 rounded-lg text-xs font-semibold transition-all ${getActionButtonClass(tool)}`}
+                      >
+                        {buttonLabel}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* ── Confirm Dialog ── */}

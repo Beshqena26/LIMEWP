@@ -17,8 +17,8 @@
   /* Text */
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
-  --text-tertiary: #64748b;
-  --text-disabled: #475569;
+  --text-tertiary: #8494a7;
+  --text-disabled: #546378;
   --text-inverse: #0f1117;
   /* Borders */
   --border-primary: #2d3548;
@@ -135,8 +135,8 @@
   --bg-hover: #222537;
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
-  --text-tertiary: #64748b;
-  --text-disabled: #475569;
+  --text-tertiary: #8494a7;
+  --text-disabled: #546378;
   --text-inverse: #0f1117;
   --border-primary: #2d3548;
   --border-secondary: #232a3a;
